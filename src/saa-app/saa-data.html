@@ -1,0 +1,136 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+
+<dom-module id="saa-data">
+
+  <!-- TODO: WeatherSymbol3 TotalCloudCover  -->
+  <template>
+      <iron-ajax
+      auto
+      url="http://data.fmi.fi/fmi-apikey/API-KEY/wfs",
+      params='{
+        "request":"getFeature", 
+        "storedquery_id":"fmi::forecast::hirlam::surface::point::timevaluepair",
+        "place": "espoo", 
+        "parameters": "Temperature,WeatherSymbol3" 
+      }'
+      handle-as="document"
+      on-response="_handleResponse"></iron-ajax>
+  
+  </template>
+
+  <script>
+    /**
+     * `saa-data`
+     * Fetching the weather data from the server
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class SaaData extends Polymer.Element {
+      static get is() { return 'saa-data'; }
+      static get properties() {
+        return {
+          /**
+           * Example:
+           * {
+           *  temperature: '6,5'
+           * }
+           */
+          weatherNowData: {
+            type: Object,
+            notify: true
+          },
+
+          /**
+           * Example:
+           * {
+           *  time: '2018-01-07T10:00:00Z',
+           *  temperature: 6
+           * }, 
+           * {...}
+           */
+          weatherData: {
+            type: Object,
+            notify: true
+          }
+        };
+      }
+
+      _handleResponse(event, request) {
+
+        const temperatures = request.response.getElementsByTagName('wml2:MeasurementTVP');
+
+        this.weatherNowData = this._parseTemperatureNow(temperatures);
+        this.weatherData = this._parseTemperatures(temperatures);
+
+      }
+
+      _parseTemperatureNow(temperatures){
+        const value = temperatures[0].children[1].childNodes[0].nodeValue;
+        const temperature = Math.round( value * 10 ) / 10;
+
+        return  {temperature: temperature};
+      }
+
+      _parseTemperatures(temperatures) {
+        let weatherData = {day1: [], day2: [], day3: []};
+        let day = 0;
+
+        weatherData.day1 = this._fillEmptyData(weatherData.day1, this._toHour(temperatures[0].children[0].childNodes[0].nodeValue));
+        
+        for (let item of temperatures) {
+          const hour = this._toHour(item.children[0].childNodes[0].nodeValue);
+          const temperature = Math.round(item.children[1].childNodes[0].nodeValue);
+
+          if(hour === 1){
+            day++;
+          }  
+          
+          if(day === 0) {
+            
+            weatherData.day1.push(
+              { 
+                "time": hour,
+                "temperature": temperature
+              }
+            );
+          } else if (day === 1) {
+            weatherData.day2.push(
+              { 
+                "time": hour,
+                "temperature": temperature
+              }
+            );
+          }
+        };
+
+        return weatherData;
+      }
+
+      _fillEmptyData(weatherData, hour) {
+        
+        for (let i = 1; i < hour; i++) {
+          weatherData.push(
+            {
+              "time": i,
+              "temperature": ""
+            }
+          )
+        }
+        return weatherData;
+      }
+
+      _toHour(time){
+        const dateObject = new Date(time);
+        let hour = dateObject.getHours(); 
+          
+        return hour === 0 ? 24 : dateObject.getHours();
+      }
+      
+    }
+
+    window.customElements.define(SaaData.is, SaaData);
+  </script>
+</dom-module>

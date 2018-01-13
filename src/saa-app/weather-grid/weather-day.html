@@ -1,0 +1,122 @@
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="./line-chart.html">
+<link rel="import" href="./weather-symbol.html">
+
+<dom-module id="weather-day">
+  <template>
+
+    <style>
+      :host {
+        display: block;
+      }
+
+      .weatherGrid_date {
+        display: flex;
+        align-items: flex-end;		
+        justify-content: space-between;	
+        
+        grid-column: 1 / 25;
+      }
+
+      .symbol_svg {
+        width: 32px;
+      }
+
+      .weatherGrid_hour {
+        text-align: center;
+      }
+      .weatherGrid_symbol {
+        grid-row: 3;
+        text-align: center;
+      }
+      .weatherGrid_temperature {
+        font-size: 24px;
+        font-weight: 900;
+        grid-row: 4;
+        text-align: center;
+      }
+
+      .lineChart{
+        grid-column: 1 / 25;
+      }
+      .linechart_svg{
+        width: 100%;
+      }
+
+      .graphGrid {
+        display: grid;
+        grid-template-columns: repeat(24, 1fr);
+      }
+
+      .graphGrid__hour {
+        border: 1px dashed gray;
+        
+      }
+
+    </style>
+
+
+    <div class="weatherGrid_date">
+      <div class="date_day">Tänään</div>
+      <div class="date_weekday">torstai 4.1.2018</div>
+    </div>
+  
+   
+    <template is="dom-repeat" items="[[weatherData.day2]]" >
+      
+        <div class="weatherGrid_hour">{{_everyFourth(item.time, item.time)}}</div>
+        <div class="weatherGrid_symbol">
+            <template is="dom-if" if="{{_isFourth(index)}}">
+              <weather-symbol symbol-number="1"></weather-symbol>
+            </template>
+          </div>
+        <div class="weatherGrid_temperature">{{_everyFourth(item.time, item.temperature)}}<!-- &#176; --></div>
+      </template>    
+
+      <section class="lineChart">
+        <line-chart line-points="[[_lineChartPoints()]]"></line-chart>          
+      </section>
+
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class WeatherDay extends Polymer.Element {
+      static get is() { return 'weather-day'; }
+      
+      static get properties() {
+        return {
+          weatherData: {
+            type: Array          
+          }
+        };
+      }
+
+      _everyFourth(index, item) {
+        return index % 4 === 0 ? item : '';
+      }
+      _isFourth(index) {
+        return (index + 1) % 4 === 0;
+      }
+      _lineChartPoints(){
+        return '0,20 400,20 800,20 1200,20 1600,30 2000,70 2400,40';
+        let points = '';
+        let x = 0;
+        console.log('hi' + this.weatherData);
+        this.weatherData.forEach(element => {
+          points += x + ',' + element.temperature; 
+          x += 10;  
+          console.log(points);
+        });
+
+        return points;
+      }
+    }
+
+    window.customElements.define(WeatherDay.is, WeatherDay);
+  </script>
+</dom-module>

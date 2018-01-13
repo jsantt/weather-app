@@ -1,0 +1,47 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+
+<link rel="import" href="./location-selector.html">
+<link rel="import" href="./saa-data.html">
+<link rel="import" href="./weather-grid/weather-grid.html">
+<link rel="import" href="./weather-now.html">
+
+<dom-module id="saa-app">
+  <template>
+
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    
+    <!-- All the weather data --> 
+     
+    <saa-data 
+      weather-data="{{weatherData}}"
+      weather-now-data="{{weatherNowData}}"></saa-data>
+
+    <location-selector></location-selector>
+    
+    <weather-now weather-now-data="[[weatherNowData]]"></weather-now>
+
+    <weather-grid weather-data="[[weatherData]]"></weather-grid>
+  
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class SaaApp extends Polymer.Element {
+      static get is() { return 'saa-app'; }
+      
+      static get properties() {
+        return {};
+      }
+    }
+
+    window.customElements.define(SaaApp.is, SaaApp);
+  </script>
+</dom-module>

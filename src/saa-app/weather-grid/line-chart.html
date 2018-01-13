@@ -1,0 +1,55 @@
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+
+
+<dom-module id="line-chart">
+  <template>
+
+    <style>
+      .lineChart {
+        margin-top: -1.5rem;
+      }      
+    </style>
+
+    
+    <div class="lineChart" id="lineChart"></div>
+    
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class LineChart extends Polymer.Element {
+      static get is() { return 'line-chart'; }
+      
+      static get properties() {
+        return {
+          linePoints: {
+            type: String
+          }
+        };
+      }
+      ready(){
+
+        super.ready();
+        let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        svg.setAttribute('viewBox',"0 0 2400 70"); // min-x, min-y, width and height
+        svg.setAttribute('width','100%');
+        svg.setAttribute('height','30');
+
+        let line = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+        line.setAttribute('fill', 'none');
+        line.setAttribute('stroke', '#0074d9');
+        line.setAttribute('stroke-width', '5');
+        line.setAttribute('points', this.linePoints);
+
+        svg.appendChild(line);
+
+        this.$.lineChart.appendChild(svg);
+      }
+    }
+
+    window.customElements.define(LineChart.is, LineChart);
+  </script>
+</dom-module>

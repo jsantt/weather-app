@@ -1,0 +1,7 @@
+{
+  "name": "saa",
+  "short_name": "saa",
+  "description": "weather forecast application",
+  "start_url": "/",
+  "display": "standalone"
+}

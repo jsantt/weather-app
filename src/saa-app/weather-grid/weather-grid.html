@@ -1,0 +1,55 @@
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="./weather-day.html">
+
+<dom-module id="weather-grid">
+  <template>
+
+    <style>
+      :host {
+        display: block;
+      }
+
+      .weatherGrid {
+        display: grid;
+        
+        grid-column-gap: 10px; 
+        grid-row-gap: 10px;
+        
+        grid-template-columns: repeat(24, 1fr);
+        
+        margin-top: 1rem;
+      }
+	
+
+    </style>
+
+      <!-- repeat for every day -->
+      <!-- template is="dom-repeat" items="[[weatherData]]"></template -->
+      <weather-day 
+        class="weatherGrid"
+        weather-data="[[weatherData]]"></weather-day>
+      <!-- /template -->
+    
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class WeatherGrid extends Polymer.Element {
+      static get is() { return 'weather-grid'; }
+      
+      static get properties() {
+        return {
+          weatherData: {
+            type: Array
+          }
+        };
+      }
+    }
+
+    window.customElements.define(WeatherGrid.is, WeatherGrid);
+  </script>
+</dom-module>

@@ -1,0 +1,39 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="location-selector">
+  <template>
+
+    <style>
+      :host {
+        display: block;
+      }
+
+      .location {
+        margin-top: 2rem;
+	    	text-align: center;
+	    }
+
+    </style>
+    
+    <section class="location">
+      Espoo nyt
+    </section>
+    
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class LocationSelector extends Polymer.Element {
+      static get is() { return 'location-selector'; }
+      
+      static get properties() {
+        return {};
+      }
+    }
+
+    window.customElements.define(LocationSelector.is, LocationSelector);
+  </script>
+</dom-module>
