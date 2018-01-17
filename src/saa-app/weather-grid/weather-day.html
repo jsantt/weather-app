@@ -25,21 +25,28 @@
 
       .weatherGrid_hour {
         text-align: center;
+        grid-row: 6;
       }
       .weatherGrid_symbol {
-        grid-row: 3;
+        grid-row: 2;
         text-align: center;
       }
       .weatherGrid_temperature {
         font-size: 24px;
         font-weight: 900;
-        grid-row: 4;
+        grid-row: 3;
         text-align: center;
       }
 
       .lineChart{
         grid-column: 1 / 25;
       }
+
+      .barChart {
+        grid-column: 1 / 25;
+        border-bottom: 1px dashed gray;
+      }
+
       .linechart_svg{
         width: 100%;
       }
@@ -63,20 +70,24 @@
     </div>
   
    
-    <template is="dom-repeat" items="[[weatherData.day2]]" >
+    <template is="dom-repeat" items="[[weatherData.day2]]" as="entry">
       
-        <div class="weatherGrid_hour">{{_everyFourth(item.time, item.time)}}</div>
+        <div class="weatherGrid_hour">{{_everyFourth(entry.time, entry.time)}}</div>
         <div class="weatherGrid_symbol">
             <template is="dom-if" if="{{_isFourth(index)}}">
-              <weather-symbol symbol-number="1"></weather-symbol>
+                <weather-symbol weather-now-data="[[entry]]"></weather-symbol>
             </template>
           </div>
-        <div class="weatherGrid_temperature">{{_everyFourth(item.time, item.temperature)}}<!-- &#176; --></div>
+        <div class="weatherGrid_temperature">{{_everyFourth(entry.time, entry.temperature)}}<!-- &#176; --></div>
       </template>    
 
       <section class="lineChart">
-        <line-chart line-points="[[_lineChartPoints()]]"></line-chart>          
+        <line-chart weather-data="[[weatherData]]"></line-chart>          
       </section>
+      <section class="barChart">
+                    
+      </section>
+
 
   </template>
 
@@ -101,19 +112,6 @@
       }
       _isFourth(index) {
         return (index + 1) % 4 === 0;
-      }
-      _lineChartPoints(){
-        return '0,20 400,20 800,20 1200,20 1600,30 2000,70 2400,40';
-        let points = '';
-        let x = 0;
-        console.log('hi' + this.weatherData);
-        this.weatherData.forEach(element => {
-          points += x + ',' + element.temperature; 
-          x += 10;  
-          console.log(points);
-        });
-
-        return points;
       }
     }
 

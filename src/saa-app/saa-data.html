@@ -7,7 +7,7 @@
   <template>
       <iron-ajax
       auto
-      url="http://data.fmi.fi/fmi-apikey/API-KEY/wfs",
+      url="http://data.fmi.fi/fmi-apikey/_api-key_/wfs",
       params='{
         "request":"getFeature", 
         "storedquery_id":"fmi::forecast::hirlam::surface::point::timevaluepair",
@@ -52,27 +52,74 @@
            * {...}
            */
           weatherData: {
-            type: Object,
+            type: Array,
             notify: true
           }
         };
       }
 
+      /**
+       * Data is in the following format:
+       *	...
+       * <wml2:MeasurementTimeseries gml:id="mts-1-1-Temperature">
+			 *		<wml2:point>
+		 	 *			<wml2:MeasurementTVP>
+			 *				<wml2:time>2018-01-09T20:00:00Z</wml2:time>
+			 *				<wml2:value>-2.41</wml2:value>
+       *  ...
+       *  <wml2:MeasurementTimeseries gml:id="mts-1-1-WeatherSymbol3">
+			 *		<wml2:point>
+			 *			<wml2:MeasurementTVP>
+			 *				<wml2:time>2018-01-09T20:00:00Z</wml2:time>
+			 *				<wml2:value>3.0</wml2:value>
+       *  ....
+       */
       _handleResponse(event, request) {
+        const tempAndSymbol = request.response.getElementsByTagName('wml2:MeasurementTimeseries');
+        
+        const temperatures = this._getByAttributeValue(tempAndSymbol, 'mts-1-1-Temperature');
+        const symbols = this._getByAttributeValue(tempAndSymbol, 'mts-1-1-WeatherSymbol3');
 
-        const temperatures = request.response.getElementsByTagName('wml2:MeasurementTVP');
+        const temperatureKeyValues = temperatures.getElementsByTagName('wml2:MeasurementTVP');
+        const symbs= symbols.getElementsByTagName('wml2:MeasurementTVP');
 
-        this.weatherNowData = this._parseTemperatureNow(temperatures);
-        this.weatherData = this._parseTemperatures(temperatures);
+        this.weatherNowData = this._parseWeatherNow(temperatureKeyValues, symbolKeyValues);
+        this.temps = this._parseTemperatures(temperatureKeyValues);
 
+        this.weatherData = _.intersectionWith(temps, symbs, function(x, y) {
+          return x.time === y.time && _.assign(x, y);
+        }); 
       }
 
-      _parseTemperatureNow(temperatures){
+      _getByAttributeValue(collection, value) {
+        for (let item of collection) {
+          if(item.getAttribute('gml:id') === value){
+            return item;
+          }
+        }
+      }
+
+      _parseWeatherNow(temperatures, symbols){
+        const temperatureRaw = temperatures[0].children[1].childNodes[0].nodeValue;
+        const temperature = Math.round( temperatureRaw * 10 ) / 10;
+
+        const symbol = Math.round(symbols[0].children[1].childNodes[0].nodeValue);
+
+        const weatherNow = {
+          temperature: temperature,
+          symbol: symbol
+        };
+
+        return weatherNow;
+      }
+
+      _parseSymbolNow(temperatures){
         const value = temperatures[0].children[1].childNodes[0].nodeValue;
         const temperature = Math.round( value * 10 ) / 10;
 
         return  {temperature: temperature};
       }
+
 
       _parseTemperatures(temperatures) {
         let weatherData = {day1: [], day2: [], day3: []};

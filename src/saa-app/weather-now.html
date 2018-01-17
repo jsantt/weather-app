@@ -1,5 +1,9 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 
+<link rel="import" href="./weather-grid/weather-symbol.html">
+<link rel="import" href="./weather-symbol-name.html">
+
+
 <dom-module id="weather-now">
     <template>
 
@@ -10,29 +14,37 @@
 
         .weatherNow {
 		    display: flex;
+            align-items: center;
 		    justify-content: center;
-		    align-items: flex-end;
         }
 	
         .temperature {
-            font-size: 64px;
+            font-size: 50px;
         }
         
-        .symbol {
-            width: 32px;
+
+        .degree {
+            font-size: 24px;
+            vertical-align: top;
+        }
+
+        .symbolText {
+            color: #333;
+            font-size: 19px;
+            text-align: center;
         }
 
     </style>
     
     <section class="weatherNow">
-		<div class="temperature">[[weatherNowData.temperature]]&#176;</div>
-		<div class="symbol">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                <path d="m391.84 540.91c-.421-.329-.949-.524-1.523-.524-1.351 0-2.451 1.084-2.485 2.435-1.395.526-2.388 1.88-2.388 3.466 0 1.874 1.385 3.423 3.182 3.667v.034h12.73v-.006c1.775-.104 3.182-1.584 3.182-3.395 0-1.747-1.309-3.186-2.994-3.379.007-.106.011-.214.011-.322 0-2.707-2.271-4.901-5.072-4.901-2.073 0-3.856 1.202-4.643 2.925" transform="matrix(.77976 0 0 .78395-299.99-418.63)" fill="#4d4d4d"/>
-            </svg>
-			pilvistä
-		</div>
-	</section>
+        <div class="temperature">[[weatherNowData.temperature]]<span class="degree">&#176;C</span></div>
+        <div class="symbol">
+            <weather-symbol weather-now-data="[[weatherNowData]]" large="true"></weather-symbol>
+        </div>
+    </section>
+    <div class="symbolText">
+        <weather-symbol-name weather-now-data="[[weatherNowData]]"></weather-symbol-name>
+    </div>
     
   </template>
 
@@ -50,6 +62,9 @@
                 type: Object
             }
         };
+      }
+      _getSymbol(){
+        return this.weatherNowData.symbol;
       }
     }
 
