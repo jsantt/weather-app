@@ -10,7 +10,7 @@
   <template>
       <iron-ajax
       auto
-      url="http://data.fmi.fi/fmi-apikey/-data-key/wfs",
+      url="http://data.fmi.fi/fmi-apikey/-apikey-/wfs",
       params='{
         "request":"getFeature", 
         "storedquery_id":"fmi::forecast::hirlam::surface::point::timevaluepair",
@@ -124,7 +124,7 @@
 
       _parseSymbolNow(temperatures){
         const value = temperatures[0].children[1].childNodes[0].nodeValue;
-        const temperature = Math.round( value * 10 ) / 10;
+        const temperature = Math.round(value);
 
         return  {temperature: temperature};
       }

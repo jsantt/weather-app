@@ -43,7 +43,9 @@
         let line = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
         line.setAttribute('fill', 'none');
         line.setAttribute('stroke', '#fe0101');
-        line.setAttribute('stroke-width', '5');
+
+        line.setAttribute('stroke-width', '20');
+        line.setAttribute('stroke-opacity', '0.3');      
         line.setAttribute('points', this._hop(lines));
 
         svg.appendChild(line);
