@@ -1,3 +1,6 @@
+<!--link rel="import" href="../../node_modules/lodash.intersectionwith/index.js">
+<link rel="import" href="../../node_modules/lodash.assign/index.js"-->
+
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 
@@ -7,7 +10,7 @@
   <template>
       <iron-ajax
       auto
-      url="http://data.fmi.fi/fmi-apikey/_api-key_/wfs",
+      url="http://data.fmi.fi/fmi-apikey/-data-key/wfs",
       params='{
         "request":"getFeature", 
         "storedquery_id":"fmi::forecast::hirlam::surface::point::timevaluepair",
@@ -83,12 +86,18 @@
         const temperatureKeyValues = temperatures.getElementsByTagName('wml2:MeasurementTVP');
         const symbs= symbols.getElementsByTagName('wml2:MeasurementTVP');
 
-        this.weatherNowData = this._parseWeatherNow(temperatureKeyValues, symbolKeyValues);
-        this.temps = this._parseTemperatures(temperatureKeyValues);
+        this.weatherNowData = this._parseWeatherNow(temperatureKeyValues, symbs);
+        const parsedTemps = this._parseTemperatures(temperatureKeyValues);
+        const parsedSymbols = this._parseSymbols(symbs);
 
-        this.weatherData = _.intersectionWith(temps, symbs, function(x, y) {
+        console.log(parsedTemps.day2);
+        console.log(parsedSymbols);
+
+        this.weatherData = _.intersectionWith(parsedTemps.day2, parsedSymbols.day2, function(x, y) {
           return x.time === y.time && _.assign(x, y);
         }); 
+
+        console.log(this.weatherData);
       }
 
       _getByAttributeValue(collection, value) {
@@ -119,7 +128,40 @@
 
         return  {temperature: temperature};
       }
+      _parseSymbols(symbols){
+        let weatherData = {day1: [], day2: [], day3: []};
+        let day = 0;
 
+        weatherData.day1 = this._fillEmptyDataForSymbols(weatherData.day1, this._toHour(symbols[0].children[0].childNodes[0].nodeValue));
+        
+        for (let item of symbols) {
+          const hour = this._toHour(item.children[0].childNodes[0].nodeValue);
+          const symbol = Math.round(item.children[1].childNodes[0].nodeValue);
+
+          if(hour === 1){
+            day++;
+          }  
+          
+          if(day === 0) {
+            
+            weatherData.day1.push(
+              { 
+                "time": hour,
+                "symbol": symbol
+              }
+            );
+          } else if (day === 1) {
+            weatherData.day2.push(
+              { 
+                "time": hour,
+                "symbol": symbol
+              }
+            );
+          }
+        };
+
+        return weatherData;
+      }
 
       _parseTemperatures(temperatures) {
         let weatherData = {day1: [], day2: [], day3: []};
@@ -168,6 +210,20 @@
         }
         return weatherData;
       }
+
+      _fillEmptyDataForSymbols(weatherData, hour) {
+        
+        for (let i = 1; i < hour; i++) {
+          weatherData.push(
+            {
+              "time": i,
+              "symbol": ""
+            }
+          )
+        }
+        return weatherData;
+      }
+
 
       _toHour(time){
         const dateObject = new Date(time);

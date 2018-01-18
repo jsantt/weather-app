@@ -1,0 +1,27 @@
+{
+  "name": "saa",
+  "version": "0.0.1",
+  "description": "weather forecast application",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "lodash.assign": "^4.2.0",
+    "lodash.intersectionwith": "^4.4.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jsantt/weather-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jsantt/weather-app/issues"
+  },
+  "homepage": "https://github.com/jsantt/weather-app#readme"
+}

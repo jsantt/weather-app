@@ -16,6 +16,7 @@
         align-items: flex-end;		
         justify-content: space-between;	
         
+        border-bottom: 1px dashed gray;
         grid-column: 1 / 25;
       }
 
@@ -25,16 +26,15 @@
 
       .weatherGrid_hour {
         text-align: center;
-        grid-row: 6;
+        grid-row: 2;       
       }
       .weatherGrid_symbol {
-        grid-row: 2;
+        grid-row: 3;  
         text-align: center;
       }
       .weatherGrid_temperature {
         font-size: 24px;
         font-weight: 900;
-        grid-row: 3;
         text-align: center;
       }
 
@@ -44,7 +44,6 @@
 
       .barChart {
         grid-column: 1 / 25;
-        border-bottom: 1px dashed gray;
       }
 
       .linechart_svg{
@@ -65,12 +64,10 @@
 
 
     <div class="weatherGrid_date">
-      <div class="date_day">Tänään</div>
-      <div class="date_weekday">torstai 4.1.2018</div>
+      <div class="date_day">Huomenna</div>
     </div>
   
-   
-    <template is="dom-repeat" items="[[weatherData.day2]]" as="entry">
+    <template is="dom-repeat" items="[[weatherData]]" as="entry">
       
         <div class="weatherGrid_hour">{{_everyFourth(entry.time, entry.time)}}</div>
         <div class="weatherGrid_symbol">

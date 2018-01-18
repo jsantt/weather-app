@@ -36,7 +36,7 @@
 
       _hip(lines){
         let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-        svg.setAttribute('viewBox',"0 0 2400 80"); // min-x, min-y, width and height
+        svg.setAttribute('viewBox',"0 0 2400 40"); // min-x, min-y, width and height
         svg.setAttribute('width','100%');
         svg.setAttribute('height','30');
 
@@ -55,7 +55,7 @@
         let points = '';
         let x = 0;
         
-        data.day2.forEach(element => {
+        data.forEach(element => {
           points = points + element.time*100 + ',' + element.temperature*-10 + ' '; 
         });
         return points;
