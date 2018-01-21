@@ -12,9 +12,6 @@
     
     <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet">
 
-    <script src="./bower_components/webcomponentsjs/webcomponents-loader.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
-
     <link rel="import" href="/src/saa-app/saa-app.html">
 
     <style>
@@ -27,4 +24,21 @@
   <body>
     <saa-app></saa-app>
   </body>
+
+  <script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
+  <script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyB0X1pp_9a5h21K27BlTFyOs7LTdI0V0DU",
+    authDomain: "saa-appi.firebaseapp.com",
+    databaseURL: "https://saa-appi.firebaseio.com",
+    projectId: "saa-appi",
+    storageBucket: "saa-appi.appspot.com",
+    messagingSenderId: "504374989166"
+  };
+  firebase.initializeApp(config);
+  </script>
+  <script src="./bower_components/webcomponentsjs/webcomponents-loader.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
+
 </html>

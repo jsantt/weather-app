@@ -108,7 +108,13 @@
       }
 
       _everyFourth(index, item) {
-        return index % 4 === 0 ? item : '';
+        return index % 4 === 0 ? this._hideNaN(item) : '';
+      }
+
+      _hideNaN(item){
+        console.log(item);
+        const result = Number.isNaN(item) ? '' : item;
+        return result; 
       }
 
       _isFourth(index) {
