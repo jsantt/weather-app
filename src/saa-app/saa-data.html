@@ -10,13 +10,8 @@
   <template>
       <iron-ajax
       auto
-      url="http://data.fmi.fi/fmi-apikey/-apikey-/wfs",
-      params='{
-        "request":"getFeature", 
-        "storedquery_id":"fmi::forecast::hirlam::surface::point::timevaluepair",
-        "place": "espoo", 
-        "parameters": "Temperature,WeatherSymbol3" 
-      }'
+      url="http://data.fmi.fi/fmi-apikey/-api-key-here-/wfs",
+      params="{{_getParams()}}",
       handle-as="document"
       on-response="_handleResponse"></iron-ajax>
   
@@ -61,6 +56,20 @@
         };
       }
 
+      _getParams(){
+        let params = 
+        {
+          "request":"getFeature", 
+          "storedquery_id":"fmi::forecast::hirlam::surface::point::timevaluepair",
+          "place": "espoo", 
+          "parameters": "Temperature,WeatherSymbol3",
+          "starttime": this._todayFirstHour(),
+          "endtime": this._tomorrowLastHour()
+        
+        }
+        return params;
+      }
+
       /**
        * Data is in the following format:
        *	...
@@ -86,18 +95,21 @@
         const temperatureKeyValues = temperatures.getElementsByTagName('wml2:MeasurementTVP');
         const symbs= symbols.getElementsByTagName('wml2:MeasurementTVP');
 
-        this.weatherNowData = this._parseWeatherNow(temperatureKeyValues, symbs);
+        //this.weatherNowData = this._parseWeatherNow(temperatureKeyValues, symbs);
+        
         const parsedTemps = this._parseTemperatures(temperatureKeyValues);
         const parsedSymbols = this._parseSymbols(symbs);
 
-        console.log(parsedTemps.day2);
-        console.log(parsedSymbols);
-
-        this.weatherData = _.intersectionWith(parsedTemps.day2, parsedSymbols.day2, function(x, y) {
+        this.weatherData = _.intersectionWith(parsedTemps, parsedSymbols, function(x, y) {
           return x.time === y.time && _.assign(x, y);
-        }); 
+        });
+        
+        let _this = this;
+        this.weatherData.forEach(function (element) {
+          element.hour = _this._toHour(element.time);
+        });
 
-        console.log(this.weatherData);
+        this.weatherNowData = this._getWeatherNow(this.weatherData)[0];
       }
 
       _getByAttributeValue(collection, value) {
@@ -106,6 +118,17 @@
             return item;
           }
         }
+      }
+
+      _getWeatherNow(data) {
+        let timeNow = new Date();
+        timeNow.setMinutes(0,0,0);
+        
+        const timeISO = timeNow.toISOString().split('.')[0]+"Z";
+
+        return data.filter(function (item) {
+          return item.time === timeISO;
+        });
       }
 
       _parseWeatherNow(temperatures, symbols){
@@ -122,77 +145,41 @@
         return weatherNow;
       }
 
-      _parseSymbolNow(temperatures){
-        const value = temperatures[0].children[1].childNodes[0].nodeValue;
-        const temperature = Math.round(value);
-
-        return  {temperature: temperature};
-      }
       _parseSymbols(symbols){
-        let weatherData = {day1: [], day2: [], day3: []};
-        let day = 0;
-
-        weatherData.day1 = this._fillEmptyDataForSymbols(weatherData.day1, this._toHour(symbols[0].children[0].childNodes[0].nodeValue));
+        let weatherData = [];
+        
+        weatherData = this._fillEmptyDataForSymbols(weatherData, this._toHour(symbols[0].children[0].childNodes[0].nodeValue));
         
         for (let item of symbols) {
-          const hour = this._toHour(item.children[0].childNodes[0].nodeValue);
+          const hour = item.children[0].childNodes[0].nodeValue;
           const symbol = Math.round(item.children[1].childNodes[0].nodeValue);
-
-          if(hour === 1){
-            day++;
-          }  
-          
-          if(day === 0) {
-            
-            weatherData.day1.push(
+  
+            weatherData.push(
               { 
                 "time": hour,
                 "symbol": symbol
               }
             );
-          } else if (day === 1) {
-            weatherData.day2.push(
-              { 
-                "time": hour,
-                "symbol": symbol
-              }
-            );
-          }
         };
 
         return weatherData;
       }
 
       _parseTemperatures(temperatures) {
-        let weatherData = {day1: [], day2: [], day3: []};
-        let day = 0;
-
-        weatherData.day1 = this._fillEmptyData(weatherData.day1, this._toHour(temperatures[0].children[0].childNodes[0].nodeValue));
+        let weatherData = [];
         
+        weatherData = this._fillEmptyData(weatherData, this._toHour(temperatures[0].children[0].childNodes[0].nodeValue));
+
         for (let item of temperatures) {
-          const hour = this._toHour(item.children[0].childNodes[0].nodeValue);
+          const hour = item.children[0].childNodes[0].nodeValue;
           const temperature = Math.round(item.children[1].childNodes[0].nodeValue);
 
-          if(hour === 1){
-            day++;
-          }  
-          
-          if(day === 0) {
-            
-            weatherData.day1.push(
-              { 
-                "time": hour,
-                "temperature": temperature
-              }
-            );
-          } else if (day === 1) {
-            weatherData.day2.push(
-              { 
-                "time": hour,
-                "temperature": temperature
-              }
-            );
-          }
+          weatherData.push(
+            { 
+              "time": hour,
+              "temperature": temperature
+            }
+          );
         };
 
         return weatherData;
@@ -226,12 +213,34 @@
 
 
       _toHour(time){
+        
+        if (typeof time === 'number'){
+          return time;
+        }
+
         const dateObject = new Date(time);
         let hour = dateObject.getHours(); 
           
         return hour === 0 ? 24 : dateObject.getHours();
       }
+
+      _todayFirstHour() {
+        
+        let firstHour = new Date();
+        firstHour.setHours(1,0,0,0);
+
+        return firstHour.toISOString();
+      }
       
+      _tomorrowLastHour() {
+        const now = new Date();
+
+        let tomorrow = new Date()
+        tomorrow.setDate(now.getDate() + 1);
+        tomorrow.setHours(24,0,0,0);
+
+        return tomorrow.toISOString();
+      }
     }
 
     window.customElements.define(SaaData.is, SaaData);

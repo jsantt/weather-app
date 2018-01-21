@@ -25,12 +25,28 @@
     </style>
 
       <!-- repeat for every day -->
-      <!-- template is="dom-repeat" items="[[weatherData]]"></template -->
+   
       <weather-day 
-        class="weatherGrid"
-        weather-data="[[weatherData]]"></weather-day>
-      <!-- /template -->
+      class="weatherGrid"
+      weather-data="[[todayData]]"
+      day-name="tänään"></weather-day>
+  
+      <weather-day 
+      class="weatherGrid"
+      weather-data="[[day2Data]]"
+      day-name="huomenna"></weather-day>
+  
+    </template>
+
+  
+  </template>
     
+   
+      </template>
+    
+      
+     
+
       
   </template>
 
@@ -46,9 +62,34 @@
         return {
           weatherData: {
             type: Array
+          },
+          todayData: {
+            type: Array,
+            computed: '_sliceToday(weatherData)'
+          },
+          day2Data: {
+            type: Array,
+            computed: '_sliceDay2(weatherData)'
+          },
+          day3Data: {
+            type: Array,
+            computed: '_sliceDay3(weatherData)'
           }
         };
       }
+
+      _sliceToday(data) {
+        return data.slice(0, 24);
+      }
+
+      _sliceDay2(data) {
+        return data.slice(24, 48);
+      }
+
+      _sliceDay3(data) {
+        return data.slice(48, 57);
+      }
+
     }
 
     window.customElements.define(WeatherGrid.is, WeatherGrid);

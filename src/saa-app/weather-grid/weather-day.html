@@ -64,27 +64,27 @@
 
 
     <div class="weatherGrid_date">
-      <div class="date_day">Huomenna</div>
+      <div class="date_day">[[dayName]]</div>
     </div>
   
     <template is="dom-repeat" items="[[weatherData]]" as="entry">
-      
-        <div class="weatherGrid_hour">{{_everyFourth(entry.time, entry.time)}}</div>
-        <div class="weatherGrid_symbol">
-            <template is="dom-if" if="{{_isFourth(index)}}">
-                <weather-symbol weather-now-data="[[entry]]"></weather-symbol>
-            </template>
-          </div>
-        <div class="weatherGrid_temperature">{{_everyFourth(entry.time, entry.temperature)}}<!-- &#176; --></div>
-      </template>    
 
-      <section class="lineChart">
-        <line-chart weather-data="[[weatherData]]"></line-chart>          
-      </section>
-      <section class="barChart">
-                    
-      </section>
+      <div class="weatherGrid_hour">{{_everyFourth(entry.hour, entry.hour)}}</div>
+      <div class="weatherGrid_symbol">
+          <template is="dom-if" if="{{_isFourth(index)}}">
+              <weather-symbol weather-now-data="[[entry]]"></weather-symbol>
+          </template>
+        </div>
+      <div class="weatherGrid_temperature">{{_everyFourth(entry.hour, entry.temperature)}}<!-- &#176; --></div>
+    
+    </template>    
 
+    <section class="lineChart">
+      <line-chart weather-data="[[weatherData]]"></line-chart>          
+    </section>
+
+    <section class="barChart">
+    </section>
 
   </template>
 
@@ -98,6 +98,9 @@
       
       static get properties() {
         return {
+          dayName: {
+            type: String
+          },
           weatherData: {
             type: Array          
           }
@@ -107,6 +110,7 @@
       _everyFourth(index, item) {
         return index % 4 === 0 ? item : '';
       }
+
       _isFourth(index) {
         return (index + 1) % 4 === 0;
       }

@@ -9,7 +9,7 @@
         margin-top: -1.5rem;
       }      
     </style>
-    [[_hip(weatherData)]]
+    [[_createChart(weatherData)]]
     <div class="lineChart" id="lineChart"></div>
     
   </template>
@@ -34,32 +34,37 @@
         super.ready();
       }
 
-      _hip(lines){
+      _createChart(data) {
         let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-        svg.setAttribute('viewBox',"0 0 2400 40"); // min-x, min-y, width and height
+        svg.setAttribute('viewBox',"0 0 2400 80"); // min-x, min-y, width and height
         svg.setAttribute('width','100%');
-        svg.setAttribute('height','30');
+        svg.setAttribute('height','50');
 
         let line = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
         line.setAttribute('fill', 'none');
         line.setAttribute('stroke', '#fe0101');
 
-        line.setAttribute('stroke-width', '20');
+        line.setAttribute('stroke-width', '15');
         line.setAttribute('stroke-opacity', '0.3');      
-        line.setAttribute('points', this._hop(lines));
+        line.setAttribute('points', this._getPoints(data));
 
         svg.appendChild(line);
 
         this.$.lineChart.appendChild(svg);
       }
-      _hop(data){
+      _getPoints(data){
+        
         //return '0,20 400,20 800,20 1200,20 1600,30 2000,70 2400,40';
         let points = '';
-        let x = 0;
-        
-        data.forEach(element => {
-          points = points + element.time*100 + ',' + element.temperature*-10 + ' '; 
+
+        data.forEach(function (element) {
+            if(Number.isInteger(element.temperature) && Number.isInteger(element.hour)) {
+              points = points + (element.hour*100) + ',' + (element.temperature*-10) + ' '; 
+            }
+          
         });
+
+
         return points;
       }
     }
