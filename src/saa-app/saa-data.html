@@ -8,7 +8,7 @@
 
   <!-- TODO: WeatherSymbol3 TotalCloudCover  -->
   <template>
-      <iron-ajax
+    <iron-ajax
       auto
       url="https://data.fmi.fi/fmi-apikey/412facb5-f1bc-44e7-88cc-dc9e08903e32/wfs",
       params="{{_getParams()}}",
@@ -62,7 +62,7 @@
           "request":"getFeature", 
           "storedquery_id":"fmi::forecast::hirlam::surface::point::timevaluepair",
           "place": "espoo", 
-          "parameters": "Temperature,WeatherSymbol3",
+          "parameters": "Temperature,WeatherSymbol3,Precipitation1h",
           "starttime": this._todayFirstHour(),
           "endtime": this._tomorrowLastHour()
         
@@ -85,22 +85,38 @@
 			 *				<wml2:time>2018-01-09T20:00:00Z</wml2:time>
 			 *				<wml2:value>3.0</wml2:value>
        *  ....
+       *
+       * <wml2:MeasurementTimeseries gml:id="mts-1-1-Precipitation1h">
+			 *		<wml2:point>
+			 *			<wml2:MeasurementTVP>
+			 *				<wml2:time>2018-01-23T19:00:00Z</wml2:time>
+			 *				<wml2:value>0.1</wml2:value>
+       *
+       *
        */
       _handleResponse(event, request) {
-        const tempAndSymbol = request.response.getElementsByTagName('wml2:MeasurementTimeseries');
+        const results = request.response.getElementsByTagName('wml2:MeasurementTimeseries');
         
-        const temperatures = this._getByAttributeValue(tempAndSymbol, 'mts-1-1-Temperature');
-        const symbols = this._getByAttributeValue(tempAndSymbol, 'mts-1-1-WeatherSymbol3');
+        const temperatures = this._getByAttributeValue(results, 'mts-1-1-Temperature');
+        const symbols = this._getByAttributeValue(results, 'mts-1-1-WeatherSymbol3');
+        const rain = this._getByAttributeValue(results, 'mts-1-1-Precipitation1h');
 
         const temperatureKeyValues = temperatures.getElementsByTagName('wml2:MeasurementTVP');
-        const symbs= symbols.getElementsByTagName('wml2:MeasurementTVP');
+        const symbolKeyValues = symbols.getElementsByTagName('wml2:MeasurementTVP');
+        const rainKeyValues = rain.getElementsByTagName('wml2:MeasurementTVP');
 
-        //this.weatherNowData = this._parseWeatherNow(temperatureKeyValues, symbs);
-        
         const parsedTemps = this._parseTemperatures(temperatureKeyValues);
-        const parsedSymbols = this._parseSymbols(symbs);
+        const parsedSymbols = this._parseSymbols(symbolKeyValues);
+        const parsedRains = this._parseKeyValues(rainKeyValues, "rain");
 
-        this.weatherData = _.intersectionWith(parsedTemps, parsedSymbols, function(x, y) {
+        const tempsAndSymbols = _.intersectionWith(parsedTemps, parsedSymbols, function(x, y) {
+          return x.time === y.time && _.assign(x, y);
+        });
+
+        console.log('hip');
+        console.log(this.weatherData);
+
+        this.weatherData = _.intersectionWith(parsedRains, tempsAndSymbols, function(x, y) {
           return x.time === y.time && _.assign(x, y);
         });
         
@@ -178,6 +194,26 @@
             { 
               "time": hour,
               "temperature": temperature
+            }
+          );
+        };
+
+        return weatherData;
+      }
+
+      _parseKeyValues(keyValues, name) {
+        let weatherData = [];
+        
+        weatherData = this._fillEmptyData(weatherData, this._toHour(keyValues[0].children[0].childNodes[0].nodeValue));
+
+        for (let item of keyValues) {
+          const time = item.children[0].childNodes[0].nodeValue;
+          const value = Math.round(item.children[1].childNodes[0].nodeValue);
+
+          weatherData.push(
+            { 
+              "time": time,
+              "rain": value
             }
           );
         };

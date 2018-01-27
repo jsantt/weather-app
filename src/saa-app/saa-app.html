@@ -13,6 +13,10 @@
       :host {
         display: block;
       }
+      .weatherGrid {
+        border-top: 2px solid #ddd;
+        padding: 0.2rem 0;
+      }
   
     </style>
     
@@ -26,7 +30,7 @@
     
     <weather-now weather-now-data="[[weatherNowData]]"></weather-now>
 
-    <weather-grid weather-data="[[weatherData]]"></weather-grid>
+    <weather-grid class="weatherGrid" weather-data="[[weatherData]]"></weather-grid>
   
   </template>
 

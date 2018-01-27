@@ -16,7 +16,7 @@
         align-items: flex-end;		
         justify-content: space-between;	
         
-        border-top: 1px dashed gray;
+        /* border-top: 1px dashed gray; */
         grid-column: 1 / 25;
       }
 
@@ -27,15 +27,18 @@
       .weatherGrid_hour {
         text-align: center;
         grid-row: 2;       
+        /*border: 1px dashed tan;*/
       }
       .weatherGrid_symbol {
         grid-row: 3;  
         text-align: center;
+        /*border: 1px dashed bisque;*/
       }
       .weatherGrid_temperature {
-        font-size: 1.5rem;
+        font-size: 1rem;
         font-weight: 700;
         text-align: center;
+        /*border: 1px dashed cadetblue;*/
       }
 
       .lineChart{
@@ -56,8 +59,7 @@
       }
 
       .graphGrid__hour {
-        border: 1px dashed gray;
-        
+       /* border: 1px dashed gray;*/
       }
 
     </style>
@@ -75,15 +77,16 @@
               <weather-symbol weather-now-data="[[entry]]"></weather-symbol>
           </template>
         </div>
-      <div class="weatherGrid_temperature">{{_everyFourth(entry.hour, entry.temperature)}}<!-- &#176; --></div>
-    
+        
+      <div class="weatherGrid_temperature">
+          <template is="dom-if" if="{{_isFourth(index)}}">
+            {{_hideNaN(entry.temperature)}}<span class="degree">&#176;</span>   
+          </template>
+      </div>
     </template>    
 
     <section class="lineChart">
       <line-chart weather-data="[[weatherData]]"></line-chart>          
-    </section>
-
-    <section class="barChart">
     </section>
 
   </template>
@@ -108,17 +111,16 @@
       }
 
       _everyFourth(index, item) {
-        return index % 4 === 0 ? this._hideNaN(item) : '';
+        return index % 3 === 0 ? this._hideNaN(item) : '';
       }
 
       _hideNaN(item){
-        console.log(item);
         const result = Number.isNaN(item) ? '' : item;
         return result; 
       }
 
       _isFourth(index) {
-        return (index + 1) % 4 === 0;
+        return (index + 1) % 3 === 0;
       }
     }
 
