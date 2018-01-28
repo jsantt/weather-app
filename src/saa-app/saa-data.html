@@ -149,7 +149,7 @@
 
       _parseWeatherNow(temperatures, symbols){
         const temperatureRaw = temperatures[0].children[1].childNodes[0].nodeValue;
-        const temperature = Math.round( temperatureRaw * 10 ) / 10;
+        const temperature = temperatureRaw;
 
         const symbol = Math.round(symbols[0].children[1].childNodes[0].nodeValue);
 
@@ -208,7 +208,7 @@
 
         for (let item of keyValues) {
           const time = item.children[0].childNodes[0].nodeValue;
-          const value = Math.round(item.children[1].childNodes[0].nodeValue);
+          const value = item.children[1].childNodes[0].nodeValue;
 
           weatherData.push(
             { 

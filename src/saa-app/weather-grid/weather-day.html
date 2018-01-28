@@ -9,6 +9,7 @@
     <style>
       :host {
         display: block;
+        --grid-last-column: 9;
       }
 
       .weatherGrid_date {
@@ -17,7 +18,7 @@
         justify-content: space-between;	
         
         /* border-top: 1px dashed gray; */
-        grid-column: 1 / 25;
+        grid-column: 1 / var(--grid-last-column);
       }
 
       .symbol_svg {
@@ -25,6 +26,7 @@
       }
 
       .weatherGrid_hour {
+        font-size: 1rem;
         text-align: center;
         grid-row: 2;       
         /*border: 1px dashed tan;*/
@@ -35,31 +37,22 @@
         /*border: 1px dashed bisque;*/
       }
       .weatherGrid_temperature {
-        font-size: 1rem;
+        font-size: 1.25rem;
         font-weight: 700;
         text-align: center;
         /*border: 1px dashed cadetblue;*/
       }
 
       .lineChart{
-        grid-column: 1 / 25;
+        grid-column: 1 / var(--grid-last-column);
       }
 
       .barChart {
-        grid-column: 1 / 25;
+        grid-column: 1 / var(--grid-last-column);
       }
 
       .linechart_svg{
         width: 100%;
-      }
-
-      .graphGrid {
-        display: grid;
-        grid-template-columns: repeat(24, 1fr);
-      }
-
-      .graphGrid__hour {
-       /* border: 1px dashed gray;*/
       }
 
     </style>
@@ -70,21 +63,24 @@
     </div>
   
     <template is="dom-repeat" items="[[weatherData]]" as="entry">
-
-      <div class="weatherGrid_hour">{{_everyFourth(entry.hour, entry.hour)}}</div>
-      <div class="weatherGrid_symbol">
-          <template is="dom-if" if="{{_isFourth(index)}}">
-              <weather-symbol weather-now-data="[[entry]]"></weather-symbol>
-          </template>
+      <template is="dom-if" if="{{_isFourth(index)}}">
+        
+        <div class="weatherGrid_hour">
+          {{entry.hour}}
         </div>
         
-      <div class="weatherGrid_temperature">
-          <template is="dom-if" if="{{_isFourth(index)}}">
-            {{_hideNaN(entry.temperature)}}<span class="degree">&#176;</span>   
-          </template>
-      </div>
-    </template>    
+        <div class="weatherGrid_symbol">    
+          <weather-symbol weather-now-data="[[entry]]"></weather-symbol>
+        </div>
+          
+        <div class="weatherGrid_temperature">
+            <template is="dom-if" if="{{_isFourth(index)}}">
+              {{_hideNaN(entry.temperature)}}<span class="degree">&#176;</span>   
+            </template>
+        </div>
 
+      </template>    
+    </template>
     <section class="lineChart">
       <line-chart weather-data="[[weatherData]]"></line-chart>          
     </section>

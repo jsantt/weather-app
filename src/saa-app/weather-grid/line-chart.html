@@ -106,7 +106,7 @@
         
         for(let i = 0; i < data.length; i++) {
           
-          if(!Number.isNaN(data[i].rain)) {
+          if(data[i].rain !== 'NaN') {
             let bar = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
             
             bar.setAttribute('fill', '#0098D6');
@@ -115,7 +115,7 @@
             bar.setAttribute('stroke-width', '1');
             bar.setAttribute('fill-opacity', '0.3');      
             bar.setAttribute('width', 9);
-
+          
             // draw rectangle of height 10 x rain amount
             const rectHeight = data[i].rain*10;
             
