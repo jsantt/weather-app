@@ -9,7 +9,7 @@
     <style>
       :host {
         display: block;
-        --grid-last-column: 9;
+        --grid-last-column: 25;
       }
 
       .weatherGrid_date {
@@ -18,25 +18,43 @@
         justify-content: space-between;	
         
         /* border-top: 1px dashed gray; */
-        grid-column: 1 / var(--grid-last-column);
+        grid-column: span 25;
       }
 
       .symbol_svg {
         width: 32px;
       }
 
+      .weatherGrid_hour--empty {
+        grid-column: span 1;
+        grid-row: 2;
+      }
+
+      .weatherGrid_symbol--empty {
+        grid-column: span 1;
+        grid-row: 3;
+      }
+
+      .weatherGrid_temperature--empty {
+        grid-column: span 1;
+      }
+
       .weatherGrid_hour {
         font-size: 1rem;
         text-align: center;
-        grid-row: 2;       
+        grid-row: 2; 
+        grid-column: span 3;      
         /*border: 1px dashed tan;*/
       }
       .weatherGrid_symbol {
+        grid-column: span 3;
         grid-row: 3;  
         text-align: center;
+        
         /*border: 1px dashed bisque;*/
       }
       .weatherGrid_temperature {
+        grid-column: span 3;
         font-size: 1.25rem;
         font-weight: 700;
         text-align: center;
@@ -44,11 +62,7 @@
       }
 
       .lineChart{
-        grid-column: 1 / var(--grid-last-column);
-      }
-
-      .barChart {
-        grid-column: 1 / var(--grid-last-column);
+        grid-column: span 25;
       }
 
       .linechart_svg{
@@ -63,8 +77,17 @@
     </div>
   
     <template is="dom-repeat" items="[[weatherData]]" as="entry">
+      
+      <!-- EMPTY COLUMN -->
+      <template is="dom-if" if="{{_isFirst(index)}}">
+        <div class="weatherGrid_hour--empty"></div>
+        <div class="weatherGrid_symbol--empty"></div>
+        <div class="weatherGrid_temperature--empty"></div>
+      </template>
+      
+      <!-- HOUR, SYMBOL & TEMPERATURE -->
       <template is="dom-if" if="{{_isFourth(index)}}">
-        
+
         <div class="weatherGrid_hour">
           {{entry.hour}}
         </div>
@@ -74,9 +97,9 @@
         </div>
           
         <div class="weatherGrid_temperature">
-            <template is="dom-if" if="{{_isFourth(index)}}">
-              {{_hideNaN(entry.temperature)}}<span class="degree">&#176;</span>   
-            </template>
+          <template is="dom-if" if="{{_notNaN(entry.temperature)}}">  
+            {{_round(entry.temperature)}}<span class="degree">&#176;</span>   
+          </template>
         </div>
 
       </template>    
@@ -110,13 +133,23 @@
         return index % 3 === 0 ? this._hideNaN(item) : '';
       }
 
-      _hideNaN(item){
-        const result = Number.isNaN(item) ? '' : item;
+      _round(item){
+        const rounded = Math.round(item);
+        const result = Number.isNaN(rounded) ? '' : rounded;
+
         return result; 
+      }
+
+      _isFirst(index) {
+        return index === 1;
       }
 
       _isFourth(index) {
         return (index + 1) % 3 === 0;
+      }
+
+      _notNaN(item) {
+        return item !== 'NaN';
       }
     }
 

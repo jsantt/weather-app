@@ -188,7 +188,7 @@
 
         for (let item of temperatures) {
           const hour = item.children[0].childNodes[0].nodeValue;
-          const temperature = Math.round(item.children[1].childNodes[0].nodeValue);
+          const temperature = item.children[1].childNodes[0].nodeValue;
 
           weatherData.push(
             { 

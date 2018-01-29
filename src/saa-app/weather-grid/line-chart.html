@@ -61,7 +61,7 @@
         svg.appendChild(line);
 
         this._rainBars(svg, data);
-       
+         
         this.$.chart.appendChild(svg);
       }
 
@@ -93,7 +93,7 @@
         let points = '';
 
         for(let i = 0; i < data.length; i++) {
-            if(!Number.isNaN(data[i].temperature) && !Number.isNaN(data[i].hour)) {
+            if(!Number.isNaN(data[i].temperature) && data[i].temperature !== 'NaN') {
               points = points + (i*10) + ',' + (75 + data[i].temperature*-1) + ' '; 
             }
         }
@@ -106,7 +106,7 @@
         
         for(let i = 0; i < data.length; i++) {
           
-          if(data[i].rain !== 'NaN') {
+          if(data[i].rain !== 'NaN' && !Number.isNaN([i].rain)) {
             let bar = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
             
             bar.setAttribute('fill', '#0098D6');

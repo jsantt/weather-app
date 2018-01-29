@@ -38,7 +38,7 @@
     </style>
 
     <section class="weatherNow">
-        <div class="temperature">[[weatherNowData.temperature]]<span class="degree">&#176;C</span></div>
+        <div class="temperature">[[_round(weatherNowData.temperature)]]<span class="degree">&#176;C</span></div>
         <div class="symbol">
             <weather-symbol weather-now-data="[[weatherNowData]]" large="true"></weather-symbol>
         </div>
@@ -63,6 +63,10 @@
                 type: Object
             }
         };
+      }
+
+      _round(temperature) {
+        return Math.round(temperature*10) / 10;
       }
     }
 
