@@ -1,7 +1,7 @@
-<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
 
 
-<dom-module id="line-chart">
+<dom-module id="weather-chart">
   <template>
 
     <style>
@@ -10,8 +10,11 @@
       }      
       .svg {
         border-bottom: 2px solid #ddd;
+        padding-bottom: 0.1rem;
+
         position: absolute;
         bottom: 0;
+
         overflow: visible;
       }
     </style>
@@ -25,13 +28,14 @@
      * @customElement
      * @polymer
      */
-    class LineChart extends Polymer.Element {
-      static get is() { return 'line-chart'; }
+    class WeatherChart extends Polymer.Element {
+      static get is() { return 'weather-chart'; }
       
       static get properties() {
         return {
-          weatherData: {
-            type: Array
+          showTimeNow: {
+            type: Boolean,
+            value: false
           },
           temperatureMax: {
             type: Number,
@@ -40,6 +44,9 @@
           temperatureMin: {
             type: Number,
             value: 2
+          },
+          weatherData: {
+            type: Array
           },
           _chartHeight: {
             type: Number,
@@ -60,8 +67,14 @@
         let line = this._temperatureLine(this._getPoints(data));
         svg.appendChild(line);
 
+        if(this.showTimeNow) { 
+          const timeNow = this._getTimeNow();
+          svg.appendChild(timeNow);
+        }
+
         this._rainBars(svg, data);
-         
+        
+
         this.$.chart.appendChild(svg);
       }
 
@@ -71,7 +84,7 @@
         svg.setAttribute('width','100%');
         svg.setAttribute('height', this._chartHeight + 60);
         
-        svg.setAttribute('preserveAspectRatio','xMinYMax slice');
+        svg.setAttribute('preserveAspectRatio','none');
         svg.setAttribute('class', 'svg');
         return svg;
       }
@@ -81,7 +94,7 @@
         line.setAttribute('fill', 'none');
         line.setAttribute('stroke', '#fe0101');
 
-        line.setAttribute('stroke-width', '1');
+        line.setAttribute('stroke-width', '1.5');
         line.setAttribute('stroke-opacity', '0.15');      
         line.setAttribute('points', points);
 
@@ -94,7 +107,7 @@
 
         for(let i = 0; i < data.length; i++) {
             if(!Number.isNaN(data[i].temperature) && data[i].temperature !== 'NaN') {
-              points = points + (i*10) + ',' + (75 + data[i].temperature*-1) + ' '; 
+              points = points + (i*10) + ',' + (65 + data[i].temperature*-1) + ' '; 
             }
         }
 
@@ -110,27 +123,52 @@
             let bar = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
             
             bar.setAttribute('fill', '#0098D6');
-            //bar.setAttribute('stroke', '	0098D6');
+            //bar.setAttribute('stroke', '#fff');
 
-            bar.setAttribute('stroke-width', '1');
+            //bar.setAttribute('stroke-width', '0.5');
             bar.setAttribute('fill-opacity', '0.3');      
             bar.setAttribute('width', 9);
           
-            // draw rectangle of height 10 x rain amount
-            const rectHeight = data[i].rain*10;
+            // draw rectangle of height 20 x rain amount
+            const rectHeight = data[i].rain*20;
             
             bar.setAttribute('height', rectHeight);
 
             // define top left corner of rectangle
             bar.setAttribute('y', this._chartHeight - rectHeight);
-            bar.setAttribute('x', i*10);
+            bar.setAttribute('x', i*9.6);
           
             svg.appendChild(bar);
           }
         } 
       }
+      _getTimeNow(){
+        let line = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+        line.setAttribute('stroke', '#777');
+
+        line.setAttribute('stroke-width', '0.15');
+        line.setAttribute('stroke-opacity', '1');      
+        line.setAttribute('points', this._getTimePoints(this._time()));
+        console.log(line);
+        return line;   
+      }
+
+      _getTimePoints(time){
+        const x1 = (time / 24)*230;
+        const y1 = 13;
+
+        const x2 = x1;
+        const y2 = 60
+
+        return x1 + ',' + y1 + ' ' + x2 + ',' +y2;
+      }
+
+      _time(){
+        return new Date().getHours();
+      }
+
     }
 
-    window.customElements.define(LineChart.is, LineChart);
+    window.customElements.define(WeatherChart.is, WeatherChart);
   </script>
 </dom-module>

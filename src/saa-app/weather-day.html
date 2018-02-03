@@ -1,6 +1,6 @@
-<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
 
-<link rel="import" href="./line-chart.html">
+<link rel="import" href="./weather-chart.html">
 <link rel="import" href="./weather-symbol.html">
 
 <dom-module id="weather-day">
@@ -19,6 +19,11 @@
         
         /* border-top: 1px dashed gray; */
         grid-column: span 25;
+      }
+
+      .date_day {
+        margin-top: 0.2rem;
+        padding-left: 0.3rem;
       }
 
       .symbol_svg {
@@ -49,6 +54,7 @@
       .weatherGrid_symbol {
         grid-column: span 3;
         grid-row: 3;  
+        margin-top: 0.4rem;
         text-align: center;
         
         /*border: 1px dashed bisque;*/
@@ -63,6 +69,7 @@
 
       .lineChart{
         grid-column: span 25;
+        margin-top: 1.5rem;
       }
 
       .linechart_svg{
@@ -105,7 +112,11 @@
       </template>    
     </template>
     <section class="lineChart">
-      <line-chart weather-data="[[weatherData]]"></line-chart>          
+      
+      <weather-chart 
+        weather-data="[[weatherData]]"
+        show-time-now=[[showTimeNow]]></weather-chart>
+
     </section>
 
   </template>
@@ -122,6 +133,10 @@
         return {
           dayName: {
             type: String
+          },
+          showTimeNow: {
+            type: Boolean,
+            value: false
           },
           weatherData: {
             type: Array          

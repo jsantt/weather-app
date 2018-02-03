@@ -3,7 +3,7 @@
 
 <link rel="import" href="./location-selector.html">
 <link rel="import" href="./saa-data.html">
-<link rel="import" href="./weather-grid/weather-grid.html">
+<link rel="import" href="./weather-grid.html">
 <link rel="import" href="./weather-now.html">
 
 <dom-module id="saa-app">
@@ -12,10 +12,26 @@
     <style>
       :host {
         display: block;
+        --primary-color: #67a9cfab;
+        
+        /* use colors above */
+        --rain-bar-color: #67a9cfab;
+        /*
+        --sun-color:
+        --snow-color:
+        */ 
       }
       .weatherGrid {
         border-top: 2px solid #ddd;
-        padding: 0.2rem 0;
+      }
+      .now {
+        background-color: var(--primary-color);
+        padding: 1rem 
+      }
+      .footer {
+        background-color: var(--primary-color);
+        padding: 1rem;
+        text-align: center;
       }
   
     </style>
@@ -26,12 +42,19 @@
       weather-data="{{weatherData}}"
       weather-now-data="{{weatherNowData}}"></saa-data>
   
-    <location-selector></location-selector>
+    <section class="now">
+
+      <location-selector></location-selector>
+      <weather-now weather-now-data="[[weatherNowData]]"></weather-now>
     
-    <weather-now weather-now-data="[[weatherNowData]]"></weather-now>
+    </section>
 
     <weather-grid class="weatherGrid" weather-data="[[weatherData]]"></weather-grid>
-  
+
+    <footer class="footer">
+      Säädata by Ilmatieteen laitos | avoin data
+    </footer>
+
   </template>
 
   <script>
