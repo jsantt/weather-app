@@ -52,7 +52,6 @@
             type: Number,
             value: 90
           }
-
         };
       }
       ready(){
@@ -60,23 +59,26 @@
         super.ready();
       }
 
-      _createChart(data) {
+      /**
+       * Chart containing rain bars, temperature line, past time shadow and present time triangle
+       */
+      _createChart(weatherData) {
 
         let svg = this._svg();
         
-        let line = this._temperatureLine(this._getPoints(data));
+        let line = this._temperatureLine(this._temparatureCoordinates(weatherData));
         svg.appendChild(line);
 
         if(this.showTimeNow) { 
 
-          const pastTimeShadow = this._pastTimeShadow(this._time());
+          const pastTimeShadow = this._pastTimeShadow(this.hoursNow());
           svg.appendChild(pastTimeShadow);
 
-          const timeNow = this._getTimeNow();
-          svg.appendChild(timeNow);
+          const timeNowTriangle = this._timeNowTriangle();
+          svg.appendChild(timeNowTriangle);
         }
 
-        this._rainBars(svg, data);
+        this._rainBars(svg, weatherData);
         
 
         this.$.chart.appendChild(svg);
@@ -106,7 +108,7 @@
 
       }
 
-      _getPoints(data){
+      _temparatureCoordinates(data){
         let points = '';
 
         for(let i = 0; i < data.length; i++) {
@@ -115,7 +117,6 @@
             }
         }
 
-        //console.log(points);
         return points;
       }
 
@@ -143,16 +144,16 @@
           }
         } 
       }
-      _getTimeNow(){
+
+      _timeNowTriangle(){
         let line = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
         line.setAttribute('stroke-opacity', '1');
         line.setAttribute('fill', '#ddd');
-        line.setAttribute('points', this._getTimePoints(this._time()));
-        console.log(line);
+        line.setAttribute('points', this._trianglePoints(this.hoursNow()));
         return line;   
       }
 
-      _getTimePoints(time){
+      _trianglePoints(time){
         const bottomX = (time / 24)*230;
         const bottomY = 5;
 
@@ -162,13 +163,8 @@
         const topRightX = bottomX + 5;
         const topRightY = 0
 
-        return topLeftX + ',' + topLeftY + ' ' + bottomX + ',' + bottomY + ' ' + topRightX + ',' +topRightY;
+        return `${topLeftX},${topLeftY} ${bottomX},${bottomY} ${topRightX},${topRightY}`;
       }
-
-      _time(){
-        return new Date().getHours();
-      }
-
 
       _pastTimeShadow(time){
         let rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
@@ -184,6 +180,11 @@
 
         return rect;   
       }
+
+      hoursNow(){
+        return new Date().getHours();
+      }
+
     }
 
     window.customElements.define(WeatherChart.is, WeatherChart);
