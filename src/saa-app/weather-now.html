@@ -45,6 +45,9 @@
     <div class="symbolText">
         <weather-symbol-name weather-now-data="[[weatherNowData]]"></weather-symbol-name>
     </div>
+    <div class="time" style$="[[_calculateMargin()]]">
+        [[_timeNow()]]
+    </div>
 
   </template>
 
@@ -66,6 +69,22 @@
 
       _round(temperature) {
         return Math.round(temperature*10) / 10;
+      }
+
+      _calculateMargin(){
+          const hours = new Date().getHours();
+          const margin = ((hours - 1) / 24)*100;
+          return 'margin-left:' + margin + '%';
+      }
+
+      _timeNow() {
+        const now = new Date();
+        const minutes = now.getMinutes();
+
+        const fullMinutes = minutes < 10 ? '0' + minutes : minutes;
+
+        const time = now.getHours() + '.' + fullMinutes;
+        return time;
       }
     }
 

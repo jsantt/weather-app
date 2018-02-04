@@ -50,7 +50,7 @@
           },
           _chartHeight: {
             type: Number,
-            value: 80
+            value: 90
           }
 
         };
@@ -68,6 +68,10 @@
         svg.appendChild(line);
 
         if(this.showTimeNow) { 
+
+          const pastTimeShadow = this._pastTimeShadow(this._time());
+          svg.appendChild(pastTimeShadow);
+
           const timeNow = this._getTimeNow();
           svg.appendChild(timeNow);
         }
@@ -107,7 +111,7 @@
 
         for(let i = 0; i < data.length; i++) {
             if(!Number.isNaN(data[i].temperature) && data[i].temperature !== 'NaN') {
-              points = points + (i*10) + ',' + (65 + data[i].temperature*-1) + ' '; 
+              points = points + (i*10) + ',' + (70 + data[i].temperature*-1) + ' '; 
             }
         }
 
@@ -123,9 +127,6 @@
             let bar = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
             
             bar.setAttribute('fill', '#0098D6');
-            //bar.setAttribute('stroke', '#fff');
-
-            //bar.setAttribute('stroke-width', '0.5');
             bar.setAttribute('fill-opacity', '0.3');      
             bar.setAttribute('width', 9);
           
@@ -144,29 +145,45 @@
       }
       _getTimeNow(){
         let line = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
-        line.setAttribute('stroke', '#777');
-
-        line.setAttribute('stroke-width', '0.15');
-        line.setAttribute('stroke-opacity', '1');      
+        line.setAttribute('stroke-opacity', '1');
+        line.setAttribute('fill', '#ddd');
         line.setAttribute('points', this._getTimePoints(this._time()));
         console.log(line);
         return line;   
       }
 
       _getTimePoints(time){
-        const x1 = (time / 24)*230;
-        const y1 = 13;
+        const bottomX = (time / 24)*230;
+        const bottomY = 5;
 
-        const x2 = x1;
-        const y2 = 60
+        const topLeftX = bottomX - 5;
+        const topLeftY = 0;
 
-        return x1 + ',' + y1 + ' ' + x2 + ',' +y2;
+        const topRightX = bottomX + 5;
+        const topRightY = 0
+
+        return topLeftX + ',' + topLeftY + ' ' + bottomX + ',' + bottomY + ' ' + topRightX + ',' +topRightY;
       }
 
       _time(){
         return new Date().getHours();
       }
 
+
+      _pastTimeShadow(time){
+        let rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        rect.setAttribute('fill', '#ddd');
+        rect.setAttribute('fill-opacity', '0.4');
+        
+        const width = (time / 24)*230;
+        rect.setAttribute('width', width);
+        rect.setAttribute('height', this._chartHeight - 2 );
+
+        rect.setAttribute('y', 2);
+        rect.setAttribute('x', 0);
+
+        return rect;   
+      }
     }
 
     window.customElements.define(WeatherChart.is, WeatherChart);
