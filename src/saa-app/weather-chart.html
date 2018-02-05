@@ -19,6 +19,8 @@
       }
     </style>
     [[_createChart(weatherData)]]
+
+    <!-- placeholder for chart -->
     <div class="chart" id="chart"></div>
     
   </template>
@@ -33,12 +35,12 @@
       
       static get properties() {
         return {
+          minTemperature: {
+            type: Number
+          },
           showTimeNow: {
             type: Boolean,
             value: false
-          },
-          minTemperature: {
-            type: Number
           },
           weatherData: {
             type: Array
