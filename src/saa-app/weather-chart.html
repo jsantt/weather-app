@@ -37,25 +37,19 @@
             type: Boolean,
             value: false
           },
-          temperatureMax: {
-            type: Number,
-            value: 4
-          },
-          temperatureMin: {
-            type: Number,
-            value: 2
+          minTemperature: {
+            type: Number
           },
           weatherData: {
             type: Array
           },
           _chartHeight: {
             type: Number,
-            value: 90
+            value: 150
           }
         };
       }
-      ready(){
-
+      ready() {
         super.ready();
       }
 
@@ -63,10 +57,10 @@
        * Chart containing rain bars, temperature line, past time shadow and present time triangle
        */
       _createChart(weatherData) {
-
+        console.log('kk' + this.minTemperature);
         let svg = this._svg();
         
-        let line = this._temperatureLine(this._temparatureCoordinates(weatherData));
+        let line = this._temperatureLine(this._temperatureCoordinates(weatherData));
         svg.appendChild(line);
 
         if(this.showTimeNow) { 
@@ -86,34 +80,40 @@
 
       _svg(){
         let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-        svg.setAttribute('viewBox', '0 0 240 ' + this._chartHeight); // min-x, min-y, width and height
+        
+        // min-x, min-y, width and height
+        svg.setAttribute('viewBox', '0 0 240 ' + this._chartHeight); 
         svg.setAttribute('width','100%');
-        svg.setAttribute('height', this._chartHeight + 60);
+        svg.setAttribute('height', this._chartHeight);
         
         svg.setAttribute('preserveAspectRatio','none');
         svg.setAttribute('class', 'svg');
         return svg;
       }
 
-      _temperatureLine(points){
+      _temperatureLine(coordinates){
         let line = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
         line.setAttribute('fill', 'none');
         line.setAttribute('stroke', '#fe0101');
 
         line.setAttribute('stroke-width', '1.5');
         line.setAttribute('stroke-opacity', '0.15');      
-        line.setAttribute('points', points);
+        line.setAttribute('points', coordinates);
 
         return line;
 
       }
 
-      _temparatureCoordinates(data){
+      _temperatureCoordinates(data){
         let points = '';
 
+        // Min margin for temperature graph
+        const BOTTOM_MARGIN = 10;
+        const baseX = this._chartHeight + this.minTemperature*2 - BOTTOM_MARGIN;
+
         for(let i = 0; i < data.length; i++) {
-            if(!Number.isNaN(data[i].temperature) && data[i].temperature !== 'NaN') {
-              points = points + (i*10) + ',' + (70 + data[i].temperature*-1) + ' '; 
+            if(!Number.isNaN(data[i].temperature)) {
+              points = points + (i*10) + ',' + (baseX + data[i].temperature*-2) + ' '; 
             }
         }
 
@@ -124,7 +124,7 @@
         
         for(let i = 0; i < data.length; i++) {
           
-          if(data[i].rain !== 'NaN' && !Number.isNaN([i].rain)) {
+          if(!Number.isNaN([i].rain)) {
             let bar = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
             
             bar.setAttribute('fill', '#0098D6');
@@ -132,7 +132,7 @@
             bar.setAttribute('width', 9);
           
             // draw rectangle of height 20 x rain amount
-            const rectHeight = data[i].rain*20;
+            const rectHeight = Number.isNaN(data[i].rain) ? 0 : data[i].rain*20;
             
             bar.setAttribute('height', rectHeight);
 
@@ -184,7 +184,6 @@
       hoursNow(){
         return new Date().getHours();
       }
-
     }
 
     window.customElements.define(WeatherChart.is, WeatherChart);

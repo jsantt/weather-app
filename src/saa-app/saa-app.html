@@ -21,14 +21,23 @@
         --snow-color:
         */ 
       }
-      .weatherGrid {
-        border-top: 2px solid #ddd;
-      }
-      .now {
+
+      header {
         background-color: var(--primary-color);
         padding: 1rem 1rem 0 1rem; 
       }
-      .footer {
+
+      h1 {
+        margin: 0;
+	      padding: 0;
+        font-weight: inherit;
+      }
+
+      main {
+        border-top: 2px solid #ddd;
+      }
+      
+      footer {
         background-color: var(--primary-color);
         padding: 1rem;
         text-align: center;
@@ -37,21 +46,25 @@
     </style>
     
     <!-- All the weather data --> 
-     
     <saa-data 
       weather-data="{{weatherData}}"
       weather-now-data="{{weatherNowData}}"></saa-data>
   
-    <section class="now">
-
-      <location-selector></location-selector>
+    <!-- 'Espoo' (or any other city) now-->
+    <header>
+      <h1>
+        <location-selector></location-selector>
+      </h1>
       <weather-now weather-now-data="[[weatherNowData]]"></weather-now>
-    
-    </section>
+    </header>
 
-    <weather-grid class="weatherGrid" weather-data="[[weatherData]]"></weather-grid>
+    <!-- today, tomorrow and a day after tomorrow -->
+    <main>
+      <weather-grid weather-data="[[weatherData]]"></weather-grid>
+    </main>
 
-    <footer class="footer">
+    <!-- footer -->
+    <footer>
       Säädata by Ilmatieteen laitos | avoin data
     </footer>
 
@@ -64,10 +77,6 @@
      */
     class SaaApp extends Polymer.Element {
       static get is() { return 'saa-app'; }
-      
-      static get properties() {
-        return {};
-      }
     }
 
     window.customElements.define(SaaApp.is, SaaApp);

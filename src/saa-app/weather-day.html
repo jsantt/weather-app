@@ -114,8 +114,9 @@
     <section class="lineChart">
       
       <weather-chart 
-        weather-data="[[weatherData]]"
-        show-time-now=[[showTimeNow]]></weather-chart>
+        min-temperature=[[minTemperature]]
+        show-time-now=[[showTimeNow]]
+        weather-data="[[weatherData]]"></weather-chart>
 
     </section>
 
@@ -133,6 +134,9 @@
         return {
           dayName: {
             type: String
+          },
+          minTemperature: {
+            type: Number
           },
           showTimeNow: {
             type: Boolean,
@@ -164,7 +168,7 @@
       }
 
       _notNaN(item) {
-        return item !== 'NaN';
+        return !Number.isNaN(item);
       }
     }
 

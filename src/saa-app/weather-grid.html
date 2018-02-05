@@ -19,28 +19,31 @@
 
     </style>
 
-      <!-- repeat for every day -->
-   
+      <!-- today -->
       <weather-day 
       class="weatherGrid"
       weather-data="[[todayData]]"
+      min-temperature="[[minTemperature]]"
       show-time-now="true"
       day-name="tänään"></weather-day>
   
+
+      <!-- tomorrow -->
       <weather-day 
       class="weatherGrid"
       weather-data="[[day2Data]]"
+      min-temperature="[[minTemperature]]"
       day-name="huomenna"></weather-day>
 
+      <!-- day after tomorrow -->
       <weather-day 
       class="weatherGrid"
       weather-data="[[day3Data]]"
+      min-temperature="[[minTemperature]]"
       day-name="ylihuomenna"></weather-day>
-  
      
   </template>
 
- 
   <script>
     /**
      * @customElement
@@ -48,7 +51,7 @@
      */
     class WeatherGrid extends Polymer.Element {
       static get is() { return 'weather-grid'; }
-      
+
       static get properties() {
         return {
           weatherData: {
@@ -65,9 +68,15 @@
           day3Data: {
             type: Array,
             computed: '_sliceDay3(weatherData)'
-          }
+          },
+          minTemperature: {
+            type: Number,
+            computed: '_minTemp(weatherData)'
+          },
         };
       }
+
+      // for computed properties
 
       _sliceToday(data) {
         console.log(data.slice(0, 24));
@@ -84,6 +93,13 @@
         return data.slice(48, 72);
       }
 
+      _minTemp(weatherData) {
+        const min = weatherData.reduce(function (previous, current) {
+          const currentTemp = Number.isNaN(current.temperature) ? Number.MAX_VALUE : current.temperature;
+          return Math.min(previous.temperature, currentTemp) ? previous : current;
+        });
+        return min.temperature;
+      }
     }
 
     window.customElements.define(WeatherGrid.is, WeatherGrid);

@@ -182,7 +182,7 @@
 
         for (let item of temperatures) {
           const hour = item.children[0].childNodes[0].nodeValue;
-          const temperature = item.children[1].childNodes[0].nodeValue;
+          const temperature = parseFloat(item.children[1].childNodes[0].nodeValue);
 
           weatherData.push(
             { 
@@ -202,7 +202,7 @@
 
         for (let item of keyValues) {
           const time = item.children[0].childNodes[0].nodeValue;
-          const value = item.children[1].childNodes[0].nodeValue;
+          const value = parseFloat(item.children[1].childNodes[0].nodeValue);
 
           weatherData.push(
             { 
