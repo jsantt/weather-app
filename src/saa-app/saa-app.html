@@ -13,13 +13,13 @@
       :host {
         display: block;
         --primary-color: #67a9cfab;
+        --secondary-color: #ddd;
+        --background-color: #fff;
+        --font-color-reversed: #fff;
         
         /* use colors above */
         --rain-bar-color: #67a9cfab;
-        /*
-        --sun-color:
-        --snow-color:
-        */ 
+        --past-box-shadow: #fff;
       }
 
       header {
@@ -29,12 +29,24 @@
 
       h1 {
         margin: 0;
-	      padding: 0;
+        
+        font-size: 1.953rem;
         font-weight: inherit;
+        
+        padding: 0;
+          
+      }
+      
+      h2 {
+        color: var(--font-color-reversed);
+        font-size: 1.25rem;
+        position: absolute;
+        right: 1rem;
+        top: -0.65rem;
       }
 
       main {
-        border-top: 2px solid #ddd;
+        border-top: 2px solid var(--secondary-color);
       }
       
       footer {
@@ -55,6 +67,7 @@
       <h1>
         <location-selector></location-selector>
       </h1>
+      <h2>beta</h2>
       <weather-now weather-now-data="[[weatherNowData]]"></weather-now>
     </header>
 

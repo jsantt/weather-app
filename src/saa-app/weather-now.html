@@ -16,6 +16,7 @@
 		    display: flex;
             align-items: center;
 		    justify-content: center;
+            margin: -0.3rem 0 -0.8rem 0;
         }
 	
         .temperature {
@@ -34,6 +35,10 @@
             text-align: center;
         }
 
+        .time {
+            color: #fff;
+        }
+
     </style>
 
     <section class="weatherNow">
@@ -42,11 +47,11 @@
             <span class="degree">&#176;C</span>
         </div>
         <div class="symbol">
-            <weather-symbol weather-now-data="[[_symbolId(weatherNowData)]]" large="true"></weather-symbol>
+            <weather-symbol symbol-id="[[symbolId]]" large="true"></weather-symbol>
         </div>
     </section>
     <div class="symbolText">
-        <weather-symbol-name weather-now-data="[[weatherNowData]]"></weather-symbol-name>
+        <weather-symbol-name symbol-id="[[symbolId]]"></weather-symbol-name>
     </div>
     <div class="time" style$="[[_calculateMargin()]]">
         [[_timeNow()]]
@@ -66,6 +71,10 @@
         return {
             weatherNowData: {
                 type: Object
+            },
+            symbolId: {
+                type: Number,
+                computed: '_symbolId(weatherNowData)'
             }
         };
       }

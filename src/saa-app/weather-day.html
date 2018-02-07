@@ -96,7 +96,7 @@
         </div>
         
         <div class="symbol">    
-          <weather-symbol weather-now-data="[[entry]]"></weather-symbol>
+          <weather-symbol symbol-id="[[_symbolId(entry)]]"></weather-symbol>
         </div>
           
         <div class="temperature">
@@ -165,6 +165,9 @@
 
       _notNaN(item) {
         return !Number.isNaN(item);
+      }
+      _symbolId(weatherData) {
+        return weatherData.symbol;
       }
     }
 
