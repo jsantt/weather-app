@@ -95,8 +95,10 @@
 
       _minTemp(weatherData) {
         const min = weatherData.reduce(function (previous, current) {
+          
           const currentTemp = Number.isNaN(current.temperature) ? Number.MAX_VALUE : current.temperature;
-          return Math.min(previous.temperature, currentTemp) ? previous : current;
+          console.log('p ' + previous.temperature + ', ' + currentTemp);
+          return previous.temperature < currentTemp ? previous : current;
         });
         return min.temperature;
       }
