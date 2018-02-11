@@ -1,5 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
 
 <link rel="import" href="./location-selector.html">
 <link rel="import" href="./saa-data.html">
@@ -66,11 +67,17 @@
       weather-now-data="{{weatherNowData}}"></saa-data>
   
     <!-- 'Espoo' (or any other city) now-->
+    <paper-toast 
+      id="locateError" 
+      text="paikantaminen epäonnistui, yritä uudelleen" 
+      duration="5000"></paper-toast>
+
     <header>
       <h1>
         <location-selector 
           place="[[place]]"
-          on-new-location="_onNewLocation"></location-selector>
+          on-new-location="_onNewLocation"
+          on-locate-error="_onLocateError"></location-selector>
 
       </h1>
       <h2>beta</h2>
@@ -102,6 +109,9 @@
       }
       _onNewPlace(event) {
         this.place = event.detail.place;
+      }
+      _onLocateError(event) {
+        this.$.locateError.open();
       }
     }
 

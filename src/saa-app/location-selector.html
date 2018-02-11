@@ -57,8 +57,10 @@
               this.dispatchEvent(event);
 
             });
-        } else { 
-            console.log('not supporter');
+        } 
+        else { 
+          var event = new CustomEvent('locate-error', {detail: {}, bubbles: true, composed: true});
+          this.dispatchEvent(event);
         }
       }  
 
