@@ -79,17 +79,14 @@
       // for computed properties
 
       _sliceToday(data) {
-        console.log(data.slice(0, 24));
         return data.slice(0, 24);
       }
 
       _sliceDay2(data) {
-        console.log(data.slice(24, 48));
         return data.slice(24, 48);
       }
 
       _sliceDay3(data) {
-        console.log(data.slice(48, 72));
         return data.slice(48, 72);
       }
 
@@ -97,7 +94,6 @@
         const min = weatherData.reduce(function (previous, current) {
           
           const currentTemp = Number.isNaN(current.temperature) ? Number.MAX_VALUE : current.temperature;
-          console.log('p ' + previous.temperature + ', ' + currentTemp);
           return previous.temperature < currentTemp ? previous : current;
         });
         return min.temperature;

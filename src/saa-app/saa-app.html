@@ -60,13 +60,18 @@
     
     <!-- All the weather data --> 
     <saa-data 
+      location-latlon="[[latlon]]"
+      on-new-place="_onNewPlace"
       weather-data="{{weatherData}}"
       weather-now-data="{{weatherNowData}}"></saa-data>
   
     <!-- 'Espoo' (or any other city) now-->
     <header>
       <h1>
-        <location-selector></location-selector>
+        <location-selector 
+          place="[[place]]"
+          on-new-location="_onNewLocation"></location-selector>
+
       </h1>
       <h2>beta</h2>
       <weather-now weather-now-data="[[weatherNowData]]"></weather-now>
@@ -91,6 +96,13 @@
      */
     class SaaApp extends Polymer.Element {
       static get is() { return 'saa-app'; }
+    
+      _onNewLocation(event) {
+        this.latlon = event.detail.latlon;
+      }
+      _onNewPlace(event) {
+        this.place = event.detail.place;
+      }
     }
 
     window.customElements.define(SaaApp.is, SaaApp);
