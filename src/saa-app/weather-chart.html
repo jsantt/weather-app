@@ -75,6 +75,12 @@
 
         this._rainBars(svg, weatherData);
         
+        // remove previous childs
+       
+        if(this.$.chart.children.length > 0) {
+          console.log('meee');
+          this.$.chart.removeChild(this.$.chart.children[0]);
+        }
 
         this.$.chart.appendChild(svg);
       }
@@ -84,6 +90,7 @@
         
         // min-x, min-y, width and height
         svg.setAttribute('viewBox', '0 0 240 ' + this._chartHeight); 
+        svg.setAttribute('id', 'chartsvg'); 
         svg.setAttribute('width','100%');
         svg.setAttribute('height', this._chartHeight);
         
