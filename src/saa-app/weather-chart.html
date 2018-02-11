@@ -59,7 +59,6 @@
        * Chart containing rain bars, temperature line, past time shadow and present time triangle
        */
       _createChart(weatherData) {
-        console.log('kk' + this.minTemperature);
         let svg = this._svg();
         
         let line = this._temperatureLine(this._temperatureCoordinates(weatherData));
@@ -98,7 +97,7 @@
         line.setAttribute('fill', 'none');
         line.setAttribute('stroke', '#fe0101');
 
-        line.setAttribute('stroke-width', '1.5');
+        line.setAttribute('stroke-width', '2');
         line.setAttribute('stroke-opacity', '0.15');      
         line.setAttribute('points', coordinates);
 
@@ -110,7 +109,7 @@
         let points = '';
 
         // Min margin for temperature graph
-        const BOTTOM_MARGIN = 10;
+        const BOTTOM_MARGIN = 3;
         const baseX = this._chartHeight + this.minTemperature*2 - BOTTOM_MARGIN;
 
         for(let i = 0; i < data.length; i++) {

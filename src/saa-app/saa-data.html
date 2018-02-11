@@ -6,12 +6,11 @@
   <!-- TODO: WeatherSymbol3 TotalCloudCover  -->
   <template>
     <iron-ajax
-      auto
+      id="weather"
       url="https://data.fmi.fi/fmi-apikey/412facb5-f1bc-44e7-88cc-dc9e08903e32/wfs",
       params="{{_getParams()}}",
       handle-as="document"
       on-response="_handleResponse"></iron-ajax>
-  
   </template>
 
   <script>
@@ -27,6 +26,11 @@
       static get is() { return 'saa-data'; }
       static get properties() {
         return {
+          locationLatlon: {
+            type: String,
+            observer: '_newLocation',
+            value: '60.17,24.94' //'60.20520,24.65220' //espoo
+          },
           /**
            * Example:
            * {
@@ -49,16 +53,27 @@
           weatherData: {
             type: Array,
             notify: true
-          }
+          },
         };
       }
 
+      ready() {
+        super.ready();
+      }
+      _newLocation(loc){
+        this.locationLatlon = loc;
+        this.$.weather.params = this._getParams();
+        this.$.weather.generateRequest();
+      }
+
       _getParams(){
+
         let params = 
         {
           "request":"getFeature", 
           "storedquery_id":"fmi::forecast::hirlam::surface::point::timevaluepair",
-          "place": "espoo", 
+          /*"place": "espoo",*/
+          "latlon": this.locationLatlon,
           "parameters": "Temperature,WeatherSymbol3,Precipitation1h",
           "starttime": this._todayFirstHour(),
           "endtime": this._tomorrowLastHour()
@@ -87,16 +102,21 @@
 			 *		<wml2:point>
 			 *			<wml2:MeasurementTVP>
 			 *				<wml2:time>2018-01-23T19:00:00Z</wml2:time>
-			 *				<wml2:value>0.1</wml2:value>
-       *
+			 *			    <wml2:value>0.1</wml2:value>
        *
        */
       _handleResponse(event, request) {
+        const place = this._parseLocation(request);
+      
+        var event = new CustomEvent('new-place', {detail: { place: place}, bubbles: true, composed: true});
+        this.dispatchEvent(event);
+
+      
         const results = request.response.getElementsByTagName('wml2:MeasurementTimeseries');
         
-        const temperatures = this._getByAttributeValue(results, 'mts-1-1-Temperature');
-        const symbols = this._getByAttributeValue(results, 'mts-1-1-WeatherSymbol3');
-        const rain = this._getByAttributeValue(results, 'mts-1-1-Precipitation1h');
+        const temperatures = this._getByAttributeValue(results, 'gml:id', 'mts-1-1-Temperature');
+        const symbols = this._getByAttributeValue(results, 'gml:id', 'mts-1-1-WeatherSymbol3');
+        const rain = this._getByAttributeValue(results, 'gml:id', 'mts-1-1-Precipitation1h');
 
         const temperatureKeyValues = temperatures.getElementsByTagName('wml2:MeasurementTVP');
         const symbolKeyValues = symbols.getElementsByTagName('wml2:MeasurementTVP');
@@ -118,13 +138,12 @@
         this.weatherData.forEach(function (element) {
           element.hour = _this._toHour(element.time);
         });
-        console.log(this.weatherData);
         this.weatherNowData = this._getWeatherNow(this.weatherData)[0];
       }
 
-      _getByAttributeValue(collection, value) {
+      _getByAttributeValue(collection, attribute, value) {
         for (let item of collection) {
-          if(item.getAttribute('gml:id') === value){
+          if(item.getAttribute(attribute) === value){
             return item;
           }
         }
@@ -271,6 +290,17 @@
 
         return tomorrow.toISOString();
       }
+
+      /* <gml:name codeSpace="http://xml.fmi.fi/namespace/locationcode/name">Kattilalaakso</gml:name> */
+      _parseLocation(request){
+        const locations = request.response.getElementsByTagName('gml:name');
+
+        const locationRow = this._getByAttributeValue(locations, 'codeSpace', 'http://xml.fmi.fi/namespace/locationcode/name');
+        const location = locationRow.childNodes[0].nodeValue;
+
+        return location;
+      }
+
     }
 
     window.customElements.define(SaaData.is, SaaData);
