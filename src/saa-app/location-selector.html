@@ -56,10 +56,14 @@
               var event = new CustomEvent('new-location', {detail: { latlon: latlon}, bubbles: true, composed: true});
               this.dispatchEvent(event);
 
+            }, (error) =>
+            {
+              var event = new CustomEvent('locate-error', {detail: {text: 'salli paikannus nähdäksesi paikkakuntasi sää'}, bubbles: true, composed: true});
+              this.dispatchEvent(event);     
             });
         } 
         else { 
-          var event = new CustomEvent('locate-error', {detail: {}, bubbles: true, composed: true});
+          var event = new CustomEvent('locate-error', {detail: {text: 'paikantaminen epäonnistui, yritä uudelleen'}, bubbles: true, composed: true});
           this.dispatchEvent(event);
         }
       }  

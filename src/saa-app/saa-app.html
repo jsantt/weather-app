@@ -4,6 +4,7 @@
 
 <link rel="import" href="./location-selector.html">
 <link rel="import" href="./saa-data.html">
+<link rel="import" href="./weather-analytics.html">
 <link rel="import" href="./weather-grid.html">
 <link rel="import" href="./weather-now.html">
 
@@ -43,7 +44,7 @@
         color: var(--font-color-light);
         font-size: 1.25rem;
         font-weight: 300;
-        
+
         position: absolute;
         right: 1rem;
         top: -0.65rem;
@@ -61,6 +62,8 @@
   
     </style>
     
+    <weather-analytics key="UA-114081578-1"></weather-analytics>
+
     <!-- All the weather data --> 
     <saa-data 
       location-latlon="[[latlon]]"
@@ -71,7 +74,6 @@
     <!-- 'Espoo' (or any other city) now-->
     <paper-toast 
       id="locateError" 
-      text="paikantaminen epäonnistui, yritä uudelleen" 
       duration="5000"></paper-toast>
 
     <header>
@@ -113,7 +115,7 @@
         this.place = event.detail.place;
       }
       _onLocateError(event) {
-        this.$.locateError.open();
+        this.$.locateError.show({text: event.detail.text});
       }
     }
 
