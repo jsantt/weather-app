@@ -8,7 +8,7 @@
     <iron-ajax
       id="weather"
       url="https://data.fmi.fi/fmi-apikey/412facb5-f1bc-44e7-88cc-dc9e08903e32/wfs",
-      params="{{_getParams()}}",
+      params="{{_getParams(weatherLocation)}}",
       handle-as="document"
       on-response="_handleResponse"></iron-ajax>
   </template>
@@ -26,11 +26,21 @@
       static get is() { return 'saa-data'; }
       static get properties() {
         return {
-          locationLatlon: {
-            type: String,
-            observer: '_newLocation',
-            value: '60.17,24.94' //'60.20520,24.65220' //espoo
+          latlon: {
+            type: Number,
+            computed: '_latlon(weatherLocation)'
           },
+
+          place: {
+            type: Number,
+            computed: '_place(weatherLocation)'
+          },
+
+          weatherLocation: {
+            type: Object,
+            observer: '_newLocation'
+          },
+
           /**
            * Example:
            * {
@@ -60,25 +70,39 @@
       ready() {
         super.ready();
       }
-      _newLocation(loc){
-        this.locationLatlon = loc;
-        this.$.weather.params = this._getParams();
+
+      _latlon (location) {
+        return location.latlon; 
+      }
+
+      _place (location) {
+        return location.place; 
+      }
+
+      _newLocation() {
+        this.$.weather.params = this._getParams(this.weatherLocation);
         this.$.weather.generateRequest();
       }
 
-      _getParams(){
+      _getParams(location){
 
         let params = 
         {
           "request":"getFeature", 
           "storedquery_id":"fmi::forecast::hirlam::surface::point::timevaluepair",
           /*"place": "espoo",*/
-          "latlon": this.locationLatlon,
+          /*"latlon": this.locationLatlon,*/
           "parameters": "Temperature,WeatherSymbol3,Precipitation1h",
           "starttime": this._todayFirstHour(),
           "endtime": this._tomorrowLastHour()
         
         }
+        
+        location.place == null 
+          ? params.latlon = location.latlon
+          : params.place = location.place
+      
+
         return params;
       }
 
@@ -108,7 +132,7 @@
       _handleResponse(event, request) {
         const place = this._parseLocation(request);
       
-        var event = new CustomEvent('new-place', {detail: { place: place}, bubbles: true, composed: true});
+        var event = new CustomEvent('saa-data.new-place', {detail: { place: place}, bubbles: true, composed: true});
         this.dispatchEvent(event);
 
       

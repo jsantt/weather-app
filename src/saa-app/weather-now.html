@@ -53,7 +53,7 @@
     <div class="symbolText">
         <weather-symbol-name symbol-id="[[symbolId]]"></weather-symbol-name>
     </div>
-    <div class="time" style$="[[_calculateMargin()]]">
+    <div id="time" class="time" style$="[[_calculateMargin()]]">
         [[_timeNow()]]
     </div>
 
@@ -69,12 +69,16 @@
       
       static get properties() {
         return {
-            weatherNowData: {
-                type: Object
-            },
             symbolId: {
                 type: Number,
                 computed: '_symbolId(weatherNowData)'
+            },
+            updateTime: {
+                type: Boolean,
+                observer: '_updateTime'
+            },
+            weatherNowData: {
+                type: Object
             }
         };
       }
@@ -101,6 +105,10 @@
 
         const time = now.getHours() + '.' + fullMinutes;
         return time;
+      }
+
+      _updateTime() {
+        //this.$.time.refresh();
       }
     }
 

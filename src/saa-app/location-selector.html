@@ -18,7 +18,7 @@
 
     </style>
     
-    <span class="locationIcon" on-click="_locate">
+    <span class="locationIcon" on-click="_geolocate">
         <svg fill="#333" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
           <path d="M0 0h24v24H0z" fill="none"/>
           <path d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm8.94 3c-.46-4.17-3.77-7.48-7.94-7.94V1h-2v2.06C6.83 3.52 3.52 6.83 3.06 11H1v2h2.06c.46 4.17 3.77 7.48 7.94 7.94V23h2v-2.06c4.17-.46 7.48-3.77 7.94-7.94H23v-2h-2.06zM12 19c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/>
@@ -41,34 +41,119 @@
         return {
           place: {
             type: String,
-            value: ''
+            value: undefined,
+            observer: '_pushToHistory'
+          },
+          defaultPlace: {
+            type: String,
+            value:  'Helsinki'
           }
         };
       }
 
-      _locate() {
+      ready() {
+	      super.ready();
+        console.log('ready: ' + this._getUrlParams('place', window.location.href) );
+        const urlPlace = this._getUrlParams('place', window.location.href) 
+          ? this._getUrlParams('place', window.location.href)
+          : this.defaultPlace;
+        
+          console.log('new place from the logs' + urlPlace);
+        this._dispatchEvent('location-selector.new-location', {place: urlPlace});
+        
+/*
+
+        this._locationAlreadyAllowed()
+          .then(this._geolocate())
+          .catch(() => { // location not already allowed or querying status not possible
+            geolocateFailed = true;
+            console.log('geolocate failed true');
+          });
+         
+        if(!this._responseApi() || geolocateFailed) {
+         
+        }
+        */
+      } 
       
+
+      /**
+       * @return whether response API is supported
+       */
+
+      _responseApi() {
+        return  navigator.permissions;
+      }
+
+
+      /**
+       * @return whether location is already allowed and can be used without 
+       * showing pop up to user
+       */
+
+      _locationAlreadyAllowed() {
+        return new Promise(function(resolve, reject){
+          if(!this._responseApi()) {
+            reject;
+          }
+          else {
+            navigator.permissions.query({name:'geolocation'})
+              .then(permission => 
+                permission.state === "granted" ? resolve : reject
+              );
+          }
+
+        });
+      }
+
+      _getUrlParams(name, url) {
+        console.log('url params: ' + url);
+        name = name.replace(/[\[\]]/g, "\\$&");
+        
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) {
+          return null;
+        }
+        if (!results[2]) { 
+          return '';
+        }
+
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+      }
+
+
+      _pushToHistory() {
+        history.replaceState(null, null, "?" + 'place=' + this._toUrl(this.place));
+      }
+
+      _toUrl(name) {
+        return name.replace(' ', '-'); 
+      }
+
+      _geolocate() {
+    
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition( (position) => 
-            {
-              const latlon = position.coords.latitude + ',' + position.coords.longitude;
+            navigator.geolocation.getCurrentPosition(
+              position => {
+          
+                const latlon = position.coords.latitude + ',' + position.coords.longitude;
 
-              var event = new CustomEvent('new-location', {detail: { latlon: latlon}, bubbles: true, composed: true});
-              this.dispatchEvent(event);
+                this._dispatchEvent('location-selector.new-location', { latlon: latlon});
 
-            }, (error) =>
-            {
-              var event = new CustomEvent('locate-error', {detail: {text: 'salli paikannus nähdäksesi paikkakuntasi sää'}, bubbles: true, composed: true});
-              this.dispatchEvent(event);     
-            });
+              }, error => {
+                this._dispatchEvent('location-selector.locate-error', {text: 'salli paikannus nähdäksesi paikkakuntasi sää'});
+              });
         } 
         else { 
-          var event = new CustomEvent('locate-error', {detail: {text: 'paikantaminen epäonnistui, yritä uudelleen'}, bubbles: true, composed: true});
-          this.dispatchEvent(event);
+          this._dispatchEvent('location-selector.locate-error', {text: 'paikantaminen epäonnistui, yritä uudelleen'});
         }
       }  
 
-      
+      _dispatchEvent(name, payload) {
+        const event = new CustomEvent(name, {detail: payload, bubbles: true, composed: true});
+          this.dispatchEvent(event);
+      }
     }
 
     window.customElements.define(LocationSelector.is, LocationSelector);

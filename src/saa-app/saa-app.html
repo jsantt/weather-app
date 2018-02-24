@@ -66,8 +66,7 @@
 
     <!-- All the weather data --> 
     <saa-data 
-      location-latlon="[[latlon]]"
-      on-new-place="_onNewPlace"
+      weather-location="[[weatherLocation]]"
       weather-data="{{weatherData}}"
       weather-now-data="{{weatherNowData}}"></saa-data>
   
@@ -79,13 +78,13 @@
     <header>
       <h1>
         <location-selector 
-          place="[[place]]"
-          on-new-location="_onNewLocation"
-          on-locate-error="_onLocateError"></location-selector>
+          place="[[place]]"></location-selector>
 
       </h1>
       <h2>beta</h2>
-      <weather-now weather-now-data="[[weatherNowData]]"></weather-now>
+      <weather-now 
+        weather-now-data="[[weatherNowData]]"
+        update-time="[[locationChanged]]"></weather-now>
     </header>
 
     <!-- today, tomorrow and a day after tomorrow -->
@@ -108,14 +107,42 @@
     class SaaApp extends Polymer.Element {
       static get is() { return 'saa-app'; }
     
+      static get properties() {
+        return {
+          locationChanged: {
+            type: String,
+          },
+          place: {
+            type: String,
+          },
+          weatherLocation: {
+            type: String,
+          }
+        }
+      }
+
+      constructor() { 
+        super();
+
+        this.addEventListener('location-selector.new-location', (event) => this._onNewLocation(event));
+        this.addEventListener('location-selector.locate-error', (event) => this._onLocateError(event));
+
+        this.addEventListener('saa-data.new-place', (event) => this._onNewPlace(event));
+      }
+
       _onNewLocation(event) {
-        this.latlon = event.detail.latlon;
+        this.weatherLocation = event.detail;
+        this.locationChanged = !this.locationChanged;
       }
-      _onNewPlace(event) {
-        this.place = event.detail.place;
-      }
+
       _onLocateError(event) {
         this.$.locateError.show({text: event.detail.text});
+      }
+
+      _onNewPlace(event) {
+        this.place = event.detail.place;
+        this.locationChanged = !this.locationChanged; 
+        console.log('new place from saa-data: ' + this.place);
       }
     }
 
