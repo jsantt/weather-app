@@ -4,6 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
+    <!-- iOS startup image -->
+    <!-- see media queries: https://gist.github.com/jabez128/28c19b386f610f8a0cf3#file-ios-8-web-app-html-L36-->
+    <link rel="apple-touch-startup-image" href="/src/image/ios-startup-750x1294.png">
+
     <title>Säät</title>
     <meta name="description" content="weather forecast application">
 
@@ -15,6 +19,20 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet">
 
     <link rel="import" href="/src/saa-app/saa-app.html">
+
+    <!-- iOS -->
+
+    <!-- Allow full-screen mode. -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    
+    <!-- Status bar style -->
+    <!-- meta name="apple-mobile-web-app-status-bar-style" content="black" -->
+
+    <!-- iPhone non-retina icon -->
+    <link rel="apple-touch-icon" href="/src/image/weather-icon-57x57.png">
+
+    <!-- override title -->
+    <meta name="apple-mobile-web-app-title" content="Sää">
 
     <style>
         body {
