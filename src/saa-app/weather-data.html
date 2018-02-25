@@ -1,7 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 
-<dom-module id="saa-data">
+<dom-module id="weather-data">
 
   <!-- TODO: WeatherSymbol3 TotalCloudCover  -->
   <template>
@@ -15,15 +15,15 @@
 
   <script>
     /**
-     * `saa-data`
+     * `weather-data`
      * Fetching the weather data from the server
      *
      * @customElement
      * @polymer
      * @demo demo/index.html
      */
-    class SaaData extends Polymer.Element {
-      static get is() { return 'saa-data'; }
+    class WeatherData extends Polymer.Element {
+      static get is() { return 'weather-data'; }
       static get properties() {
         return {
           latlon: {
@@ -132,7 +132,7 @@
       _handleResponse(event, request) {
         const place = this._parseLocation(request);
       
-        var event = new CustomEvent('saa-data.new-place', {detail: { place: place}, bubbles: true, composed: true});
+        var event = new CustomEvent('weather-data.new-place', {detail: { place: place}, bubbles: true, composed: true});
         this.dispatchEvent(event);
 
       
@@ -327,6 +327,6 @@
 
     }
 
-    window.customElements.define(SaaData.is, SaaData);
+    window.customElements.define(WeatherData.is, WeatherData);
   </script>
 </dom-module>
