@@ -53,8 +53,9 @@
     <div class="symbolText">
         <weather-symbol-name symbol-id="[[symbolId]]"></weather-symbol-name>
     </div>
-    <div id="time" class="time" style$="[[_calculateMargin()]]">
-        [[_timeNow()]]
+
+    <div class="time" style$="[[timeMargin]]">
+        [[timeNow]]
     </div>
 
   </template>
@@ -73,6 +74,12 @@
                 type: Number,
                 computed: '_symbolId(weatherNowData)'
             },
+            timeMargin: {
+                type: String
+            },
+            timeNow: {
+                type: String
+            },
             updateTime: {
                 type: Boolean,
                 observer: '_updateTime'
@@ -83,10 +90,16 @@
         };
       }
 
+      ready() {
+        super.ready();
+        
+        this._updateTime();
+      }
+
       _calculateMargin(){
           const hours = new Date().getHours();
           const margin = ((hours - 1) / 24)*100;
-          return 'margin-left:' + margin + '%';
+          this.timeMargin = 'margin-left:' + margin + '%';
       }
 
       _round(temperature) {
@@ -104,11 +117,12 @@
         const fullMinutes = minutes < 10 ? '0' + minutes : minutes;
 
         const time = now.getHours() + '.' + fullMinutes;
-        return time;
+        this.timeNow = time;
       }
 
       _updateTime() {
-        //this.$.time.refresh();
+        this._calculateMargin();
+        this._timeNow();
       }
     }
 
