@@ -53,12 +53,11 @@
 
       ready() {
 	      super.ready();
-        console.log('ready: ' + this._getUrlParams('place', window.location.href) );
+        
         const urlPlace = this._getUrlParams('place', window.location.href) 
           ? this._getUrlParams('place', window.location.href)
           : this.defaultPlace;
         
-          console.log('new place from the logs' + urlPlace);
         this._dispatchEvent('location-selector.new-location', {place: urlPlace});
         
 /*
@@ -107,7 +106,6 @@
       }
 
       _getUrlParams(name, url) {
-        console.log('url params: ' + url);
         name = name.replace(/[\[\]]/g, "\\$&");
         
         var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
