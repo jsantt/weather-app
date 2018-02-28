@@ -4,10 +4,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
-    <!-- iOS startup image -->
-    <!-- see media queries: https://gist.github.com/jabez128/28c19b386f610f8a0cf3#file-ios-8-web-app-html-L36-->
-    <link rel="apple-touch-startup-image" href="/src/image/ios-startup-750x1294.png">
-
     <title>Säät</title>
     <meta name="description" content="weather forecast application">
 
@@ -18,7 +14,7 @@
     
     <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet">
 
-    <link rel="import" href="/src/saa-app/saa-app.html">
+    <link rel="import" href="/src/weather-app/weather-app.html">
 
     <!-- iOS -->
 
@@ -33,6 +29,16 @@
 
     <!-- override title -->
     <meta name="apple-mobile-web-app-title" content="Sää">
+
+    <!-- iOS startup image -->
+    <!-- see media queries: https://gist.github.com/jabez128/28c19b386f610f8a0cf3#file-ios-8-web-app-html-L36-->
+
+    <!-- iPhone 6 startup image -->
+    <link href="/src/image/ios-startup-750x1294.png"
+          media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)"
+          rel="apple-touch-startup-image">
+
+
 
     <style>
         body {
@@ -58,7 +64,7 @@
 
   </head>
   <body>
-    <saa-app></saa-app>
+    <weather-app></weather-app>
   </body>
 
   <script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
