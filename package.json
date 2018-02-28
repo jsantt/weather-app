@@ -1,5 +1,5 @@
 {
-  "name": "saa",
+  "name": "weather",
   "version": "0.0.1",
   "description": "weather forecast application",
   "main": "index.js",

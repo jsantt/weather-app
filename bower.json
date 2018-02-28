@@ -1,5 +1,5 @@
 {
-  "name": "saa",
+  "name": "Weather",
   "description": "weather forecast application",
   "main": "index.html",
   "dependencies": {

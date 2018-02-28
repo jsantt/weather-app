@@ -1,4 +1,4 @@
 bower_components/
 build/*
-build/default/src/saa-app/saa-app.html
+build/default/src/weather-app/weather-app.html
 firebase-debug.log

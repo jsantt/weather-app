@@ -8,7 +8,7 @@
 <link rel="import" href="./weather-grid.html">
 <link rel="import" href="./weather-now.html">
 
-<dom-module id="saa-app">
+<dom-module id="weather-app">
   <template>
 
     <style>
@@ -104,8 +104,8 @@
      * @customElement
      * @polymer
      */
-    class SaaApp extends Polymer.Element {
-      static get is() { return 'saa-app'; }
+    class WeatherApp extends Polymer.Element {
+      static get is() { return 'weather-app'; }
     
       static get properties() {
         return {
@@ -145,6 +145,6 @@
       }
     }
 
-    window.customElements.define(SaaApp.is, SaaApp);
+    window.customElements.define(WeatherApp.is, WeatherApp);
   </script>
 </dom-module>

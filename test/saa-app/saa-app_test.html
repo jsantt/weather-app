@@ -4,36 +4,36 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
-    <title>saa-app test</title>
+    <title>weather-app test</title>
 
     <script src="../../../webcomponentsjs/webcomponents-lite.js"></script>
     <script src="../../../web-component-tester/browser.js"></script>
 
-    <link rel="import" href="../../src/saa-app/saa-app.html">
+    <link rel="import" href="../../src/weather-app/weather-app.html">
   </head>
   <body>
 
     <test-fixture id="BasicTestFixture">
       <template>
-        <saa-app></saa-app>
+        <weather-app></weather-app>
       </template>
     </test-fixture>
 
     <test-fixture id="ChangedPropertyTestFixture">
       <template>
-        <saa-app prop1="new-prop1"></saa-app>
+        <weather-app prop1="new-prop1"></weather-app>
       </template>
     </test-fixture>
 
     <script>
-      suite('saa-app', function() {
+      suite('weather-app', function() {
 
         test('instantiating the element with default properties works', function() {
           var element = fixture('BasicTestFixture');
-          assert.equal(element.prop1, 'saa-app');
+          assert.equal(element.prop1, 'weather-app');
           var elementShadowRoot = element.shadowRoot;
           var elementHeader = elementShadowRoot.querySelector('h2');
-          assert.equal(elementHeader.innerHTML, 'Hello saa-app!');
+          assert.equal(elementHeader.innerHTML, 'Hello weather-app!');
         });
 
         test('setting a property on the element works', function() {
