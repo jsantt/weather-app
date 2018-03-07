@@ -5,57 +5,56 @@
 
 
 <dom-module id="weather-now">
-    <template>
+  <template>
 
     <style>
-        :host {
-            display: block;
-        }
+      :host {
+        display: block;
+      }
 
-        .weatherNow {
-		    display: flex;
-            align-items: center;
-		    justify-content: center;
-            margin: -0.3rem 0 -0.5rem 0;
-        }
-	
-        .temperature {
-            font-size: 3.052rem;
-        }
-        
+      .weatherNow {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: -0.3rem 0 -0.5rem 0;
+      }
 
-        .degree {
-            font-size: 1.5rem;
-            vertical-align: top;
-        }
+      .temperature {
+        font-size: 3.052rem;
+      }
 
-        .symbolText {
-            color: #333;
-            font-size: 1.25rem;
-            text-align: center;
-        }
 
-        .time {
-            color: #fff;
-        }
+      .degree {
+        font-size: 1.5rem;
+        vertical-align: top;
+      }
 
+      .symbolText {
+        color: #333;
+        font-size: 1.25rem;
+        text-align: center;
+      }
+
+      .time {
+        color: #fff;
+      }
     </style>
 
     <section class="weatherNow">
-        <div class="temperature">
-            [[_round(weatherNowData.temperature)]]
-            <span class="degree">&#176;C</span>
-        </div>
-        <div class="symbol">
-            <weather-symbol symbol-id="[[symbolId]]" large="true"></weather-symbol>
-        </div>
+      <div class="temperature">
+        [[_round(weatherNowData.temperature)]]
+        <span class="degree">&#176;C</span>
+      </div>
+      <div class="symbol">
+        <weather-symbol symbol-id="[[symbolId]]" large="true"></weather-symbol>
+      </div>
     </section>
     <div class="symbolText">
-        <weather-symbol-name symbol-id="[[symbolId]]"></weather-symbol-name>
+      <weather-symbol-name symbol-id="[[symbolId]]"></weather-symbol-name>
     </div>
 
     <div class="time" style$="[[timeMargin]]">
-        [[timeNow]]
+      [[timeNow]]
     </div>
 
   </template>
@@ -67,46 +66,46 @@
      */
     class WeatherNow extends Polymer.Element {
       static get is() { return 'weather-now'; }
-      
+
       static get properties() {
         return {
-            symbolId: {
-                type: Number,
-                computed: '_symbolId(weatherNowData)'
-            },
-            timeMargin: {
-                type: String
-            },
-            timeNow: {
-                type: String
-            },
-            updateTime: {
-                type: Boolean,
-                observer: '_updateTime'
-            },
-            weatherNowData: {
-                type: Object
-            }
+          symbolId: {
+            type: Number,
+            computed: '_symbolId(weatherNowData)'
+          },
+          timeMargin: {
+            type: String
+          },
+          timeNow: {
+            type: String
+          },
+          updateTime: {
+            type: Boolean,
+            observer: '_updateTime'
+          },
+          weatherNowData: {
+            type: Object
+          }
         };
       }
 
       ready() {
         super.ready();
-        
+
         this._updateTime();
       }
 
-      _calculateMargin(){
-          const hours = new Date().getHours();
-          const margin = ((hours - 1) / 24)*100;
-          this.timeMargin = 'margin-left:' + margin + '%';
+      _calculateMargin() {
+        const hours = new Date().getHours();
+        const margin = ((hours - 1) / 24) * 100;
+        this.timeMargin = 'margin-left:' + margin + '%';
       }
 
       _round(temperature) {
-        return Math.round(temperature*10) / 10;
+        return Math.round(temperature * 10) / 10;
       }
 
-      _symbolId(weatherNowData){
+      _symbolId(weatherNowData) {
         return weatherNowData.symbol;
       }
 
