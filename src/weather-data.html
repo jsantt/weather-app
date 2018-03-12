@@ -1,5 +1,5 @@
-<link rel="import" href="../../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 
 <dom-module id="weather-data">
 
@@ -217,12 +217,11 @@
 
       _parseWeatherNow(temperature, symbols){
         const temperatureRaw = this._value(temperature[0].children[1]);
-        const temperature = temperatureRaw;
-
+        
         const symbol = Math.round(this._value(symbols[0].children[1]));
 
         const weatherNow = {
-          temperature: temperature,
+          temperature: temperatureRaw,
           symbol: symbol
         };
 

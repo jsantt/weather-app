@@ -1,4 +1,4 @@
-<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
 
 <link rel="import" href="./weather-chart.html">
 <link rel="import" href="./weather-symbol.html">
@@ -64,7 +64,19 @@
         font-size: 1.25rem;
         font-weight: 700;
         text-align: center;
-        /*border: 1px dashed cadetblue;*/
+      }
+
+      .wind {
+        background-color: var(--primary-color);
+        border-radius: 50%;
+        color: #fff;
+
+        font-size: var(--font-size-small);
+        position: relative;
+        right:-3rem;
+        top: -3rem;
+
+        width: 1.2rem;
       }
 
       .lineChart{
@@ -92,11 +104,12 @@
       <template is="dom-if" if="[[_isFourth(index)]]">
 
         <div class="hour">
-          {{entry.hour}}
+          [[entry.hour]]
         </div>
         
         <div class="symbol">    
           <weather-symbol symbol-id="[[_symbolId(entry)]]"></weather-symbol>
+          <!--div class="wind">[[_round(entry.wind)]]</div-->
         </div>
           
         <div class="temperature">

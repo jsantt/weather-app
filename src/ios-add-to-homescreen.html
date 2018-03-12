@@ -1,0 +1,50 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+
+<dom-module id="ios-add-to-homescreen">
+  <template>
+
+    <style>
+      :host {
+        display: block;
+      }
+      p {
+        margin-bottom: 0;
+      }
+
+    </style>
+
+    <!-- p>Tykk&auml;&auml;tk&ouml;? Napauta <iron-icon icon="weather-icons:iosShare"></iron-icon> ja &lsquo;lis&auml;&auml; kotivalikkoon&rsquo;</p -->
+    
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class iosAddToHomescreen extends Polymer.Element {
+      static get is() { return 'ios-add-to-homescreen'; }
+      
+      static get properties() {
+        return {
+          
+        };
+      }
+
+      _showPrompt() {
+        
+        if (navigator.standalone) {
+          return false;
+        }
+
+        let isApple = ['iPhone', 'iPad', 'iPod'].includes(navigator.platform);
+        return isApple;
+      }
+
+    }
+
+    window.customElements.define(iosAddToHomescreen.is, iosAddToHomescreen);
+  </script>
+</dom-module>

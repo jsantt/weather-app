@@ -7,8 +7,6 @@
     "test": "test"
   },
   "dependencies": {
-    "lodash.assign": "^4.2.0",
-    "lodash.intersectionwith": "^4.4.0"
   },
   "devDependencies": {},
   "scripts": {

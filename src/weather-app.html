@@ -1,13 +1,14 @@
-<link rel="import" href="../../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-toast/paper-toast.html">
 
+<link rel="import" href="./ios-add-to-homescreen.html">
 <link rel="import" href="./location-selector.html">
 <link rel="import" href="./weather-analytics.html">
 <link rel="import" href="./weather-data.html">
 
 <link rel="import" href="./weather-grid.html">
-<link rel="import" href="./weather-icons.html">
+<link rel="import" href="./weather-symbol-icons.html">
 <link rel="import" href="./weather-now.html">
 
 <dom-module id="weather-app">
@@ -97,6 +98,9 @@
     <!-- footer -->
     <footer>
       Säädata by Ilmatieteen laitos | avoin data
+
+      <ios-add-to-homescreen></ios-add-to-homescreen>
+
     </footer>
 
   </template>
