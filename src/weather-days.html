@@ -2,7 +2,7 @@
 
 <link rel="import" href="./weather-day.html">
 
-<dom-module id="weather-grid">
+<dom-module id="weather-days">
   <template>
 
     <style>
@@ -49,8 +49,8 @@
      * @customElement
      * @polymer
      */
-    class WeatherGrid extends Polymer.Element {
-      static get is() { return 'weather-grid'; }
+    class WeatherDays extends Polymer.Element {
+      static get is() { return 'weather-days'; }
 
       static get properties() {
         return {
@@ -100,6 +100,6 @@
       }
     }
 
-    window.customElements.define(WeatherGrid.is, WeatherGrid);
+    window.customElements.define(WeatherDays.is, WeatherDays);
   </script>
 </dom-module>
