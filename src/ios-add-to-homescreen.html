@@ -15,8 +15,17 @@
 
     </style>
 
-    <!-- p>Tykk&auml;&auml;tk&ouml;? Napauta <iron-icon icon="weather-icons:iosShare"></iron-icon> ja &lsquo;lis&auml;&auml; kotivalikkoon&rsquo;</p -->
-    
+    <template is="dom-if" if="{{_showPrompt()}}">
+      <p>
+        Tykk&auml;&auml;tk&ouml;? Napauta 
+        
+        <iron-icon 
+          icon="weather-icons:iosShare"></iron-icon> 
+        
+        ja &lsquo;lis&auml;&auml; kotivalikkoon&rsquo;
+      </p>
+    </template>
+
   </template>
 
   <script>
