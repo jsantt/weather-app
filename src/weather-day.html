@@ -84,11 +84,20 @@
         margin-top: 1.5rem;
       }
 
+      .separator {
+        color: #bbb;
+      }
+
     </style>
 
 
     <div class="date">
-      <div class="date_day">[[dayName]]</div>
+      <div class="date_day">
+        <span>[[_day(dayNumber)]]<span>
+        <span class="separator">/</span>
+        <span>[[_weekday(dayNumber)]]</span>
+      </div>
+      <div class="date_weekday"></div>
     </div>
   
     <template is="dom-repeat" items="[[weatherData]]" as="entry">
@@ -141,8 +150,8 @@
       
       static get properties() {
         return {
-          dayName: {
-            type: String
+          dayNumber: {
+            type: Number
           },
           minTemperature: {
             type: Number
@@ -155,6 +164,17 @@
             type: Array          
           }
         };
+      }
+
+      _day(number){
+        const dayNames = ['Tänään', 'Huomenna', 'Ylihuomenna'];
+        return dayNames[number - 1];
+      }
+
+      _weekday(number){
+        let day = new Date();
+        day.setDate(day.getDate() + (number - 1));
+        return day.toLocaleString('fi-FI', {weekday: 'short'});
       }
 
       _everyFourth(index, item) {
