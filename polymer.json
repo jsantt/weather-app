@@ -8,5 +8,9 @@
     {
       "preset": "es6-bundled"
     }
+  ],
+  "sources": [
+    "src/**/*",
+    "image/**/*"
   ]
 }
