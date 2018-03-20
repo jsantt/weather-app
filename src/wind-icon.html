@@ -1,0 +1,138 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<dom-module id="wind-icon">
+  <template>
+
+    <style>
+      :host {
+        display: block;
+      }
+      #windIcon {
+        height: 24px;
+        width: 24px; 
+      }
+      .windSpeed {
+        fill: #999;
+        font-size: 66px;
+      }
+    </style>
+
+    <span id="iconPlaceholder"></span>
+    <span class="wind">[[wind]]</span>
+
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class WindIcon extends Polymer.Element {
+      static get is() { return 'wind-icon'; }
+
+      static get properties() {
+        return {
+          degrees: {
+            type: Number
+          },
+          round: {
+            type: Boolean
+          },
+          windSpeed: {
+            type: Number
+          },
+          roundedWindSpeed: {
+            computed: '_round(windSpeed, round)'
+          }
+        };
+      }
+
+      ready(){
+        super.ready();
+        this._createIcon(this.degrees, this.roundedWindSpeed);
+        console.log(this.degrees);
+      }
+
+      _createIcon(degrees, speed){
+        if(!Number.isNaN(degrees) && !Number.isNaN(speed)){
+          let svg = this._svg();
+          
+          let group = this._group(degrees);
+          group.appendChild(this._windIcon());
+          group.appendChild(this._windCircle());
+                    
+          svg.appendChild(group);
+          svg.appendChild(this._wind(speed));
+
+
+          if(this.$.iconPlaceholder.children.length > 0) {
+            this.$.iconPlaceholder.removeChild(this.$.iconPlaceholder.children[0]);
+          }
+
+          this.$.iconPlaceholder.appendChild(svg);
+        }
+      }
+
+      _group(degrees){
+        const transform = (degrees + 180) % 360;
+        let g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+        g.setAttribute('transform', 'rotate(' + transform + ', 50, 50)');
+
+        return g;
+      }
+
+      _round(speed, round) {
+        return round ? Math.round(speed) : speed;
+      }
+
+      _svg() {
+        let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        
+        // min-x, min-y, width and height
+        svg.setAttribute('id', 'windIcon');
+        svg.setAttribute('viewBox', '0 0 100 100');
+        svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+
+        return svg;
+      }
+
+      _windIcon(){
+
+        let line = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+        line.setAttribute('fill', '#999');
+        line.setAttribute('stroke', '#999');
+
+        line.setAttribute('stroke-width', '4');      
+        line.setAttribute('points', '36,16 50,0 64,16');
+
+        return line;
+      }
+
+      _wind(speed) {
+        let text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        text.setAttribute('x', '36');
+        text.setAttribute('y', '72');
+        text.setAttribute('class', 'windSpeed');
+        text.textContent = speed;
+
+        return text;
+      }
+
+      _windCircle() {
+        let circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circle.setAttribute('fill', 'none');
+        circle.setAttribute('stroke', '#999');
+        circle.setAttribute('stroke-width', '3');      
+
+        circle.setAttribute('cx', '50');
+        circle.setAttribute('cy', '50');
+        circle.setAttribute('r', '35');
+        
+        return circle;
+  
+      }
+    }
+
+    window.customElements.define(WindIcon.is, WindIcon);
+  </script>
+</dom-module>
