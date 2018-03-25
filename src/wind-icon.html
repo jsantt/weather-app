@@ -7,19 +7,41 @@
       :host {
         display: block;
       }
-      #windIcon {
+      .windIcon {
         height: 24px;
-        width: 24px; 
+        width: 24px;
+        
+        padding-right: 0.35rem; 
       }
+
+      .windIcon--large {
+        height: 36px;
+        width: 36px;
+      }
+
       .windSpeed {
-        fill: #999;
+        fill: #777;
+        font-weight: 700;
         font-size: 66px;
       }
+
+      .windIcon_arrow {
+        fill: #777;
+        stroke: #777;
+      }
+
+      .windIcon_circle {
+        fill: none;
+        stroke: #777;
+      }
+
+
     </style>
 
     <span id="iconPlaceholder"></span>
     <span class="wind">[[wind]]</span>
 
+    [[_createIcon(degrees, roundedWindSpeed)]]
   </template>
 
   <script>
@@ -35,6 +57,9 @@
           degrees: {
             type: Number
           },
+          large: {
+            type: Boolean
+          },
           round: {
             type: Boolean
           },
@@ -49,17 +74,15 @@
 
       ready(){
         super.ready();
-        this._createIcon(this.degrees, this.roundedWindSpeed);
-        console.log(this.degrees);
       }
-
+      
       _createIcon(degrees, speed){
         if(!Number.isNaN(degrees) && !Number.isNaN(speed)){
-          let svg = this._svg();
+          let svg = this._svg(this.large);
           
           let group = this._group(degrees);
-          group.appendChild(this._windIcon());
-          group.appendChild(this._windCircle());
+          group.appendChild(this._windIconArrow());
+          group.appendChild(this._windIconCircle());
                     
           svg.appendChild(group);
           svg.appendChild(this._wind(speed));
@@ -85,24 +108,28 @@
         return round ? Math.round(speed) : speed;
       }
 
-      _svg() {
+      _svg(large) {
         let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         
         // min-x, min-y, width and height
         svg.setAttribute('id', 'windIcon');
+        svg.setAttribute('class', 'windIcon');
         svg.setAttribute('viewBox', '0 0 100 100');
         svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+
+        if(large) {
+          svg.setAttribute('class', 'windIcon--large');
+        }
 
         return svg;
       }
 
-      _windIcon(){
+      _windIconArrow(){
 
         let line = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
-        line.setAttribute('fill', '#999');
-        line.setAttribute('stroke', '#999');
+        line.setAttribute('class', 'windIcon_arrow');
 
-        line.setAttribute('stroke-width', '4');      
+        line.setAttribute('stroke-width', '6');      
         line.setAttribute('points', '36,16 50,0 64,16');
 
         return line;
@@ -110,7 +137,9 @@
 
       _wind(speed) {
         let text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-        text.setAttribute('x', '36');
+        speed < 10 
+          ? text.setAttribute('x', '36')
+          : text.setAttribute('x', '24');
         text.setAttribute('y', '72');
         text.setAttribute('class', 'windSpeed');
         text.textContent = speed;
@@ -118,15 +147,14 @@
         return text;
       }
 
-      _windCircle() {
+      _windIconCircle() {
         let circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-        circle.setAttribute('fill', 'none');
-        circle.setAttribute('stroke', '#999');
-        circle.setAttribute('stroke-width', '3');      
+        circle.setAttribute('class', 'windIcon_circle');
+        circle.setAttribute('stroke-width', '2');      
 
         circle.setAttribute('cx', '50');
         circle.setAttribute('cy', '50');
-        circle.setAttribute('r', '35');
+        circle.setAttribute('r', '36');
         
         return circle;
   

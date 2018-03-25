@@ -9,7 +9,6 @@
         position: relative;
       }      
       .svg {
-        border-bottom: 2px solid #ddd;
         padding-bottom: 0.1rem;
 
         position: absolute;
@@ -47,7 +46,7 @@
           },
           _chartHeight: {
             type: Number,
-            value: 185
+            value: 186
           }
         };
       }
@@ -67,7 +66,7 @@
         if(this.showTimeNow) { 
 
           const pastTimeShadow = this._pastTimeShadow(this.hoursNow());
-          svg.appendChild(pastTimeShadow);
+          //svg.appendChild(pastTimeShadow);
 
           const timeNowTriangle = this._timeNowTriangle();
           svg.appendChild(timeNowTriangle);
@@ -115,7 +114,7 @@
         let points = '';
 
         // Min margin for temperature graph
-        const BOTTOM_MARGIN = 3;
+        const BOTTOM_MARGIN = 40;
         const baseX = this._chartHeight + this.minTemperature*2 - BOTTOM_MARGIN;
 
         for(let i = 0; i < data.length; i++) {
@@ -155,14 +154,14 @@
       _timeNowTriangle(){
         let line = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
         line.setAttribute('stroke-opacity', '1');
-        line.setAttribute('fill', '#ddd');
+        line.setAttribute('fill', '#fff');
         line.setAttribute('points', this._trianglePoints(this.hoursNow()));
         return line;   
       }
 
       _trianglePoints(time){
         const bottomX = (time / 24)*230;
-        const bottomY = 5;
+        const bottomY = 10;
 
         const topLeftX = bottomX - 5;
         const topLeftY = 0;
@@ -179,11 +178,11 @@
         rect.setAttribute('fill-opacity', '0.4');
         
         const width = (time / 24)*230;
-        rect.setAttribute('width', width);
+        rect.setAttribute('width', '9');
         rect.setAttribute('height', this._chartHeight - 2 );
 
         rect.setAttribute('y', 2);
-        rect.setAttribute('x', 0);
+        rect.setAttribute('x', width - 5);
 
         return rect;   
       }

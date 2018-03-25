@@ -2,6 +2,7 @@
 
 <link rel="import" href="./weather-symbol.html">
 <link rel="import" href="./weather-symbol-name.html">
+<link rel="import" href="./wind-icon.html">
 
 
 <dom-module id="weather-now">
@@ -20,13 +21,17 @@
       }
 
       .temperature {
-        font-size: 3.052rem;
+        font-size: var(--font-size-xxxlarge);
       }
 
 
       .degree {
         font-size: 1.5rem;
         vertical-align: top;
+      }
+
+      .windIcon {
+        margin-top: -1.2rem;
       }
 
       .symbolText {
@@ -48,6 +53,13 @@
       <div class="symbol">
         <weather-symbol symbol-id="[[symbolId]]" large="true"></weather-symbol>
       </div>
+
+      <wind-icon
+        class="windIcon"
+        degrees="[[_windDirection(weatherNowData.windDirection)]]"
+        large
+        round
+        wind-speed="[[_wind(weatherNowData.wind)]]"></wind-icon>
 
     </section>
     <div class="symbolText">
@@ -123,6 +135,14 @@
       _updateTime() {
         this._calculateMargin();
         this._timeNow();
+      }
+
+      _wind(wind) {
+        return wind;
+      }
+
+      _windDirection(windDirection) {
+        return windDirection;
       }
     }
 

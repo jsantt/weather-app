@@ -111,11 +111,10 @@
         {
           "request":"getFeature", 
           "storedquery_id":"fmi::forecast::hirlam::surface::point::timevaluepair",
-          /*"place": "espoo",*/
-          /*"latlon": this.locationLatlon,*/
           "parameters": "Temperature,WeatherSymbol3,Precipitation1h,WindDirection,WindSpeedMS",
           "starttime": this._todayFirstHour(),
-          "endtime": this._tomorrowLastHour()
+          "endtime": this._tomorrowLastHour(),
+          
 
         }
 
@@ -235,8 +234,8 @@
       _todayFirstHour() {
         
         let firstHour = new Date();
-        firstHour.setHours(1,0,0,0);
-
+        firstHour.setHours(0,0,0,0);
+        console.log('first hour' + firstHour.toISOString());
         return firstHour.toISOString();
       }
 
@@ -245,10 +244,11 @@
         if (typeof time === 'number'){
           return time;
         }
-
+        console.log('aika ' +time);
         const dateObject = new Date(time);
+
         let hour = dateObject.getHours(); 
-          
+        console.log('tunti ' + hour)
         return hour === 0 ? 24 : dateObject.getHours();
       }
 
@@ -259,6 +259,7 @@
         tomorrow.setDate(now.getDate() + 2);
         tomorrow.setHours(24,0,0,0);
 
+console.log('last hour' + tomorrow.toISOString());
         return tomorrow.toISOString();
       }
 
