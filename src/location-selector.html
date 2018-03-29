@@ -66,20 +66,6 @@
           : this.defaultPlace;
         
         this._dispatchEvent('location-selector.new-location', {place: urlPlace});
-        
-/*
-
-        this._locationAlreadyAllowed()
-          .then(this._geolocate())
-          .catch(() => { // location not already allowed or querying status not possible
-            geolocateFailed = true;
-            console.log('geolocate failed true');
-          });
-         
-        if(!this._responseApi() || geolocateFailed) {
-         
-        }
-        */
       } 
       
 

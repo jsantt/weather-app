@@ -1,5 +1,6 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 
+<link rel="import" href="./temperature-line.html">
 <link rel="import" href="./weather-chart.html">
 <link rel="import" href="./weather-symbol.html">
 <link rel="import" href="./wind-icon.html">
@@ -14,7 +15,7 @@
         --margin-after-hours: 1rem;
         --margin-after-wind: 1.2rem;
 
-        --color-header: rgb(245, 245, 245);
+        --color-header:rgb(245, 245, 245);
 
         display: block;
       }
@@ -78,6 +79,13 @@
         
         text-align: center;
       }
+
+       .temperature_line {
+        grid-column: span 25;
+        grid-row: 5;
+
+        height: 0;
+      }
       
 
       .temperature--empty {
@@ -86,7 +94,7 @@
       
       .wind, .wind--empty {
         grid-column: span 3;
-        grid-row: 5;
+        grid-row: 6;
 
         margin-top: 0.6rem;
         margin-bottom: var(--margin-after-wind);
@@ -99,7 +107,7 @@
 
       .lineChart{
         grid-column: span 25;
-        grid-row: 6;
+        grid-row: 7;
       }
 
       .separator {
@@ -142,19 +150,31 @@
           </template>
         </div>
 
-        <div class="wind">
+        <template is="dom-if" if="[[showWind]]">
+          <div class="wind">
 
-            <wind-icon 
-              degrees="[[entry.windDirection]]"
-              round
-              wind-speed="[[entry.wind]]"></wind-icon>
+              <wind-icon 
+                degrees="[[entry.windDirection]]"
+                round
+                wind-speed="[[entry.wind]]">
+              </wind-icon>
 
-        </div>
+          </div>
+      </template>
 
       </template>    
     </template>
+
+    <div class="temperature_line">
+        <temperature-line 
+          min-temperature=[[minTemperature]]
+          weather-data="[[weatherData]]">
+        </temperature-line>
+  
+      </div>
+
     <section class="lineChart">
-      
+    
       <weather-chart 
         min-temperature=[[minTemperature]]
         show-time-now=[[showTimeNow]]
@@ -183,6 +203,9 @@
           showTimeNow: {
             type: Boolean,
             value: false
+          },
+          showWind: {
+            type: Boolean
           },
           weatherData: {
             type: Array          

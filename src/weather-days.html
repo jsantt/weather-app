@@ -18,29 +18,31 @@
 	
 
     </style>
-
+    
       <!-- today -->
       <weather-day 
       class="weatherGrid"
-      weather-data="[[todayData]]"
+      day-number="1"
       min-temperature="[[minTemperature]]"
       show-time-now="true"
-      day-number="1"></weather-day>
+      show-wind="[[showWind]]"
+      weather-data="[[todayData]]"></weather-day>
   
-
       <!-- tomorrow -->
       <weather-day 
       class="weatherGrid"
-      weather-data="[[day2Data]]"
+      day-number="2"
       min-temperature="[[minTemperature]]"
-      day-number="2"></weather-day>
+      show-wind="[[showWind]]"
+      weather-data="[[day2Data]]"></weather-day>
 
       <!-- day after tomorrow -->
       <weather-day 
       class="weatherGrid"
-      weather-data="[[day3Data]]"
+      day-number="3"
       min-temperature="[[minTemperature]]"
-      day-number="3"></weather-day>
+      show-wind="[[showWind]]"
+      weather-data="[[day3Data]]"></weather-day>
      
   </template>
 
@@ -56,6 +58,10 @@
         return {
           weatherData: {
             type: Array
+          },
+          showWind: {
+            type: Boolean,
+            reflectToAttribute: true
           },
           todayData: {
             type: Array,

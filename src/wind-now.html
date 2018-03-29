@@ -1,0 +1,63 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="./wind-icon.html">
+
+
+<dom-module id="wind-now">
+  <template>
+
+    <style>
+      :host {
+        display: block;
+      }
+
+    </style>
+
+    
+      <wind-icon
+        class="windIcon"
+        on-click="_toggleWind"
+        degrees="[[_windDirection(weatherNowData.windDirection)]]"
+        large
+        round
+        wind-speed="[[_wind(weatherNowData.wind)]]"></wind-icon>
+
+      </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class WindNow extends Polymer.Element {
+      static get is() { return 'wind-now'; }
+
+      static get properties() {
+        return {
+          weatherNowData: {
+            type: Object
+          }
+        };
+      }
+
+      ready() {
+        super.ready();
+      }
+
+      _toggleWind() {
+        var toggleWind = new CustomEvent('wind-now.toggle-wind', {bubbles: true, composed: true});
+        this.dispatchEvent(toggleWind);
+      }
+
+      _wind(wind) {
+        return wind;
+      }
+
+      _windDirection(windDirection) {
+        return windDirection;
+      }
+    }
+
+    window.customElements.define(WindNow.is, WindNow);
+  </script>
+</dom-module>

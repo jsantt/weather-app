@@ -4,13 +4,16 @@
 
 <link rel="import" href="./ios-add-to-homescreen.html">
 <link rel="import" href="./location-selector.html">
+<link rel="import" href="./time-now.html">
 <link rel="import" href="./weather-analytics.html">
-<link rel="import" href="./weather-data.html">
 
+<link rel="import" href="./weather-data.html">
 <link rel="import" href="./weather-days.html">
 <link rel="import" href="./weather-icons.html">
-<link rel="import" href="./weather-symbol-icons.html">
+<link rel="import" href="./weather-symbol-icons.html"
+>
 <link rel="import" href="./weather-now.html">
+<link rel="import" href="./wind-now.html">
 
 <dom-module id="weather-app">
   <template>
@@ -34,7 +37,16 @@
 
       header {
         background-color: var(--primary-color);
-        padding: 1rem 1rem 0 1rem; 
+        padding: 1rem 1rem 0 1rem;
+      }
+
+      .empty {
+        flex: 0 0 3rem;
+      }
+
+      .header-content {
+        display: flex;
+        justify-content: space-between;
       }
 
       h1 {
@@ -71,30 +83,48 @@
     <weather-data 
       weather-location="[[weatherLocation]]"
       weather-data="{{weatherData}}"
-      weather-now-data="{{weatherNowData}}"></weather-data>
-  
+      weather-now-data="{{weatherNowData}}">
+    </weather-data>
+
     <!-- 'Espoo' (or any other city) now-->
     <paper-toast 
       id="locateError" 
-      duration="5000"></paper-toast>
+      duration="5000">
+    </paper-toast>
 
     <header>
-      <h1>
-        <location-selector 
-          place="[[place]]"></location-selector>
+      <div class="header-content">
+        <div class="empty"></div>
+        
+        <div>
+          <h1>
+            <location-selector 
+              place="[[place]]">
+            </location-selector>
+          </h1>
+          
+          <weather-now 
+            weather-now-data="[[weatherNowData]]">
+          </weather-now>
 
-      </h1>
-      <h2>beta</h2>
-      
-      <weather-now 
-        weather-now-data="[[weatherNowData]]"
-        update-time="[[locationChanged]]"></weather-now>
+        </div>
+        
+        <wind-now 
+          class="wind"
+          weather-now-data="[[weatherNowData]]">
+        </wind-now>
+
+      </div>
+        
+      <time-now update-time="[[locationChanged]]"></time-now>
 
     </header>
 
     <!-- today, tomorrow and a day after tomorrow -->
     <main>
-      <weather-days weather-data="[[weatherData]]"></weather-days>
+      <weather-days 
+        weather-data="[[weatherData]]"
+        show-wind="[[showWind]]"></weather-days>
     </main>
 
     <!-- footer -->
@@ -123,6 +153,10 @@
           place: {
             type: String,
           },
+          showWind: {
+            type: Boolean,
+            value: false
+          },
           weatherLocation: {
             type: String,
           }
@@ -136,6 +170,8 @@
         this.addEventListener('location-selector.locate-error', (event) => this._onLocateError(event));
 
         this.addEventListener('weather-data.new-place', (event) => this._onNewPlace(event));
+        this.addEventListener('wind-now.toggle-wind', (event) => this._onToggleWind(event));
+
       }
 
       _onNewLocation(event) {
@@ -150,6 +186,10 @@
       _onNewPlace(event) {
         this.place = event.detail.place;
         this.locationChanged = !this.locationChanged; 
+      }
+
+      _onToggleWind(event) {
+        this.showWind = !this.showWind;
       }
     }
 

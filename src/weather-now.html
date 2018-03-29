@@ -24,14 +24,9 @@
         font-size: var(--font-size-xxxlarge);
       }
 
-
       .degree {
         font-size: 1.5rem;
         vertical-align: top;
-      }
-
-      .windIcon {
-        margin-top: -1.2rem;
       }
 
       .symbolText {
@@ -40,9 +35,6 @@
         text-align: center;
       }
 
-      .time {
-        color: #fff;
-      }
     </style>
 
     <section class="weatherNow">
@@ -54,20 +46,9 @@
         <weather-symbol symbol-id="[[symbolId]]" large="true"></weather-symbol>
       </div>
 
-      <wind-icon
-        class="windIcon"
-        degrees="[[_windDirection(weatherNowData.windDirection)]]"
-        large
-        round
-        wind-speed="[[_wind(weatherNowData.wind)]]"></wind-icon>
-
     </section>
     <div class="symbolText">
       <weather-symbol-name symbol-id="[[symbolId]]"></weather-symbol-name>
-    </div>
-
-    <div class="time" style$="[[timeMargin]]">
-      [[timeNow]]
     </div>
 
   </template>
@@ -86,16 +67,6 @@
             type: Number,
             computed: '_symbolId(weatherNowData)'
           },
-          timeMargin: {
-            type: String
-          },
-          timeNow: {
-            type: String
-          },
-          updateTime: {
-            type: Boolean,
-            observer: '_updateTime'
-          },
           weatherNowData: {
             type: Object
           }
@@ -104,14 +75,6 @@
 
       ready() {
         super.ready();
-
-        this._updateTime();
-      }
-
-      _calculateMargin() {
-        const hours = new Date().getHours();
-        const margin = ((hours - 1) / 24) * 100;
-        this.timeMargin = 'margin-left:' + margin + '%';
       }
 
       _round(temperature) {
@@ -120,29 +83,6 @@
 
       _symbolId(weatherNowData) {
         return weatherNowData.symbol;
-      }
-
-      _timeNow() {
-        const now = new Date();
-        const minutes = now.getMinutes();
-
-        const fullMinutes = minutes < 10 ? '0' + minutes : minutes;
-
-        const time = now.getHours() + '.' + fullMinutes;
-        this.timeNow = time;
-      }
-
-      _updateTime() {
-        this._calculateMargin();
-        this._timeNow();
-      }
-
-      _wind(wind) {
-        return wind;
-      }
-
-      _windDirection(windDirection) {
-        return windDirection;
       }
     }
 

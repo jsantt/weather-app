@@ -60,17 +60,14 @@
       _createChart(weatherData) {
         let svg = this._svg();
         
-        let line = this._temperatureLine(this._temperatureCoordinates(weatherData));
-        svg.appendChild(line);
+        /*if(this.showTimeNow) { 
 
-        if(this.showTimeNow) { 
-
-          const pastTimeShadow = this._pastTimeShadow(this.hoursNow());
+          const pastTimeShadow = this._pastTimeShadow(this._hoursNow());
           //svg.appendChild(pastTimeShadow);
 
           const timeNowTriangle = this._timeNowTriangle();
           svg.appendChild(timeNowTriangle);
-        }
+        }*/
 
         this._rainBars(svg, weatherData);
         
@@ -95,35 +92,6 @@
         svg.setAttribute('preserveAspectRatio','none');
         svg.setAttribute('class', 'svg');
         return svg;
-      }
-
-      _temperatureLine(coordinates){
-        let line = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
-        line.setAttribute('fill', 'none');
-        line.setAttribute('stroke', '#fe0101');
-
-        line.setAttribute('stroke-width', '2');
-        line.setAttribute('stroke-opacity', '0.15');      
-        line.setAttribute('points', coordinates);
-
-        return line;
-
-      }
-
-      _temperatureCoordinates(data){
-        let points = '';
-
-        // Min margin for temperature graph
-        const BOTTOM_MARGIN = 40;
-        const baseX = this._chartHeight + this.minTemperature*2 - BOTTOM_MARGIN;
-
-        for(let i = 0; i < data.length; i++) {
-            if(!Number.isNaN(data[i].temperature)) {
-              points = points + (i*10) + ',' + (baseX + data[i].temperature*-2) + ' '; 
-            }
-        }
-
-        return points;
       }
 
       _rainBars(svg, data) {
@@ -155,7 +123,7 @@
         let line = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
         line.setAttribute('stroke-opacity', '1');
         line.setAttribute('fill', '#fff');
-        line.setAttribute('points', this._trianglePoints(this.hoursNow()));
+        line.setAttribute('points', this._trianglePoints(this._hoursNow()));
         return line;   
       }
 
@@ -187,7 +155,7 @@
         return rect;   
       }
 
-      hoursNow(){
+      _hoursNow(){
         return new Date().getHours();
       }
     }

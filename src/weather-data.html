@@ -72,17 +72,18 @@
       
       // other functions alphabetically
     
-      _combine(temperature, symbol, rain, wind, windDirection) {
+      _combine(humidity, rain, symbol, temperature, wind, windDirection) {
         
         let weatherJson = [];
 
         for (let i = 0; i < temperature.length; i++) {
           weatherJson.push(
             { 
+              "humidity": this._get(humidity[i]),
+              "rain": this._get(rain[i]),
+              "symbol": this._get(symbol[i]),
               "time": this._get(temperature[i], true),
               "temperature": this._get(temperature[i]),
-              "symbol": this._get(symbol[i]),
-              "rain": this._get(rain[i]),
               "wind": this._get(wind[i]),
               "windDirection": this._get(windDirection[i])
             });
@@ -111,11 +112,9 @@
         {
           "request":"getFeature", 
           "storedquery_id":"fmi::forecast::hirlam::surface::point::timevaluepair",
-          "parameters": "Temperature,WeatherSymbol3,Precipitation1h,WindDirection,WindSpeedMS",
+          "parameters": "Humidity,Precipitation1h,Temperature,WeatherSymbol3,WindDirection,WindSpeedMS",
           "starttime": this._todayFirstHour(),
           "endtime": this._tomorrowLastHour(),
-          
-
         }
 
         location.place == null 
@@ -161,6 +160,8 @@
        * <wml2:MeasurementTimeseries gml:id="mts-1-1-WindSpeedMS">
        *    ...
        * <wml2:MeasurementTimeseries gml:id="mts-1-1-WindDirection">
+       *    ...
+       * <wml2:MeasurementTimeseries gml:id="mts-1-1-Humidity">  
        * 
        * 
        * And it is converted to the following JSON and stored into this.weatherData 
@@ -177,15 +178,17 @@
         this.dispatchEvent(newPlace);
         
         const timeSeries = request.response.getElementsByTagName('wml2:MeasurementTimeseries');
-
-        const temperature = this._getTimeAndValuePairs(timeSeries, 'mts-1-1-Temperature', 'temperature');
-        const symbol = this._getTimeAndValuePairs(timeSeries, 'mts-1-1-WeatherSymbol3', 'symbol');
+        
+        const humidity = this._getTimeAndValuePairs(timeSeries, 'mts-1-1-Humidity', 'humidity');
         const rain = this._getTimeAndValuePairs(timeSeries, 'mts-1-1-Precipitation1h', 'rain');
-
+        const symbol = this._getTimeAndValuePairs(timeSeries, 'mts-1-1-WeatherSymbol3', 'symbol');
+        const temperature = this._getTimeAndValuePairs(timeSeries, 'mts-1-1-Temperature', 'temperature');
+        
         const wind = this._getTimeAndValuePairs(timeSeries, 'mts-1-1-WindSpeedMS', 'wind');
         const windDirection = this._getTimeAndValuePairs(timeSeries, 'mts-1-1-WindDirection', 'windDirection');
+        
 
-        this.weatherData = this._combine(temperature, symbol, rain, wind, windDirection);
+        this.weatherData = this._combine(humidity, rain, symbol, temperature, wind, windDirection);
 
         this.weatherData.forEach( element => {
           element.hour = this._toHour(element.time);
@@ -234,8 +237,8 @@
       _todayFirstHour() {
         
         let firstHour = new Date();
-        firstHour.setHours(0,0,0,0);
-        console.log('first hour' + firstHour.toISOString());
+        firstHour.setHours(1,0,0,0);
+      
         return firstHour.toISOString();
       }
 
@@ -244,11 +247,10 @@
         if (typeof time === 'number'){
           return time;
         }
-        console.log('aika ' +time);
-        const dateObject = new Date(time);
 
+        const dateObject = new Date(time);
         let hour = dateObject.getHours(); 
-        console.log('tunti ' + hour)
+
         return hour === 0 ? 24 : dateObject.getHours();
       }
 
@@ -259,7 +261,6 @@
         tomorrow.setDate(now.getDate() + 2);
         tomorrow.setHours(24,0,0,0);
 
-console.log('last hour' + tomorrow.toISOString());
         return tomorrow.toISOString();
       }
 
