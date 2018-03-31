@@ -13,14 +13,16 @@
 
     </style>
 
-    
-      <wind-icon
-        class="windIcon"
-        on-click="_toggleWind"
-        degrees="[[_windDirection(weatherNowData.windDirection)]]"
-        large
-        round
-        wind-speed="[[_wind(weatherNowData.wind)]]"></wind-icon>
+  
+    <wind-icon
+      class="windIcon"
+      on-click="_toggleWind"
+      degrees="[[_windDirection(observationData.windDirection)]]"
+      large
+      round
+      wind-speed="[[_wind(observationData.wind)]]">
+    </wind-icon>
+
 
       </template>
 
@@ -34,6 +36,9 @@
 
       static get properties() {
         return {
+          observationData: {
+            type: Object
+          },
           weatherNowData: {
             type: Object
           }

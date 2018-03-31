@@ -4,14 +4,16 @@
 
 <link rel="import" href="./ios-add-to-homescreen.html">
 <link rel="import" href="./location-selector.html">
+<link rel="import" href="./observation-data.html">
+
 <link rel="import" href="./time-now.html">
 <link rel="import" href="./weather-analytics.html">
-
 <link rel="import" href="./weather-data.html">
+
 <link rel="import" href="./weather-days.html">
 <link rel="import" href="./weather-icons.html">
-<link rel="import" href="./weather-symbol-icons.html"
->
+<link rel="import" href="./weather-symbol-icons.html">
+
 <link rel="import" href="./weather-now.html">
 <link rel="import" href="./wind-now.html">
 
@@ -79,7 +81,14 @@
     
     <weather-analytics key="UA-114081578-1"></weather-analytics>
 
-    <!-- All the weather data --> 
+    <!-- weather now data (observation) -->
+    <observation-data
+      observation-data="{{observationData}}"
+      place="[[place]]">
+    </observation-data> 
+
+    
+    <!-- rest of the data (forecast) -->
     <weather-data 
       weather-location="[[weatherLocation]]"
       weather-data="{{weatherData}}"
@@ -104,6 +113,7 @@
           </h1>
           
           <weather-now 
+            observation-data=[[observationData]]
             weather-now-data="[[weatherNowData]]">
           </weather-now>
 
@@ -111,6 +121,7 @@
         
         <wind-now 
           class="wind"
+          observation-data=[[observationData]]
           weather-now-data="[[weatherNowData]]">
         </wind-now>
 

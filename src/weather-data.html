@@ -107,7 +107,7 @@
       }
 
       _getParams(location){
-
+        //fmi::forecast::harmonie::surface::point::timevaluepair
         let params = 
         {
           "request":"getFeature", 
@@ -266,6 +266,10 @@
 
       _value(xmlElement) {
         return xmlElement.childNodes[0].nodeValue;
+      }
+
+      _feelsLike(t, v) {
+        let feelsLike3 = 13.12 + 0.6215*0.80 - 13.956*Math.pow(5, 0.16) + 0.4867*0.80*Math.pow(5,0.16)
       }
     }
 

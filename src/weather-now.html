@@ -39,7 +39,7 @@
 
     <section class="weatherNow">
       <div class="temperature">
-        [[_round(weatherNowData.temperature)]]
+        [[_round(observationData.temperature)]]
         <span class="degree">&#176;C</span>
       </div>
       <div class="symbol">
@@ -63,6 +63,9 @@
 
       static get properties() {
         return {
+          observationData: {
+            type: Object
+          },
           symbolId: {
             type: Number,
             computed: '_symbolId(weatherNowData)'
