@@ -8,7 +8,7 @@
 
 <link rel="import" href="./time-now.html">
 <link rel="import" href="./weather-analytics.html">
-<link rel="import" href="./weather-data.html">
+<link rel="import" href="./forecast-data.html">
 
 <link rel="import" href="./weather-days.html">
 <link rel="import" href="./weather-icons.html">
@@ -89,11 +89,11 @@
 
     
     <!-- rest of the data (forecast) -->
-    <weather-data 
+    <forecast-data 
       weather-location="[[weatherLocation]]"
-      weather-data="{{weatherData}}"
+      forecast-data="{{forecastData}}"
       weather-now-data="{{weatherNowData}}">
-    </weather-data>
+    </forecast-data>
 
     <!-- 'Espoo' (or any other city) now-->
     <paper-toast 
@@ -134,7 +134,7 @@
     <!-- today, tomorrow and a day after tomorrow -->
     <main>
       <weather-days 
-        weather-data="[[weatherData]]"
+        forecast-data="[[forecastData]]"
         show-wind="[[showWind]]"></weather-days>
     </main>
 
@@ -180,7 +180,7 @@
         this.addEventListener('location-selector.new-location', (event) => this._onNewLocation(event));
         this.addEventListener('location-selector.locate-error', (event) => this._onLocateError(event));
 
-        this.addEventListener('weather-data.new-place', (event) => this._onNewPlace(event));
+        this.addEventListener('forecast-data.new-place', (event) => this._onNewPlace(event));
         this.addEventListener('wind-now.toggle-wind', (event) => this._onToggleWind(event));
 
       }

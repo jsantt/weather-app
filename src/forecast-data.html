@@ -1,7 +1,7 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 
-<dom-module id="weather-data">
+<dom-module id="forecast-data">
 
   <!-- TODO: WeatherSymbol3 TotalCloudCover  -->
   <template>
@@ -17,8 +17,8 @@
     /**
      * Fetching the weather data from the server
      */
-    class WeatherData extends Polymer.Element {
-      static get is() { return 'weather-data'; }
+    class ForecastData extends Polymer.Element {
+      static get is() { return 'forecast-data'; }
       
       static get properties() {
         return {
@@ -56,7 +56,7 @@
            * }, 
            * {...}
            */
-          weatherData: {
+          forecastData: {
             type: Array,
             notify: true
           },
@@ -164,7 +164,7 @@
        * <wml2:MeasurementTimeseries gml:id="mts-1-1-Humidity">  
        * 
        * 
-       * And it is converted to the following JSON and stored into this.weatherData 
+       * And it is converted to the following JSON and stored into this.forecastData 
        * 
        * [
        *    {hour:1, rain: NaN, symbol: NaN, temperature: NaN, time: "2018-03-02T23:00:00Z", wind: NaN, windDirection: NaN}
@@ -174,7 +174,7 @@
        _handleResponse(event, request) {
         const place = this._parseLocation(request.response);
       
-        var newPlace = new CustomEvent('weather-data.new-place', {detail: { place: place}, bubbles: true, composed: true});
+        var newPlace = new CustomEvent('forecast-data.new-place', {detail: { place: place}, bubbles: true, composed: true});
         this.dispatchEvent(newPlace);
         
         const timeSeries = request.response.getElementsByTagName('wml2:MeasurementTimeseries');
@@ -188,13 +188,13 @@
         const windDirection = this._getTimeAndValuePairs(timeSeries, 'mts-1-1-WindDirection', 'windDirection');
         
 
-        this.weatherData = this._combine(humidity, rain, symbol, temperature, wind, windDirection);
+        this.forecastData = this._combine(humidity, rain, symbol, temperature, wind, windDirection);
 
-        this.weatherData.forEach( element => {
+        this.forecastData.forEach( element => {
           element.hour = this._toHour(element.time);
         });
         
-        this.weatherNowData = this._getWeatherNow(this.weatherData)[0];
+        this.weatherNowData = this._getWeatherNow(this.forecastData)[0];
       }
 
 
@@ -273,6 +273,6 @@
       }
     }
 
-    window.customElements.define(WeatherData.is, WeatherData);
+    window.customElements.define(ForecastData.is, ForecastData);
   </script>
 </dom-module>

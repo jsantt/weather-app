@@ -18,7 +18,7 @@
 	
 
     </style>
-    
+
       <!-- today -->
       <weather-day 
       class="weatherGrid"
@@ -26,7 +26,7 @@
       min-temperature="[[minTemperature]]"
       show-time-now="true"
       show-wind="[[showWind]]"
-      weather-data="[[todayData]]"></weather-day>
+      forecast-data="[[todayData]]"></weather-day>
   
       <!-- tomorrow -->
       <weather-day 
@@ -34,7 +34,7 @@
       day-number="2"
       min-temperature="[[minTemperature]]"
       show-wind="[[showWind]]"
-      weather-data="[[day2Data]]"></weather-day>
+      forecast-data="[[day2Data]]"></weather-day>
 
       <!-- day after tomorrow -->
       <weather-day 
@@ -42,7 +42,7 @@
       day-number="3"
       min-temperature="[[minTemperature]]"
       show-wind="[[showWind]]"
-      weather-data="[[day3Data]]"></weather-day>
+      forecast-data="[[day3Data]]"></weather-day>
      
   </template>
 
@@ -56,7 +56,7 @@
 
       static get properties() {
         return {
-          weatherData: {
+          forecastData: {
             type: Array
           },
           showWind: {
@@ -65,19 +65,19 @@
           },
           todayData: {
             type: Array,
-            computed: '_sliceToday(weatherData)'
+            computed: '_sliceToday(forecastData)'
           },
           day2Data: {
             type: Array,
-            computed: '_sliceDay2(weatherData)'
+            computed: '_sliceDay2(forecastData)'
           },
           day3Data: {
             type: Array,
-            computed: '_sliceDay3(weatherData)'
+            computed: '_sliceDay3(forecastData)'
           },
           minTemperature: {
             type: Number,
-            computed: '_minTemp(weatherData)'
+            computed: '_minTemp(forecastData)'
           },
         };
       }
@@ -96,8 +96,8 @@
         return data.slice(48, 72);
       }
 
-      _minTemp(weatherData) {
-        const min = weatherData.reduce(function (previous, current) {
+      _minTemp(data) {
+        const min = data.reduce(function (previous, current) {
           
           const currentTemp = Number.isNaN(current.temperature) ? Number.MAX_VALUE : current.temperature;
           return previous.temperature < currentTemp ? previous : current;

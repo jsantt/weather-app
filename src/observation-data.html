@@ -34,7 +34,6 @@
 
       ready() {
         super.ready();
-        console.log('ready');
       }
 
       
@@ -137,11 +136,9 @@
           wind: parseFloat(this._value(values[1])),
           windDirection: (this._value(values[3]))
         }
-        console.log(this.observationData);
       }
 
       _newPlace() {
-        console.log(this.place);
         this.$.weather.params = this._getParams(this.place);
         this.$.weather.generateRequest();
       }

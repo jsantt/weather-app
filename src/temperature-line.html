@@ -15,7 +15,7 @@
         overflow: visible;
       }
     </style>
-    [[_createChart(weatherData)]]
+    [[_createChart(forecastData)]]
 
     <!-- placeholder for chart -->
     <div class="chart" id="chart"></div>
@@ -35,7 +35,7 @@
           minTemperature: {
             type: Number
           },
-          weatherData: {
+          forecastData: {
             type: Array
           },
           _chartHeight: {
@@ -51,10 +51,10 @@
       /**
        * Chart containing rain bars, temperature line, past time shadow and present time triangle
        */
-      _createChart(weatherData) {
+      _createChart(forecastData) {
         let svg = this._svg();
         
-        let line = this._temperatureLine(this._temperatureCoordinates(weatherData));
+        let line = this._temperatureLine(this._temperatureCoordinates(forecastData));
         svg.appendChild(line);
 
         // remove previous childs
