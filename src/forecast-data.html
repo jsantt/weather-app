@@ -3,14 +3,23 @@
 
 <dom-module id="forecast-data">
 
-  <!-- TODO: WeatherSymbol3 TotalCloudCover  -->
+  <!--  Fetch weather forecast from Ilmatieteenlaitos. Prefer "Harmonie" model
+        and do another call against Hirlam to get weather symbol and rain that are 
+        missing from Harmonie -->
   <template>
     <iron-ajax
-      id="weather"
+      id="weatherHarmonie"
       url="https://data.fmi.fi/fmi-apikey/412facb5-f1bc-44e7-88cc-dc9e08903e32/wfs",
       params="{{_getParams(weatherLocation)}}",
-      handle-as="document"
-      on-response="_handleResponse"></iron-ajax>
+      handle-as="document">
+    </iron-ajax>
+
+    <iron-ajax
+      id="weatherHirlam"
+      url="https://data.fmi.fi/fmi-apikey/412facb5-f1bc-44e7-88cc-dc9e08903e32/wfs",
+      params="{{_getHirlamParams(weatherLocation)}}",
+      handle-as="document">
+    </iron-ajax>
   </template>
 
   <script>
@@ -92,6 +101,21 @@
         return weatherJson;
       }
 
+      _combineDatas(harmonie, hirlam) {
+        let combinedData = this._combine(harmonie.humidity, hirlam.rain, hirlam.symbol, harmonie.temperature, harmonie.wind, harmonie.windDirection);
+
+        combinedData.forEach( element => {
+          element.hour = this._toHour(element.time);
+        });
+
+        return combinedData;
+      }
+
+
+      _feelsLike(t, v) {
+        let feelsLike3 = 13.12 + 0.6215*0.80 - 13.956*Math.pow(5, 0.16) + 0.4867*0.80*Math.pow(5,0.16)
+      }
+
       _get(item, time) {
         return time 
           ? this._value(item.children[0]) 
@@ -107,12 +131,31 @@
       }
 
       _getParams(location){
-        //fmi::forecast::harmonie::surface::point::timevaluepair
+  
+        let params = 
+        {
+          "request":"getFeature", 
+          "storedquery_id":"fmi::forecast::harmonie::surface::point::timevaluepair",
+          "parameters": "Humidity,Temperature,WindDirection,WindSpeedMS",
+          "starttime": this._todayFirstHour(),
+          "endtime": this._tomorrowLastHour(),
+        }
+
+        location.place == null 
+          ? params.latlon = location.latlon
+          : params.place = location.place
+
+
+        return params;
+      }
+
+       _getHirlamParams(location){
+       
         let params = 
         {
           "request":"getFeature", 
           "storedquery_id":"fmi::forecast::hirlam::surface::point::timevaluepair",
-          "parameters": "Humidity,Precipitation1h,Temperature,WeatherSymbol3,WindDirection,WindSpeedMS",
+          "parameters": "Precipitation1h,WeatherSymbol3",
           "starttime": this._todayFirstHour(),
           "endtime": this._tomorrowLastHour(),
         }
@@ -132,14 +175,9 @@
         return measurementTVPs;
       }
 
-      _getWeatherNow(data) {
-        let timeNow = new Date();
-        timeNow.setMinutes(0,0,0);
-        
-        const timeISO = timeNow.toISOString().split('.')[0]+"Z";
-
+      _getWeatherNow(data, time) {
         return data.filter(function (item) {
-          return item.time === timeISO;
+          return item.time === time;
         });
       }
       
@@ -171,41 +209,65 @@
        *    {hour:2, ...}
        * ]
        */
-       _handleResponse(event, request) {
-        const place = this._parseLocation(request.response);
-      
-        var newPlace = new CustomEvent('forecast-data.new-place', {detail: { place: place}, bubbles: true, composed: true});
-        this.dispatchEvent(newPlace);
-        
-        const timeSeries = request.response.getElementsByTagName('wml2:MeasurementTimeseries');
-        
-        const humidity = this._getTimeAndValuePairs(timeSeries, 'mts-1-1-Humidity', 'humidity');
-        const rain = this._getTimeAndValuePairs(timeSeries, 'mts-1-1-Precipitation1h', 'rain');
-        const symbol = this._getTimeAndValuePairs(timeSeries, 'mts-1-1-WeatherSymbol3', 'symbol');
-        const temperature = this._getTimeAndValuePairs(timeSeries, 'mts-1-1-Temperature', 'temperature');
-        
-        const wind = this._getTimeAndValuePairs(timeSeries, 'mts-1-1-WindSpeedMS', 'wind');
-        const windDirection = this._getTimeAndValuePairs(timeSeries, 'mts-1-1-WindDirection', 'windDirection');
-        
+       _harmonieResponse(response) {
 
-        this.forecastData = this._combine(humidity, rain, symbol, temperature, wind, windDirection);
-
-        this.forecastData.forEach( element => {
-          element.hour = this._toHour(element.time);
-        });
+        const timeSeries = response.getElementsByTagName('wml2:MeasurementTimeseries');
         
-        this.weatherNowData = this._getWeatherNow(this.forecastData)[0];
+        let harmonieResponse = {};
+
+        harmonieResponse.humidity = this._getTimeAndValuePairs(timeSeries, 'mts-1-1-Humidity', 'humidity');
+        harmonieResponse.temperature = this._getTimeAndValuePairs(timeSeries, 'mts-1-1-Temperature', 'temperature');
+        harmonieResponse.wind = this._getTimeAndValuePairs(timeSeries, 'mts-1-1-WindSpeedMS', 'wind');
+        harmonieResponse.windDirection = this._getTimeAndValuePairs(timeSeries, 'mts-1-1-WindDirection', 'windDirection');
+        
+        return harmonieResponse;
       }
 
+      _hirlamResponse(response) {
+      
+        const timeSeries = response.getElementsByTagName('wml2:MeasurementTimeseries');
+        
+        let hirlamResponse = {};
+
+        hirlamResponse.rain = this._getTimeAndValuePairs(timeSeries, 'mts-1-1-Precipitation1h', 'rain');
+        hirlamResponse.symbol = this._getTimeAndValuePairs(timeSeries, 'mts-1-1-WeatherSymbol3', 'symbol');
+        
+        return hirlamResponse;
+      }
 
       _latlon (location) {
         return location.latlon; 
       }
 
+      /** 
+       *trigger call to get hirlam and harmonie weather data
+       */
       _newLocation() {
-        this.$.weather.params = this._getParams(this.weatherLocation);
-        this.$.weather.generateRequest();
+        const harmonieRequest = this._prepareRequest('weatherHarmonie', this._getParams(this.weatherLocation));
+        const hirlamRequest = this._prepareRequest('weatherHirlam', this._getHirlamParams(this.weatherLocation));
+
+        Promise.all([harmonieRequest.completes, hirlamRequest.completes])
+          .then((values) => {
+            this._sendNotification(this._parseLocation(values[0].response));
+            
+            const harmonieResponse = this._harmonieResponse(values[0].response);
+            const hirlamResponse = this._hirlamResponse(values[1].response);
+
+            this.forecastData = this._combineDatas(harmonieResponse, hirlamResponse);
+            this.weatherNowData = this._getWeatherNow(this.forecastData, this._timeNow())[0];
+          });
       }
+
+      _sendNotification(location) {
+        var newPlace = new CustomEvent('forecast-data.new-place', {detail: { place: location}, bubbles: true, composed: true});
+        this.dispatchEvent(newPlace);
+      }
+
+      _prepareRequest(id, params){
+        this.$[id].params = params;
+        return this.$[id].generateRequest();
+      }
+
 
       /* <gml:name codeSpace="http://xml.fmi.fi/namespace/locationcode/name">Kattilalaakso</gml:name> */
       _parseLocation(response){
@@ -233,6 +295,16 @@
       _place (location) {
         return location.place; 
       }
+
+      _timeNow(){
+        let timeNow = new Date();
+
+        timeNow.setMinutes(timeNow.getMinutes() + 30);
+        timeNow.setMinutes(0,0,0);
+
+        return timeNow.toISOString().split('.')[0]+"Z";
+      }
+
 
       _todayFirstHour() {
         
@@ -266,10 +338,6 @@
 
       _value(xmlElement) {
         return xmlElement.childNodes[0].nodeValue;
-      }
-
-      _feelsLike(t, v) {
-        let feelsLike3 = 13.12 + 0.6215*0.80 - 13.956*Math.pow(5, 0.16) + 0.4867*0.80*Math.pow(5,0.16)
       }
     }
 
