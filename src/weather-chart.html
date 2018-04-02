@@ -7,7 +7,12 @@
     <style>
       .chart {
         position: relative;
-      }      
+      }  
+
+      .rainBar {
+        fill: var(--color-primary);
+      }
+
       .svg {
         padding-bottom: 0.1rem;
 
@@ -46,7 +51,7 @@
           },
           _chartHeight: {
             type: Number,
-            value: 186
+            value: 50
           }
         };
       }
@@ -101,8 +106,8 @@
           if(!Number.isNaN([i].rain)) {
             let bar = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
             
-            bar.setAttribute('fill', '#0098D6');
-            bar.setAttribute('fill-opacity', '0.3');      
+            bar.setAttribute('class', 'rainBar');
+            bar.setAttribute('fill-opacity', '1');      
             bar.setAttribute('width', 9);
           
             // draw rectangle of height 20 x rain amount

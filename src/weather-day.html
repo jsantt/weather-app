@@ -18,9 +18,9 @@
         --margin-after-wind: 1.2rem;
 
         --color-dayHeader: var(--color-secondary);
-        --color-dayHeader-delimiter: var(--color-tertiary);
+        --color-dayHeader-delimiter: var(--color-gray--light);
 
-        --color-dayHeader-font: var(--color-darkGray);
+        --color-dayHeader-font: var(--color-gray--dark);
       }
 
       .day {
@@ -55,7 +55,7 @@
         margin-bottom: var(--margin-after-hours);        
         text-align: center;
 
-        color: var(--color-darkGray);
+        color: var(--color-gray--dark);
         font-weight: 700;
 
       }
@@ -78,14 +78,13 @@
         grid-row: 4;
 
         font-size: var(--font-size-medium);
-        
         text-align: center;
+        z-index: 1;
       }
 
        .temperature_line {
         grid-column: span 25;
         grid-row: 5;
-
         height: 0;
       }
       
