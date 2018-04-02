@@ -10,21 +10,24 @@
 
     <style>
       :host {
+        display: block;
+
         --grid-last-column: 25;
 
         --margin-after-hours: 1rem;
         --margin-after-wind: 1.2rem;
 
-        --color-header: rgb(255,245,194);/*rgb(245, 245, 245);*/
+        --color-dayHeader: var(--color-secondary);
+        --color-dayHeader-delimiter: var(--color-tertiary);
 
-        display: block;
+        --color-dayHeader-font: var(--color-darkGray);
       }
 
       .day {
-        background-color: var(--color-header);
-        border-top: 2px solid var(--secondary-color);
+        background-color: var(--color-dayHeader);
+        border-top: 2px solid var(--color-dayHeader-delimiter);
 
-        color: #555;
+        color: var(--color-dayHeader-font);
         font-weight: 700;
 
 
@@ -43,8 +46,7 @@
       }
 
       .hour, .hour--empty {
-        background-color: var(--color-header);
-        border-bottom: 1px solid var(--color-secondary);
+        background-color: var(--color-dayHeader);
         font-size: var(--font-size-small);
       
         grid-row: 2; 
@@ -53,7 +55,7 @@
         margin-bottom: var(--margin-after-hours);        
         text-align: center;
 
-        color: #555;
+        color: var(--color-darkGray);
         font-weight: 700;
 
       }
@@ -108,10 +110,6 @@
       .lineChart{
         grid-column: span 25;
         grid-row: 7;
-      }
-
-      .separator {
-        color: #bbb;
       }
 
     </style>

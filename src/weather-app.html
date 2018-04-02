@@ -23,6 +23,24 @@
     <style>
       :host {
         display: block;
+      
+        /* don't use these directly (except below) */
+        --color-palette-yellow: rgb(255,255,209);
+        --color-palette-brown: rgb(145,108,37);
+        --color-palette-orange: rgb(255,168,0);
+        --color-palette-blue: rgb(0,96,232);
+        --color-palette-lightBlue: rgb(132,185,255);
+
+        /* pure black or white can be too hard, use these instead  */        
+        --color-black: #111;
+        --color-white: #fff;
+        --color-darkGray: #555;        
+        /* main colors */
+        --color-primary: var(--color-palette-lightBlue);
+        --color-secondary: var(--color-palette-yellow);
+        --color-tertiary: #ddd;
+
+        /* deprecated */
         --primary-color:#67a9cfab;
         --primary-color--light: #edfafd;
         --secondary-color: #ddd; /**/
@@ -30,15 +48,14 @@
         --background-color: #fff;
         --font-color: #111;
         --font-color-light: #fff;
-        
-        /* use colors above */
+
         --rain-bar-color: var(--primary-color);
         --past-box-shadow: #fff;
 
       }
 
       header {
-        background-color: var(--primary-color);
+        background-color: var(--color-primary);
         padding: 1rem 1rem 0 1rem;
       }
 
@@ -62,7 +79,7 @@
       }
 
       h2 {
-        color: var(--font-color-light);
+        color: var(--color-white);
         font-size: 1.25rem;
         font-weight: 300;
 
@@ -72,7 +89,7 @@
       }
       
       footer {
-        background-color: var(--primary-color);
+        background-color: var(--color-primary);
         padding: 1rem;
         text-align: center;
       }
