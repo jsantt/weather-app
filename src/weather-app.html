@@ -21,9 +21,10 @@
   <template>
 
     <style>
+
       :host {
         display: block;
-      
+
         /* don't use these directly (except below) */
         --color-palette-yellow: #ffffd1;
         --color-palette-brown: #916c25;
@@ -36,24 +37,11 @@
         --color-white: #fff;
         --color-gray--dark: #555;
         --color-gray--light: #ddd;  
-             
+              
         /* main colors */
         --color-primary: var(--color-palette-lightBlue);
         --color-secondary: var(--color-palette-yellow);
         --color-tertiary: #ddd;
-
-        /* deprecated */
-        --primary-color:#67a9cfab;
-        --primary-color--light: #edfafd;
-        --secondary-color: #ddd; /**/
-        --tertiary-color:  #aed9da; 
-        --background-color: #fff;
-        --font-color: #111;
-        --font-color-light: #fff;
-
-        --rain-bar-color: var(--primary-color);
-        --past-box-shadow: #fff;
-
       }
 
       header {
@@ -92,79 +80,101 @@
       
       footer {
         background-color: var(--color-primary);
-        padding: 1rem;
+        padding: 1rem 1rem 1rem 1rem;
         text-align: center;
       }
+
+    
+      .info_header {
+        color: var(--color-white);
+      }
+
+      .info, a {
+        text-align: left;
+      }
+
+      .debug {
+        color: var(--color-primary);
+      }
+
   
     </style>
-    
-    <weather-analytics key="UA-114081578-1"></weather-analytics>
+    <body>
+      <weather-analytics key="UA-114081578-1"></weather-analytics>
 
-    <!-- weather now data (observation) -->
-    <observation-data
-      observation-data="{{observationData}}"
-      place="[[place]]">
-    </observation-data> 
+      <!-- weather now data (observation) -->
+      <observation-data
+        observation-data="{{observationData}}"
+        place="[[place]]">
+      </observation-data> 
 
-    
-    <!-- rest of the data (forecast) -->
-    <forecast-data 
-      weather-location="[[weatherLocation]]"
-      forecast-data="{{forecastData}}"
-      weather-now-data="{{weatherNowData}}">
-    </forecast-data>
+      
+      <!-- rest of the data (forecast) -->
+      <forecast-data 
+        weather-location="[[weatherLocation]]"
+        forecast-data="{{forecastData}}"
+        weather-now-data="{{weatherNowData}}">
+      </forecast-data>
 
-    <!-- 'Espoo' (or any other city) now-->
-    <paper-toast 
-      id="locateError" 
-      duration="5000">
-    </paper-toast>
+      <!-- 'Espoo' (or any other city) now-->
+      <paper-toast 
+        id="locateError" 
+        duration="5000">
+      </paper-toast>
 
-    <header>
-      <div class="header-content">
-        <div class="empty"></div>
-        
-        <div>
-          <h1>
-            <location-selector 
-              place="[[place]]">
-            </location-selector>
-          </h1>
+      <header>
+        <div class="header-content">
+          <div class="empty"></div>
           
-          <weather-now 
+          <div>
+            <h1>
+              <location-selector 
+                place="[[place]]">
+              </location-selector>
+            </h1>
+            
+            <weather-now 
+              observation-data=[[observationData]]
+              weather-now-data="[[weatherNowData]]">
+            </weather-now>
+
+          </div>
+          
+          <wind-now 
+            class="wind"
             observation-data=[[observationData]]
             weather-now-data="[[weatherNowData]]">
-          </weather-now>
+          </wind-now>
 
         </div>
+          
+        <time-now update-time="[[locationChanged]]"></time-now>
+
+      </header>
+
+      <!-- today, tomorrow and a day after tomorrow -->
+      <main>
+        <weather-days 
+          forecast-data="[[forecastData]]"
+          show-wind="[[showWind]]"></weather-days>
+      </main>
+
+      <!-- footer -->
+      <footer>
+        <p class="info_header">Säädata by Ilmatieteen laitos | avoin data</p>
+
+        <p class="info_header"><ios-add-to-homescreen></ios-add-to-homescreen></p>
         
-        <wind-now 
-          class="wind"
-          observation-data=[[observationData]]
-          weather-now-data="[[weatherNowData]]">
-        </wind-now>
+        <p class="info">Nyt osion sää päivittyy lähimmältä sääasemalta 10 minuutin välein. 
+          Ennuste on laskettu 2,5 x 2,5km alueelle Ilmatieteen laitoksen tarkimman 
+          <a href="http://ilmatieteenlaitos.fi/tutkimustoiminta/-/asset_publisher/Dz9C/content/uusin-versio-harmonie-arome-saamallista-parantaa-pilvisyyden-ja-tuulen-ennusteita?redirect=http%3A%2F%2Filmatieteenlaitos.fi%2Ftutkimustoiminta%3Fp_p_id%3D101_INSTANCE_Dz9C%26p_p_lifecycle%3D0%26p_p_state%3Dnormal%26p_p_mode%3Dview%26p_p_col_id%3Dcolumn-2%26p_p_col_count%3D2">
+          Harmonie-mallin</a> 
+          mukaisesti.
+        <p>
+        <p class="debug">Sää nyt [[observationData.time]]. Ennuste [[_forecastStartTime(forecastData)]]</p>
 
-      </div>
-        
-      <time-now update-time="[[locationChanged]]"></time-now>
-
-    </header>
-
-    <!-- today, tomorrow and a day after tomorrow -->
-    <main>
-      <weather-days 
-        forecast-data="[[forecastData]]"
-        show-wind="[[showWind]]"></weather-days>
-    </main>
-
-    <!-- footer -->
-    <footer>
-      Säädata by Ilmatieteen laitos | avoin data
-
-      <ios-add-to-homescreen></ios-add-to-homescreen>
-
-    </footer>
-
+      </footer>
+    </body>
   </template>
 
   <script>
@@ -204,23 +214,41 @@
 
       }
 
+      _debugEvent(event) {
+        console.log(event.type);
+        console.log(event.detail);
+      };
+
+      _forecastStartTime(time) {
+        return time[0].time;
+      }
+
       _onNewLocation(event) {
+        this._debugEvent(event);
+
         this.weatherLocation = event.detail;
         this.locationChanged = !this.locationChanged;
       }
 
       _onLocateError(event) {
+        this._debugEvent(event);
+        
         this.$.locateError.show({text: event.detail.text});
       }
 
       _onNewPlace(event) {
+        this._debugEvent(event);
+        
         this.place = event.detail.place;
         this.locationChanged = !this.locationChanged; 
       }
 
       _onToggleWind(event) {
+        this._debugEvent(event);
+        
         this.showWind = !this.showWind;
       }
+
     }
 
     window.customElements.define(WeatherApp.is, WeatherApp);
