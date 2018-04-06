@@ -1,4 +1,7 @@
 {
+  "entrypoint": "index.html",
+  "shell": "src/weather-app.html",
+
   "lint": {
     "rules": [
       "polymer-2"
@@ -12,5 +15,9 @@
   "sources": [
     "src/**/*",
     "image/**/*"
+  ],
+  "extraDependencies": [
+    "manifest.json",
+    "bower_components/webcomponentsjs/*.js"
   ]
 }

@@ -1,7 +1,16 @@
 {
-  "name": "Weather",
+  "name": "Weather App",
   "short_name": "Weather",
-  "description": "weather forecast application",
+  "description": "Weather forecast application",
+  "icons": [
+    {
+      "src": "image/weather-icon-57x57.png",
+      "sizes": "57x57",
+      "type": "image/png"
+    }
+  ],
   "start_url": "index.html",
-  "display": "standalone"
+  "display": "standalone",
+  "theme_color": "#84b9ff",
+  "background_color": "#84b9ff"
 }
