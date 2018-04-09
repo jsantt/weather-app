@@ -9,10 +9,14 @@
 
     <!-- See https://goo.gl/OOhYW5 -->
     <link rel="manifest" href="/manifest.json">
+    <link rel="icon" type="image/png" href="weather-icon" sizes="57x57">  
     
+
     <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet">
 
     <link rel="import" href="/src/weather-app.html">
+
+    <meta name="theme-color" content="#84b9ff">
 
     <!-- iOS -->
 
@@ -63,6 +67,9 @@
   </head>
   <body>
     <weather-app></weather-app>
+    <noscript>
+      Please enable JavaScript to view this website.
+    </noscript>
   </body>
 
   <script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
@@ -79,5 +86,16 @@
   firebase.initializeApp(config);
   </script>
   <script src="./bower_components/webcomponentsjs/webcomponents-loader.js"></script>
+  
+  <script>
+    // can be registered after everything
+
+    // Load and register pre-caching Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('service-worker.js');
+      });
+    }
+  </script>
 
 </html>
