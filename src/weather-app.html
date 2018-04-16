@@ -89,6 +89,7 @@
         color: var(--color-white);
       }
 
+
       .debug {
         color: var(--color-primary);
       }
@@ -162,7 +163,7 @@
         <p class="info_header"><ios-add-to-homescreen></ios-add-to-homescreen></p>
         
         <p class="info">
-          Sää nyt näyttää lähimmän havaintoaseman toteutuneen sään. 
+          Sää nyt -osio näyttää lähimmän havaintoaseman toteutuneen sään.
           Havainto päivittyy 10 minuutin välein.
           
           Sääsymbolit tulevat ilmatieteen laitoksen Hirlam-ennusteesta;
@@ -170,6 +171,9 @@
           <a href="http://ilmatieteenlaitos.fi/tutkimustoiminta/-/asset_publisher/Dz9C/content/uusin-versio-harmonie-arome-saamallista-parantaa-pilvisyyden-ja-tuulen-ennusteita?redirect=http%3A%2F%2Filmatieteenlaitos.fi%2Ftutkimustoiminta%3Fp_p_id%3D101_INSTANCE_Dz9C%26p_p_lifecycle%3D0%26p_p_state%3Dnormal%26p_p_mode%3Dview%26p_p_col_id%3Dcolumn-2%26p_p_col_count%3D2">
           Harmonie-ennustetta</a>
         <p>
+
+        <p class="info_header">Palaute: www.linkedin.com/in/janisantti</p>
+          
         <p class="debug">Sää nyt [[observationData.time]]. Ennuste [[_forecastStartTime(forecastData)]]</p>
 
       </footer>
@@ -190,7 +194,7 @@
             type: String,
           },
           place: {
-            type: String,
+            type: Object,
           },
           showWind: {
             type: Boolean,
@@ -238,7 +242,7 @@
       _onNewPlace(event) {
         this._debugEvent(event);
         
-        this.place = event.detail.place;
+        this.place = event.detail;
         this.locationChanged = !this.locationChanged; 
       }
 

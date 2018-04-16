@@ -48,7 +48,7 @@
         {
           "request":"getFeature", 
           "storedquery_id":"fmi::observations::weather::simple",
-          "place": location,
+          "geoid": location,
           "starttime": this._timeNowPlusMinutes(-18),
           "endtime": this._timeNow(),
         }
@@ -137,12 +137,12 @@
           time: time,
           temperature: parseFloat(this._value(values[0])),
           wind: parseFloat(this._value(values[1])),
-          windDirection: (this._value(values[3]))
+          windDirection: parseFloat(this._value(values[3]))
         }
       }
 
       _newPlace() {
-        this.$.weather.params = this._getParams(this.place);
+        this.$.weather.params = this._getParams(this.place.location.geoid);
         this.$.weather.generateRequest();
       }
 

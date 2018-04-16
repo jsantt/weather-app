@@ -145,7 +145,7 @@
 
         location.place == null 
           ? params.latlon = location.latlon
-          : params.place = location.place
+          : params.geoid = location.place
 
 
         return params;
@@ -164,7 +164,7 @@
 
         location.place == null 
           ? params.latlon = location.latlon
-          : params.place = location.place
+          : params.geoid = location.place
 
 
         return params;
@@ -250,7 +250,10 @@
 
         Promise.all([harmonieRequest.completes, hirlamRequest.completes])
           .then((values) => {
-            this._sendNotification(this._parseLocation(values[0].response));
+            this._sendNotification(
+              this._parseLocationGeoid(values[0].response),
+              this._parseLocationName(values[0].response)
+            );
             
             const harmonieResponse = this._harmonieResponse(values[0].response);
             const hirlamResponse = this._hirlamResponse(values[1].response);
@@ -260,8 +263,15 @@
           });
       }
 
-      _sendNotification(location) {
-        var newPlace = new CustomEvent('forecast-data.new-place', {detail: { place: location}, bubbles: true, composed: true});
+      _sendNotification(geoid, name) {
+        const details = {
+          location: {
+            geoid: geoid, 
+            name: name
+          }
+        };
+
+        var newPlace = new CustomEvent('forecast-data.new-place', {detail: details, bubbles: true, composed: true});
         this.dispatchEvent(newPlace);
       }
 
@@ -271,16 +281,26 @@
       }
 
 
-      /* <gml:name codeSpace="http://xml.fmi.fi/namespace/locationcode/name">Kattilalaakso</gml:name> */
-      _parseLocation(response){
-        const locations = response.getElementsByTagName('gml:name');
+      /* <gml:name codeSpace="http://xml.fmi.fi/namespace/locationcode/name">Kattilalaakso</gml:name> 
+      <gml:identifier codeSpace="http://xml.fmi.fi/namespace/stationcode/geoid">7521689</gml:identifier>*/
+      _parseLocationGeoid(response){
+        const locations = response.getElementsByTagName('gml:identifier');
 
-        const locationRow = this._getByAttributeValue(locations, 'codeSpace', 'http://xml.fmi.fi/namespace/locationcode/name');
+        const locationRow = this._getByAttributeValue(locations, 'codeSpace', 'http://xml.fmi.fi/namespace/stationcode/geoid');
         const location = this._value(locationRow);
 
         return location;
       }
 
+      _parseLocationName(response){
+        const locations = response.getElementsByTagName('gml:name');
+        const locationRow = this._getByAttributeValue(locations, 'codeSpace', 'http://xml.fmi.fi/namespace/locationcode/name');
+
+        const location = this._value(locationRow);
+
+        return location;
+      }
+    
       _parseWeatherNow(temperature, symbols){
         const temperatureRaw = this._value(temperature[0].children[1]);
         
