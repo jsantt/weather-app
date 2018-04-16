@@ -1,4 +1,5 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/paper-fab/paper-fab.html">
 
 <dom-module id="location-selector">
   <template>
@@ -12,27 +13,63 @@
         margin: 0 0 0.2rem 0;
 	    	text-align: center;	    
       }
-      .locationIcon {
+
+      .locate {
+        display: flex;
+      }
+
+      .locate_icon {
         vertical-align: middle;
 
-        padding: var(--padding-left) 0.3rem 2rem 2rem;
-        margin-left: 2rem;
+        padding: 0 0.6rem;
+        margin-left: 1rem;
       }
-      .location {
+
+      .locate_text {
+        color: var(--color-white);
+        font-size: var(--font-size-small);
+      }
+
+      .location_name {
         padding-right: 2rem;
+      }
+
+      .floating_locate {
+        position: fixed;
+        right: 3rem;
+        bottom: 4rem;
+        z-index: 3;
       }
 
     </style>
     
-    <div on-click="_geolocate">
-      <span class="locationIcon">
-        <svg fill="#333" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0 0h24v24H0z" fill="none"/>
-          <path d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm8.94 3c-.46-4.17-3.77-7.48-7.94-7.94V1h-2v2.06C6.83 3.52 3.52 6.83 3.06 11H1v2h2.06c.46 4.17 3.77 7.48 7.94 7.94V23h2v-2.06c4.17-.46 7.48-3.77 7.94-7.94H23v-2h-2.06zM12 19c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/>
+    <div class="locate" on-click="_geolocate">
+      <div class="locate_icon">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="28" height="28" viewBox="0 0 24 24">
+          <filter id="dropshadow" height="130%">
+
+            <feGaussianBlur in="SourceAlpha" stdDeviation="1"></feGaussianBlur> <!-- stdDeviation is how much to blur -->
+            <feOffset dx="0" dy="1" result="offsetblur"></feOffset> <!-- how much to offset -->
+            <feComponentTransfer>
+              <feFuncA type="linear" slope="0.5"></feFuncA> <!-- slope is the opacity of the shadow -->
+            </feComponentTransfer>
+  
+            <feMerge>        
+              <feMergeNode></feMergeNode> <!-- this contains the offset blurred image -->
+              <feMergeNode in="SourceGraphic"></feMergeNode> <!-- this contains the element that the filter is applied to -->
+            </feMerge>
+  
+          </filter>
+
+          <path style="filter:url('#dropshadow')" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
         </svg>
-      </span>
-      <span class="location">[[placeName]] nyt</span>
+        <!-- div class="locate_text">paikanna</div -->
+      </div>
+
+      <div class="location_name">[[placeName]] nyt</div>
     </div>
+
   </template>
 
   <script>
