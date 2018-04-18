@@ -11,8 +11,7 @@
       url="https://data.fmi.fi/fmi-apikey/412facb5-f1bc-44e7-88cc-dc9e08903e32/wfs",
       params="{{_getParams(weatherLocation)}}",
       headers="{'Cache-Control': 'max-age=0, no-cache, must-revalidate, proxy-revalidate'}",
-      handle-as="document"
-      on-response="_handleResponse"></iron-ajax>
+      handle-as="document"></iron-ajax>
   </template>
 
   <script>
@@ -39,6 +38,10 @@
         super.ready();
       }
 
+      _dispatchEvent(name, payload) {
+        const event = new CustomEvent(name, {detail: payload, bubbles: true, composed: true});
+        this.dispatchEvent(event);
+      }
       
       // other functions alphabetically
       
@@ -128,7 +131,7 @@
        *   snow_aws = lumen syvyys niiltä asemilta jossa se on -->
        *   
        */
-       _handleResponse(event, request) {
+       _handleResponse(request) {
         
         const time = this._value(request.response.getElementsByTagName('BsWfs:Time')[0]);
         const values = request.response.getElementsByTagName('BsWfs:ParameterValue');
@@ -143,7 +146,15 @@
 
       _newPlace() {
         this.$.weather.params = this._getParams(this.place.location.geoid);
-        this.$.weather.generateRequest();
+        
+        this.$.weather.generateRequest().completes
+          .then(req => {
+            this._handleResponse(req);
+          })
+          .catch(rejected => {
+            this._dispatchEvent('observation-data.fetch-error', {text: 'Virhe haettaessa ennustetietoja'});
+            console.log('error ' + rejected.error);
+          });
       }
 
       _tenMinutesAgo() {

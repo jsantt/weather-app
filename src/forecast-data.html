@@ -11,7 +11,7 @@
       id="weatherHarmonie"
       url="https://data.fmi.fi/fmi-apikey/412facb5-f1bc-44e7-88cc-dc9e08903e32/wfs",
       params="{{_getParams(weatherLocation)}}",
-        headers="{'Cache-Control': 'max-age=0, no-cache, must-revalidate, proxy-revalidate'}",
+      headers="{'Cache-Control': 'max-age=0, no-cache, must-revalidate, proxy-revalidate'}",
       handle-as="document">
     </iron-ajax>
 
@@ -113,6 +113,10 @@
         return combinedData;
       }
 
+      _dispatchEvent(name, payload) {
+        const event = new CustomEvent(name, {detail: payload, bubbles: true, composed: true});
+        this.dispatchEvent(event);
+      }
 
       _feelsLike(t, v) {
         let feelsLike3 = 13.12 + 0.6215*0.80 - 13.956*Math.pow(5, 0.16) + 0.4867*0.80*Math.pow(5,0.16)
@@ -260,6 +264,16 @@
 
             this.forecastData = this._combineDatas(harmonieResponse, hirlamResponse);
             this.weatherNowData = this._getWeatherNow(this.forecastData, this._timeNow())[0];
+          })
+          .catch(values => {
+          
+              if(values[0]) {
+                console.log('hop' + values[0].error);
+              }
+              if(values[1]) {
+                console.log('hip' + values[1].error);
+              }
+              this._dispatchEvent('forecast-data.fetch-error', {text: 'Virhe haettaessa ennustetietoja'});
           });
       }
 
