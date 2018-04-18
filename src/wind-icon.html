@@ -6,6 +6,7 @@
     <style>
       :host {
         display: block;
+        margin-top: -0.3rem;
       }
       .windIcon {
         height: 24px;
@@ -15,8 +16,21 @@
       }
 
       .windIcon--large {
+        animation-name: resizeButton;
+        animation-duration: 2s;
+        animation-timing-function: ease-in-out;
+
+        animation-iteration-count: 4;
+        animation-direction: alternate;
+        
         height: 36px;
         width: 36px;
+
+        transition: all .2s ease-in-out;
+      }
+
+      .windIcon--large:hover {
+        transform: scale(1.05);
       }
 
       .windSpeed {
@@ -34,6 +48,17 @@
         fill: var(--color-white);
         stroke: var(--color-gray--dark);
       }
+
+      @keyframes resizeButton {
+        from {
+          transform: scale(1);
+        }
+
+        to {
+          transform: scale(1.1);
+        }
+      }
+
 
 
     </style>

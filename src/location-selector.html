@@ -19,10 +19,20 @@
       }
 
       .locate_icon {
-        vertical-align: middle;
+        animation-name: resizeLocate;
+        animation-duration: 2s;
+        animation-timing-function: ease-in-out;
 
+        animation-iteration-count: 4;
+        animation-direction: alternate;
+
+        vertical-align: middle;
         padding: 0 0.6rem;
-        margin-left: 1rem;
+        transition: all .2s ease-in-out;
+      }
+
+      .locate_icon:hover { 
+        transform: scale(1.1);        
       }
 
       .locate_text {
@@ -30,15 +40,18 @@
         font-size: var(--font-size-small);
       }
 
-      .location_name {
-        padding-right: 2rem;
+      @keyframes resizeLocate {
+        from {
+          transform: scale(1);
+        }
+
+        to {
+          transform: scale(1.4);
+        }
       }
 
-      .floating_locate {
-        position: fixed;
-        right: 3rem;
-        bottom: 4rem;
-        z-index: 3;
+      .location_name {
+        padding-right: 2rem;
       }
 
     </style>
