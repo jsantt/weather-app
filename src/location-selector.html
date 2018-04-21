@@ -1,5 +1,6 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../bower_components/paper-spinner/paper-spinner-lite.html">
 
 <dom-module id="location-selector">
   <template>
@@ -11,11 +12,17 @@
         font-size: 1.563rem;
         
         margin: 0 0 0.2rem 0;
-	    	text-align: center;	    
+	    	text-align: center;	 
+
+          --paper-spinner-color:var(--color-palette-blue);   
       }
 
       .locate {
         display: flex;
+      }
+
+      .locate_loadIcon {
+        padding: 0 0.6rem;
       }
 
       .locate_icon {
@@ -57,28 +64,34 @@
     </style>
     
     <div class="locate" on-click="_geolocate">
-      <div class="locate_icon">
         
-        <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="28" height="28" viewBox="0 0 24 24">
-          <filter id="dropshadow" height="130%">
+        <template is="dom-if" if="[[loading]]">
+          <paper-spinner-lite class="locate_loadIcon" active></paper-spinner-lite>
+        </template>
 
-            <feGaussianBlur in="SourceAlpha" stdDeviation="1"></feGaussianBlur> <!-- stdDeviation is how much to blur -->
-            <feOffset dx="0" dy="1" result="offsetblur"></feOffset> <!-- how much to offset -->
-            <feComponentTransfer>
-              <feFuncA type="linear" slope="0.5"></feFuncA> <!-- slope is the opacity of the shadow -->
-            </feComponentTransfer>
-  
-            <feMerge>        
-              <feMergeNode></feMergeNode> <!-- this contains the offset blurred image -->
-              <feMergeNode in="SourceGraphic"></feMergeNode> <!-- this contains the element that the filter is applied to -->
-            </feMerge>
-  
-          </filter>
+        <template is="dom-if" if="[[!loading]]">
+          <div class="locate_icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="28" height="28" viewBox="0 0 24 24">
+              <filter id="dropshadow" height="130%">
 
-          <path style="filter:url('#dropshadow')" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-        </svg>
-        <!-- div class="locate_text">paikanna</div -->
-      </div>
+                <feGaussianBlur in="SourceAlpha" stdDeviation="1"></feGaussianBlur> <!-- stdDeviation is how much to blur -->
+                <feOffset dx="0" dy="1" result="offsetblur"></feOffset> <!-- how much to offset -->
+                <feComponentTransfer>
+                  <feFuncA type="linear" slope="0.5"></feFuncA> <!-- slope is the opacity of the shadow -->
+                </feComponentTransfer>
+      
+                <feMerge>        
+                  <feMergeNode></feMergeNode> <!-- this contains the offset blurred image -->
+                  <feMergeNode in="SourceGraphic"></feMergeNode> <!-- this contains the element that the filter is applied to -->
+                </feMerge>
+      
+              </filter>
+
+              <path style="filter:url('#dropshadow')" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+            </svg>
+          </div>
+        </template>
+      
 
       <div class="location_name">[[placeName]] nyt</div>
     </div>
@@ -99,11 +112,15 @@
           place: {
             type: Object,
             value: undefined,
-            observer: '_pushToHistory'
+            observer: '_newPlaceFound'
           },
           defaultPlace: {
             type: String,
             value:  '658225' // helsinki
+          },
+          loading: {
+            type: Boolean,
+            value: true
           },
           placeName: {
             type: String,
@@ -177,12 +194,15 @@
         
       }
 
-      _pushToHistory() {
+      _newPlaceFound() {
+        this.loading = false;
         history.replaceState(null, null, "?" + 'place=' + this.place.location.geoid);
       }
 
       _geolocate() {
     
+        this.loading = true;
+
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
               position => {
