@@ -92,7 +92,6 @@
           </div>
         </template>
       
-
       <div class="location_name">[[placeName]] nyt</div>
     </div>
 
@@ -119,8 +118,7 @@
             value:  '658225' // helsinki
           },
           loading: {
-            type: Boolean,
-            value: true
+            type: Boolean
           },
           placeName: {
             type: String,
@@ -195,13 +193,12 @@
       }
 
       _newPlaceFound() {
-        this.loading = false;
         history.replaceState(null, null, "?" + 'place=' + this.place.location.geoid);
       }
 
       _geolocate() {
-    
-        this.loading = true;
+
+        this._dispatchEvent('location-selector.locate-started');
 
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(

@@ -11,16 +11,16 @@
       id="weatherHarmonie"
       url="https://data.fmi.fi/fmi-apikey/412facb5-f1bc-44e7-88cc-dc9e08903e32/wfs",
       params="{{_getParams(weatherLocation)}}",
-      headers="{'Cache-Control': 'max-age=0, no-cache, must-revalidate, proxy-revalidate'}",
-      handle-as="document">
+      handle-as="document"
+      timeout="8000">
     </iron-ajax>
 
     <iron-ajax
       id="weatherHirlam"
       url="https://data.fmi.fi/fmi-apikey/412facb5-f1bc-44e7-88cc-dc9e08903e32/wfs",
       params="{{_getHirlamParams(weatherLocation)}}",
-      headers="{'Cache-Control': 'max-age=0, no-cache, must-revalidate, proxy-revalidate'}",
-      handle-as="document">
+      handle-as="document"
+      timeout="8000">
     </iron-ajax>
   </template>
 

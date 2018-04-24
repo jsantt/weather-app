@@ -129,7 +129,8 @@
           
           <div>
             <h1>
-              <location-selector 
+              <location-selector
+                loading=[[loading]]
                 place="[[place]]">
               </location-selector>
             </h1>
@@ -221,14 +222,15 @@
 
         this.addEventListener('location-selector.new-location', (event) => this._onNewLocation(event));
         
-        this.addEventListener('forecast-data.fetch-error', (event) => this._showError(event));
-        this.addEventListener('observation-data.fetch-error', (event) => this._showError(event));
-        this.addEventListener('location-selector.locate-error', (event) => this._showError(event));
+        this.addEventListener('forecast-data.fetch-error', (event) => this._onFetchError(event));
+        this.addEventListener('location-selector.locate-error', (event) => this._onFetchError(event));
+        this.addEventListener('observation-data.fetch-error', (event) => this._onFetchError(event));
 
+        this.addEventListener('location-selector.locate-started', (event) => {this.loading = true;})
 
         this.addEventListener('forecast-data.new-place', (event) => this._onNewPlace(event));
         this.addEventListener('wind-now.toggle-wind', (event) => this._onToggleWind(event));
-
+        
       }
 
       _debugEvent(event) {
@@ -238,6 +240,13 @@
 
       _forecastStartTime(time) {
         return time[0].time;
+      }
+
+      _onFetchError(event) {
+        this._debugEvent(event);
+
+        this.loading = false;
+        this._showError(event);
       }
 
       _onNewLocation(event) {
@@ -253,8 +262,6 @@
       }
 
       _showError(event) {
-        this._debugEvent(event);
-        
         this.$.locateError.show({text: event.detail.text});
       }
 
