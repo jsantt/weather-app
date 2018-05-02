@@ -83,8 +83,9 @@
           "request":"getFeature", 
           "storedquery_id":"fmi::observations::weather::timevaluepair",
           "geoid": location,
-          "starttime": this._timeNowPlusMinutes(-18),
-          "endtime": this._timeNow(),
+          "maxlocations": 1,
+          "starttime": this._roundDownToFullMinutes(-10), // get the latest data only
+          "endtime": this._roundDownToFullMinutes(0) // get the latest data only
         }
 
         return params;
@@ -194,21 +195,14 @@
           });
       }
 
-      _tenMinutesAgo() {
-        let now = new Date();
-        return firstHour.toISOString();
-      }
-
-      _timeNow() {
-        const now = new Date();
-        return now.toISOString();
-      }
-
-      _timeNowPlusMinutes(minutes) {
-        const date = new Date();  
-        const calculatedTime = new Date(date.getTime() + minutes*60000);
+      _roundDownToFullMinutes(minutes) {
         
-        return calculatedTime.toISOString();
+        let timeNow = new Date();
+
+        timeNow.setMinutes(timeNow.getMinutes() + minutes);
+        timeNow.setSeconds(0,0);
+        
+        return timeNow.toISOString();
       }
 
       _value(xmlElement) {
