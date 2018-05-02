@@ -45,12 +45,43 @@
       
       // other functions alphabetically
       
+      //MOVE TO COMMON CLASS
+      _parseLocationName(response){
+        const locations = response.getElementsByTagName('gml:name');
+        const locationRow = this._getByAttributeValue(locations, 'codeSpace', 'http://xml.fmi.fi/namespace/locationcode/name');
+
+        const location = this._value(locationRow);
+
+        return location;
+      }
+
+      _getByAttributeValue(collection, attribute, value) {
+        for (let item of collection) {
+          if(item.getAttribute(attribute) === value){
+            return item;
+          }
+        }
+      }
+
+      _getTimeAndValuePairs(sourceXml, attributeName, name) {
+        const measurementTVPs = this._getByAttributeValue(sourceXml, 'gml:id', attributeName)
+          .getElementsByTagName('wml2:MeasurementTVP')
+
+        return measurementTVPs;
+      }
+
+      _value(xmlElement) {
+        return xmlElement.childNodes[0].nodeValue;
+      }
+
+      // MOVE END
+
       _getParams(location){
       
         let params = 
         {
           "request":"getFeature", 
-          "storedquery_id":"fmi::observations::weather::simple",
+          "storedquery_id":"fmi::observations::weather::timevaluepair",
           "geoid": location,
           "starttime": this._timeNowPlusMinutes(-18),
           "endtime": this._timeNow(),
@@ -68,56 +99,26 @@
       }
       
       /**
-       *<wfs:FeatureCollection>
-        <wfs:member>
-          <BsWfs:BsWfsElement gml:id="BsWfsElement.1.1.1">
-            <BsWfs:Location>
-              <gml:Point gml:id="BsWfsElementP.1.1.1" srsDimension="2" srsName="http://www.opengis.net/def/crs/EPSG/0/4258">
-                <gml:pos>60.17802 24.78732 </gml:pos>
-              </gml:Point>
-            </BsWfs:Location>
-            <BsWfs:Time>2018-03-30T17:30:00Z</BsWfs:Time>
-            <BsWfs:ParameterName>t2m</BsWfs:ParameterName>
-            <BsWfs:ParameterValue>-2.0</BsWfs:ParameterValue>
-          </BsWfs:BsWfsElement>
-        </wfs:member>
-	      <wfs:member>
-		      <BsWfs:BsWfsElement gml:id="BsWfsElement.1.1.2">
-            ...
-            <BsWfs:ParameterName>ws_10min</BsWfs:ParameterName>
-            <BsWfs:ParameterValue>2.0</BsWfs:ParameterValue>
-            ...
-            <BsWfs:ParameterName>wg_10min</BsWfs:ParameterName>
-            <BsWfs:ParameterValue>2.6</BsWfs:ParameterValue>
-            ...
-            <BsWfs:ParameterName>wd_10min</BsWfs:ParameterName>
-			      <BsWfs:ParameterValue>65.0</BsWfs:ParameterValue>
-            ...
-            <BsWfs:ParameterName>rh</BsWfs:ParameterName>
-            <BsWfs:ParameterValue>56.0</BsWfs:ParameterValue>
-            ...
-            <BsWfs:ParameterName>td</BsWfs:ParameterName>
-            <BsWfs:ParameterValue>-9.6</BsWfs:ParameterValue>
-            ...
-            <BsWfs:ParameterName>r_1h</BsWfs:ParameterName>
-			      <BsWfs:ParameterValue>NaN</BsWfs:ParameterValue>
-            ...
-            <BsWfs:ParameterName>ri_10min</BsWfs:ParameterName>
-            <BsWfs:ParameterValue>0.0</BsWfs:ParameterValue>
-            ...
-		    	  <BsWfs:ParameterName>snow_aws</BsWfs:ParameterName>
-            <BsWfs:ParameterValue>21.0</BsWfs:ParameterValue>
-            ...
-		      	<BsWfs:ParameterName>p_sea</BsWfs:ParameterName>
-			      <BsWfs:ParameterValue>1012.6</BsWfs:ParameterValue>
-            ...
-            <BsWfs:ParameterName>vis</BsWfs:ParameterName>
-			      <BsWfs:ParameterValue>50000.0</BsWfs:ParameterValue>
-		
+       * Response example
        * 
-       * And it is converted to the following JSON and stored into this.observationData 
-       * 
-       *    {temperature: '-1', time: "2018-03-02T23:00:00Z", wind: NaN, windDirection: NaN}
+       * <wfs:FeatureCollection>
+       *   <wfs:member>
+       *     <omso:PointTimeSeriesObservation>
+       *       <om:phenomenonTime>...
+       *       <om:resultTime>...
+       *       <gml:name codeSpace="http://xml.fmi.fi/namespace/locationcode/name">
+       *         Helsinki Kaisaniemi
+       *       </gml:name>...
+       *       <om:result>
+       *         <wml2:MeasurementTimeseries gml:id="obs-obs-1-1-t2m">                         
+       *           <wml2:point>
+       *             <wml2:MeasurementTVP> 
+       *               <wml2:time>2018-04-29T07:40:00Z</wml2:time>
+			 *	              <wml2:value>6.4</wml2:value>...                          
+       *           <wml2:point>
+       *             <wml2:MeasurementTVP> 
+       *               <wml2:time>2018-04-29T07:50:00Z</wml2:time>
+			 *	              <wml2:value>6.4</wml2:value>
        * 
        *   wd_10min = tuulen suunta
        *   wawa = säätila
@@ -128,20 +129,56 @@
        *   t2m = lämpötila
        *   r_1h = 1h sademäärä
        *   ri_10min = sateen rankkuus
-       *   snow_aws = lumen syvyys niiltä asemilta jossa se on -->
+       *   snow_aws = lumen syvyys niiltä asemilta jossa se on
+       * 
+       * And it is converted to the following JSON and stored into this.observationData 
+       * 
+       * {
+       *    weatherStation: "Espoo Tapiola", 
+       *    time: "2018-05-01T14:30:00Z", 
+       *    temperature: "6.3", 
+       *    wind: "3.8", 
+       *    windDirection: "116.0"
+       * }
+       * 
        *   
        */
        _handleResponse(request) {
-        
-        const time = this._value(request.response.getElementsByTagName('BsWfs:Time')[0]);
-        const values = request.response.getElementsByTagName('BsWfs:ParameterValue');
+
+        let observations = this._parseObservations(request.response);
+        //const time = this._value(request.response.getElementsByTagName('BsWfs:Time')[0]);
+        //const values = request.response.getElementsByTagName('BsWfs:ParameterValue');
         
         this.observationData = {
-          time: time,
-          temperature: parseFloat(this._value(values[0])),
-          wind: parseFloat(this._value(values[1])),
-          windDirection: parseFloat(this._value(values[3]))
+          weatherStation: this._parseLocationName(request.response),
+          time: this._getTime(observations.temperature),
+          temperature: parseFloat(this._getValue(observations.temperature)),
+          wind: parseFloat(this._getValue(observations.wind)),
+          windDirection: parseFloat(this._getValue(observations.windDirection))
         }
+      }
+      
+      _getTime(item) {
+        return this._value(item.children[0]) 
+      }
+
+      _getValue(item) {
+        return this._value(item.children[1]) 
+      }
+
+      _parseObservations(response) {
+
+        const timeSeries = response.getElementsByTagName('wml2:MeasurementTimeseries');
+
+        let observation = {};
+
+        //measurementTVP
+        observation.humidity = this._getTimeAndValuePairs(timeSeries, 'obs-obs-1-1-rh', 'humidity')[0];
+        observation.temperature = this._getTimeAndValuePairs(timeSeries, 'obs-obs-1-1-t2m', 'temperature')[0];
+        observation.wind = this._getTimeAndValuePairs(timeSeries, 'obs-obs-1-1-ws_10min', 'wind')[0];
+        observation.windDirection = this._getTimeAndValuePairs(timeSeries, 'obs-obs-1-1-wd_10min', 'windDirection')[0];
+
+        return observation;
       }
 
       _newPlace() {
@@ -153,7 +190,7 @@
           })
           .catch(rejected => {
             this._dispatchEvent('observation-data.fetch-error', {text: 'Virhe haettaessa ennustetietoja'});
-            console.log('error ' + rejected.error);
+            console.log('error ' + rejected.stack);
           });
       }
 

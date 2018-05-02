@@ -61,7 +61,7 @@
       .loading {
         opacity: 0.5;
       }
-
+    
       h1 {
         margin: 0;
         
@@ -85,17 +85,41 @@
       footer {
         background-color: var(--color-primary);
         padding: 1rem 1rem 1rem 1rem;
+      }
+
+      footer section {
+        margin: 1rem 0;
+      }
+    
+      .footer_header {
+        color: var(--color-white);
+        margin: 1rem 0 2rem 0;
         text-align: center;
       }
 
-    
-      .info_header {
-        color: var(--color-white);
+      footer h3 {
+        color: var(--color-palette-blue);
+        font-size: var(--font-size-small);
+        font-weight: 400;
+ 
+        margin: 0;
+        padding: 0;
+        text-transform: uppercase;
       }
 
+      footer p {
+        margin: 0;
+        padding: 0;
+      }
+
+      
 
       .debug {
         color: var(--color-primary);
+      }
+
+      .footer_section {
+        text-align: left;
       }
 
   
@@ -163,23 +187,41 @@
 
       <!-- footer -->
       <footer>
-        <p class="info_header">Säädata by Ilmatieteen laitos | avoin data</p>
+        <p class="footer_header">Säädata by Ilmatieteen laitos | avoin data</p>
 
-        <p class="info_header"><ios-add-to-homescreen></ios-add-to-homescreen></p>
+        <p class="footer_header"><ios-add-to-homescreen></ios-add-to-homescreen></p>
         
-        <p class="info">
-          Sää nyt -osio näyttää lähimmän havaintoaseman toteutuneen sään.
-          Havainto päivittyy 10 minuutin välein.
-          
-          Sääsymbolit tulevat ilmatieteen laitoksen Hirlam-ennusteesta;
-          lämpötilan sekä tuulen ennusteessa käytetään tarkempaa 
-          <a href="http://ilmatieteenlaitos.fi/tutkimustoiminta/-/asset_publisher/Dz9C/content/uusin-versio-harmonie-arome-saamallista-parantaa-pilvisyyden-ja-tuulen-ennusteita?redirect=http%3A%2F%2Filmatieteenlaitos.fi%2Ftutkimustoiminta%3Fp_p_id%3D101_INSTANCE_Dz9C%26p_p_lifecycle%3D0%26p_p_state%3Dnormal%26p_p_mode%3Dview%26p_p_col_id%3Dcolumn-2%26p_p_col_count%3D2">
-          Harmonie-ennustetta</a>
-        <p>
+        <section class="footer_section">
+            <h3>Havainto</h3>  
+            <p class="info">
+                Viimeisin havainto on ajalta [[_formatTime(observationData.time)]] 
+                ja tulee havaintoasemalta [[observationData.weatherStation]]
+                 
+            <p>
+          <section>
+  
 
-        <p class="info_header">Palaute: www.linkedin.com/in/janisantti</p>
-          
-        <p class="debug">Sää nyt [[observationData.time]]. Ennuste [[_forecastStartTime(forecastData)]]</p>
+        <section class="footer_section">
+          <h3>Ennuste</h3>  
+          <p class="info">
+            Sääsymbolit tulevat ilmatieteen laitoksen Hirlam-ennusteesta;
+            lämpötilan sekä tuulen ennusteessa käytetään tarkempaa 
+            <a href="http://ilmatieteenlaitos.fi/tutkimustoiminta/-/asset_publisher/Dz9C/content/uusin-versio-harmonie-arome-saamallista-parantaa-pilvisyyden-ja-tuulen-ennusteita?redirect=http%3A%2F%2Filmatieteenlaitos.fi%2Ftutkimustoiminta%3Fp_p_id%3D101_INSTANCE_Dz9C%26p_p_lifecycle%3D0%26p_p_state%3Dnormal%26p_p_mode%3Dview%26p_p_col_id%3Dcolumn-2%26p_p_col_count%3D2">
+            Harmonie-ennustetta</a>
+          <p>
+        <section>
+
+        <section class="footer_section">
+            <h3>Palaute</h3>  
+            <p class="info">
+                <a href="www.linkedin.com/in/janisantti">
+                  www.linkedin.com/in/janisantti
+                </a>
+            <p>
+          <section>
+
+   
+        <p class="debug">Ennuste [[_forecastStartTime(forecastData)]]</p>
 
       </footer>
     </body>
@@ -240,6 +282,15 @@
 
       _forecastStartTime(time) {
         return time[0].time;
+      }
+
+      _formatTime(time) {
+        const parsedTime = new Date(time);
+        
+        const minutes = parsedTime.getMinutes();
+        const fullMinutes = minutes < 10 ? '0' + minutes : minutes;
+
+        return  parsedTime.getHours() + '.' + fullMinutes;
       }
 
       _onFetchError(event) {
