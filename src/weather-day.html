@@ -10,8 +10,6 @@
 
     <style>
       :host {
-        display: block;
-
         --grid-last-column: 25;
 
         --margin-after-hours: 1rem;
@@ -21,6 +19,29 @@
         --color-dayHeader-delimiter: var(--color-gray--light);
 
         --color-dayHeader-font: var(--color-gray--dark);
+
+      }
+
+      .weatherDay {
+        position: relative;
+      }
+
+      .weatherDay_grid {
+        display: grid;
+        grid-row-gap: 0;
+        grid-template-columns: repeat(25, 1fr);
+        grid-template-rows: minmax(1.4rem, auto);
+      }
+
+      .weatherDay_shadow {
+        background-color: rgb(255,255,255, 0.7);
+        position: absolute;
+        top: 3rem;
+        bottom: 0;
+        left: 0;
+        right: 45%;
+
+        z-index: 3;
       }
 
       .day {
@@ -112,71 +133,81 @@
       }
 
     </style>
-
-    <div class="day">
-        <span>[[_day(dayNumber)]]<span>
-        <span class="separator">/</span>
-        <span>[[_weekday(dayNumber)]]</span>
-    </div>
-    
-    <template is="dom-repeat" items="[[forecastData]]" as="entry">
+    <div class="weatherDay">
       
-      <!-- EMPTY COLUMN -->
-      <template is="dom-if" if="[[_isFirst(index)]]">
-        <div class="hour--empty"></div>
-        <div class="symbol--empty"></div>
-        <div class="temperature--empty"></div>
-        <div class="wind--empty"></div>
+      <template is="dom-if" if="[[_isFirst(dayNumber)]]">
+        <div class="weatherDay_shadow"></div>
       </template>
-      
-      <!-- HOUR, SYMBOL & TEMPERATURE -->
-      <template is="dom-if" if="[[_isFourth(index)]]">
 
-        <div class="hour">
-          [[entry.hour]]
-        </div>
-
-        <div class="symbol">
-            <weather-symbol symbol-id="[[_symbolId(entry)]]"></weather-symbol>
+      <div class="weatherDay_grid">
+        
+        <div class="day">
+            <span>[[_day(dayNumber)]]<span>
+            <span class="separator">/</span>
+            <span>[[_weekday(dayNumber)]]</span>
         </div>
         
-        <div class="temperature">
-          <template is="dom-if" if="{{_notNaN(entry.temperature)}}">  
-            {{_round(entry.temperature)}}<span class="degree">&#176;</span>   
+        <template is="dom-repeat" items="[[forecastData]]" as="entry">
+          
+          <!-- EMPTY COLUMN -->
+          <template is="dom-if" if="[[_isFirst(index)]]">
+            <div class="hour--empty"></div>
+            <div class="symbol--empty"></div>
+            <div class="temperature--empty"></div>
+            <div class="wind--empty"></div>
           </template>
-        </div>
 
-        <template is="dom-if" if="[[showWind]]">
-          <div class="wind">
-  
-              <wind-icon 
-                degrees="[[entry.windDirection]]"
-                round
-                wind-speed="[[entry.wind]]">
-              </wind-icon>
 
+          <!-- HOUR, SYMBOL & TEMPERATURE -->
+          <template is="dom-if" if="[[_isFourth(index)]]">
+
+            <div class="hour">
+                  [[entry.hour]]
+            </div>
+            
+            <div class="symbol">
+                <weather-symbol symbol-id="[[_symbolId(entry)]]"></weather-symbol>
+            </div>
+            
+            <div class="temperature">
+              <template is="dom-if" if="{{_notNaN(entry.temperature)}}">  
+                {{_round(entry.temperature)}}<span class="degree">&#176;</span>   
+              </template>
+            </div>
+
+            <template is="dom-if" if="[[showWind]]">
+              <div class="wind">
+      
+                  <wind-icon 
+                    degrees="[[entry.windDirection]]"
+                    round
+                    wind-speed="[[entry.wind]]">
+                  </wind-icon>
+
+              </div>
+          </template>
+
+          </template>    
+        </template>
+
+        <div class="temperature_line">
+            <temperature-line 
+              min-temperature=[[minTemperature]]
+              forecast-data="[[forecastData]]">
+            </temperature-line>
+      
           </div>
-      </template>
 
-      </template>    
-    </template>
+        <section class="lineChart">
+        
+          <weather-chart 
+            min-temperature=[[minTemperature]]
+            show-time-now=[[showTimeNow]]
+            forecast-data="[[forecastData]]"></weather-chart>
 
-    <div class="temperature_line">
-        <temperature-line 
-          min-temperature=[[minTemperature]]
-          forecast-data="[[forecastData]]">
-        </temperature-line>
-  
+        </section>
       </div>
-
-    <section class="lineChart">
-    
-      <weather-chart 
-        min-temperature=[[minTemperature]]
-        show-time-now=[[showTimeNow]]
-        forecast-data="[[forecastData]]"></weather-chart>
-
-    </section>
+    </div>
 
   </template>
 
