@@ -1,5 +1,6 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="./xml-parser.html">
 
 <dom-module id="observation-data">
 
@@ -16,7 +17,7 @@
 
   <script>
   
-  class ObservationData extends Polymer.Element {
+  class ObservationData extends XmlParser(Polymer.Element) {
       static get is() { return 'observation-data'; }
       
       static get properties() {
@@ -37,44 +38,8 @@
       ready() {
         super.ready();
       }
-
-      _dispatchEvent(name, payload) {
-        const event = new CustomEvent(name, {detail: payload, bubbles: true, composed: true});
-        this.dispatchEvent(event);
-      }
       
       // other functions alphabetically
-      
-      //MOVE TO COMMON CLASS
-      _parseLocationName(response){
-        const locations = response.getElementsByTagName('gml:name');
-        const locationRow = this._getByAttributeValue(locations, 'codeSpace', 'http://xml.fmi.fi/namespace/locationcode/name');
-
-        const location = this._value(locationRow);
-
-        return location;
-      }
-
-      _getByAttributeValue(collection, attribute, value) {
-        for (let item of collection) {
-          if(item.getAttribute(attribute) === value){
-            return item;
-          }
-        }
-      }
-
-      _getTimeAndValuePairs(sourceXml, attributeName, name) {
-        const measurementTVPs = this._getByAttributeValue(sourceXml, 'gml:id', attributeName)
-          .getElementsByTagName('wml2:MeasurementTVP')
-
-        return measurementTVPs;
-      }
-
-      _value(xmlElement) {
-        return xmlElement.childNodes[0].nodeValue;
-      }
-
-      // MOVE END
 
       _getParams(location){
       
@@ -147,24 +112,14 @@
        _handleResponse(request) {
 
         let observations = this._parseObservations(request.response);
-        //const time = this._value(request.response.getElementsByTagName('BsWfs:Time')[0]);
-        //const values = request.response.getElementsByTagName('BsWfs:ParameterValue');
         
         this.observationData = {
-          weatherStation: this._parseLocationName(request.response),
-          time: this._getTime(observations.temperature),
-          temperature: parseFloat(this._getValue(observations.temperature)),
-          wind: parseFloat(this._getValue(observations.wind)),
-          windDirection: parseFloat(this._getValue(observations.windDirection))
+          weatherStation: super.parseLocationName(request.response),
+          time: super.getTime(observations.temperature),
+          temperature: parseFloat(super.getValue(observations.temperature)),
+          wind: parseFloat(super.getValue(observations.wind)),
+          windDirection: parseFloat(super.getValue(observations.windDirection))
         }
-      }
-      
-      _getTime(item) {
-        return this._value(item.children[0]) 
-      }
-
-      _getValue(item) {
-        return this._value(item.children[1]) 
       }
 
       _parseObservations(response) {
@@ -174,10 +129,10 @@
         let observation = {};
 
         //measurementTVP
-        observation.humidity = this._getTimeAndValuePairs(timeSeries, 'obs-obs-1-1-rh', 'humidity')[0];
-        observation.temperature = this._getTimeAndValuePairs(timeSeries, 'obs-obs-1-1-t2m', 'temperature')[0];
-        observation.wind = this._getTimeAndValuePairs(timeSeries, 'obs-obs-1-1-ws_10min', 'wind')[0];
-        observation.windDirection = this._getTimeAndValuePairs(timeSeries, 'obs-obs-1-1-wd_10min', 'windDirection')[0];
+        observation.humidity = super.getTimeAndValuePairs(timeSeries, 'obs-obs-1-1-rh', 'humidity')[0];
+        observation.temperature = super.getTimeAndValuePairs(timeSeries, 'obs-obs-1-1-t2m', 'temperature')[0];
+        observation.wind = super.getTimeAndValuePairs(timeSeries, 'obs-obs-1-1-ws_10min', 'wind')[0];
+        observation.windDirection = super.getTimeAndValuePairs(timeSeries, 'obs-obs-1-1-wd_10min', 'windDirection')[0];
 
         return observation;
       }
@@ -190,7 +145,7 @@
             this._handleResponse(req);
           })
           .catch(rejected => {
-            this._dispatchEvent('observation-data.fetch-error', {text: 'Virhe haettaessa ennustetietoja'});
+            super.raiseEvent('observation-data.fetch-error', {text: 'Virhe haettaessa ennustetietoja'});
             console.log('error ' + rejected.stack);
           });
       }
@@ -203,10 +158,6 @@
         timeNow.setSeconds(0,0);
         
         return timeNow.toISOString();
-      }
-
-      _value(xmlElement) {
-        return xmlElement.childNodes[0].nodeValue;
       }
     }
 
