@@ -3,6 +3,7 @@
       return class extends superClass {
 
         getByAttributeValue(collection, attribute, value) {
+          
           for (let item of collection) {
             if(item.getAttribute(attribute) === value){
               return item;
@@ -18,7 +19,7 @@
         getTimeAndValuePairs(sourceXml, attributeName, name) {
           const measurementTVPs = this.getByAttributeValue(sourceXml, 'gml:id', attributeName)
             .getElementsByTagName('wml2:MeasurementTVP')
-
+    
           return measurementTVPs;
         }
 
@@ -36,7 +37,13 @@
         }
 
         raiseEvent(name, payload) {
-          const event = new CustomEvent(name, {detail: payload, bubbles: true, composed: true});
+          let message = payload;
+
+          if(!navigator.onLine) {
+            message = payload.detail + '. ' + 'Verkkoon ei saatu yhteyttä'; 
+          }
+
+          const event = new CustomEvent(name, {detail: message, bubbles: true, composed: true});
           this.dispatchEvent(event);
         }
 

@@ -19,10 +19,29 @@ module.exports = {
   runtimeCaching: [
     {
       urlPattern: /\/bower_components\/webcomponentsjs\/.*.js/,
-      handler: 'fastest',
+      handler: 'cacheFirst',
       options: {
         cache: {
           name: 'webcomponentsjs-polyfills-cache',
+        },
+      },
+    },
+    {
+      urlPattern: /^https:\/\/data.fmi.fi/,
+      handler: 'networkFirst',
+      options: {
+        cache: {
+          name: 'weather-data-cache',
+        },
+        ignoreUrlParametersMatching: '[/starttime/, /endtime/]'
+      },
+    },
+    {
+      urlPattern: /^https:\/\/fonts.googleapis.com/,
+      handler: 'cacheFirst',
+      options: {
+        cache: {
+          name: 'fonts-cache',
         },
       },
     },
