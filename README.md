@@ -2,7 +2,7 @@
 
 ## Architecture
 
-Weather app uses component based architecture. Weather-app.html is the mediator for inter-component communication.   
+Weather app uses component based architecture. Weather-app.html is a global mediator for inter-component communication.   
 
 ## Install the Polymer-CLI
 
