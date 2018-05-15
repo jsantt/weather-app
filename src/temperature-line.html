@@ -96,13 +96,17 @@
       _temperatureCoordinates(data){
         let points = '';
 
+        // bigger number indicate more variance in line height 
+        const lineVariance = 5; 
+        
         // Min margin for temperature graph
-        const BOTTOM_MARGIN = 0;
-        const baseX = this._chartHeight + this.minTemperature*2 - BOTTOM_MARGIN;
+        const bottomMargin = 0;
+        const baseX = this._chartHeight + this.minTemperature*lineVariance - bottomMargin;
+
 
         for(let i = 0; i < data.length; i++) {
             if(!Number.isNaN(data[i].temperature)) {
-              points = points + (i*10) + ',' + (baseX + data[i].temperature*-5) + ' '; 
+              points = points + (i*10) + ',' + (baseX + data[i].temperature*-lineVariance) + ' '; 
             }
         }
 
