@@ -14,8 +14,6 @@
 
     <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet">
 
-    <link rel="import" href="/src/weather-app.html">
-
     <meta name="theme-color" content="#84b9ff">
 
     <!-- iOS -->
@@ -73,6 +71,10 @@
     </noscript>
   </body>
 
+  <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+  
+  <script type="module" src="/src/weather-app.js"></script>
+
   <script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
   <script>
   // Initialize Firebase
@@ -86,7 +88,6 @@
   };
   firebase.initializeApp(config);
   </script>
-  <script src="./bower_components/webcomponentsjs/webcomponents-loader.js"></script>
   
   <script>
     // can be registered after everything

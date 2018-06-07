@@ -1,13 +1,12 @@
-<link rel="import" href="../bower_components/polymer/polymer-element.html">
+import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import './temperature-line.js';
+import './weather-chart.js';
+import './weather-symbol.js';
+import './wind-icon.js';
 
-<link rel="import" href="./temperature-line.html">
-<link rel="import" href="./weather-chart.html">
-<link rel="import" href="./weather-symbol.html">
-<link rel="import" href="./wind-icon.html">
-
-<dom-module id="weather-day">
-  <template>
-
+class WeatherDay extends PolymerElement {
+  static get template() {
+    return html`
     <style>
       :host {
         --grid-last-column: 25;
@@ -145,7 +144,7 @@
             <span>[[_day(dayNumber)]]<span>
             <span class="separator">/</span>
             <span>[[_weekday(dayNumber)]]</span>
-        </div>
+        </span></span></div>
         
         <template is="dom-repeat" items="[[forecastData]]" as="entry">
           
@@ -171,17 +170,14 @@
             
             <div class="temperature">
               <template is="dom-if" if="{{_notNaN(entry.temperature)}}">  
-                {{_round(entry.temperature)}}<span class="degree">&#176;</span>   
+                {{_round(entry.temperature)}}<span class="degree">°</span>   
               </template>
             </div>
 
             <template is="dom-if" if="[[showWind]]">
               <div class="wind">
       
-                  <wind-icon 
-                    degrees="[[entry.windDirection]]"
-                    round
-                    wind-speed="[[entry.wind]]">
+                  <wind-icon degrees="[[entry.windDirection]]" round="" wind-speed="[[entry.wind]]">
                   </wind-icon>
 
               </div>
@@ -191,93 +187,80 @@
         </template>
 
         <div class="temperature_line">
-            <temperature-line 
-              min-temperature=[[minTemperature]]
-              forecast-data="[[forecastData]]">
+            <temperature-line min-temperature="[[minTemperature]]" forecast-data="[[forecastData]]">
             </temperature-line>
       
           </div>
 
         <section class="lineChart">
         
-          <weather-chart 
-            min-temperature=[[minTemperature]]
-            show-time-now=[[showTimeNow]]
-            forecast-data="[[forecastData]]"></weather-chart>
+          <weather-chart min-temperature="[[minTemperature]]" show-time-now="[[showTimeNow]]" forecast-data="[[forecastData]]"></weather-chart>
 
         </section>
       </div>
     </div>
+`;
+  }
 
-  </template>
+  static get is() { return 'weather-day'; }
 
-  <script>
-    /**
-     * @customElement
-     * @polymer
-     */
-    class WeatherDay extends Polymer.Element {
-      static get is() { return 'weather-day'; }
-      
-      static get properties() {
-        return {
-          dayNumber: {
-            type: Number
-          },
-          minTemperature: {
-            type: Number
-          },
-          showTimeNow: {
-            type: Boolean,
-            value: false
-          },
-          showWind: {
-            type: Boolean
-          },
-          forecastData: {
-            type: Array          
-          }
-        };
+  static get properties() {
+    return {
+      dayNumber: {
+        type: Number
+      },
+      minTemperature: {
+        type: Number
+      },
+      showTimeNow: {
+        type: Boolean,
+        value: false
+      },
+      showWind: {
+        type: Boolean
+      },
+      forecastData: {
+        type: Array          
       }
+    };
+  }
 
-      _day(number){
-        const dayNames = ['Tänään', 'Huomenna', 'Ylihuomenna'];
-        return dayNames[number - 1];
-      }
+  _day(number){
+    const dayNames = ['Tänään', 'Huomenna', 'Ylihuomenna'];
+    return dayNames[number - 1];
+  }
 
-      _weekday(number){
-        let day = new Date();
-        day.setDate(day.getDate() + (number - 1));
-        return day.toLocaleString('fi-FI', {weekday: 'short'});
-      }
+  _weekday(number){
+    let day = new Date();
+    day.setDate(day.getDate() + (number - 1));
+    return day.toLocaleString('fi-FI', {weekday: 'short'});
+  }
 
-      _everyFourth(index, item) {
-        return index % 3 === 0 ? this._hideNaN(item) : '';
-      }
+  _everyFourth(index, item) {
+    return index % 3 === 0 ? this._hideNaN(item) : '';
+  }
 
-      _round(item){
-        const rounded = Math.round(item);
-        const result = Number.isNaN(rounded) ? '' : rounded;
+  _round(item){
+    const rounded = Math.round(item);
+    const result = Number.isNaN(rounded) ? '' : rounded;
 
-        return result; 
-      }
+    return result; 
+  }
 
-      _isFirst(index) {
-        return index === 1;
-      }
+  _isFirst(index) {
+    return index === 1;
+  }
 
-      _isFourth(index) {
-        return (index + 1) % 3 === 0;
-      }
+  _isFourth(index) {
+    return (index + 1) % 3 === 0;
+  }
 
-      _notNaN(item) {
-        return !Number.isNaN(item);
-      }
-      _symbolId(data) {
-        return data.symbol;
-      }
-    }
+  _notNaN(item) {
+    return !Number.isNaN(item);
+  }
+  _symbolId(data) {
+    return data.symbol;
+  }
+}
 
-    window.customElements.define(WeatherDay.is, WeatherDay);
-  </script>
-</dom-module>
+window.customElements.define(WeatherDay.is, WeatherDay);
