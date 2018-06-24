@@ -70,7 +70,7 @@ class WeatherDay extends PolymerElement {
         font-size: var(--font-size-small);
       
         grid-row: 2; 
-        grid-column: span 3;
+        grid-column: span 1 /*3*/;
 
         margin-bottom: var(--margin-after-hours);        
         text-align: center;
@@ -81,6 +81,10 @@ class WeatherDay extends PolymerElement {
       }
       .hour--empty {
         grid-column: span 1;
+      }
+      .hour--dot {
+        color: var(--color-gray);
+        font-size: 0.75rem;
       }
 
       .symbol, .symbol--empty {
@@ -150,13 +154,19 @@ class WeatherDay extends PolymerElement {
           
           <!-- EMPTY COLUMN -->
           <template is="dom-if" if="[[_isFirst(index)]]">
-            <div class="hour--empty"></div>
+            
             <div class="symbol--empty"></div>
             <div class="temperature--empty"></div>
             <div class="wind--empty"></div>
           </template>
 
-
+       
+            <template is="dom-if" if="[[!_isFourth(index)]]">
+              <div class="hour hour--dot">
+                .
+              </div>
+            </template>
+       
           <!-- HOUR, SYMBOL & TEMPERATURE -->
           <template is="dom-if" if="[[_isFourth(index)]]">
 
@@ -182,7 +192,7 @@ class WeatherDay extends PolymerElement {
 
               </div>
           </template>
-
+          
           </template>    
         </template>
 
