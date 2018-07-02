@@ -6,7 +6,6 @@ class WindIcon extends PolymerElement {
     return html`
     <style>
       :host {
-        display: block;
         margin-top: -0.3rem;
       }
       .windIcon {

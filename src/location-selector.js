@@ -95,7 +95,7 @@ class LocationSelector extends PolymerElement {
           </div>
         </template>
       
-      <div class="location_name">[[placeName]] nyt</div>
+      <div class="location_name">[[placeName]] [[headerSuffix]]</div>
     </div>
 `;
   }
@@ -112,6 +112,9 @@ class LocationSelector extends PolymerElement {
       defaultPlace: {
         type: String,
         value:  '658225' // helsinki
+      },
+      headerSuffix: {
+        type: String
       },
       loading: {
         type: Boolean

@@ -5,12 +5,15 @@ import './location-selector.js';
 import './observation-data.js';
 import './time-now.js';
 
-import './weather-analytics.js';
 import './forecast-data.js';
+import './forecast-header';
+import './weather-analytics.js';
 import './weather-days.js';
 
 import './weather-footer.js';
 import './weather-icons.js';
+import './observation-modal';
+import './observation-content';
 import './weather-notification.js';
 
 import './weather-symbol-icons.js';
@@ -45,47 +48,7 @@ class WeatherApp extends PolymerElement {
         --color-primary: var(--color-palette-lightBlue);
         --color-secondary: var(--color-palette-yellow);
         --color-tertiary: #ddd;
-      }
-
-      header {
-        background-color: var(--color-primary);
-        padding: 1rem 1rem 0 1rem;
-      }
-
-      .empty {
-        flex: 0 0 3rem;
-      }
-
-      .header-content {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 0.3rem;
-      }
-
-      .loading {
-        opacity: 0.5;
-      }
-    
-      h1 {
-        margin: 0;
-        
-        font-size: 1.953rem;
-        font-weight: inherit;
-        
-        padding: 0;
-          
-      }
-
-      h2 {
-        color: var(--color-white);
-        font-size: 1.25rem;
-        font-weight: 300;
-
-        position: absolute;
-        right: 1rem;
-        top: -0.65rem;
-      }
-      
+      }      
     </style>
     
       <weather-analytics key="UA-114081578-1"></weather-analytics>
@@ -94,45 +57,37 @@ class WeatherApp extends PolymerElement {
       </weather-notification>
 
       <!-- weather now data (observation) -->
-      <observation-data observation-data="{{observationData}}" place="[[place]]">
+      <observation-data 
+        observation-data="{{observationData}}"
+        place="[[place]]">
       </observation-data> 
-
-
       
       <!-- rest of the data (forecast) -->
-      <forecast-data weather-location="[[weatherLocation]]" forecast-data="{{forecastData}}" weather-now-data="{{weatherNowData}}">
+      <forecast-data 
+        weather-location="[[weatherLocation]]" 
+        forecast-data="{{forecastData}}" 
+        weather-now-data="{{weatherNowData}}">
       </forecast-data>
 
       <!-- 'Espoo' (or any other city) now-->
       <paper-toast id="locateError" duration="5000">
       </paper-toast>
       
-      <header>
-        <div class="header-content">
-          <div class="empty"></div>
-          
-          <div>
-            <h1>
-              <location-selector loading="[[loading]]" place="[[place]]">
-              </location-selector>
-            </h1>
-            
-            <weather-now observation-data="[[observationData]]" weather-now-data="[[weatherNowData]]">
-            </weather-now>
-
-          </div>
-          
-          <wind-now class="wind" observation-data="[[observationData]]" weather-now-data="[[weatherNowData]]">
-          </wind-now>
-
-        </div>
-          
-        <time-now update-time="[[locationChanged]]"></time-now>
-
-      </header>
+      <forecast-header
+        loading="[[loading]]"
+        place="[[place]]"
+        weather-data="{{weatherNowData}}">
+      </forecast-header>
+      
+      <observation-modal visible="[[observationVisible]]">
+        <observation-content
+          observation-data="{{observationData}}">
+        </observation-content>
+      </observation-modal>
+      
 
       <!-- today, tomorrow and a day after tomorrow -->
-      <main class\$="[[_loading()]]">
+      <main class$="[[_loading()]]">
         <weather-days forecast-data="[[forecastData]]" show-wind="[[showWind]]"></weather-days>
       </main>
 
@@ -153,12 +108,16 @@ class WeatherApp extends PolymerElement {
         notify: true
       },
       locationChanged: {
-        type: String,
+        type: String
       },
       place: {
         type: Object,
       },
       showWind: {
+        type: Boolean,
+        value: false
+      },
+      observationVisible: {
         type: Boolean,
         value: false
       },
@@ -181,6 +140,10 @@ class WeatherApp extends PolymerElement {
 
     this.addEventListener('forecast-data.new-place', (event) => this._onNewPlace(event));
     this.addEventListener('wind-now.toggle-wind', (event) => this._onToggleWind(event));
+
+    this.addEventListener('forecast-header.observation-link-click', (event) => this._toggleObservationVisible());
+    this.addEventListener('observation-header.forecast-link-click', (event) => this._toggleObservationVisible());
+    
     
   }
 
@@ -202,6 +165,10 @@ class WeatherApp extends PolymerElement {
     this.loading = true;
     this.weatherLocation = event.detail;
     this.locationChanged = !this.locationChanged;
+  }
+
+  _toggleObservationVisible() {
+    this.observationVisible = !this.observationVisible;
   }
 
   _loading() {

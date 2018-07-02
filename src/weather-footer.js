@@ -47,17 +47,7 @@ class WeatherFooter extends PolymerElement {
     <p class="footer_header"><ios-add-to-homescreen></ios-add-to-homescreen></p>
     
     <section class="footer_section">
-        <h3>Sää nyt</h3>  
-        <p class="info">
-            Viimeisin havainto tehtiin klo [[_formatTime(observationData.time)]] 
-            havaintoasemalta [[observationData.weatherStation]]
-             
-        </p><p>
-      </p><section>
-
-
-    <section class="footer_section">
-      <h3>Ennuste</h3>  
+     
       <p class="info">
         Sääsymbolit tulevat ilmatieteen laitoksen Hirlam-ennusteesta;
         lämpötilan sekä tuulen ennusteessa käytetään tarkempaa 

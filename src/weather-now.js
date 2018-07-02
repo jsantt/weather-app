@@ -19,7 +19,7 @@ class WeatherNow extends PolymerElement {
       }
 
       .temperature {
-        font-size: var(--font-size-xxxlarge);
+        font-size: var(--font-size-xxlarge);
       }
 
       .degree {
@@ -29,7 +29,7 @@ class WeatherNow extends PolymerElement {
 
       .symbolText {
         color: var(--color-black);
-        font-size: var(--font-size-medium);
+        font-size: var(--font-size-small);
         text-align: center;
       }
 
@@ -37,7 +37,7 @@ class WeatherNow extends PolymerElement {
 
     <section class="weatherNow">
       <div class="temperature">
-        [[_round(observationData.temperature)]]
+        [[_round(temperature)]]
         <span class="degree">°C</span>
       </div>
       <div class="symbol">
@@ -55,15 +55,14 @@ class WeatherNow extends PolymerElement {
 
   static get properties() {
     return {
-      observationData: {
+      weatherNowData: {
         type: Object
       },
       symbolId: {
-        type: Number,
-        computed: '_symbolId(weatherNowData)'
+        type: Number
       },
-      weatherNowData: {
-        type: Object
+      temperature: {
+        type: Number
       }
     };
   }
@@ -72,6 +71,9 @@ class WeatherNow extends PolymerElement {
     super.ready();
   }
 
+  /*
+   * Round to one decimal. Add decimal to even numbers.
+   * */
   _round(temperature) {
     return Math.round(temperature * 10) / 10;
   }

@@ -13,7 +13,13 @@ class WindNow extends PolymerElement {
     </style>
 
   
-    <wind-icon class="windIcon" on-click="_toggleWind" degrees="[[_windDirection(observationData.windDirection)]]" large="" round="" wind-speed="[[_wind(observationData.wind)]]">
+    <wind-icon 
+      class="windIcon" 
+      on-click="_toggleWind" 
+      degrees="[[windDirection]]" 
+      large="" 
+      round="" 
+      wind-speed="[[wind]]">
     </wind-icon>
 `;
   }
@@ -22,11 +28,11 @@ class WindNow extends PolymerElement {
 
   static get properties() {
     return {
-      observationData: {
-        type: Object
+      windDirection: {
+        type: Number
       },
-      weatherNowData: {
-        type: Object
+      windSpeed: {
+        type: Number
       }
     };
   }
@@ -38,14 +44,6 @@ class WindNow extends PolymerElement {
   _toggleWind() {
     var toggleWind = new CustomEvent('wind-now.toggle-wind', {bubbles: true, composed: true});
     this.dispatchEvent(toggleWind);
-  }
-
-  _wind(wind) {
-    return wind;
-  }
-
-  _windDirection(windDirection) {
-    return windDirection;
   }
 }
 

@@ -118,6 +118,11 @@ class ObservationData extends PolymerElement {
       this.observationData = {
         weatherStation: parseLocationName(request.response),
         time: getTime(observations.temperature),
+        humidity: getValue(observations.humidity),
+        pressure: getValue(observations.pressure),
+        rain: getValue(observations.rain),
+        rainExplanation: getValue(observations.rainExplanation),
+        snow: getValue(observations.snow),
         temperature: parseFloat(getValue(observations.temperature)),
         weatherCode:  getValue(observations.weatherCode),
         wind: parseFloat(getValue(observations.wind)),
@@ -133,10 +138,15 @@ class ObservationData extends PolymerElement {
 
       //measurementTVP
       observation.humidity = getTimeAndValuePairs(timeSeries, 'obs-obs-1-1-rh', 'humidity')[0];
+      observation.pressure = getTimeAndValuePairs(timeSeries, 'obs-obs-1-1-p_sea', 'pressure')[0];
+      observation.rain = getTimeAndValuePairs(timeSeries, 'obs-obs-1-1-r_1h', 'rain')[0];
+      observation.rainExplanation = getTimeAndValuePairs(timeSeries, 'obs-obs-1-1-ri_10min', 'rainExplanation')[0];
+      observation.snow = getTimeAndValuePairs(timeSeries, 'obs-obs-1-1-snow_aws', 'snow')[0];
       observation.temperature = getTimeAndValuePairs(timeSeries, 'obs-obs-1-1-t2m', 'temperature')[0];
       observation.weatherCode = getTimeAndValuePairs(timeSeries, 'obs-obs-1-1-wawa', 'weatherCode')[0];
       observation.wind = getTimeAndValuePairs(timeSeries, 'obs-obs-1-1-ws_10min', 'wind')[0];
       observation.windDirection = getTimeAndValuePairs(timeSeries, 'obs-obs-1-1-wd_10min', 'windDirection')[0];
+      observation.windGust = getTimeAndValuePairs(timeSeries, 'obs-obs-1-1-wg_10min', 'windGust')[0];
 
       return observation;
     }
