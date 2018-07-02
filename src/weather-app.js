@@ -13,7 +13,7 @@ import './weather-days.js';
 import './weather-footer.js';
 import './weather-icons.js';
 import './observation-modal';
-import './observation-content';
+import './observation-modal-content';
 import './weather-notification.js';
 
 import './weather-symbol-icons.js';
@@ -80,9 +80,9 @@ class WeatherApp extends PolymerElement {
       </forecast-header>
       
       <observation-modal visible="[[observationVisible]]">
-        <observation-content
+        <observation-modal-content
           observation-data="{{observationData}}">
-        </observation-content>
+        </observation-modal-content>
       </observation-modal>
       
 

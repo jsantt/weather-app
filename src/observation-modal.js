@@ -56,12 +56,10 @@ class ObservationModal extends PolymerElement {
       .loading {
         opacity: 0.5;
       }
-    
-      
 
     </style>
   
-    <section hidden$=[[visible]]>
+    <section hidden$=[[!visible]]>
 
         <div class="modal">
 

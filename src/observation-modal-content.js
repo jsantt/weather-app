@@ -1,6 +1,7 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import './weather-symbol-wawa.js';
 
-class ObservationContent extends PolymerElement {
+class ObservationModalContent extends PolymerElement {
   static get template() {
     return html`
     <style>
@@ -50,22 +51,17 @@ class ObservationContent extends PolymerElement {
         vertical-align: top;
       }
 
-      section {
-        padding: 0 1rem;
+      .temperature, .humidity, .pressure, .wind, .rain, rainExplanation, .snow {
         grid-column: span 2;
       }
 
       .temperature {
         font-size: var(--font-size-xxlarge);
-        margin: 1rem 0;
+        margin: 2rem 0;
       }
 
-      .wide {
-        grid-column: span 2;
-      }
-
-      .wind {
-        margin: 1rem 0;
+      .textual {
+        font-size: var(--font-size-large);
       }
 
     </style>
@@ -76,29 +72,30 @@ class ObservationContent extends PolymerElement {
         <h3>Kello [[_formatTime(observationData.time)]]</h3>
       </div>
       
-      <section class="temperature">
+      <div class="temperature">
         <template is="dom-if" if="[[observationData.temperature]]">
           [[observationData.temperature]] <span class="degree">°C</span>
         </template>
       
-      </section>
-      <section>
-        <template is="dom-if" if="[[observationData.weatherCode]]">
-          [[observationData.weatherCode]]
-        </template>
-      </section>
+        <span class="textual">
+          <weather-symbol-wawa 
+            class="textual"
+            wawa-id="[[observationData.weatherCode]]">
+          </weather-symbol-wawa>
+        </span>
+      </div>
 
-      <section>
+      <div class="humidity">
         <template is="dom-if" if="[[observationData.humidity]]">
           kosteus: [[observationData.humidity]] %
         </template>
-      </section>
-      <section>
+      </div>
+      <div class="pressure">
         <template is="dom-if" if="[[observationData.pressure]]">
           ilmanpaine: [[observationData.pressure]] hPa
         </template>
-      </section>
-      <section class="wind">
+      </div>
+      <div class="wind">
         <template is="dom-if" if="[[observationData.wind]]">
           <wind-icon 
             degrees="[[observationData.windDirection]]" 
@@ -106,26 +103,26 @@ class ObservationContent extends PolymerElement {
             wind-speed="[[observationData.wind]]">
           </wind-icon>
         </template>
-      </section>
-      <section>    
+      </div>
+      <div class="rain">    
         <template is="dom-if" if="[[observationData.rain]]">
-          Sademäärä: [[observationData.rain]]<br>
+          Sademäärä: [[observationData.rain]] mm / edeltävä tunti
         </template>
-      </section>
-      <section>  
+      </div>
+      <div class="rainExplanation">  
         <template is="dom-if" if="[[observationData.rainExplanation]]">  
-          Sateen rankkuus: [[observationData.rainExplanation]]<br>
+          Sateen rankkuus: [[observationData.rainExplanation]]
         </template>
-      </section>
-      <section>
+      </div>
+      <div class="snow">
         <template is="dom-if" if="[[_snow(observationData.snow)]]">
-          Lumen syvyys: [[observationData.snow]]<br>
+          Lumen syvyys: [[observationData.snow]]
         </template>
-      </section>
+      </div>
     `;
   }
 
-  static get is() { return 'observation-content'; }
+  static get is() { return 'observation-modal-content'; }
 
   static get properties() {
     return {
@@ -152,4 +149,4 @@ class ObservationContent extends PolymerElement {
   }
 }
 
-window.customElements.define(ObservationContent.is, ObservationContent);
+window.customElements.define(ObservationModalContent.is, ObservationModalContent);
