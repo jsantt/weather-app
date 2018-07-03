@@ -159,7 +159,7 @@ class ObservationData extends PolymerElement {
           this._handleResponse(req);
         })
         .catch(rejected => {
-          raiseEvent(this, 'observation-data.fetch-error', {text: 'Virhe haettaessa ennustetietoja'});
+          raiseEvent(this, 'observation-data.fetch-error', {text: 'Havaintoja ei saatavilla'});
           console.log('error ' + rejected.stack);
         });
     }
