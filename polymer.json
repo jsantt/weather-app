@@ -1,7 +1,9 @@
 {
   "entrypoint": "index.html",
   "shell": "src/weather-app.js",
-
+  "fragments": [
+    "src/lazy-resources.js"
+  ],
   "lint": {
     "rules": [
       "polymer-3"
@@ -13,10 +15,11 @@
     }
   ],
   "sources": [
-    "src/**/*",
-    "image/**/*"
+    "image/**/*",
+    "src/**/*"
   ],
   "extraDependencies": [
-    "manifest.json"
+    "manifest.json",
+    "src/lazy-resources.js"
   ]
 }

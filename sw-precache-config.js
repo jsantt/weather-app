@@ -12,19 +12,18 @@
 
 module.exports = {
   staticFileGlobs: [
-    'webcomponents-loader.js',
-    'image/*',
+    'image/**/*',
     'manifest.json',
+    'src/**/*'
   ],
   runtimeCaching: [
     {
-      urlPattern: /\/bower_components\/webcomponentsjs\/.*.js/,
-      handler: 'cacheFirst',
-      options: {
-        cache: {
-          name: 'webcomponentsjs-polyfills-cache',
-        },
-      },
+      urlPattern: /\/@webcomponents\/webcomponentsjs\//,
+      handler: 'fastest' 
+    },
+    {
+      urlPattern: /^https:\/\/www.gstatic.com\/firebasejs\/4.9.0\/firebase.js/,
+      handler: 'fastest'
     },
     {
       urlPattern: /^https:\/\/data.fmi.fi/,
@@ -37,8 +36,8 @@ module.exports = {
       },
     },
     {
-      urlPattern: /^https:\/\/fonts.googleapis.com/,
-      handler: 'cacheFirst',
+      urlPattern: /^https:\/\/fonts.googleapis.com\/css?family=Open+Sans+Condensed:300/,
+      handler: 'fastest',
       options: {
         cache: {
           name: 'fonts-cache',

@@ -2,18 +2,14 @@ import { PolymerElement, html } from '@polymer/polymer/polymer-element.js'
 import '@polymer/paper-toast/paper-toast.js';
 
 import './location-selector.js';
-import './observation-data.js';
 import './time-now.js';
 
 import './forecast-data.js';
 import './forecast-header';
-import './weather-analytics.js';
 import './weather-days.js';
 
 import './weather-footer.js';
 import './weather-icons.js';
-import './observation-modal';
-import './observation-modal-content';
 import './weather-notification.js';
 
 import './weather-symbol-icons.js';
@@ -144,6 +140,10 @@ class WeatherApp extends PolymerElement {
     this.addEventListener('forecast-header.observation-link-click', (event) => this._toggleObservationVisible());
     this.addEventListener('observation-header.forecast-link-click', (event) => this._toggleObservationVisible());
     
+    document.addEventListener("DOMContentLoaded", (event) => {
+      console.log("DOM fully loaded and parsed");
+      this._loadLazyResources();
+    });
     
   }
 
@@ -173,6 +173,10 @@ class WeatherApp extends PolymerElement {
 
   _loading() {
     return this.loading ? 'loading' : 'notloading';       
+  }
+
+  _loadLazyResources() {
+    import('./lazy-resources.js');
   }
 
   _showError(event) {
