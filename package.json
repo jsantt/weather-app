@@ -18,6 +18,7 @@
     "@polymer/paper-spinner": "^3.0.0-pre.18",
     "@polymer/paper-toast": "^3.0.0-pre.18",
     "@polymer/polymer": "^3.0.2",
+    "@vaadin/vaadin-combo-box": "^4.1.0-alpha2",
     "@webcomponents/webcomponentsjs": "^2.0.2"
   },
   "devDependencies": {

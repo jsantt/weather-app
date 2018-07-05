@@ -1,21 +1,8 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js'
-import '@polymer/paper-toast/paper-toast.js';
-
-import './location-selector.js';
-import './time-now.js';
 
 import './forecast-data.js';
 import './forecast-header';
-import './weather-days.js';
-
-import './weather-footer.js';
-import './weather-icons.js';
-import './weather-notification.js';
-
-import './weather-symbol-icons.js';
 import './weather-now.js';
-import './wind-now.js';
-
 
 class WeatherApp extends PolymerElement {
 
@@ -130,7 +117,9 @@ class WeatherApp extends PolymerElement {
     
     this.addEventListener('forecast-data.fetch-error', (event) => this._onFetchError(event));
     this.addEventListener('location-selector.locate-error', (event) => this._onFetchError(event));
-    this.addEventListener('observation-data.fetch-error', (event) => this._onFetchError(event));
+    this.addEventListener('observation-data.fetch-error', (event) => {
+      console.log('fetching observation data failed');
+    });
 
     this.addEventListener('location-selector.locate-started', (event) => {this.loading = true;})
 
@@ -139,12 +128,15 @@ class WeatherApp extends PolymerElement {
 
     this.addEventListener('forecast-header.observation-link-click', (event) => this._toggleObservationVisible());
     this.addEventListener('observation-header.forecast-link-click', (event) => this._toggleObservationVisible());
-    
-    document.addEventListener("DOMContentLoaded", (event) => {
-      console.log("DOM fully loaded and parsed");
-      this._loadLazyResources();
-    });
-    
+  }
+
+  connectedCallback(){
+    super.connectedCallback();
+    console.log('add event listener');
+   
+    console.log("weather app attached");
+    this._loadLazyResources();
+  
   }
 
   _debugEvent(event) {
@@ -176,7 +168,13 @@ class WeatherApp extends PolymerElement {
   }
 
   _loadLazyResources() {
-    import('./lazy-resources.js');
+    import('./lazy-resources.js')
+      .then ( () => {
+        console.log('lazy resources loaded');
+      })
+      .catch(error => {
+        console.log('error loading lazy resources: ' + error);
+      });
   }
 
   _showError(event) {

@@ -11,9 +11,31 @@
     <link rel="manifest" href="/manifest.json">
     <link rel="icon" type="image/png" href="image/weather-icon" sizes="57x57">  
     
+    <script type="module" src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+    <script type="module" src="src/weather-app.js"></script>
 
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet">
-
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+    <script type="module">
+      WebFont.load({
+        google: {
+          families: ['Open Sans Condensed:300']
+        }
+      });
+    </script>
+    <script type="module">
+        // can be registered after everything
+    
+        document.addEventListener("DOMContentLoaded", (event) => {
+          console.log('dom content loaded');
+        });
+        // Load and register pre-caching Service Worker
+        if ('serviceWorker' in navigator) {
+          window.addEventListener('load', function() {
+            navigator.serviceWorker.register('service-worker.js');
+          });
+        }
+      </script>
+    
     <meta name="theme-color" content="#84b9ff">
 
     <!-- iOS -->
@@ -71,11 +93,7 @@
     </noscript>
   </body>
 
-  <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
-  
-  <script type="module" src="src/weather-app.js"></script>
-
-  <script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
+  <!-- script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
   <script>
   // Initialize Firebase
   const config = {
@@ -87,17 +105,6 @@
     messagingSenderId: "504374989166"
   };
   firebase.initializeApp(config);
-  </script>
-  
-  <script>
-    // can be registered after everything
-
-    // Load and register pre-caching Service Worker
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function() {
-        navigator.serviceWorker.register('service-worker.js');
-      });
-    }
-  </script>
+  </script -->
 
 </html>

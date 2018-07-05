@@ -65,7 +65,7 @@ class LocationSelector extends PolymerElement {
       }
 
     </style>
-    
+
     <div class="locate" on-click="_geolocate">
         
         <template is="dom-if" if="[[loading]]">
@@ -127,10 +127,12 @@ class LocationSelector extends PolymerElement {
   }
 
   ready() {
-      super.ready();
+    super.ready();
     
-    const urlPlace = this._getUrlParams('place', window.location.href) 
-      ? this._getUrlParams('place', window.location.href)
+    const storedPlace = localStorage.getItem('place');
+
+    const urlPlace = storedPlace 
+      ? storedPlace 
       : this.defaultPlace;
     
     this._dispatchEvent('location-selector.new-location', {place: urlPlace});
@@ -193,6 +195,7 @@ class LocationSelector extends PolymerElement {
 
   _newPlaceFound() {
     history.replaceState(null, null, "?" + 'place=' + this.place.location.geoid);
+    localStorage.setItem("place", this.place.location.geoid);
   }
 
   _geolocate() {
