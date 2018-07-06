@@ -19,6 +19,11 @@ class LocationSelector extends PolymerElement {
         margin: 0 0 0.2rem 0;
 	    	text-align: center;	   
       }
+      
+      .citySelection {
+        /* overwriting Vaadin's default styles */
+        --lumo-contrast-10pct: transparent;
+      }
 
       .locate {
         display: flex;
@@ -66,14 +71,18 @@ class LocationSelector extends PolymerElement {
 
     </style>
 
-    <div class="locate" on-click="_geolocate">
+    
+    <div class="locate">
         
         <template is="dom-if" if="[[loading]]">
           <paper-spinner-lite class="locate_loadIcon" active=""></paper-spinner-lite>
         </template>
 
         <template is="dom-if" if="[[!loading]]">
-          <div class="locate_icon">
+          <div 
+            class="locate_icon"
+            on-click="_geolocate">
+
             <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="28" height="28" viewBox="0 0 24 24">
               <filter id="dropshadow" height="130%">
 
@@ -93,9 +102,17 @@ class LocationSelector extends PolymerElement {
               <path style="filter:url('#dropshadow')" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"></path>
             </svg>
           </div>
+
+          <vaadin-combo-box 
+            class="citySelection" 
+            items="[[_cities()]]"
+            value="[[placeName]]">
+
+          </vaadin-combo-box>
+
         </template>
       
-      <div class="location_name">[[placeName]] [[headerSuffix]]</div>
+      <div class="location_name"><!--[[placeName]]  [[headerSuffix]] --> </div>
     </div>
 `;
   }
@@ -138,6 +155,13 @@ class LocationSelector extends PolymerElement {
     this._dispatchEvent('location-selector.new-location', {place: urlPlace});
   }
 
+  _cities(){
+    let cities = ['Espoo','Helsinki', 'Jyväskylä', 'Saarijärvi'];
+    
+    cities.push(this.placeName);
+
+    return cities;
+  }
 
   /**
    * @return whether response API is supported
