@@ -191,11 +191,15 @@ class WeatherDay extends PolymerElement {
                   </wind-icon>
 
               </div>
-          </template>
-          
-          </template>    
+            </template>
+
+          </template>  
+            
         </template>
 
+        <div class="hour hour--empty">
+        </div>
+      
         <div class="temperature_line">
             <temperature-line min-temperature="[[minTemperature]]" forecast-data="[[forecastData]]">
             </temperature-line>
