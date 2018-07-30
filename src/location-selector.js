@@ -25,10 +25,6 @@ class LocationSelector extends PolymerElement {
         --lumo-contrast-10pct: transparent;
       }
 
-      .locate {
-        display: flex;
-      }
-
       .locate_loadIcon {
         padding: 0 0.6rem;
       }
@@ -41,9 +37,10 @@ class LocationSelector extends PolymerElement {
         animation-iteration-count: 4;
         animation-direction: alternate;
 
-        vertical-align: middle;
-        padding: 0 0.6rem;
+        display: inline-block;
         transition: all .2s ease-in-out;
+
+        vertical-align: middle;
       }
 
       .locate_icon:hover { 
@@ -66,7 +63,7 @@ class LocationSelector extends PolymerElement {
       }
 
       .location_name {
-        padding-right: 2rem;
+        display: inline-block;
       }
 
     </style>

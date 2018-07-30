@@ -44,13 +44,14 @@ class ObservationModal extends PolymerElement {
       .modal {
         background-color: #fefefe;
         margin: 7% auto; /* 7% from the top and centered */
-        padding: var(--content-padding);
-        position: relative;
 
-        border: 1px solid #888;
-        border-radius: 0.6rem;
+        max-width: 31rem;
         width: 80%; /* Could be more or less, depending on screen size */
 
+        padding: var(--content-padding);
+        position: relative;
+        border: 1px solid #888;
+        border-radius: 0.6rem;
       }
 
       .loading {
