@@ -121,14 +121,9 @@ class LocationSelector extends PolymerElement {
 
   static get properties() {
     return {
-      place: {
-        type: Object,
-        value: undefined,
-        observer: '_newPlaceFound'
-      },
       defaultPlace: {
         type: String,
-        value:  '658225' // helsinki
+        value:  '60.1698557,24.9383791' // Helsinki
       },
       headerSuffix: {
         type: String
@@ -146,13 +141,13 @@ class LocationSelector extends PolymerElement {
   ready() {
     super.ready();
     
-    const storedPlace = localStorage.getItem('place');
+    let storedPlace = localStorage.getItem('place');
 
-    const urlPlace = storedPlace 
-      ? storedPlace 
-      : this.defaultPlace;
+    if(!storedPlace) {
+      storedPlace = this.defaultPlace;
+    }
     
-    this._dispatchEvent('location-selector.new-location', {place: urlPlace});
+    this._dispatchEvent('location-selector.device-located', {latlon: storedPlace});
   }
 
   _cities(){
@@ -214,12 +209,6 @@ class LocationSelector extends PolymerElement {
     }
 
     return '';
-    
-  }
-
-  _newPlaceFound() {
-    history.replaceState(null, null, "?" + 'place=' + this.place.location.geoid);
-    localStorage.setItem("place", this.place.location.geoid);
   }
 
   _geolocate() {
@@ -231,8 +220,12 @@ class LocationSelector extends PolymerElement {
           position => {
       
             const latlon = position.coords.latitude + ',' + position.coords.longitude;
+            const url = position.coords.latitude + '-' + position.coords.longitude;
 
-            this._dispatchEvent('location-selector.new-location', { latlon: latlon});
+            this._dispatchEvent('location-selector.device-located', { latlon: latlon});
+            
+            this._changeUrl('place', url);
+            this._storeIntoLocalStorage('place', latlon);
 
           }, error => {
             this._dispatchEvent('location-selector.locate-error', {text: 'salli paikannus nähdäksesi paikkakuntasi sää'});
@@ -243,10 +236,19 @@ class LocationSelector extends PolymerElement {
     }
   }
 
+  _changeUrl(paramName, paramValue) {
+    history.replaceState(null, null, "?" + paramName + '=' + paramValue);
+  }
+
   _dispatchEvent(name, payload) {
     const event = new CustomEvent(name, {detail: payload, bubbles: true, composed: true});
     this.dispatchEvent(event);
   }
+
+  _storeIntoLocalStorage(name, value) {
+    localStorage.setItem(name, value);
+  }
+    
 }
 
 window.customElements.define(LocationSelector.is, LocationSelector);

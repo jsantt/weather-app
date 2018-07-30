@@ -24,10 +24,6 @@
     </script>
     <script type="module">
         // can be registered after everything
-    
-        document.addEventListener("DOMContentLoaded", (event) => {
-          console.log('dom content loaded');
-        });
         // Load and register pre-caching Service Worker
         if ('serviceWorker' in navigator) {
           window.addEventListener('load', function() {

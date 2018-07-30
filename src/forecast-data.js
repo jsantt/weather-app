@@ -17,7 +17,7 @@ class ForecastData extends PolymerElement {
       <iron-ajax 
         id="weatherHarmonie" 
         url="https://data.fmi.fi/fmi-apikey/412facb5-f1bc-44e7-88cc-dc9e08903e32/wfs" 
-        params="{{_getParams(weatherLocation)}}"
+        params="{{_getHarmonieParams(weatherLocation)}}"
         handle-as="document" 
         timeout="8000">
       </iron-ajax>
@@ -35,11 +35,6 @@ class ForecastData extends PolymerElement {
 
   static get properties() {
     return {
-      latlon: {
-        type: Number,
-        computed: '_latlon(weatherLocation)'
-      },
-
       place: {
         type: Number,
         computed: '_place(weatherLocation)'
@@ -119,7 +114,7 @@ class ForecastData extends PolymerElement {
     let feelsLike3 = 13.12 + 0.6215*0.80 - 13.956*Math.pow(5, 0.16) + 0.4867*0.80*Math.pow(5,0.16)
   }
 
-  _getParams(location){
+  _getHarmonieParams(location){
   
     let params = 
     {
@@ -130,10 +125,7 @@ class ForecastData extends PolymerElement {
       "endtime": this._tomorrowLastHour(),
     }
 
-    location.place == null 
-      ? params.latlon = location.latlon
-      : params.geoid = location.place
-
+    params.latlon = location.latlon;
 
     return params;
   }
@@ -149,11 +141,9 @@ class ForecastData extends PolymerElement {
       "endtime": this._tomorrowLastHour(),
     }
 
-    location.place == null 
-      ? params.latlon = location.latlon
-      : params.geoid = location.place
-
-
+   
+    params.latlon = location.latlon
+    
     return params;
   }
 
@@ -217,15 +207,11 @@ class ForecastData extends PolymerElement {
     return hirlamResponse;
   }
 
-  _latlon (location) {
-    return location.latlon; 
-  }
-
   /** 
    *trigger call to get hirlam and harmonie weather data
    */
   _newLocation() {
-    const harmonieRequest = this._prepareRequest('weatherHarmonie', this._getParams(this.weatherLocation));
+    const harmonieRequest = this._prepareRequest('weatherHarmonie', this._getHarmonieParams(this.weatherLocation));
     const hirlamRequest = this._prepareRequest('weatherHirlam', this._getHirlamParams(this.weatherLocation));
 
     Promise.all([harmonieRequest.completes, hirlamRequest.completes])
@@ -251,7 +237,7 @@ class ForecastData extends PolymerElement {
   _sendNotification(geoid, name) {
     const details = {
       location: {
-        geoid: geoid, 
+        geoid: geoid,
         name: name
       }
     };

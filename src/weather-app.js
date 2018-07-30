@@ -90,9 +90,6 @@ class WeatherApp extends PolymerElement {
         reflectToAttribute: true,
         notify: true
       },
-      locationChanged: {
-        type: String
-      },
       place: {
         type: Object,
       },
@@ -113,7 +110,7 @@ class WeatherApp extends PolymerElement {
   constructor() { 
     super();
     
-    this.addEventListener('location-selector.new-location', (event) => this._onNewLocation(event));
+    this.addEventListener('location-selector.device-located', (event) => this._onNewLocation(event));
     
     this.addEventListener('forecast-data.fetch-error', (event) => this._onFetchError(event));
     this.addEventListener('location-selector.locate-error', (event) => this._onFetchError(event));
@@ -132,11 +129,8 @@ class WeatherApp extends PolymerElement {
 
   connectedCallback(){
     super.connectedCallback();
-    console.log('add event listener');
-   
-    console.log("weather app attached");
+
     this._loadLazyResources();
-  
   }
 
   _debugEvent(event) {
@@ -156,7 +150,6 @@ class WeatherApp extends PolymerElement {
 
     this.loading = true;
     this.weatherLocation = event.detail;
-    this.locationChanged = !this.locationChanged;
   }
 
   _toggleObservationVisible() {
@@ -169,9 +162,6 @@ class WeatherApp extends PolymerElement {
 
   _loadLazyResources() {
     import('./lazy-resources.js')
-      .then ( () => {
-        console.log('lazy resources loaded');
-      })
       .catch(error => {
         console.log('error loading lazy resources: ' + error);
       });
@@ -185,8 +175,7 @@ class WeatherApp extends PolymerElement {
     this._debugEvent(event);
     
     this.loading = false;
-    this.place = event.detail;
-    this.locationChanged = !this.locationChanged; 
+    this.place = event.detail; 
   }
 
   _onToggleWind(event) {
