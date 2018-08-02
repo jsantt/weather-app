@@ -13,12 +13,7 @@ class ForecastHeader extends PolymerElement {
       }
 
       .observation_link {
-        align-self: flex-end;
-        display: flex;
-        align-items: center;
-        flex: 0 0 3rem;
         color: var(--color-white);
-
         text-decoration: underline;
         line-height: 1;
       }
@@ -28,7 +23,9 @@ class ForecastHeader extends PolymerElement {
 
       .header-content {
         display: flex;
+        align-items: flex-end;
         justify-content: space-between;
+        
         margin-bottom: 0.3rem;
       }
 
@@ -39,35 +36,31 @@ class ForecastHeader extends PolymerElement {
       h1 {
         margin: 0;
         
-        font-size: 1.953rem;
-        font-weight: inherit;
-        
         padding: 0;
           
-      }
-
-      h2 {
-        color: var(--color-white);
-        font-size: 1.25rem;
-        font-weight: 300;
-
-        position: absolute;
-        right: 1rem;
-        top: -0.65rem;
       }
 
       .location {
         color: var(--color-black);
         font-size: 1.563rem;
-        
-        margin: 0 0 0.2rem 0;
-	    	text-align: center;
+      }
+
+      .wind {
+        margin-bottom: -0.66rem;
       }
 
     </style>
       [[forecast]]
     <header hidden$=[[hidden]]>
 
+      <h1>
+        <location-selector 
+          header-suffix="nyt" 
+          loading="[[loading]]" 
+          place="[[place]]">
+        </location-selector>
+      </h1>
+        
         <div class="header-content">
 
           <!-- observation link -->
@@ -81,13 +74,6 @@ class ForecastHeader extends PolymerElement {
           </a>
   
           <div>
-            <h1>
-              <location-selector 
-                header-suffix="nyt" 
-                loading="[[loading]]" 
-                place="[[place]]">
-              </location-selector>
-            </h1>
             
             <weather-now 
               symbol-id="[[weatherData.symbol]]"

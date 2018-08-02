@@ -1,6 +1,8 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import '@polymer/paper-spinner/paper-spinner-lite.js';
 
+import {CITIES} from './city-list';
+
 /**
  * @customElement
  * @polymer
@@ -23,6 +25,8 @@ class LocationSelector extends PolymerElement {
       .citySelection {
         /* overwriting Vaadin's default styles */
         --lumo-contrast-10pct: transparent;
+        /*--lumo-font-size-m: var(--font-size-large);
+        --lumo-font-family: 'Open Sans Condensed', sans-serif;*/
       }
 
       .locate_loadIcon {
@@ -66,6 +70,10 @@ class LocationSelector extends PolymerElement {
         display: inline-block;
       }
 
+      .cities_locate {
+        margin-bottom: 1rem;
+      }
+
     </style>
 
     
@@ -100,10 +108,47 @@ class LocationSelector extends PolymerElement {
             </svg>
           </div>
 
-          <vaadin-combo-box 
+          <vaadin-combo-box
             class="citySelection" 
             items="[[_cities()]]"
-            value="[[placeName]]">
+            item-label-path="city"
+            item-value-path="coordinates"
+            on-selected-item-changed="_citySelected"
+            selected-item="[[placeName]]">
+
+            <template>
+
+              <template is="dom-if" if="[[_isFirst(index)]]">
+                <a class="cities_locate"
+                  on-click="_geolocate">
+
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="28" height="28" viewBox="0 0 24 24">
+                    <filter id="dropshadow" height="130%">
+
+                      <feGaussianBlur in="SourceAlpha" stdDeviation="1"></feGaussianBlur> <!-- stdDeviation is how much to blur -->
+                      <feOffset dx="0" dy="1" result="offsetblur"></feOffset> <!-- how much to offset -->
+                      <feComponentTransfer>
+                        <feFuncA type="linear" slope="0.5"></feFuncA> <!-- slope is the opacity of the shadow -->
+                      </feComponentTransfer>
+            
+                      <feMerge>        
+                        <feMergeNode></feMergeNode> <!-- this contains the offset blurred image -->
+                        <feMergeNode in="SourceGraphic"></feMergeNode> <!-- this contains the element that the filter is applied to -->
+                      </feMerge>
+            
+                    </filter>
+
+                    <path style="filter:url('#dropshadow')" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"></path>
+                  </svg>
+                  Paikanna &nbsp;
+                </a>
+                <hr>
+              </template>
+              
+            
+                [[item.city]]
+            
+            </template>
 
           </vaadin-combo-box>
 
@@ -118,7 +163,7 @@ class LocationSelector extends PolymerElement {
 
   static get properties() {
     return {
-      defaultPlace: {
+      defaultCoordinates: {
         type: String,
         value:  '60.1698557,24.9383791' // Helsinki
       },
@@ -138,21 +183,38 @@ class LocationSelector extends PolymerElement {
   ready() {
     super.ready();
     
-    let storedPlace = localStorage.getItem('place');
+    let storedCoordinates = localStorage.getItem('place');
 
-    if(!storedPlace) {
-      storedPlace = this.defaultPlace;
+    if(!storedCoordinates) {
+      storedCoordinates = this.defaultCoordinates;
     }
     
-    this._dispatchEvent('location-selector.device-located', {latlon: storedPlace});
+    this._dispatchEvent('location-selector.device-located', {latlon: storedCoordinates});  
+  } 
+
+  _citySelected(customEvent) {
+    if(customEvent.detail.value) {
+      let coordinates = customEvent.detail.value.coordinates;
+
+      this._dispatchEvent('location-selector.device-located', {latlon: coordinates});
+
+
+      const url = coordinates.replace(',', '-');
+      this._changeUrl('place', url);
+      this._storeIntoLocalStorage('place', coordinates);
+      
+    }
   }
 
   _cities(){
-    let cities = ['Espoo','Helsinki', 'Jyväskylä', 'Saarijärvi'];
-    
-    cities.push(this.placeName);
+  
+    let cities = CITIES;
 
     return cities;
+  }
+
+  _isFirst(index) {
+    return index === 0;
   }
 
   /**
@@ -200,7 +262,7 @@ class LocationSelector extends PolymerElement {
   }
 
   _getPlace(placeName) {
- 
+    
     if(placeName && placeName.location){
       return placeName.location.name;
     }
