@@ -30,6 +30,7 @@ class WeatherNow extends PolymerElement {
       .symbolText {
         color: var(--color-black);
         font-size: var(--font-size-medium);
+        margin-top: 0.4rem;
         text-align: center;
       }
 

@@ -21,12 +21,25 @@ class LocationSelector extends PolymerElement {
         margin: 0 0 0.2rem 0;
 	    	text-align: center;	   
       }
+
+      vaadin-combo-box {
+        /* overwriting Vaadin's default styles */
+        --lumo-contrast-10pct: transparent;         
+        --lumo-font-size-m: var(--font-size-large);
+        --lumo-font-family: 'Open Sans Condensed', sans-serif;
+        --vaadin-text-field-default-width: 12rem;
+      }
       
       .citySelection {
-        /* overwriting Vaadin's default styles */
-        --lumo-contrast-10pct: transparent;
-        /*--lumo-font-size-m: var(--font-size-large);
-        --lumo-font-family: 'Open Sans Condensed', sans-serif;*/
+        
+      }
+
+      location-selector #shadow-root div vaadin-combo-box #shadow-root #input {
+        text-align: center;
+      }
+
+      .locate {
+        margin-left: 1rem;
       }
 
       .locate_loadIcon {
@@ -44,6 +57,7 @@ class LocationSelector extends PolymerElement {
         display: inline-block;
         transition: all .2s ease-in-out;
 
+        margin-right: -0.9rem;
         vertical-align: middle;
       }
 
@@ -71,13 +85,17 @@ class LocationSelector extends PolymerElement {
       }
 
       .cities_locate {
-        margin-bottom: 1rem;
+        border: 1px solid black;
+        padding: 0.5rem;
+        border-radius: 2rem;
+        width: 9.2rem;
+        display: block;
       }
 
     </style>
 
     
-    <div class="locate">
+    <div class="locate" id="locate">
         
         <template is="dom-if" if="[[loading]]">
           <paper-spinner-lite class="locate_loadIcon" active=""></paper-spinner-lite>
@@ -109,45 +127,46 @@ class LocationSelector extends PolymerElement {
           </div>
 
           <vaadin-combo-box
+            id="citySelection"
             class="citySelection" 
+            autofocus="true"
             items="[[_cities()]]"
             item-label-path="city"
             item-value-path="coordinates"
+            on-opened-changed="_openedChanged"
             on-selected-item-changed="_citySelected"
             selected-item="[[placeName]]">
-
+            
             <template>
 
               <template is="dom-if" if="[[_isFirst(index)]]">
-                <a class="cities_locate"
-                  on-click="_geolocate">
+                <div>
+                  <a class="cities_locate"
+                    on-click="_geolocate">
 
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="28" height="28" viewBox="0 0 24 24">
-                    <filter id="dropshadow" height="130%">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="28" height="28" viewBox="0 0 24 24">
+                      <filter id="dropshadow" height="130%">
 
-                      <feGaussianBlur in="SourceAlpha" stdDeviation="1"></feGaussianBlur> <!-- stdDeviation is how much to blur -->
-                      <feOffset dx="0" dy="1" result="offsetblur"></feOffset> <!-- how much to offset -->
-                      <feComponentTransfer>
-                        <feFuncA type="linear" slope="0.5"></feFuncA> <!-- slope is the opacity of the shadow -->
-                      </feComponentTransfer>
-            
-                      <feMerge>        
-                        <feMergeNode></feMergeNode> <!-- this contains the offset blurred image -->
-                        <feMergeNode in="SourceGraphic"></feMergeNode> <!-- this contains the element that the filter is applied to -->
-                      </feMerge>
-            
-                    </filter>
-
-                    <path style="filter:url('#dropshadow')" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"></path>
-                  </svg>
-                  Paikanna &nbsp;
-                </a>
-                <hr>
-              </template>
+                        <feGaussianBlur in="SourceAlpha" stdDeviation="1"></feGaussianBlur> <!-- stdDeviation is how much to blur -->
+                        <feOffset dx="0" dy="1" result="offsetblur"></feOffset> <!-- how much to offset -->
+                        <feComponentTransfer>
+                          <feFuncA type="linear" slope="0.5"></feFuncA> <!-- slope is the opacity of the shadow -->
+                        </feComponentTransfer>
               
-            
+                        <feMerge>        
+                          <feMergeNode></feMergeNode> <!-- this contains the offset blurred image -->
+                          <feMergeNode in="SourceGraphic"></feMergeNode> <!-- this contains the element that the filter is applied to -->
+                        </feMerge>
+              
+                      </filter>
+
+                      <path style="filter:url('#dropshadow')" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"></path>
+                    </svg>
+                    Paikanna
+                  </a>
+                <div><br>
+              </template>  
                 [[item.city]]
-            
             </template>
 
           </vaadin-combo-box>
@@ -176,6 +195,9 @@ class LocationSelector extends PolymerElement {
       placeName: {
         type: String,
         computed: '_getPlace(place)'
+      },
+      previousPlace: {
+        type: Object
       }
     };
   }
@@ -192,6 +214,30 @@ class LocationSelector extends PolymerElement {
     this._dispatchEvent('location-selector.device-located', {latlon: storedCoordinates});  
   } 
 
+  _openedChanged(customEvent) {
+    
+    let combobox = this.shadowRoot.querySelector('#citySelection');
+
+    if(this._isOpenEvent(customEvent)) {
+      this.previousPlace = combobox.selectedItem;
+      combobox.selectedItem = null;  
+    } 
+    else if(combobox && !combobox.selectedItem) { 
+      // user closes the city selection modal without any selections
+      
+      let storedCoordinates = localStorage.getItem('place');
+
+      combobox.selectedItem = { 
+        city:this.previousPlace, 
+        coordinates: storedCoordinates 
+      };
+    }
+  }
+
+  _isOpenEvent(customEvent) {
+    return customEvent.detail && customEvent.detail.value;
+  }
+
   _citySelected(customEvent) {
     if(customEvent.detail.value) {
       let coordinates = customEvent.detail.value.coordinates;
@@ -202,15 +248,11 @@ class LocationSelector extends PolymerElement {
       const url = coordinates.replace(',', '-');
       this._changeUrl('place', url);
       this._storeIntoLocalStorage('place', coordinates);
-      
     }
   }
 
   _cities(){
-  
-    let cities = CITIES;
-
-    return cities;
+    return CITIES;
   }
 
   _isFirst(index) {
