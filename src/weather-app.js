@@ -110,7 +110,7 @@ class WeatherApp extends PolymerElement {
   constructor() { 
     super();
     
-    this.addEventListener('location-selector.device-located', (event) => this._onNewLocation(event));
+    this.addEventListener('location-selector.location-changed', (event) => this._onNewLocation(event));
     
     this.addEventListener('forecast-data.fetch-error', (event) => this._onFetchError(event));
     this.addEventListener('location-selector.locate-error', (event) => this._onFetchError(event));

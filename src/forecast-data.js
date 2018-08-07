@@ -116,34 +116,38 @@ class ForecastData extends PolymerElement {
 
   _getHarmonieParams(location){
   
-    let params = 
-    {
-      "request":"getFeature", 
-      "storedquery_id":"fmi::forecast::harmonie::surface::point::timevaluepair",
-      "parameters": "Humidity,Temperature,WindDirection,WindSpeedMS",
-      "starttime": this._todayFirstHour(),
-      "endtime": this._tomorrowLastHour(),
-    }
+    let params = this._commonParams(location);
 
-    params.latlon = location.latlon;
-
+    params.storedquery_id = 'fmi::forecast::harmonie::surface::point::timevaluepair';
+    params.parameters = 'Humidity,Temperature,WindDirection,WindSpeedMS';
+    
     return params;
   }
 
    _getHirlamParams(location){
    
-    let params = 
-    {
-      "request":"getFeature", 
-      "storedquery_id":"fmi::forecast::hirlam::surface::point::timevaluepair",
-      "parameters": "Precipitation1h,WeatherSymbol3",
+    let params = this._commonParams(location);
+    
+    params.storedquery_id = 'fmi::forecast::hirlam::surface::point::timevaluepair';
+    params.parameters = 'Precipitation1h,WeatherSymbol3';
+     
+    return params;
+  }
+
+  _commonParams(location) {
+    let params = {
+      "request":"getFeature",
       "starttime": this._todayFirstHour(),
       "endtime": this._tomorrowLastHour(),
     }
 
-   
-    params.latlon = location.latlon
-    
+    if(location.city && location.city !== '') {
+      params.place = location.city;
+    }
+    else {
+      params.latlon = location.latlon;
+    }
+
     return params;
   }
 
@@ -234,17 +238,6 @@ class ForecastData extends PolymerElement {
       });
   }
 
-  _sendNotification(geoid, name) {
-    const details = {
-      location: {
-        geoid: geoid,
-        name: name
-      }
-    };
-
-    raiseEvent(this, 'forecast-data.new-place', details);
-  }
-
   _prepareRequest(id, params){
     this.$[id].params = params;
     return this.$[id].generateRequest();
@@ -278,6 +271,18 @@ class ForecastData extends PolymerElement {
   _place (location) {
     return location.place; 
   }
+
+  _sendNotification(geoid, name) {
+    const details = {
+      location: {
+        geoid: geoid,
+        name: name
+      }
+    };
+
+    raiseEvent(this, 'forecast-data.new-place', details);
+  }
+
 
   _timeNow(){
     let timeNow = new Date();

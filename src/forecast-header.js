@@ -74,7 +74,6 @@ class ForecastHeader extends PolymerElement {
           </a>
   
           <div>
-            
             <weather-now 
               symbol-id="[[weatherData.symbol]]"
               temperature="[[weatherData.temperature]]">

@@ -29,10 +29,6 @@ class LocationSelector extends PolymerElement {
         --lumo-font-family: 'Open Sans Condensed', sans-serif;
         --vaadin-text-field-default-width: 12rem;
       }
-      
-      .citySelection {
-        
-      }
 
       location-selector #shadow-root div vaadin-combo-box #shadow-root #input {
         text-align: center;
@@ -128,8 +124,6 @@ class LocationSelector extends PolymerElement {
 
           <vaadin-combo-box
             id="citySelection"
-            class="citySelection" 
-            autofocus="true"
             items="[[_cities()]]"
             item-label-path="city"
             item-value-path="coordinates"
@@ -211,7 +205,7 @@ class LocationSelector extends PolymerElement {
       storedCoordinates = this.defaultCoordinates;
     }
     
-    this._dispatchEvent('location-selector.device-located', {latlon: storedCoordinates});  
+    this._dispatchEvent('location-selector.location-changed', {latlon: storedCoordinates});  
   } 
 
   _openedChanged(customEvent) {
@@ -241,8 +235,9 @@ class LocationSelector extends PolymerElement {
   _citySelected(customEvent) {
     if(customEvent.detail.value) {
       let coordinates = customEvent.detail.value.coordinates;
+      let city = customEvent.detail.value.city;
 
-      this._dispatchEvent('location-selector.device-located', {latlon: coordinates});
+      this._dispatchEvent('location-selector.location-changed', {latlon: coordinates, city: city});
 
 
       const url = coordinates.replace(',', '-');
@@ -323,7 +318,7 @@ class LocationSelector extends PolymerElement {
             const latlon = position.coords.latitude + ',' + position.coords.longitude;
             const url = position.coords.latitude + '-' + position.coords.longitude;
 
-            this._dispatchEvent('location-selector.device-located', { latlon: latlon});
+            this._dispatchEvent('location-selector.location-changed', { latlon: latlon});
             
             this._changeUrl('place', url);
             this._storeIntoLocalStorage('place', latlon);
