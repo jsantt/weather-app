@@ -27,7 +27,7 @@ class LocationSelector extends PolymerElement {
         --lumo-contrast-10pct: transparent;         
         --lumo-font-size-m: var(--font-size-large);
         --lumo-font-family: 'Open Sans Condensed', sans-serif;
-        --vaadin-text-field-default-width: 12rem;
+        --vaadin-text-field-default-width: 10rem;
       }
 
       location-selector #shadow-root div vaadin-combo-box #shadow-root #input {
@@ -35,7 +35,7 @@ class LocationSelector extends PolymerElement {
       }
 
       .locate {
-        margin-left: 1rem;
+        margin-left: 0.6rem;
       }
 
       .locate_loadIcon {
@@ -52,8 +52,6 @@ class LocationSelector extends PolymerElement {
 
         display: inline-block;
         transition: all .2s ease-in-out;
-
-        margin-right: -0.9rem;
         vertical-align: middle;
       }
 
@@ -102,7 +100,7 @@ class LocationSelector extends PolymerElement {
             class="locate_icon"
             on-click="_geolocate">
 
-            <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="28" height="28" viewBox="0 0 24 24">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="24" height="24" viewBox="0 0 24 24">
               <filter id="dropshadow" height="130%">
 
                 <feGaussianBlur in="SourceAlpha" stdDeviation="1"></feGaussianBlur> <!-- stdDeviation is how much to blur -->
@@ -138,7 +136,7 @@ class LocationSelector extends PolymerElement {
                   <a class="cities_locate"
                     on-click="_geolocate">
 
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="28" height="28" viewBox="0 0 24 24">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="24" height="24" viewBox="0 0 24 24">
                       <filter id="dropshadow" height="130%">
 
                         <feGaussianBlur in="SourceAlpha" stdDeviation="1"></feGaussianBlur> <!-- stdDeviation is how much to blur -->
@@ -223,7 +221,7 @@ class LocationSelector extends PolymerElement {
 
       combobox.selectedItem = { 
         city:this.previousPlace, 
-        coordinates: storedCoordinates 
+        coordinates: null 
       };
     }
   }
