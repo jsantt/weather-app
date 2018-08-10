@@ -126,8 +126,7 @@ class LocationSelector extends PolymerElement {
             item-label-path="city"
             item-value-path="coordinates"
             on-opened-changed="_openedChanged"
-            on-selected-item-changed="_citySelected"
-            selected-item="[[placeName]]">
+            on-selected-item-changed="_citySelected">
             
             <template>
 
@@ -174,9 +173,13 @@ class LocationSelector extends PolymerElement {
 
   static get properties() {
     return {
-      defaultCoordinates: {
-        type: String,
-        value:  '60.1698557,24.9383791' // Helsinki
+      _defaultPlace: {
+        type: Object,
+        value:  {city: "Helsinki", coordinates: "60.1698557,24.9383791"},
+        readOnly: true
+      },
+      _previousPlace: {
+        type: Object
       },
       headerSuffix: {
         type: String
@@ -186,10 +189,8 @@ class LocationSelector extends PolymerElement {
       },
       placeName: {
         type: String,
-        computed: '_getPlace(place)'
-      },
-      previousPlace: {
-        type: Object
+        computed: '_getPlace(place)',
+        observer: '_newPlace'
       }
     };
   }
@@ -197,32 +198,43 @@ class LocationSelector extends PolymerElement {
   ready() {
     super.ready();
     
-    let storedCoordinates = localStorage.getItem('place');
+    const storedPlaces = this._getFromLocalStorage('place');
+    let currentPlace;
 
-    if(!storedCoordinates) {
-      storedCoordinates = this.defaultCoordinates;
+    if(storedPlaces) {
+      currentPlace = storedPlaces[0];
+    }else {  
+      currentPlace = this._defaultPlace;
     }
+    this._dispatchEvent('location-selector.location-changed', currentPlace);
+  }
+
+  _newPlace(){
+    let combobox = this.shadowRoot.querySelector('#citySelection');
     
-    this._dispatchEvent('location-selector.location-changed', {latlon: storedCoordinates});  
-  } 
+    if(combobox) {
+      combobox.selectedItem = this._formPlaceObject(this.placeName);
+    }
+    else {
+      setTimeout(()=> {
+        this._newPlace();
+      }, 1000);
+    }
+  }
 
   _openedChanged(customEvent) {
     
     let combobox = this.shadowRoot.querySelector('#citySelection');
 
     if(this._isOpenEvent(customEvent)) {
-      this.previousPlace = combobox.selectedItem;
+      this._previousPlace = combobox.selectedItem;
       combobox.selectedItem = null;  
     } 
     else if(combobox && !combobox.selectedItem) { 
       // user closes the city selection modal without any selections
       
       let storedCoordinates = localStorage.getItem('place');
-
-      combobox.selectedItem = { 
-        city:this.previousPlace, 
-        coordinates: null 
-      };
+      combobox.selectedItem = this._previousPlace || this._defaultPlace;
     }
   }
 
@@ -235,12 +247,13 @@ class LocationSelector extends PolymerElement {
       let coordinates = customEvent.detail.value.coordinates;
       let city = customEvent.detail.value.city;
 
-      this._dispatchEvent('location-selector.location-changed', {latlon: coordinates, city: city});
+      let placeObject = this._formPlaceObject(city,  coordinates);
 
+      this._dispatchEvent('location-selector.location-changed', placeObject);
 
-      const url = coordinates.replace(',', '-');
+      const url = city ? city : coordinates.replace(',', '-');
       this._changeUrl('place', url);
-      this._storeIntoLocalStorage('place', coordinates);
+      this._store('place', city, coordinates);
     }
   }
 
@@ -313,13 +326,13 @@ class LocationSelector extends PolymerElement {
         navigator.geolocation.getCurrentPosition(
           position => {
       
-            const latlon = position.coords.latitude + ',' + position.coords.longitude;
+            const coordinates = position.coords.latitude + ',' + position.coords.longitude;
             const url = position.coords.latitude + '-' + position.coords.longitude;
 
-            this._dispatchEvent('location-selector.location-changed', { latlon: latlon});
+            this._dispatchEvent('location-selector.location-changed', this._formPlaceObject(null, coordinates));
             
             this._changeUrl('place', url);
-            this._storeIntoLocalStorage('place', latlon);
+            this._store('place', null, coordinates);
 
           }, error => {
             this._dispatchEvent('location-selector.locate-error', {text: 'salli paikannus nähdäksesi paikkakuntasi sää'});
@@ -339,8 +352,24 @@ class LocationSelector extends PolymerElement {
     this.dispatchEvent(event);
   }
 
-  _storeIntoLocalStorage(name, value) {
-    localStorage.setItem(name, value);
+  _formPlaceObject(city, coordinates) {
+    return {city: city, coordinates: coordinates};
+  }
+
+  _store(key, city, coordinates) {
+    const newPlace = [this._formPlaceObject(city, coordinates)];
+    const previousPlaces = this._getFromLocalStorage('place');
+
+    const placeHistory = newPlace.concat(previousPlaces);
+
+    this._storeIntoLocalStorage(key, placeHistory);
+  }
+
+  _storeIntoLocalStorage(key, valueObject){
+    localStorage.setItem(key, JSON.stringify(valueObject));
+  }
+  _getFromLocalStorage(key) {
+    return JSON.parse(localStorage.getItem(key));
   }
     
 }

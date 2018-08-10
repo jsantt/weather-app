@@ -35,11 +35,6 @@ class ForecastData extends PolymerElement {
 
   static get properties() {
     return {
-      place: {
-        type: Number,
-        computed: '_place(weatherLocation)'
-      },
-
       weatherLocation: {
         type: Object,
         observer: '_newLocation'
@@ -141,11 +136,11 @@ class ForecastData extends PolymerElement {
       "endtime": this._tomorrowLastHour(),
     }
 
-    if(location.city && location.city !== '') {
+    if(location.city && location.city.length > 0) {
       params.place = location.city;
     }
     else {
-      params.latlon = location.latlon;
+      params.latlon = location.coordinates;
     }
 
     return params;
@@ -248,8 +243,8 @@ class ForecastData extends PolymerElement {
   <gml:identifier codeSpace="http://xml.fmi.fi/namespace/stationcode/geoid">7521689</gml:identifier>*/
   _parseLocationGeoid(response){
     const locations = response.getElementsByTagName('gml:identifier');
-
     const locationRow = getByAttributeValue(locations, 'codeSpace', 'http://xml.fmi.fi/namespace/stationcode/geoid');
+
     const location = value(locationRow);
 
     return location;
@@ -266,10 +261,6 @@ class ForecastData extends PolymerElement {
     };
 
     return weatherNow;
-  }
-
-  _place (location) {
-    return location.place; 
   }
 
   _sendNotification(geoid, name) {
