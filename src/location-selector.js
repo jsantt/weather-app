@@ -35,7 +35,7 @@ class LocationSelector extends PolymerElement {
       }
 
       .locate {
-        margin-left: 0.6rem;
+        margin-left: 1.6rem;
       }
 
       .locate_loadIcon {
@@ -119,52 +119,36 @@ class LocationSelector extends PolymerElement {
               <path style="filter:url('#dropshadow')" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"></path>
             </svg>
           </div>
-
+        
           <vaadin-combo-box
-            id="citySelection"
-            items="[[_cities()]]"
+            id="placeSelection"
             item-label-path="city"
             item-value-path="coordinates"
             on-opened-changed="_openedChanged"
             on-selected-item-changed="_citySelected">
-            
+           
             <template>
+              <template is="dom-if" if=[[!_isLocate(item)]]>
+                [[item.city]]
+              </template>
 
-              <template is="dom-if" if="[[_isFirst(index)]]">
+              <template is="dom-if" if=[[_isLocate(item)]]>
                 <div>
-                  <a class="cities_locate"
-                    on-click="_geolocate">
+                  <a class="cities_locate">
 
                     <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="24" height="24" viewBox="0 0 24 24">
-                      <filter id="dropshadow" height="130%">
-
-                        <feGaussianBlur in="SourceAlpha" stdDeviation="1"></feGaussianBlur> <!-- stdDeviation is how much to blur -->
-                        <feOffset dx="0" dy="1" result="offsetblur"></feOffset> <!-- how much to offset -->
-                        <feComponentTransfer>
-                          <feFuncA type="linear" slope="0.5"></feFuncA> <!-- slope is the opacity of the shadow -->
-                        </feComponentTransfer>
-              
-                        <feMerge>        
-                          <feMergeNode></feMergeNode> <!-- this contains the offset blurred image -->
-                          <feMergeNode in="SourceGraphic"></feMergeNode> <!-- this contains the element that the filter is applied to -->
-                        </feMerge>
-              
-                      </filter>
-
-                      <path style="filter:url('#dropshadow')" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"></path>
+                      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"></path>
                     </svg>
+
                     Paikanna
+
                   </a>
                 <div><br>
               </template>  
-                [[item.city]]
-            </template>
-
+            </template>  
           </vaadin-combo-box>
 
         </template>
-      
-      <div class="location_name"><!--[[placeName]]  [[headerSuffix]] --> </div>
     </div>
 `;
   }
@@ -190,7 +174,8 @@ class LocationSelector extends PolymerElement {
       placeName: {
         type: String,
         computed: '_getPlace(place)',
-        observer: '_newPlace'
+        observer: '_newPlace',
+        reflectToAttribute: true
       }
     };
   }
@@ -203,17 +188,25 @@ class LocationSelector extends PolymerElement {
 
     if(storedPlaces) {
       currentPlace = storedPlaces[0];
-    }else {  
+    }
+    else {  
       currentPlace = this._defaultPlace;
     }
     this._dispatchEvent('location-selector.location-changed', currentPlace);
   }
 
   _newPlace(){
-    let combobox = this.shadowRoot.querySelector('#citySelection');
+    let combobox = this.shadowRoot.querySelector('#placeSelection');
     
     if(combobox) {
+      combobox.items = this._placeList();
       combobox.selectedItem = this._formPlaceObject(this.placeName);
+
+      const url = this.placeName;
+      
+      this._changeUrl('place', url);
+      this._store('place', this.placeName);
+
     }
     else {
       setTimeout(()=> {
@@ -224,45 +217,74 @@ class LocationSelector extends PolymerElement {
 
   _openedChanged(customEvent) {
     
-    let combobox = this.shadowRoot.querySelector('#citySelection');
+    let combobox = this.shadowRoot.querySelector('#placeSelection');
 
-    if(this._isOpenEvent(customEvent)) {
-      this._previousPlace = combobox.selectedItem;
+    if(this._isComboboxOpen(customEvent)) {
+
+      this._previousPlace = this._formPlaceObject(this.placeName);//combobox.selectedItem;
       combobox.selectedItem = null;  
+    }
+    else if (this._isComboboxLocate(combobox)) {
+      this._geolocate();
+    }
+    else if(this._isComboboxPlaceSelected(combobox)) {
+      this._dispatchEvent('location-selector.location-changed', combobox.selectedItem);
     } 
-    else if(combobox && !combobox.selectedItem) { 
-      // user closes the city selection modal without any selections
-      
+    else if(this._isComboboxDismiss(combobox)) { 
       let storedCoordinates = localStorage.getItem('place');
       combobox.selectedItem = this._previousPlace || this._defaultPlace;
     }
   }
 
-  _isOpenEvent(customEvent) {
+  _isComboboxOpen(customEvent) {
     return customEvent.detail && customEvent.detail.value;
+  }
+  _isComboboxPlaceSelected(combobox) {
+    return combobox && combobox.selectedItem;
+  }
+  _isComboboxLocate(combobox) {
+    return combobox && combobox.selectedItem && combobox.selectedItem.city === 'locate';
+  }
+  /* return if user closes the city selection modal without any selections */
+  _isComboboxDismiss(combobox) {
+    return combobox && !combobox.selectedItem;
   }
 
   _citySelected(customEvent) {
+    
+    /*
+
     if(customEvent.detail.value) {
-      let coordinates = customEvent.detail.value.coordinates;
+
       let city = customEvent.detail.value.city;
 
-      let placeObject = this._formPlaceObject(city,  coordinates);
+      if(city === 'locate') {
+        return this._geolocate();
+      }
 
+      let coordinates = customEvent.detail.value.coordinates;
+
+      let placeObject = this._formPlaceObject(city,  coordinates);
       this._dispatchEvent('location-selector.location-changed', placeObject);
 
       const url = city ? city : coordinates.replace(',', '-');
       this._changeUrl('place', url);
       this._store('place', city, coordinates);
+
     }
+    */
   }
 
-  _cities(){
-    return CITIES;
+  _placeList(){
+    const previousLocations = this._getFromLocalStorage('place');
+    let allLocations = previousLocations ? previousLocations.concat(CITIES) : CITIES;
+    
+    //const locate = [{city:'locate'}];
+    return allLocations;
   }
 
-  _isFirst(index) {
-    return index === 0;
+  _isLocate(element) {
+    return element.city === 'locate';
   }
 
   /**
@@ -331,8 +353,8 @@ class LocationSelector extends PolymerElement {
 
             this._dispatchEvent('location-selector.location-changed', this._formPlaceObject(null, coordinates));
             
-            this._changeUrl('place', url);
-            this._store('place', null, coordinates);
+            //this._changeUrl('place', url);
+            //this._store('place', null, coordinates);
 
           }, error => {
             this._dispatchEvent('location-selector.locate-error', {text: 'salli paikannus nähdäksesi paikkakuntasi sää'});
