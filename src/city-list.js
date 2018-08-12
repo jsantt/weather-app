@@ -1,5 +1,4 @@
-const CITIES = [
-  {city:'--------', coordinates: '60.983333,25.655556'},
+const TOP_10_CITIES = [
   {city:'Helsinki', coordinates: '60.170833,24.937500'},
   {city:'Espoo', coordinates: '60.205556,24.655556'},
   {city:'Tampere', coordinates: '61.498056,23.760833'},
@@ -8,7 +7,11 @@ const CITIES = [
   {city:'Turku', coordinates: '60.451389,22.266667'},
   {city:'Jyväskylä', coordinates: '62.240278,25.744444'},
   {city:'Lahti', coordinates: '60.983333,25.655556'},
-  {city:'--------', coordinates: '60.983333,25.655556'},
+  {city:'Kuopio', coordinates: '62.892500,27.678333'},
+  {city:'Pori', coordinates: '61.484722,21.797222'}
+];
+
+const CITIES = [
   {city:'Akaa', coordinates: '61.166667,23.868056'},
   {city:'Alajärvi', coordinates: '63.000000,23.816667'},
   {city:'Alavieska', coordinates: '64.165278,24.306944'},
@@ -331,6 +334,6 @@ const CITIES = [
   {city:'Äänekoski', coordinates: '62.604167,25.726389'}
 ]
 
-export { CITIES };
+export { CITIES, TOP_10_CITIES };
 
 

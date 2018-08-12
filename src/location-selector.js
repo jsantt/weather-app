@@ -1,7 +1,7 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import '@polymer/paper-spinner/paper-spinner-lite.js';
 
-import {CITIES} from './city-list';
+import {CITIES, TOP_10_CITIES} from './city-list';
 
 /**
  * @customElement
@@ -13,7 +13,7 @@ class LocationSelector extends PolymerElement {
     <style>
       :host {
         --paper-spinner-color:var(--color-palette-blue); 
-
+        
         display: block;
         color: var(--color-black);
         font-size: 1.563rem;
@@ -24,18 +24,14 @@ class LocationSelector extends PolymerElement {
 
       vaadin-combo-box {
         /* overwriting Vaadin's default styles */
-        --lumo-contrast-10pct: transparent;         
+        --lumo-contrast-10pct: transparent;        
         --lumo-font-size-m: var(--font-size-large);
         --lumo-font-family: 'Open Sans Condensed', sans-serif;
-        --vaadin-text-field-default-width: 10rem;
-      }
-
-      location-selector #shadow-root div vaadin-combo-box #shadow-root #input {
-        text-align: center;
+        --vaadin-text-field-default-width: 12rem;
       }
 
       .locate {
-        margin-left: 1.6rem;
+        margin-left: .6rem;
       }
 
       .locate_loadIcon {
@@ -51,7 +47,9 @@ class LocationSelector extends PolymerElement {
         animation-direction: alternate;
 
         display: inline-block;
+        padding-left: 1rem;
         transition: all .2s ease-in-out;
+
         vertical-align: middle;
       }
 
@@ -124,28 +122,18 @@ class LocationSelector extends PolymerElement {
             id="placeSelection"
             item-label-path="city"
             item-value-path="coordinates"
-            on-opened-changed="_openedChanged"
-            on-selected-item-changed="_citySelected">
+            on-opened-changed="_openedChanged">
            
-            <template>
-              <template is="dom-if" if=[[!_isLocate(item)]]>
-                [[item.city]]
+            <template style=font-family: 'Open Sans Condensed';">
+              
+              <template is="dom-if" if="[[_isHighlighted(index)]]">
+                <div>[[item.city]]</div>
               </template>
-
-              <template is="dom-if" if=[[_isLocate(item)]]>
-                <div>
-                  <a class="cities_locate">
-
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="24" height="24" viewBox="0 0 24 24">
-                      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"></path>
-                    </svg>
-
-                    Paikanna
-
-                  </a>
-                <div><br>
-              </template>  
-            </template>  
+              <template is="dom-if" if="[[!_isHighlighted(index)]]">
+                <div style="color: #916c25;">[[item.city]]</div>
+              </template>
+      
+            </template>
           </vaadin-combo-box>
 
         </template>
@@ -191,7 +179,9 @@ class LocationSelector extends PolymerElement {
     }
     else {  
       currentPlace = this._defaultPlace;
+      this._storeIntoLocalStorage('place', TOP_10_CITIES);
     }
+
     this._dispatchEvent('location-selector.location-changed', currentPlace);
   }
 
@@ -199,7 +189,6 @@ class LocationSelector extends PolymerElement {
     let combobox = this.shadowRoot.querySelector('#placeSelection');
     
     if(combobox) {
-      combobox.items = this._placeList();
       combobox.selectedItem = this._formPlaceObject(this.placeName);
 
       const url = this.placeName;
@@ -207,12 +196,17 @@ class LocationSelector extends PolymerElement {
       this._changeUrl('place', url);
       this._store('place', this.placeName);
 
+      combobox.items = this._placeList();
     }
     else {
       setTimeout(()=> {
         this._newPlace();
       }, 1000);
     }
+  }
+
+  _isHighlighted(index) {
+    return index < 10;
   }
 
   _openedChanged(customEvent) {
@@ -250,34 +244,9 @@ class LocationSelector extends PolymerElement {
     return combobox && !combobox.selectedItem;
   }
 
-  _citySelected(customEvent) {
-    
-    /*
-
-    if(customEvent.detail.value) {
-
-      let city = customEvent.detail.value.city;
-
-      if(city === 'locate') {
-        return this._geolocate();
-      }
-
-      let coordinates = customEvent.detail.value.coordinates;
-
-      let placeObject = this._formPlaceObject(city,  coordinates);
-      this._dispatchEvent('location-selector.location-changed', placeObject);
-
-      const url = city ? city : coordinates.replace(',', '-');
-      this._changeUrl('place', url);
-      this._store('place', city, coordinates);
-
-    }
-    */
-  }
-
   _placeList(){
     const previousLocations = this._getFromLocalStorage('place');
-    let allLocations = previousLocations ? previousLocations.concat(CITIES) : CITIES;
+    let allLocations = previousLocations.concat(CITIES);
     
     //const locate = [{city:'locate'}];
     return allLocations;
@@ -352,9 +321,6 @@ class LocationSelector extends PolymerElement {
             const url = position.coords.latitude + '-' + position.coords.longitude;
 
             this._dispatchEvent('location-selector.location-changed', this._formPlaceObject(null, coordinates));
-            
-            //this._changeUrl('place', url);
-            //this._store('place', null, coordinates);
 
           }, error => {
             this._dispatchEvent('location-selector.locate-error', {text: 'salli paikannus nähdäksesi paikkakuntasi sää'});
@@ -382,9 +348,8 @@ class LocationSelector extends PolymerElement {
     const newPlace = [this._formPlaceObject(city, coordinates)];
     const previousPlaces = this._getFromLocalStorage('place');
 
-    const placeHistory = newPlace.concat(previousPlaces);
-
-    this._storeIntoLocalStorage(key, placeHistory);
+    const filtered10 = newPlace.concat(previousPlaces.filter(item => item.city !== city).slice(0, 9));
+    this._storeIntoLocalStorage(key, filtered10);
   }
 
   _storeIntoLocalStorage(key, valueObject){

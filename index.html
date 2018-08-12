@@ -83,9 +83,13 @@
      <dom-module id="vaadin-text-field-styles" theme-for="vaadin-text-field">
       <template>
         <style>
+          :host {
+            --lumo-shade-50pct: hsla(0, 0%, 100%, 0);
+          }
         [part="value"] {
           text-align: center;
         }
+
         
         </style>
       </template>
@@ -99,11 +103,13 @@
 
         [part="text-field"] {
           margin-left: -1rem;
+          --lumo-shade-50pct: hsla(0, 0%, 100%, 0);
         }
 
         [part="toggle-button"] {
           font-size: 32px !important; 
         }
+
         </style>
       </template>
     </dom-module>
