@@ -16,5 +16,3 @@ import './weather-icons.js';
 import './weather-notification.js';
 import './weather-symbol-icons.js';
 import './wind-now.js';
-
-

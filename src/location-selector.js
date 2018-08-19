@@ -27,7 +27,7 @@ class LocationSelector extends PolymerElement {
         --lumo-contrast-10pct: transparent;        
         --lumo-font-size-m: var(--font-size-large);
         --lumo-font-family: 'Open Sans Condensed', sans-serif;
-        --vaadin-text-field-default-width: 12rem;
+        --vaadin-text-field-default-width: 10.5rem;
       }
 
       .locate {
@@ -124,13 +124,13 @@ class LocationSelector extends PolymerElement {
             item-value-path="coordinates"
             on-opened-changed="_openedChanged">
            
-            <template style=font-family: 'Open Sans Condensed';">
+            <template style=font-family:'Open Sans Condensed';">
               
               <template is="dom-if" if="[[_isHighlighted(index)]]">
                 <div>[[item.city]]</div>
               </template>
               <template is="dom-if" if="[[!_isHighlighted(index)]]">
-                <div style="color: #916c25;">[[item.city]]</div>
+                <div style="color:#916c25;">[[item.city]]</div>
               </template>
       
             </template>
@@ -170,7 +170,7 @@ class LocationSelector extends PolymerElement {
 
   ready() {
     super.ready();
-    
+
     const storedPlaces = this._getFromLocalStorage('place');
     let currentPlace;
 
@@ -214,7 +214,7 @@ class LocationSelector extends PolymerElement {
     let combobox = this.shadowRoot.querySelector('#placeSelection');
 
     if(this._isComboboxOpen(customEvent)) {
-
+      combobox.focus();
       this._previousPlace = this._formPlaceObject(this.placeName);//combobox.selectedItem;
       combobox.selectedItem = null;  
     }

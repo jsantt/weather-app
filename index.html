@@ -83,14 +83,10 @@
      <dom-module id="vaadin-text-field-styles" theme-for="vaadin-text-field">
       <template>
         <style>
-          :host {
-            --lumo-shade-50pct: hsla(0, 0%, 100%, 0);
-          }
-        [part="value"] {
-          text-align: center;
-        }
-
-        
+          [part="value"] {
+            text-align: center;
+            padding: 0 !important;
+          }        
         </style>
       </template>
     </dom-module>
@@ -103,7 +99,6 @@
 
         [part="text-field"] {
           margin-left: -1rem;
-          --lumo-shade-50pct: hsla(0, 0%, 100%, 0);
         }
 
         [part="toggle-button"] {
@@ -118,7 +113,7 @@
   <body>
     <weather-app></weather-app>
     <noscript>
-      Please enable JavaScript to view this website.
+      Please enable JavaScript to view this website
     </noscript>
   </body>
 
