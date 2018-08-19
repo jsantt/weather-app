@@ -136,7 +136,11 @@ class ForecastData extends PolymerElement {
       "endtime": this._tomorrowLastHour(),
     }
 
-    if(location.city && location.city.length > 0) {
+    if(location.key) {
+      // key is used for swedish cities
+      params.place = location.key;
+    }
+    else if(location.city && location.city.length > 0) {
       params.place = location.city;
     }
     else {

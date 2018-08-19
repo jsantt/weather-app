@@ -252,9 +252,6 @@ class LocationSelector extends PolymerElement {
     return allLocations;
   }
 
-  _isLocate(element) {
-    return element.city === 'locate';
-  }
 
   /**
    * @return whether response API is supported
