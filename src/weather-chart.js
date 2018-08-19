@@ -104,9 +104,9 @@ class WeatherChart extends PolymerElement {
         bar.setAttribute('fill-opacity', '1');      
         bar.setAttribute('width', 9);
       
-        // draw rectangle of height 20 x rain amount
-        const rectHeight = Number.isNaN(data[i].rain) ? 0 : data[i].rain*20;
-        
+        // draw rectangle of height 20 x rain amount, 120 being maximum height
+        const rectHeight = Number.isNaN(data[i].rain) ? 0 : Math.min(data[i].rain*20, 120);
+
         bar.setAttribute('height', rectHeight);
 
         // define top left corner of rectangle
