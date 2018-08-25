@@ -39,18 +39,6 @@ class ForecastData extends PolymerElement {
         type: Object,
         observer: '_newLocation'
       },
-
-      /**
-       * Example:
-       * {
-       *  temperature: '6,5'
-       * }
-       */
-      weatherNowData: {
-        type: Object,
-        notify: true
-      },
-
       /**
        * Example:
        * {
@@ -149,12 +137,6 @@ class ForecastData extends PolymerElement {
 
     return params;
   }
-
-  _getWeatherNow(data, time) {
-    return data.filter(function (item) {
-      return item.time === time;
-    });
-  }
   
   /**
    * Data comes from the following format from FMI open API
@@ -228,7 +210,6 @@ class ForecastData extends PolymerElement {
         const hirlamResponse = this._hirlamResponse(values[1].response);
 
         this.forecastData = this._combineDatas(harmonieResponse, hirlamResponse);
-        this.weatherNowData = this._getWeatherNow(this.forecastData, this._timeNow())[0];
       })
       .catch(rejected => {
       
@@ -254,19 +235,6 @@ class ForecastData extends PolymerElement {
     return location;
   }
 
-  _parseWeatherNow(temperature, symbols){
-    const temperatureRaw = value(temperature[0].children[1]);
-    
-    const symbol = Math.round(value(symbols[0].children[1]));
-
-    const weatherNow = {
-      temperature: temperatureRaw,
-      symbol: symbol
-    };
-
-    return weatherNow;
-  }
-
   _sendNotification(geoid, name) {
     const details = {
       location: {
@@ -277,17 +245,6 @@ class ForecastData extends PolymerElement {
 
     raiseEvent(this, 'forecast-data.new-place', details);
   }
-
-
-  _timeNow(){
-    let timeNow = new Date();
-
-    timeNow.setMinutes(timeNow.getMinutes() + 30);
-    timeNow.setMinutes(0,0,0);
-
-    return timeNow.toISOString().split('.')[0]+"Z";
-  }
-
 
   _todayFirstHour() {
     

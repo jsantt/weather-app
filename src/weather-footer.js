@@ -11,7 +11,7 @@ class WeatherFooter extends PolymerElement {
 
       footer {
         background-color: var(--color-primary);
-        padding: 1rem 1rem 1rem 1rem;
+        padding: var(--padding-header-footer);
       }
 
       footer section {

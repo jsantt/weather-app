@@ -7,15 +7,27 @@ class ForecastHeader extends PolymerElement {
       :host {
         display: block;
       }
+      
+      .header {
+        line-height: var(--line-height--tight);
+        
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+      }
+      .time {
+        color: var(--color-white);
+      }
+
       header {
         background-color: var(--color-primary);
-        padding: 1rem 1rem 0 1rem;
+        padding: var(--padding-header-footer);
       }
 
       .observation_link {
         color: var(--color-white);
         text-decoration: underline;
-        line-height: 1;
+        line-height: var(--line-height--tight);
       }
       .empty {
         flex: 0 0 3rem;
@@ -50,17 +62,25 @@ class ForecastHeader extends PolymerElement {
       }
 
     </style>
-      [[forecast]]
-    <header hidden$=[[hidden]]>
-
-      <h1>
-        <location-selector 
-          header-suffix="nyt" 
-          loading="[[loading]]" 
-          place="[[place]]">
-        </location-selector>
-      </h1>
+    <header>
+      <div class="header">
+        <div class="time">
+          <svg style="width:12px;height:12px" viewBox="0 0 24 24">
+            <path fill="#ffffff" d="M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z"></path>
+          </svg>
+          [[_parseHour(nextHour)]].00 <br> ennuste
+        </div>
+        <h1>
+          <location-selector 
+            header-suffix="nyt" 
+            loading="[[loading]]" 
+            place="[[place]]">
+          </location-selector>
+        </h1>
         
+        <div>
+        </div>
+    </div>  
         <div class="header-content">
 
           <!-- observation link -->
@@ -75,22 +95,20 @@ class ForecastHeader extends PolymerElement {
   
           <div>
             <weather-now 
-              symbol-id="[[weatherData.symbol]]"
-              temperature="[[weatherData.temperature]]">
+              symbol-id="[[selectedData.symbol]]"
+              temperature="[[selectedData.temperature]]">
             </weather-now>
           </div>
         
           <wind-now 
             class="wind" 
-            wind="[[weatherData.wind]]"
-            wind-direction="[[weatherData.windDirection]]">
+            wind="[[selectedData.wind]]"
+            wind-direction="[[selectedData.windDirection]]">
           </wind-now>
       
         </div>
-
-        <time-now update-time="[[locationChanged]]"></time-now>
-
-        </header>
+      
+      </header>
     `;
   }
 
@@ -98,14 +116,18 @@ class ForecastHeader extends PolymerElement {
 
   static get properties() {
     return {
-      hidden: {
-        type: Boolean
-      },
       loading: {
         type: Boolean
       },
-      weatherData: {
+      forecastData: {
         type: Object
+      },
+      nextHour: {
+        type: String
+      },
+      selectedData: {
+        type: Object,
+        computed: '_getWeatherNow(forecastData, nextHour)'
       },
       place: {
         type: String
@@ -116,6 +138,19 @@ class ForecastHeader extends PolymerElement {
 
   ready() {
     super.ready();
+  }
+
+  _parseHour(timestamp) {
+    const date = new Date(timestamp);
+    return date.getHours();
+  }
+
+  _getWeatherNow(data, time) {
+    if(data) {
+      return data.filter(function (item) {
+        return item.time === time;
+      })[0];
+    }
   }
 
   _observationLinkClicked() {

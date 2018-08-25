@@ -170,7 +170,7 @@ const CITIES = [
   {city:'Luvia', coordinates: '61.361111,21.625000'},
   {city:'Maalahti', coordinates: '62.944444,21.547222'},
   {city:'Maaninka', coordinates: '63.155556,27.300000'},
-  {city:'Mariehamn', coordinates: '60.098611,19.944444'},
+  {city:'Maarianhamina', key: 'Mariehamn', coordinates: '60.098611,19.944444'},
   {city:'Marttila', coordinates: '60.584722,22.900000'},
   {city:'Masku', coordinates: '60.570833,22.100000'},
   {city:'Merijärvi', coordinates: '64.297222,24.447222'},

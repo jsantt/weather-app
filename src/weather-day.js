@@ -32,17 +32,6 @@ class WeatherDay extends PolymerElement {
         grid-template-rows: minmax(1.4rem, auto);
       }
 
-      .weatherDay_shadow {
-        background-color: rgb(255,255,255, 0.7);
-        position: absolute;
-        top: 3rem;
-        bottom: 0;
-        left: 0;
-        right: 45%;
-
-        z-index: 3;
-      }
-
       .day {
         background-color: var(--color-dayHeader);
         border-top: 2px solid var(--color-dayHeader-delimiter);
@@ -83,8 +72,10 @@ class WeatherDay extends PolymerElement {
         grid-column: span 1;
       }
       .hour--dot {
-        color: var(--color-gray);
         font-size: 0.75rem;
+      }
+      .hour--past {
+        color: var(--color-gray--light);
       }
 
       .symbol, .symbol--empty {
@@ -137,11 +128,7 @@ class WeatherDay extends PolymerElement {
 
     </style>
     <div class="weatherDay">
-      
-      <!-- template is="dom-if" if="[[_isFirst(dayNumber)]]">
-        <div class="weatherDay_shadow"></div>
-      </template -->
-
+     
       <div class="weatherDay_grid">
         
         <div class="day">
@@ -162,7 +149,7 @@ class WeatherDay extends PolymerElement {
 
        
             <template is="dom-if" if="[[!_isFourth(index)]]">
-              <div class="hour hour--dot">
+              <div class$="[[_markPastDots(entry.hour)]]">
                 .
               </div>
             </template>
@@ -170,7 +157,7 @@ class WeatherDay extends PolymerElement {
           <!-- HOUR, SYMBOL & TEMPERATURE -->
           <template is="dom-if" if="[[_isFourth(index)]]">
 
-            <div class="hour">
+            <div class$="[[_markPastHours(entry.hour)]]">
                   [[entry.hour]]
             </div>
             
@@ -223,6 +210,9 @@ class WeatherDay extends PolymerElement {
       dayNumber: {
         type: Number
       },
+      highlightHour: {
+        type: String
+      },
       minTemperature: {
         type: Number
       },
@@ -242,6 +232,40 @@ class WeatherDay extends PolymerElement {
   _day(number){
     const dayNames = ['Tänään', 'Huomenna', 'Ylihuomenna'];
     return dayNames[number - 1];
+  }
+
+  _markPastDots(current){
+    
+    let classes = 'hour hour--dot';
+
+    if(this.highlightHour) {
+      const date = new Date(this.highlightHour);
+
+      if(date.getHours() === current) {
+        classes += '  hour--current';
+      }
+      else if(date.getHours() > current) {
+        classes += ' hour--past';
+      }
+    }
+    return classes;
+  }
+
+  _markPastHours(current){
+    
+    let classes = 'hour';
+
+    if(this.highlightHour) {
+      const date = new Date(this.highlightHour);
+
+      if(date.getHours() === current) {
+        classes += '  hour--selected';
+      }
+      else if(date.getHours() > current) {
+        classes += ' hour--past';
+      }
+    }
+    return classes;
   }
 
   _weekday(number){

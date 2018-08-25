@@ -6,9 +6,7 @@ class ObservationModalContent extends PolymerElement {
     return html`
     <style>
       :host {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        justify-items: stretch;
+      
       }
 
       .header {
@@ -17,12 +15,12 @@ class ObservationModalContent extends PolymerElement {
 
         grid-column: span 2;
         padding: 1rem;
+        text-align: center;
       }
 
       h1, h2, h3 { 
         margin: 0;
         padding: 0;
-        text-align: center;
       }
 
       h1 {
@@ -46,24 +44,43 @@ class ObservationModalContent extends PolymerElement {
         line-height: 1.5;
       }
 
-      .degree {
-        font-size: var(--font-size-large);
-        vertical-align: top;
-      }
+      .content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 7rem 6.5rem 6.5rem 5em;
+        
+        align-items: end;
+        justify-items: center;
 
-      .temperature, .humidity, .pressure, .wind, .rain, rainExplanation, .snow {
-        grid-column: span 2;
+        text-align: center;
       }
 
       .temperature {
-        font-size: var(--font-size-xxlarge);
-        margin: 2rem 0;
+        align-self: normal;
+        margin-top: 1.5rem;
+        justify-self: stretch;
+        border-bottom: 1px solid var(--color-gray--light);
+        font-size: var(--font-size-xxxlarge);
+        margin-bottom: -0.37rem;
+        grid-column: 1 / span 2;
       }
-
+      .degree {
+        font-size: var(--font-size-large);
+        vertical-align: super;
+      }
       .textual {
+        font-size: var(--font-size-medium);
+      }
+      .rainDetails {
+        grid-column: 1 / span 2;
+      }
+      .value {
         font-size: var(--font-size-large);
       }
-
+      .windExplanation {
+        margin-top: -0.26rem;
+      }
+  
     </style>
   
       <div class="header">
@@ -71,54 +88,80 @@ class ObservationModalContent extends PolymerElement {
         <h2>[[observationData.weatherStation]]</h2>
         <h3>Kello [[_formatTime(observationData.time)]]</h3>
       </div>
-      
-      <div class="temperature">
-        <template is="dom-if" if="[[observationData.temperature]]">
-          [[observationData.temperature]] <span class="degree">°C</span>
-        </template>
-      
-        <span class="textual">
+      <div class="content">
+ 
+        <div class="temperature">
+          <template is="dom-if" if="[[observationData.temperature]]">
+            <span>[[observationData.temperature]]</span> <span class="degree">°C</span>
+          </template>
+        
           <weather-symbol-wawa 
-            class="textual"
+            class="value"
             wawa-id="[[observationData.weatherCode]]">
           </weather-symbol-wawa>
-        </span>
-      </div>
+          
+        </div>
+        
 
-      <div class="humidity">
+           
+          <template is="dom-if" if="[[observationData.rainExplanation]]">  
+            <div>
+              <div class="value">[[observationData.rainExplanation]]</div>
+              <div class="explanation">sateen rankkuus</div>
+            <div>
+          </template>
+        
+          <template is="dom-if" if="[[observationData.rain]]">
+            <div>
+              <div class="value">[[observationData.rain]]</div> 
+              <div class="explanation"> mm sadetta / edeltävä tunti</div>
+            </div>
+          </template>
+        
+
+          <template is="dom-if" if="[[observationData.wind]]">
+            <div>
+              <wind-icon 
+                degrees="[[observationData.windDirection]]" 
+                large
+                round="" 
+                wind-speed="[[observationData.wind]]">
+              </wind-icon>
+              <div class="explanation windExplanation">10 min keskituuli</div>
+            </div>
+          </template>
+        
         <template is="dom-if" if="[[observationData.humidity]]">
-          kosteus: [[observationData.humidity]] %
+          <div>
+            <div class="value">[[observationData.humidity]]%</div>
+            <div class="explanation">ilmankosteus</div>
+          </div>
         </template>
-      </div>
-      <div class="pressure">
+      
         <template is="dom-if" if="[[observationData.pressure]]">
-          ilmanpaine: [[observationData.pressure]] hPa
+          <div>
+            <div class="value">[[observationData.pressure]] hPa</div>
+            <div class="explanation">ilmanpaine</div>
+          </div>
         </template>
-      </div>
-      <div class="wind">
-        <template is="dom-if" if="[[observationData.wind]]">
-          <wind-icon 
-            degrees="[[observationData.windDirection]]" 
-            round="" 
-            wind-speed="[[observationData.wind]]">
-          </wind-icon>
-        </template>
-      </div>
-      <div class="rain">    
+      
         <template is="dom-if" if="[[observationData.rain]]">
-          Sademäärä: [[observationData.rain]] mm / edeltävä tunti
+          <div>
+            <div>
+              [[observationData.rain]] 
+            </div>
+            <div>
+              sademäärä mm / edeltävä tunti
+            </div>
+          <div>
         </template>
-      </div>
-      <div class="rainExplanation">  
-        <template is="dom-if" if="[[observationData.rainExplanation]]">  
-          Sateen rankkuus: [[observationData.rainExplanation]]
-        </template>
-      </div>
-      <div class="snow">
+            
         <template is="dom-if" if="[[_snow(observationData.snow)]]">
-          Lumen syvyys: [[observationData.snow]]
+          <div>
+            Lumen syvyys: [[observationData.snow]]
+          </div>
         </template>
-      </div>
+    </div>
     `;
   }
 

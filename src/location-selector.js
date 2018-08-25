@@ -47,9 +47,10 @@ class LocationSelector extends PolymerElement {
         animation-direction: alternate;
 
         display: inline-block;
-        padding-left: 1rem;
+        padding: 0 0 0 1rem;
         transition: all .2s ease-in-out;
-
+        
+        margin-left: -3rem;
         vertical-align: middle;
       }
 
@@ -233,12 +234,15 @@ class LocationSelector extends PolymerElement {
   _isComboboxOpen(customEvent) {
     return customEvent.detail && customEvent.detail.value;
   }
+
   _isComboboxPlaceSelected(combobox) {
     return combobox && combobox.selectedItem;
   }
+
   _isComboboxLocate(combobox) {
     return combobox && combobox.selectedItem && combobox.selectedItem.city === 'locate';
   }
+
   /* return if user closes the city selection modal without any selections */
   _isComboboxDismiss(combobox) {
     return combobox && !combobox.selectedItem;
