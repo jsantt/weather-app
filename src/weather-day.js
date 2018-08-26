@@ -146,13 +146,12 @@ class WeatherDay extends PolymerElement {
             <div class="temperature--empty"></div>
             <div class="wind--empty"></div>
           </template>
-
        
-            <template is="dom-if" if="[[!_isFourth(index)]]">
-              <div class$="[[_markPastDots(entry.hour)]]">
-                .
-              </div>
-            </template>
+          <template is="dom-if" if="[[!_isFourth(index)]]">
+            <div class$="[[_markPastDots(entry.hour)]]">
+              .
+            </div>
+          </template>
        
           <!-- HOUR, SYMBOL & TEMPERATURE -->
           <template is="dom-if" if="[[_isFourth(index)]]">

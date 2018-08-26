@@ -50,7 +50,6 @@ class LocationSelector extends PolymerElement {
         padding: 0 0 0 1rem;
         transition: all .2s ease-in-out;
         
-        margin-left: -3rem;
         vertical-align: middle;
       }
 
