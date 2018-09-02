@@ -1,3 +1,7 @@
+/**
+ * Top 10 Finnish cities by population. Shown in city selection
+ * combobox
+ */
 const TOP_10_CITIES = [
   {city:'Helsinki', coordinates: '60.170833,24.937500'},
   {city:'Espoo', coordinates: '60.205556,24.655556'},
@@ -11,6 +15,9 @@ const TOP_10_CITIES = [
   {city:'Pori', coordinates: '61.484722,21.797222'}
 ];
 
+/**
+ * Finnish cities alphabetically. Shown in city selection combobox
+ */
 const CITIES = [
   {city:'Akaa', coordinates: '61.166667,23.868056'},
   {city:'Alajärvi', coordinates: '63.000000,23.816667'},

@@ -5,9 +5,9 @@ import {getByAttributeValue, getTime, getTimeAndValuePairs, getValue, parseLocat
 
 
 /**  
- *  Fetch weather forecast from Ilmatieteenlaitos. Prefer "Harmonie" model
+ *  Fetches weather forecast from Ilmatieteenlaitos. Prefer "Harmonie" model
  *  and do another call against Hirlam to get weather symbol and rain that are 
- *  missing from Harmonie 
+ *  missing from Harmonie. 
  */
 class ForecastData extends PolymerElement {
   static get is() { return 'forecast-data'; }
