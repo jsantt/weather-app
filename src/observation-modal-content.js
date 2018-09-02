@@ -5,21 +5,21 @@ class ObservationModalContent extends PolymerElement {
   static get template() {
     return html`
     <style>
-      :host {
-      
-      }
 
       .header {
-        background-color: var(--color-secondary);
+        background-color: var(--color-primary);
         border-bottom: 0.2rem solid var(--color-gray--light); 
 
         grid-column: span 2;
-        padding: 1rem;
+        padding: 1.5rem 1rem;
         text-align: center;
       }
 
       h1, h2, h3 { 
+        color: var(--color-black);
+        font-weight: 500;
         margin: 0;
+
         padding: 0;
       }
 
@@ -39,7 +39,6 @@ class ObservationModalContent extends PolymerElement {
         line-height: 1.1;
       }
       h3 {
-        color: var(--color-gray);
         font-size: var(--font-size-small);
         line-height: 1.5;
       }
@@ -47,22 +46,23 @@ class ObservationModalContent extends PolymerElement {
       .content {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        grid-template-rows: 7rem 6.5rem 6.5rem 5em;
         
-        align-items: end;
+        align-items: center;
         justify-items: center;
 
         text-align: center;
       }
+      .item {
+        padding: 1.5rem 0;
+      }
 
       .temperature {
-        align-self: normal;
-        margin-top: 1.5rem;
         justify-self: stretch;
         border-bottom: 1px solid var(--color-gray--light);
-        font-size: var(--font-size-xxxlarge);
-        margin-bottom: -0.37rem;
+        font-size: var(--font-size-xxlarge);
         grid-column: 1 / span 2;
+
+        padding: 3rem 0;
       }
       .degree {
         font-size: var(--font-size-large);
@@ -80,17 +80,24 @@ class ObservationModalContent extends PolymerElement {
       .windExplanation {
         margin-top: -0.26rem;
       }
+      .footer {
+        background-color: var(--color-primary);
+        border-top: 0.2rem solid var(--color-gray--light); 
+        height: 2rem;
+
+        margin-top: 1rem;
+      }
   
     </style>
   
       <div class="header">
-        <h1>HAVAINTOASEMA <span class="beta">beta</span></h1>
+        <h1>HAVAINTOASEMA</h1>
         <h2>[[observationData.weatherStation]]</h2>
         <h3>Kello [[_formatTime(observationData.time)]]</h3>
       </div>
       <div class="content">
  
-        <div class="temperature">
+        <div class="item temperature">
           <template is="dom-if" if="[[observationData.temperature]]">
             <span>[[observationData.temperature]]</span> <span class="degree">°C</span>
           </template>
@@ -105,7 +112,7 @@ class ObservationModalContent extends PolymerElement {
 
            
           <template is="dom-if" if="[[observationData.rainExplanation]]">  
-            <div>
+            <div class="item">
               <div class="value">[[observationData.rainExplanation]]</div>
               <div class="explanation">sateen rankkuus</div>
             <div>
@@ -120,7 +127,7 @@ class ObservationModalContent extends PolymerElement {
         
 
           <template is="dom-if" if="[[observationData.wind]]">
-            <div>
+            <div class="item">
               <wind-icon 
                 degrees="[[observationData.windDirection]]" 
                 large
@@ -132,35 +139,27 @@ class ObservationModalContent extends PolymerElement {
           </template>
         
         <template is="dom-if" if="[[observationData.humidity]]">
-          <div>
+          <div class="item">
             <div class="value">[[observationData.humidity]]%</div>
             <div class="explanation">ilmankosteus</div>
           </div>
         </template>
       
         <template is="dom-if" if="[[observationData.pressure]]">
-          <div>
+          <div class="item">
             <div class="value">[[observationData.pressure]] hPa</div>
             <div class="explanation">ilmanpaine</div>
           </div>
         </template>
-      
-        <template is="dom-if" if="[[observationData.rain]]">
-          <div>
-            <div>
-              [[observationData.rain]] 
-            </div>
-            <div>
-              sademäärä mm / edeltävä tunti
-            </div>
-          <div>
-        </template>
             
         <template is="dom-if" if="[[_snow(observationData.snow)]]">
-          <div>
+          <div class="item">
             Lumen syvyys: [[observationData.snow]]
           </div>
         </template>
+    </div>
+    <div class="footer">
+      
     </div>
     `;
   }

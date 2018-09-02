@@ -7,10 +7,10 @@ class ObservationModal extends PolymerElement {
       :host {
         display: block;
 
-        --content-padding: 1rem;
+        --content-padding: 0.5rem;
       }
       .close {
-        color: #aaa;
+        color: var(--color-white);
 
         font-family: 'Open Sans Condensed', sans-serif;
         font-size: var(--font-size-xxlarge);
@@ -45,7 +45,7 @@ class ObservationModal extends PolymerElement {
         background-color: #fefefe;
         margin: 7% auto; /* 7% from the top and centered */
 
-        max-width: 31rem;
+        max-width: 25rem;
         width: 80%; /* Could be more or less, depending on screen size */
 
         padding: var(--content-padding);
