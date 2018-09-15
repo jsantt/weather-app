@@ -1,6 +1,5 @@
-import '@polymer/paper-toast/paper-toast.js';
+//import '@polymer/paper-toast/paper-toast.js';
 import '@vaadin/vaadin-combo-box/vaadin-combo-box.js';
-
 import './location-selector.js';
 import './observation-data.js';
 import './observation-modal';

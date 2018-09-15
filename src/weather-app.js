@@ -1,6 +1,7 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js'
 
-import './lazy-resources.js'
+// lazy-resources are loaded in the app code
+//import './lazy-resources.js' 
 import './forecast-data.js';
 import './forecast-header';
 import './weather-now.js';
@@ -38,7 +39,12 @@ class WeatherApp extends PolymerElement {
 
         --line-height--tight: 1;
         --padding-header-footer: 1.2rem;
-      }      
+
+      }
+      body.wf-loading {
+        border: 9px solid red;
+      }
+           
     </style>
       <weather-analytics key="UA-114081578-1"></weather-analytics>
 
