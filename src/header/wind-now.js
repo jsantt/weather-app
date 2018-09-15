@@ -1,5 +1,5 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-import './wind-icon.js';
+import '../wind-icon.js';
 
 
 class WindNow extends PolymerElement {

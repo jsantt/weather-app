@@ -3,8 +3,8 @@ import { PolymerElement, html } from '@polymer/polymer/polymer-element.js'
 // lazy-resources are loaded in the app code
 //import './lazy-resources.js' 
 import './forecast-data.js';
-import './forecast-header';
-import './weather-now.js';
+import './header/forecast-header';
+import './header/weather-now.js';
 
 class WeatherApp extends PolymerElement {
 

@@ -1,8 +1,8 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import './temperature-line.js';
 import './weather-chart.js';
-import './weather-symbol.js';
-import './wind-icon.js';
+import '../weather-symbol.js';
+import '../wind-icon.js';
 
 class WeatherDay extends PolymerElement {
   static get template() {

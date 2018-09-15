@@ -1,7 +1,6 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-import './weather-symbol.js';
+import '../weather-symbol.js';
 import './weather-symbol-name.js';
-import './wind-icon.js';
 
 class WeatherNow extends PolymerElement {
   static get template() {
