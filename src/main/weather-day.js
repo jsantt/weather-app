@@ -1,8 +1,8 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import './temperature-line.js';
 import './weather-chart.js';
-import './weather-symbol.js';
-import './wind-icon.js';
+import '../weather-symbol.js';
+import '../wind-icon.js';
 
 class WeatherDay extends PolymerElement {
   static get template() {
@@ -30,17 +30,6 @@ class WeatherDay extends PolymerElement {
         grid-row-gap: 0;
         grid-template-columns: repeat(25, 1fr);
         grid-template-rows: minmax(1.4rem, auto);
-      }
-
-      .weatherDay_shadow {
-        background-color: rgb(255,255,255, 0.7);
-        position: absolute;
-        top: 3rem;
-        bottom: 0;
-        left: 0;
-        right: 45%;
-
-        z-index: 3;
       }
 
       .day {
@@ -83,8 +72,10 @@ class WeatherDay extends PolymerElement {
         grid-column: span 1;
       }
       .hour--dot {
-        color: var(--color-gray);
         font-size: 0.75rem;
+      }
+      .hour--past {
+        color: var(--color-gray--light);
       }
 
       .symbol, .symbol--empty {
@@ -137,11 +128,7 @@ class WeatherDay extends PolymerElement {
 
     </style>
     <div class="weatherDay">
-      
-      <!-- template is="dom-if" if="[[_isFirst(dayNumber)]]">
-        <div class="weatherDay_shadow"></div>
-      </template -->
-
+     
       <div class="weatherDay_grid">
         
         <div class="day">
@@ -159,18 +146,17 @@ class WeatherDay extends PolymerElement {
             <div class="temperature--empty"></div>
             <div class="wind--empty"></div>
           </template>
-
        
-            <template is="dom-if" if="[[!_isFourth(index)]]">
-              <div class="hour hour--dot">
-                .
-              </div>
-            </template>
+          <template is="dom-if" if="[[!_isFourth(index)]]">
+            <div class$="[[_markPastDots(entry.hour)]]">
+              .
+            </div>
+          </template>
        
           <!-- HOUR, SYMBOL & TEMPERATURE -->
           <template is="dom-if" if="[[_isFourth(index)]]">
 
-            <div class="hour">
+            <div class$="[[_markPastHours(entry.hour)]]">
                   [[entry.hour]]
             </div>
             
@@ -191,11 +177,15 @@ class WeatherDay extends PolymerElement {
                   </wind-icon>
 
               </div>
-          </template>
-          
-          </template>    
+            </template>
+
+          </template>  
+            
         </template>
 
+        <div class="hour hour--empty">
+        </div>
+      
         <div class="temperature_line">
             <temperature-line min-temperature="[[minTemperature]]" forecast-data="[[forecastData]]">
             </temperature-line>
@@ -219,6 +209,9 @@ class WeatherDay extends PolymerElement {
       dayNumber: {
         type: Number
       },
+      highlightHour: {
+        type: String
+      },
       minTemperature: {
         type: Number
       },
@@ -238,6 +231,40 @@ class WeatherDay extends PolymerElement {
   _day(number){
     const dayNames = ['Tänään', 'Huomenna', 'Ylihuomenna'];
     return dayNames[number - 1];
+  }
+
+  _markPastDots(current){
+    
+    let classes = 'hour hour--dot';
+
+    if(this.highlightHour) {
+      const date = new Date(this.highlightHour);
+
+      if(date.getHours() === current) {
+        classes += '  hour--current';
+      }
+      else if(date.getHours() > current) {
+        classes += ' hour--past';
+      }
+    }
+    return classes;
+  }
+
+  _markPastHours(current){
+    
+    let classes = 'hour';
+
+    if(this.highlightHour) {
+      const date = new Date(this.highlightHour);
+
+      if(date.getHours() === current) {
+        classes += '  hour--selected';
+      }
+      else if(date.getHours() > current) {
+        classes += ' hour--past';
+      }
+    }
+    return classes;
   }
 
   _weekday(number){

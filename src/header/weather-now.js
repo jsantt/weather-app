@@ -1,7 +1,6 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-import './weather-symbol.js';
+import '../weather-symbol.js';
 import './weather-symbol-name.js';
-import './wind-icon.js';
 
 class WeatherNow extends PolymerElement {
   static get template() {
@@ -29,7 +28,8 @@ class WeatherNow extends PolymerElement {
 
       .symbolText {
         color: var(--color-black);
-        font-size: var(--font-size-small);
+        font-size: var(--font-size-medium);
+        margin-top: 0.4rem;
         text-align: center;
       }
 

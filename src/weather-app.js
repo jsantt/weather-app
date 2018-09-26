@@ -1,8 +1,10 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js'
 
+// lazy-resources are loaded in the app code
+//import './lazy-resources.js' 
 import './forecast-data.js';
-import './forecast-header';
-import './weather-now.js';
+import './header/forecast-header';
+import './header/weather-now.js';
 
 class WeatherApp extends PolymerElement {
 
@@ -31,9 +33,19 @@ class WeatherApp extends PolymerElement {
         --color-primary: var(--color-palette-lightBlue);
         --color-secondary: var(--color-palette-yellow);
         --color-tertiary: #ddd;
-      }      
+
+        /* background gradient */
+        --background-gradient: linear-gradient(315deg, var(--color-primary) 0%, #20a4f3 74%);
+
+        --line-height--tight: 1;
+        --padding-header-footer: 1.2rem;
+
+      }
+      body.wf-loading {
+        border: 9px solid red;
+      }
+           
     </style>
-    
       <weather-analytics key="UA-114081578-1"></weather-analytics>
 
       <weather-notification forecast-data="[[forecastData]]">
@@ -48,8 +60,7 @@ class WeatherApp extends PolymerElement {
       <!-- rest of the data (forecast) -->
       <forecast-data 
         weather-location="[[weatherLocation]]" 
-        forecast-data="{{forecastData}}" 
-        weather-now-data="{{weatherNowData}}">
+        forecast-data="{{forecastData}}">
       </forecast-data>
 
       <!-- 'Espoo' (or any other city) now-->
@@ -58,8 +69,9 @@ class WeatherApp extends PolymerElement {
       
       <forecast-header
         loading="[[loading]]"
+        next-hour="[[nextHour]]"
         place="[[place]]"
-        weather-data="{{weatherNowData}}">
+        forecast-data="{{forecastData}}">
       </forecast-header>
       
       <observation-modal visible="[[observationVisible]]">
@@ -67,11 +79,13 @@ class WeatherApp extends PolymerElement {
           observation-data="{{observationData}}">
         </observation-modal-content>
       </observation-modal>
-      
 
       <!-- today, tomorrow and a day after tomorrow -->
       <main class$="[[_loading()]]">
-        <weather-days forecast-data="[[forecastData]]" show-wind="[[showWind]]"></weather-days>
+        <weather-days 
+          forecast-data="[[forecastData]]" 
+          next-hour="[[nextHour]]"
+          show-wind="[[showWind]]"></weather-days>
       </main>
 
       <!-- footer -->
@@ -86,9 +100,13 @@ class WeatherApp extends PolymerElement {
     return {
       loading: {
         type: Boolean,
-        value: false,
+        value: true,
         reflectToAttribute: true,
         notify: true
+      },
+      nextHour: {
+        type: Number,
+        computed: '_nextFullHour()'
       },
       place: {
         type: Object,
@@ -110,7 +128,7 @@ class WeatherApp extends PolymerElement {
   constructor() { 
     super();
     
-    this.addEventListener('location-selector.device-located', (event) => this._onNewLocation(event));
+    this.addEventListener('location-selector.location-changed', (event) => this._onNewLocation(event));
     
     this.addEventListener('forecast-data.fetch-error', (event) => this._onFetchError(event));
     this.addEventListener('location-selector.locate-error', (event) => this._onFetchError(event));
@@ -136,6 +154,15 @@ class WeatherApp extends PolymerElement {
   _debugEvent(event) {
     console.log(event.type);
     console.log(event.detail);
+  }
+
+  _nextFullHour(){
+    let timeNow = new Date();
+
+    timeNow.setHours(timeNow.getHours() + 1);
+    timeNow.setMinutes(0,0,0);
+
+    return timeNow.toISOString().split('.')[0]+"Z";
   }
 
   _onFetchError(event) {

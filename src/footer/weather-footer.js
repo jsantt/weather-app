@@ -11,7 +11,7 @@ class WeatherFooter extends PolymerElement {
 
       footer {
         background-color: var(--color-primary);
-        padding: 1rem 1rem 1rem 1rem;
+        padding: var(--padding-header-footer);
       }
 
       footer section {
@@ -43,8 +43,6 @@ class WeatherFooter extends PolymerElement {
 
 <footer>
     <p class="footer_header">Säädata by Ilmatieteen laitos | avoin data</p>
-
-    <p class="footer_header"><ios-add-to-homescreen></ios-add-to-homescreen></p>
     
     <section class="footer_section">
      
@@ -57,13 +55,17 @@ class WeatherFooter extends PolymerElement {
     </p><section>
 
     <section class="footer_section">
-        <h3>Palaute</h3>  
-        <p class="info">
-            <a href="https://www.linkedin.com/in/janisantti">
-              www.linkedin.com/in/janisantti
-            </a>
-        </p><p>
-      </p><section>
+      <h3>Palaute</h3>  
+      <p class="info">
+          <a href="https://www.linkedin.com/in/janisantti">
+            www.linkedin.com/in/janisantti
+          </a>
+      </p><p></p>
+    <section>
+    <p class="footer_header">
+      <ios-add-to-homescreen>        
+      </ios-add-to-homescreen>
+    </p>
 
   </section></section></section></section></section></section></footer>
 `;

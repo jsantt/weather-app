@@ -5,9 +5,9 @@ import {getByAttributeValue, getTime, getTimeAndValuePairs, getValue, parseLocat
 
 
 /**  
- *  Fetch weather forecast from Ilmatieteenlaitos. Prefer "Harmonie" model
+ *  Fetches weather forecast from Ilmatieteenlaitos. Prefer "Harmonie" model
  *  and do another call against Hirlam to get weather symbol and rain that are 
- *  missing from Harmonie 
+ *  missing from Harmonie. 
  */
 class ForecastData extends PolymerElement {
   static get is() { return 'forecast-data'; }
@@ -35,27 +35,10 @@ class ForecastData extends PolymerElement {
 
   static get properties() {
     return {
-      place: {
-        type: Number,
-        computed: '_place(weatherLocation)'
-      },
-
       weatherLocation: {
         type: Object,
         observer: '_newLocation'
       },
-
-      /**
-       * Example:
-       * {
-       *  temperature: '6,5'
-       * }
-       */
-      weatherNowData: {
-        type: Object,
-        notify: true
-      },
-
       /**
        * Example:
        * {
@@ -116,41 +99,43 @@ class ForecastData extends PolymerElement {
 
   _getHarmonieParams(location){
   
-    let params = 
-    {
-      "request":"getFeature", 
-      "storedquery_id":"fmi::forecast::harmonie::surface::point::timevaluepair",
-      "parameters": "Humidity,Temperature,WindDirection,WindSpeedMS",
-      "starttime": this._todayFirstHour(),
-      "endtime": this._tomorrowLastHour(),
-    }
+    let params = this._commonParams(location);
 
-    params.latlon = location.latlon;
-
+    params.storedquery_id = 'fmi::forecast::harmonie::surface::point::timevaluepair';
+    params.parameters = 'Humidity,Temperature,WindDirection,WindSpeedMS';
+    
     return params;
   }
 
    _getHirlamParams(location){
    
-    let params = 
-    {
-      "request":"getFeature", 
-      "storedquery_id":"fmi::forecast::hirlam::surface::point::timevaluepair",
-      "parameters": "Precipitation1h,WeatherSymbol3",
+    let params = this._commonParams(location);
+    
+    params.storedquery_id = 'fmi::forecast::hirlam::surface::point::timevaluepair';
+    params.parameters = 'Precipitation1h,WeatherSymbol3';
+     
+    return params;
+  }
+
+  _commonParams(location) {
+    let params = {
+      "request":"getFeature",
       "starttime": this._todayFirstHour(),
       "endtime": this._tomorrowLastHour(),
     }
 
-   
-    params.latlon = location.latlon
-    
-    return params;
-  }
+    if(location.key) {
+      // key is used for swedish cities
+      params.place = location.key;
+    }
+    else if(location.city && location.city.length > 0) {
+      params.place = location.city;
+    }
+    else {
+      params.latlon = location.coordinates;
+    }
 
-  _getWeatherNow(data, time) {
-    return data.filter(function (item) {
-      return item.time === time;
-    });
+    return params;
   }
   
   /**
@@ -225,24 +210,12 @@ class ForecastData extends PolymerElement {
         const hirlamResponse = this._hirlamResponse(values[1].response);
 
         this.forecastData = this._combineDatas(harmonieResponse, hirlamResponse);
-        this.weatherNowData = this._getWeatherNow(this.forecastData, this._timeNow())[0];
       })
       .catch(rejected => {
       
           raiseEvent(this, 'forecast-data.fetch-error', {text: 'Virhe haettaessa ennustetietoja'});
           console.log('error ' + rejected.stack);
       });
-  }
-
-  _sendNotification(geoid, name) {
-    const details = {
-      location: {
-        geoid: geoid,
-        name: name
-      }
-    };
-
-    raiseEvent(this, 'forecast-data.new-place', details);
   }
 
   _prepareRequest(id, params){
@@ -255,39 +228,23 @@ class ForecastData extends PolymerElement {
   <gml:identifier codeSpace="http://xml.fmi.fi/namespace/stationcode/geoid">7521689</gml:identifier>*/
   _parseLocationGeoid(response){
     const locations = response.getElementsByTagName('gml:identifier');
-
     const locationRow = getByAttributeValue(locations, 'codeSpace', 'http://xml.fmi.fi/namespace/stationcode/geoid');
+
     const location = value(locationRow);
 
     return location;
   }
 
-  _parseWeatherNow(temperature, symbols){
-    const temperatureRaw = value(temperature[0].children[1]);
-    
-    const symbol = Math.round(value(symbols[0].children[1]));
-
-    const weatherNow = {
-      temperature: temperatureRaw,
-      symbol: symbol
+  _sendNotification(geoid, name) {
+    const details = {
+      location: {
+        geoid: geoid,
+        name: name
+      }
     };
 
-    return weatherNow;
+    raiseEvent(this, 'forecast-data.new-place', details);
   }
-
-  _place (location) {
-    return location.place; 
-  }
-
-  _timeNow(){
-    let timeNow = new Date();
-
-    timeNow.setMinutes(timeNow.getMinutes() + 30);
-    timeNow.setMinutes(0,0,0);
-
-    return timeNow.toISOString().split('.')[0]+"Z";
-  }
-
 
   _todayFirstHour() {
     

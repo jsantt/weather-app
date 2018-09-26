@@ -54,19 +54,10 @@ class WeatherChart extends PolymerElement {
   }
 
   /**
-   * Chart containing rain bars, temperature line, past time shadow and present time triangle
+   * Chart containing rain bars and temperature line
    */
   _createChart(forecastData) {
     let svg = this._svg();
-    
-    if(this.showTimeNow) { 
-
-      /*const pastTimeShadow = this._pastTimeShadow(this._hoursNow());
-      svg.appendChild(pastTimeShadow);
-
-      const timeNowTriangle = this._timeNowTriangle();
-      sv*/
-    }
 
     this._rainBars(svg, forecastData);
     
@@ -104,9 +95,9 @@ class WeatherChart extends PolymerElement {
         bar.setAttribute('fill-opacity', '1');      
         bar.setAttribute('width', 9);
       
-        // draw rectangle of height 20 x rain amount
-        const rectHeight = Number.isNaN(data[i].rain) ? 0 : data[i].rain*20;
-        
+        // draw rectangle of height 20 x rain amount, 120 being maximum height
+        const rectHeight = Number.isNaN(data[i].rain) ? 0 : Math.min(data[i].rain*20, 120);
+
         bar.setAttribute('height', rectHeight);
 
         // define top left corner of rectangle
@@ -137,21 +128,6 @@ class WeatherChart extends PolymerElement {
     const topRightY = 0
 
     return `${topLeftX},${topLeftY} ${bottomX},${bottomY} ${topRightX},${topRightY}`;
-  }
-
-  _pastTimeShadow(time){
-    let rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-    rect.setAttribute('fill', '#ddd');
-    rect.setAttribute('fill-opacity', '0.4');
-
-    const width = (time / 24)*230;
-    rect.setAttribute('width', width);
-    rect.setAttribute('height', 200 );
-
-    rect.setAttribute('y', -102);
-    rect.setAttribute('x', 0);
-
-    return rect;   
   }
 
   _hoursNow(){

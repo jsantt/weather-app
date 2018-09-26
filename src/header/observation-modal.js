@@ -7,10 +7,10 @@ class ObservationModal extends PolymerElement {
       :host {
         display: block;
 
-        --content-padding: 1rem;
+        --content-padding: 0.5rem;
       }
       .close {
-        color: #aaa;
+        color: var(--color-white);
 
         font-family: 'Open Sans Condensed', sans-serif;
         font-size: var(--font-size-xxlarge);
@@ -44,13 +44,14 @@ class ObservationModal extends PolymerElement {
       .modal {
         background-color: #fefefe;
         margin: 7% auto; /* 7% from the top and centered */
-        padding: var(--content-padding);
-        position: relative;
 
-        border: 1px solid #888;
-        border-radius: 0.6rem;
+        max-width: 25rem;
         width: 80%; /* Could be more or less, depending on screen size */
 
+        padding: var(--content-padding);
+        position: relative;
+        border: 1px solid #888;
+        border-radius: 0.6rem;
       }
 
       .loading {

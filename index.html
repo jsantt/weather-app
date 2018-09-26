@@ -60,7 +60,7 @@
 
     <style>
         body {
-
+          box-shadow: 1px 1px 6px 0px rgba(0,0,0,0.2);
           font-family: 'Open Sans Condensed', sans-serif;
 
           /* Modular scale base 1em, ratio 1.25 (modularscale.com)
@@ -74,18 +74,46 @@
           --font-size-xxxlarge: 3.052rem;
 
           font-size: 16px;
-          max-width: 700px;
+          max-width: 600px;
           
           margin: 0 auto;
           padding: 0.3rem;
         }
     </style>
+     <dom-module id="vaadin-text-field-styles" theme-for="vaadin-text-field">
+      <template>
+        <style>
+          [part="value"] {
+            text-align: center;
+            padding: 0 !important;
+          }        
+        </style>
+      </template>
+    </dom-module>
+    <dom-module id="vaadin-combo-box-styles" theme-for="vaadin-combo-box">
+      <template>
+        <style>
+        [part="clear-button"] {
+          display: none;
+        }
+
+        [part="text-field"] {
+          margin-left: -1rem;
+        }
+
+        [part="toggle-button"] {
+          font-size: 32px !important; 
+        }
+
+        </style>
+      </template>
+    </dom-module>
 
   </head>
   <body>
     <weather-app></weather-app>
     <noscript>
-      Please enable JavaScript to view this website.
+      Please enable JavaScript to view this website!
     </noscript>
   </body>
 
