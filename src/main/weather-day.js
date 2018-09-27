@@ -78,6 +78,10 @@ class WeatherDay extends PolymerElement {
         color: var(--color-gray--light);
       }
 
+      .past-hour {
+        opacity: 0.3;
+      }
+
       .symbol, .symbol--empty {
         grid-column: span 3;
         grid-row: 3;  
@@ -148,7 +152,7 @@ class WeatherDay extends PolymerElement {
           </template>
        
           <template is="dom-if" if="[[!_isFourth(index)]]">
-            <div class$="[[_markPastDots(entry.hour)]]">
+            <div class$="[[_getClasses(entry.hour, 'hour hour--dot', 'hour--past')]]">
               .
             </div>
           </template>
@@ -156,24 +160,32 @@ class WeatherDay extends PolymerElement {
           <!-- HOUR, SYMBOL & TEMPERATURE -->
           <template is="dom-if" if="[[_isFourth(index)]]">
 
-            <div class$="[[_markPastHours(entry.hour)]]">
+            <div class$="[[_getClasses(entry.hour, 'hour', 'hour--past')]]">
                   [[entry.hour]]
             </div>
             
-            <div class="symbol">
+            <div class$="[[_getClasses(entry.hour, 'symbol', 'past-hour')]]">
+                
                 <weather-symbol symbol-id="[[_symbolId(entry)]]"></weather-symbol>
+
             </div>
             
-            <div class="temperature">
+            <div class$="[[_getClasses(entry.hour, 'temperature', 'past-hour')]]">
+              
               <template is="dom-if" if="{{_notNaN(entry.temperature)}}">  
                 {{_round(entry.temperature)}}<span class="degree">°</span>   
               </template>
+
             </div>
 
             <template is="dom-if" if="[[showWind]]">
               <div class="wind">
       
-                  <wind-icon degrees="[[entry.windDirection]]" round="" wind-speed="[[entry.wind]]">
+                  <wind-icon 
+                    class$="[[_getClasses(entry.hour, 'symbol', 'past-hour')]]"
+                    degrees="[[entry.windDirection]]" 
+                    round="" 
+                    wind-speed="[[entry.wind]]">
                   </wind-icon>
 
               </div>
@@ -187,14 +199,21 @@ class WeatherDay extends PolymerElement {
         </div>
       
         <div class="temperature_line">
-            <temperature-line min-temperature="[[minTemperature]]" forecast-data="[[forecastData]]">
+            
+            <temperature-line 
+              min-temperature="[[minTemperature]]" 
+              forecast-data="[[forecastData]]">
             </temperature-line>
       
           </div>
 
         <section class="lineChart">
-        
-          <weather-chart min-temperature="[[minTemperature]]" show-time-now="[[showTimeNow]]" forecast-data="[[forecastData]]"></weather-chart>
+
+          <weather-chart 
+            current-hour="[[highlightHour]]"
+            min-temperature="[[minTemperature]]" 
+            forecast-data="[[forecastData]]">
+          </weather-chart>
 
         </section>
       </div>
@@ -233,37 +252,8 @@ class WeatherDay extends PolymerElement {
     return dayNames[number - 1];
   }
 
-  _markPastDots(current){
-    
-    let classes = 'hour hour--dot';
-
-    if(this.highlightHour) {
-      const date = new Date(this.highlightHour);
-
-      if(date.getHours() === current) {
-        classes += '  hour--current';
-      }
-      else if(date.getHours() > current) {
-        classes += ' hour--past';
-      }
-    }
-    return classes;
-  }
-
-  _markPastHours(current){
-    
-    let classes = 'hour';
-
-    if(this.highlightHour) {
-      const date = new Date(this.highlightHour);
-
-      if(date.getHours() === current) {
-        classes += '  hour--selected';
-      }
-      else if(date.getHours() > current) {
-        classes += ' hour--past';
-      }
-    }
+  _getClasses(hour, baseClasses, pastClass) {
+    const classes = hour < this.highlightHour ? baseClasses.concat(' ').concat(pastClass): baseClasses;
     return classes;
   }
 

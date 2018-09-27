@@ -69,7 +69,7 @@ class WeatherApp extends PolymerElement {
       
       <forecast-header
         loading="[[loading]]"
-        next-hour="[[nextHour]]"
+        next-iso-hour="[[nextIsoHour]]"
         place="[[place]]"
         forecast-data="{{forecastData}}">
       </forecast-header>
@@ -84,7 +84,7 @@ class WeatherApp extends PolymerElement {
       <main class$="[[_loading()]]">
         <weather-days 
           forecast-data="[[forecastData]]" 
-          next-hour="[[nextHour]]"
+          next-hour="[[nextFullHour]]"
           show-wind="[[showWind]]"></weather-days>
       </main>
 
@@ -104,9 +104,13 @@ class WeatherApp extends PolymerElement {
         reflectToAttribute: true,
         notify: true
       },
-      nextHour: {
+      nextFullHour: {
         type: Number,
         computed: '_nextFullHour()'
+      },
+      nextIsoHour: {
+        type: Number,
+        computed: '_nextIsoHour()'
       },
       place: {
         type: Object,
@@ -152,18 +156,31 @@ class WeatherApp extends PolymerElement {
   }
 
   _debugEvent(event) {
-    console.log(event.type);
-    console.log(event.detail);
+    console.log(event.type, event.detail);
   }
 
-  _nextFullHour(){
+  _nextFullHour() {
     let timeNow = new Date();
 
     timeNow.setHours(timeNow.getHours() + 1);
     timeNow.setMinutes(0,0,0);
 
-    return timeNow.toISOString().split('.')[0]+"Z";
+    let nextHour = timeNow.getHours();
+
+    nextHour = nextHour === 0 ? 24 : nextHour;
+
+    return nextHour;
   }
+ 
+  _nextIsoHour() {
+    let timeNow = new Date();
+
+    timeNow.setHours(timeNow.getHours() + 1);
+    timeNow.setMinutes(0,0,0);
+
+    return timeNow.toISOString().split('.')[0]+"Z"; 
+  }
+  
 
   _onFetchError(event) {
     this._debugEvent(event);
@@ -187,8 +204,12 @@ class WeatherApp extends PolymerElement {
     return this.loading ? 'loading' : 'notloading';       
   }
 
+  /** 
+   * Lazy loading don't show stack trace from failing resource.
+   * Comment this lazy import out and import in regular way to see the stack trace
+   */
   _loadLazyResources() {
-    import('./lazy-resources.js')
+      import('./lazy-resources.js')
       .catch(error => {
         console.log('error loading lazy resources: ' + error);
       });

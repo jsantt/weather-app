@@ -16,8 +16,7 @@ class WeatherDays extends PolymerElement {
         class="weatherGrid" 
         day-number="1"
         highlight-hour="[[nextHour]]"
-        min-temperature="[[minTemperature]]" 
-        show-time-now="true" 
+        min-temperature="[[minTemperature]]"
         show-wind="[[showWind]]" 
         forecast-data="[[todayData]]"></weather-day>
   

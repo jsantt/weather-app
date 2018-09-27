@@ -105,12 +105,12 @@ class ForecastHeader extends PolymerElement {
       forecastData: {
         type: Object
       },
-      nextHour: {
+      nextIsoHour: {
         type: String
       },
       selectedData: {
         type: Object,
-        computed: '_getWeatherNow(forecastData, nextHour)'
+        computed: '_getWeatherNow(forecastData, nextIsoHour)'
       },
       place: {
         type: String

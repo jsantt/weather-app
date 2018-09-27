@@ -33,15 +33,14 @@ class WeatherChart extends PolymerElement {
 
   static get properties() {
     return {
-      minTemperature: {
-        type: Number
-      },
-      showTimeNow: {
-        type: Boolean,
-        value: false
-      },
       forecastData: {
         type: Array
+      },
+      currentHour: {
+        type: String
+      },
+      minTemperature: {
+        type: Number
       },
       _chartHeight: {
         type: Number,
@@ -92,7 +91,9 @@ class WeatherChart extends PolymerElement {
         let bar = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
         
         bar.setAttribute('class', 'rainBar');
-        bar.setAttribute('fill-opacity', '1');      
+        
+        let opacity = this._opacity(i, this.currentHour, '0.3', '1'); 
+        bar.setAttribute('fill-opacity', opacity);      
         bar.setAttribute('width', 9);
       
         // draw rectangle of height 20 x rain amount, 120 being maximum height
@@ -107,6 +108,11 @@ class WeatherChart extends PolymerElement {
         svg.appendChild(bar);
       }
     } 
+  }
+
+  _opacity(hour, currentHour, pastOpacity, opacity) {
+    let calculatedOpacity =  hour < currentHour -1 ? pastOpacity : opacity;
+    return calculatedOpacity; 
   }
 
   _timeNowTriangle(){
