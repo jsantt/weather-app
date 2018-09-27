@@ -160,17 +160,17 @@ class WeatherDay extends PolymerElement {
           <!-- HOUR, SYMBOL & TEMPERATURE -->
           <template is="dom-if" if="[[_isFourth(index)]]">
 
-            <div class$="[[_getClasses(entry.hour, 'hour', 'hour--past')]]">
+            <div class$="[[_getClasses(entry.past, 'hour', 'hour--past')]]">
                   [[entry.hour]]
             </div>
             
-            <div class$="[[_getClasses(entry.hour, 'symbol', 'past-hour')]]">
+            <div class$="[[_getClasses(entry.past, 'symbol', 'past-hour')]]">
                 
                 <weather-symbol symbol-id="[[_symbolId(entry)]]"></weather-symbol>
 
             </div>
             
-            <div class$="[[_getClasses(entry.hour, 'temperature', 'past-hour')]]">
+            <div class$="[[_getClasses(entry.past, 'temperature', 'past-hour')]]">
               
               <template is="dom-if" if="{{_notNaN(entry.temperature)}}">  
                 {{_round(entry.temperature)}}<span class="degree">°</span>   
@@ -182,7 +182,7 @@ class WeatherDay extends PolymerElement {
               <div class="wind">
       
                   <wind-icon 
-                    class$="[[_getClasses(entry.hour, 'symbol', 'past-hour')]]"
+                    class$="[[_getClasses(entry.past, 'symbol', 'past-hour')]]"
                     degrees="[[entry.windDirection]]" 
                     round="" 
                     wind-speed="[[entry.wind]]">
@@ -210,7 +210,6 @@ class WeatherDay extends PolymerElement {
         <section class="lineChart">
 
           <weather-chart 
-            current-hour="[[highlightHour]]"
             min-temperature="[[minTemperature]]" 
             forecast-data="[[forecastData]]">
           </weather-chart>
@@ -228,19 +227,20 @@ class WeatherDay extends PolymerElement {
       dayNumber: {
         type: Number
       },
-      highlightHour: {
-        type: String
-      },
+    
       minTemperature: {
         type: Number
       },
+
       showTimeNow: {
         type: Boolean,
         value: false
       },
+
       showWind: {
         type: Boolean
       },
+      
       forecastData: {
         type: Array          
       }
@@ -252,8 +252,8 @@ class WeatherDay extends PolymerElement {
     return dayNames[number - 1];
   }
 
-  _getClasses(hour, baseClasses, pastClass) {
-    const classes = hour < this.highlightHour ? baseClasses.concat(' ').concat(pastClass): baseClasses;
+  _getClasses(showBoth, baseClasses, pastClass) {
+    const classes = showBoth ? baseClasses.concat(' ').concat(pastClass) : baseClasses;
     return classes;
   }
 

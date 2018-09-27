@@ -15,7 +15,6 @@ class WeatherDays extends PolymerElement {
       <weather-day 
         class="weatherGrid" 
         day-number="1"
-        highlight-hour="[[nextHour]]"
         min-temperature="[[minTemperature]]"
         show-wind="[[showWind]]" 
         forecast-data="[[todayData]]"></weather-day>
@@ -45,25 +44,27 @@ class WeatherDays extends PolymerElement {
       forecastData: {
         type: Array
       },
-      nextHour: {
-        type: String
-      },
+  
       showWind: {
         type: Boolean,
         reflectToAttribute: true
       },
+
       todayData: {
         type: Array,
         computed: '_sliceToday(forecastData)'
       },
+
       day2Data: {
         type: Array,
         computed: '_sliceDay2(forecastData)'
       },
+
       day3Data: {
         type: Array,
         computed: '_sliceDay3(forecastData)'
       },
+      
       minTemperature: {
         type: Number,
         computed: '_minTemp(forecastData)'

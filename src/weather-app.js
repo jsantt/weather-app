@@ -34,16 +34,11 @@ class WeatherApp extends PolymerElement {
         --color-secondary: var(--color-palette-yellow);
         --color-tertiary: #ddd;
 
-        /* background gradient */
-        --background-gradient: linear-gradient(315deg, var(--color-primary) 0%, #20a4f3 74%);
-
         --line-height--tight: 1;
         --padding-header-footer: 1.2rem;
 
       }
-      body.wf-loading {
-        border: 9px solid red;
-      }
+    
            
     </style>
       <weather-analytics key="UA-114081578-1"></weather-analytics>
@@ -85,7 +80,6 @@ class WeatherApp extends PolymerElement {
       <main class$="[[_loading()]]">
         <weather-days 
           forecast-data="[[forecastData]]" 
-          next-hour="[[nextFullHour]]"
           show-wind="[[showWind]]"></weather-days>
       </main>
 
@@ -105,10 +99,7 @@ class WeatherApp extends PolymerElement {
         reflectToAttribute: true,
         notify: true
       },
-      nextFullHour: {
-        type: Number,
-        computed: '_nextFullHour()'
-      },
+     
       nextIsoHour: {
         type: Number,
         computed: '_nextIsoHour()'
