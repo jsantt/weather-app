@@ -31,11 +31,11 @@ class WeatherNotification extends PolymerElement {
 
     </style>
 
-    <template is="dom-if" if="[[forecastText]]">
+    <template is="dom-if" if="[[_forecastText]]">
       <section class="notification">
         <div class="notification_stripe"></div>
         <div class="notification_content">
-          Luvassa [[forecastText]]. Katso tarkempi ennuste painamalla tuuli-ikonia.
+          Luvassa [[_forecastText]]. Katso tarkempi ennuste painamalla tuuli-ikonia.
         </div>
       </section>
     </template>
@@ -46,9 +46,9 @@ class WeatherNotification extends PolymerElement {
 
   static get properties() {
     return {
-      forecastText: {
+      _forecastText: {
         type: String,
-        value: undefined
+        value: null
       },
       forecastData: {
         type: Array,
@@ -59,17 +59,18 @@ class WeatherNotification extends PolymerElement {
 
   ready() {
     super.ready();
-    
   }
 
   _createTextualForecasts(forecastData){
-    this.forecastText = this._windForecast(forecastData);
+    this._forecastText = this._windForecast(forecastData);
   }
 
   _maxWind(forecastData) {
     let maxWind = 0;
     
-    forecastData.map(item => {
+    const upcomingHours = forecastData.filter(item => !item.past);
+  
+    upcomingHours.map(item => {
       maxWind = item.wind > maxWind ? item.wind : maxWind;
     });
 
@@ -84,11 +85,11 @@ class WeatherNotification extends PolymerElement {
   }
 
   /**
-    8–13 m/s	navakkaa tuulta
-    14–20 m/s	kovaa tuulta
-    21–32 m/s	myrskyä
-    yli 32 m/s	hirmumyrskyä
-  */
+   * 8–13 m/s	navakkaa tuulta
+   * 14–20 m/s	kovaa tuulta
+   * 21–32 m/s	myrskyä
+   * yli 32 m/s	hirmumyrskyä
+   */
   _windDescription(maxWind) {
     
     const windTable = [

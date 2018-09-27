@@ -8,6 +8,17 @@ import {getByAttributeValue, getTime, getTimeAndValuePairs, getValue, parseLocat
  *  Fetches weather forecast from Ilmatieteenlaitos. Prefer "Harmonie" model
  *  and do another call against Hirlam to get weather symbol and rain that are 
  *  missing from Harmonie. 
+ * 
+ *  Exposes the data in forecastData property in the following format:
+ * [{ hour: 1
+ *    humidity: 50
+ *    past: true|false
+ *    rain: 0
+ *    symbol: 1
+ *    temperature: 11.3
+ *    time: "2018-09-26T22:00:00Z"
+ *    wind: 7.6
+ *    windDirection: 296 }, {...}]
  */
 class ForecastData extends PolymerElement {
   static get is() { return 'forecast-data'; }
@@ -39,14 +50,7 @@ class ForecastData extends PolymerElement {
         type: Object,
         observer: '_newLocation'
       },
-      /**
-       * Example:
-       * {
-       *  time: '2018-01-07T10:00:00Z',
-       *  temperature: 6
-       * }, 
-       * {...}
-       */
+  
       forecastData: {
         type: Array,
         notify: true
@@ -86,11 +90,20 @@ class ForecastData extends PolymerElement {
   _combineDatas(harmonie, hirlam) {
     let combinedData = this._combine(harmonie.humidity, hirlam.rain, hirlam.symbol, harmonie.temperature, harmonie.wind, harmonie.windDirection);
 
+    // enrich data to avoid application logic inside components
+    const now = new Date();
     combinedData.forEach( element => {
       element.hour = this._toHour(element.time);
+      element.past = this._isPast(now, element.time);
     });
 
     return combinedData;
+  }
+
+  _isPast(now, dateTime) {
+    const comparable = new Date(dateTime);
+    
+    return now > comparable;
   }
 
   _feelsLike(t, v) {

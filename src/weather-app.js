@@ -48,7 +48,8 @@ class WeatherApp extends PolymerElement {
     </style>
       <weather-analytics key="UA-114081578-1"></weather-analytics>
 
-      <weather-notification forecast-data="[[forecastData]]">
+      <weather-notification 
+        forecast-data="[[forecastData]]">
       </weather-notification>
 
       <!-- weather now data (observation) -->
