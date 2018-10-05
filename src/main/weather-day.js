@@ -152,7 +152,7 @@ class WeatherDay extends PolymerElement {
           </template>
        
           <template is="dom-if" if="[[!_isFourth(index)]]">
-            <div class$="[[_getClasses(entry.hour, 'hour hour--dot', 'hour--past')]]">
+            <div class$="[[_getClasses(entry.past, 'hour hour--dot', 'hour--past')]]">
               .
             </div>
           </template>
@@ -240,7 +240,7 @@ class WeatherDay extends PolymerElement {
       showWind: {
         type: Boolean
       },
-      
+
       forecastData: {
         type: Array          
       }
