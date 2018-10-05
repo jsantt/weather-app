@@ -1,4 +1,4 @@
-//import '@polymer/paper-toast/paper-toast.js';
+import '@polymer/paper-toast/paper-toast.js';
 import '@vaadin/vaadin-combo-box/vaadin-combo-box.js';
 
 import './header/location-selector.js';
