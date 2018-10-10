@@ -59,10 +59,17 @@
 
 
     <style>
-        body {
+        
+        .wf-loading {
+          display: none;
+        }
+        
+        weather-app:not([loading]) {
           box-shadow: 1px 1px 6px 0px rgba(0,0,0,0.2);
           font-family: 'Open Sans Condensed', sans-serif;
+        }
 
+        body {
           /* Modular scale base 1em, ratio 1.25 (modularscale.com)
            * e.g. 1em, 1.25em, 1.563em, 1.953em, 2.441em, 3.052em
            */
@@ -72,13 +79,21 @@
           --font-size-xlarge: 1.953em;
           --font-size-xxlarge: 2.441rem;
           --font-size-xxxlarge: 3.052rem;
-
+          
+          
           font-size: 16px;
           max-width: 600px;
           
           margin: 0 auto;
           padding: 0.3rem;
         }
+
+        weather-app[loading] {
+          min-height: 100vh;
+          opacity: 0.3;
+        }
+
+
     </style>
      <dom-module id="vaadin-text-field-styles" theme-for="vaadin-text-field">
       <template>
@@ -111,7 +126,7 @@
 
   </head>
   <body>
-    <weather-app></weather-app>
+    <weather-app loading>Säät.fi</weather-app>
     <noscript>
       Please enable JavaScript to view this website!
     </noscript>

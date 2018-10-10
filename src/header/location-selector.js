@@ -124,7 +124,7 @@ class LocationSelector extends PolymerElement {
             item-value-path="coordinates"
             on-opened-changed="_openedChanged">
            
-            <template style=font-family:'Open Sans Condensed';">
+            <template>
               
               <template is="dom-if" if="[[_isHighlighted(index)]]">
                 <div>[[item.city]]</div>
@@ -181,7 +181,7 @@ class LocationSelector extends PolymerElement {
       currentPlace = this._defaultPlace;
       this._storeIntoLocalStorage('place', TOP_10_CITIES);
     }
-
+    
     this._dispatchEvent('location-selector.location-changed', currentPlace);
   }
 

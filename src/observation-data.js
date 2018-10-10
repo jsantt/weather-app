@@ -24,10 +24,16 @@ class ObservationData extends PolymerElement {
 
     static get properties() {
       return {
+        fetchError: {
+          type: Boolean,
+          notify: true
+        },
+        // location object, e.g location: {geoid: "7521614", name: "Kattilalaakso"}
         place: {
-          type: Number,
+          type: Object,
           observer: '_newPlace'
         },
+        // data served out from the component
         observationData: {
           type: Object,
           notify: true
@@ -59,6 +65,7 @@ class ObservationData extends PolymerElement {
     }
 
     _getObservations(data) {
+      // TODO: pass in existing time now
       let timeNow = new Date();
       timeNow.setMinutes(0,0,0);
       
@@ -102,19 +109,24 @@ class ObservationData extends PolymerElement {
      * And it is converted to the following JSON and stored into this.observationData 
      * 
      * {
-     *    weatherStation: "Espoo Tapiola", 
-     *    time: "2018-05-01T14:30:00Z", 
-     *    temperature: "6.3", 
-     *    wind: "3.8", 
-     *    windDirection: "116.0"
+     *   humidity: 98
+     *   pressure: 1014.8
+     *   rain: NaN
+     *   rainExplanation: 0
+     *   snow: NaN
+     *   temperature: 1.3
+     *   time: "2018-10-07T19:40:00Z"
+     *   weatherCode: 0
+     *   weatherStation: "Espoo Tapiola"
+     *   wind: 2.4
+     *   windDirection: 314
      * }
-     * 
      *   
      */
      _handleResponse(request) {
 
       let observations = this._parseObservations(request.response);
-      
+    
       this.observationData = {
         weatherStation: parseLocationName(request.response),
         time: getTime(observations.temperature),
@@ -152,13 +164,15 @@ class ObservationData extends PolymerElement {
     }
 
     _newPlace() {
+      this.fetchError = false;
       this.$.weather.params = this._getParams(this.place.location.geoid);
       
       this.$.weather.generateRequest().completes
         .then(req => {
           this._handleResponse(req);
         })
-        .catch(rejected => {
+        .catch(rejected => { 
+          this.fetchError = true;
           raiseEvent(this, 'observation-data.fetch-error', {text: 'Havaintoja ei saatavilla'});
           console.log('error ' + rejected.stack);
         });

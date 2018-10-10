@@ -11,6 +11,7 @@ class ForecastHeader extends PolymerElement {
       
       header {
         background-color: var(--color-primary);
+        min-height: 8rem;
         padding: var(--padding-header-footer) var(--padding-header-footer) 0 var(--padding-header-footer);
       }
 

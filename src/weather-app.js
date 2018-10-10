@@ -2,9 +2,12 @@ import { PolymerElement, html } from '@polymer/polymer/polymer-element.js'
 
 // lazy-resources are loaded in the app code
 //import './lazy-resources.js' 
-import './forecast-data.js';
+
+import './error-notification.js';
 import './header/forecast-header';
-import './header/weather-now.js';
+import './main/weather-days.js';
+import './footer/weather-footer.js';
+import './forecast-data.js';
 
 class WeatherApp extends PolymerElement {
 
@@ -38,6 +41,18 @@ class WeatherApp extends PolymerElement {
         --padding-header-footer: 1.2rem;
 
       }
+      
+      div[hidden] {
+        visibility: hidden;
+      }
+
+      error-notification {
+        display: flex;
+        justify-content: center;
+        
+        height: 100vh;
+      }
+      
     
            
     </style>
@@ -49,43 +64,59 @@ class WeatherApp extends PolymerElement {
 
       <!-- weather now data (observation) -->
       <observation-data 
+        fetch-error="{{observationError}}"
         observation-data="{{observationData}}"
         place="[[place]]">
       </observation-data> 
       
       <!-- rest of the data (forecast) -->
       <forecast-data 
-        weather-location="[[weatherLocation]]" 
-        forecast-data="{{forecastData}}">
+        fetch-error="{{forecastError}}" 
+        forecast-data="{{forecastData}}"
+        weather-location="[[weatherLocation]]">
       </forecast-data>
 
       <!-- 'Espoo' (or any other city) now-->
       <paper-toast id="locateError" duration="5000">
       </paper-toast>
-      
-      <forecast-header
-        loading="[[loading]]"
-        next-iso-hour="[[nextIsoHour]]"
-        place="[[place]]"
-        forecast-data="{{forecastData}}">
-      </forecast-header>
-      
-      <observation-modal visible="[[observationVisible]]">
-        <observation-modal-content
-          observation-data="{{observationData}}">
-        </observation-modal-content>
-      </observation-modal>
+ 
+      <template is="dom-if" if="[[forecastError]]">
+        <error-notification
+          error-text="Säätietojen haku epäonnistui"
+          id="errorNotification">
+        </error-notification>
+      </template>
 
-      <!-- today, tomorrow and a day after tomorrow -->
-      <main class$="[[_loading()]]">
-        <weather-days 
-          forecast-data="[[forecastData]]" 
-          show-wind="[[showWind]]"></weather-days>
-      </main>
+      <template is="dom-if" if="{{!forecastError}}">
 
-      <!-- footer -->
-      <weather-footer observation-data="[[observationData]]">
-      </weather-footer>
+        <forecast-header
+          loading="[[loading]]"
+          next-iso-hour="[[nextIsoHour]]"
+          place="[[place]]"
+          forecast-data="{{forecastData}}">
+        </forecast-header>
+        
+        <observation-modal visible="[[observationVisible]]">
+            <observation-modal-content
+              observation-data="{{observationData}}"
+              observation-error="{{observationError}}">
+            </observation-modal-content>
+        </observation-modal>
+
+        <!-- today, tomorrow and a day after tomorrow -->
+        <main class$="[[_loading()]]">
+          
+          <weather-days 
+            forecast-data="[[forecastData]]" 
+            show-wind="[[showWind]]">
+          </weather-days>
+
+        </main>
+    
+        <!-- footer -->
+        <weather-footer observation-data="[[observationData]]">
+        </weather-footer>
+      </template>
 `;
   }
 
@@ -125,8 +156,6 @@ class WeatherApp extends PolymerElement {
     super();
     
     this.addEventListener('location-selector.location-changed', (event) => this._onNewLocation(event));
-    
-    this.addEventListener('forecast-data.fetch-error', (event) => this._onFetchError(event));
     this.addEventListener('location-selector.locate-error', (event) => this._onFetchError(event));
     this.addEventListener('observation-data.fetch-error', (event) => {
       console.log('fetching observation data failed');
@@ -139,6 +168,11 @@ class WeatherApp extends PolymerElement {
 
     this.addEventListener('forecast-header.observation-link-click', (event) => this._toggleObservationVisible());
     this.addEventListener('observation-header.forecast-link-click', (event) => this._toggleObservationVisible());
+  }
+
+  ready(){
+    super.ready();
+    this.removeAttribute('loading');
   }
 
   connectedCallback(){
@@ -172,13 +206,10 @@ class WeatherApp extends PolymerElement {
 
     return timeNow.toISOString().split('.')[0]+"Z"; 
   }
-  
 
   _onFetchError(event) {
     this._debugEvent(event);
-
     this.loading = false;
-    this._showError(event);
   }
 
   _onNewLocation(event) {

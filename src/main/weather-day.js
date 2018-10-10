@@ -22,6 +22,7 @@ class WeatherDay extends PolymerElement {
       }
 
       .weatherDay {
+        min-height: 8rem;
         position: relative;
       }
 

@@ -1,4 +1,6 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+
+import '../error-notification';
 import './weather-symbol-wawa.js';
 
 class ObservationModalContent extends PolymerElement {
@@ -95,69 +97,78 @@ class ObservationModalContent extends PolymerElement {
         <h2>[[observationData.weatherStation]]</h2>
         <h3>Kello [[_formatTime(observationData.time)]]</h3>
       </div>
-      <div class="content">
- 
-        <div class="item temperature">
-          <template is="dom-if" if="[[observationData.temperature]]">
-            <span>[[observationData.temperature]]</span> <span class="degree">°C</span>
-          </template>
-        
-          <weather-symbol-wawa 
-            class="value"
-            wawa-id="[[observationData.weatherCode]]">
-          </weather-symbol-wawa>
+
+      <template is="dom-if" if="{{observationError}}">
+        <error-notification
+          error-text="Sääasemalle ei valitettavasti saatu yhteyttä">
+        </error-notification>
+      </template>
+
+      <template is="dom-if" if="{{!observationError}}">
+        <div class="content">
+
+          <div class="item temperature">
+            <template is="dom-if" if="[[observationData.temperature]]">
+              <span>[[observationData.temperature]]</span> <span class="degree">°C</span>
+            </template>
           
-        </div>
-        
-
-           
-          <template is="dom-if" if="[[observationData.rainExplanation]]">  
-            <div class="item">
-              <div class="value">[[observationData.rainExplanation]]</div>
-              <div class="explanation">sateen rankkuus</div>
-            <div>
-          </template>
-        
-          <template is="dom-if" if="[[observationData.rain]]">
-            <div>
-              <div class="value">[[observationData.rain]]</div> 
-              <div class="explanation"> mm sadetta / edeltävä tunti</div>
-            </div>
-          </template>
-        
-
-          <template is="dom-if" if="[[observationData.wind]]">
-            <div class="item">
-              <wind-icon 
-                degrees="[[observationData.windDirection]]" 
-                large
-                round="" 
-                wind-speed="[[observationData.wind]]">
-              </wind-icon>
-              <div class="explanation windExplanation">10 min keskituuli</div>
-            </div>
-          </template>
-        
-        <template is="dom-if" if="[[observationData.humidity]]">
-          <div class="item">
-            <div class="value">[[observationData.humidity]]%</div>
-            <div class="explanation">ilmankosteus</div>
-          </div>
-        </template>
-      
-        <template is="dom-if" if="[[observationData.pressure]]">
-          <div class="item">
-            <div class="value">[[observationData.pressure]] hPa</div>
-            <div class="explanation">ilmanpaine</div>
-          </div>
-        </template>
+            <weather-symbol-wawa 
+              class="value"
+              wawa-id="[[observationData.weatherCode]]">
+            </weather-symbol-wawa>
             
-        <template is="dom-if" if="[[_snow(observationData.snow)]]">
-          <div class="item">
-            Lumen syvyys: [[observationData.snow]]
           </div>
-        </template>
-    </div>
+          
+
+            
+            <template is="dom-if" if="[[observationData.rainExplanation]]">  
+              <div class="item">
+                <div class="value">[[observationData.rainExplanation]]</div>
+                <div class="explanation">sateen rankkuus</div>
+              <div>
+            </template>
+          
+            <template is="dom-if" if="[[observationData.rain]]">
+              <div>
+                <div class="value">[[observationData.rain]]</div> 
+                <div class="explanation"> mm sadetta / edeltävä tunti</div>
+              </div>
+            </template>
+          
+
+            <template is="dom-if" if="[[observationData.wind]]">
+              <div class="item">
+                <wind-icon 
+                  degrees="[[observationData.windDirection]]" 
+                  large
+                  round="" 
+                  wind-speed="[[observationData.wind]]">
+                </wind-icon>
+                <div class="explanation windExplanation">10 min keskituuli</div>
+              </div>
+            </template>
+          
+          <template is="dom-if" if="[[observationData.humidity]]">
+            <div class="item">
+              <div class="value">[[observationData.humidity]]%</div>
+              <div class="explanation">ilmankosteus</div>
+            </div>
+          </template>
+        
+          <template is="dom-if" if="[[observationData.pressure]]">
+            <div class="item">
+              <div class="value">[[observationData.pressure]] hPa</div>
+              <div class="explanation">ilmanpaine</div>
+            </div>
+          </template>
+              
+          <template is="dom-if" if="[[_snow(observationData.snow)]]">
+            <div class="item">
+              Lumen syvyys: [[observationData.snow]]
+            </div>
+          </template>
+      </div>
+    </template>
     <div class="footer">
       
     </div>
@@ -170,6 +181,9 @@ class ObservationModalContent extends PolymerElement {
     return {
       observationData: {
         type: Object
+      },
+      observationError: {
+        type: Boolean
       }
     };
   }
