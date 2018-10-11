@@ -15,7 +15,7 @@ class ObservationData extends PolymerElement {
       return html`
           <iron-ajax 
             id="weather" 
-            url="https://data.fmi.fi/fmi-apikey/412facb5-f1bc-44e7-88cc-dc9e08903e32/wfs" 
+            url="https://opendata.fmi.fi/wfs" 
             params=[[_getParams(weatherLocation)]]
             handle-as="document" 
             timeout="8000"></iron-ajax>
