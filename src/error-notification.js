@@ -13,7 +13,7 @@ class ErrorNotification extends PolymerElement {
         display: flex;
         align-items: center;
         justify-content: center;
-        margin: 3rem 1rem;
+        margin: 5rem 1rem 7rem 1rem;
       }
 
       iron-icon {

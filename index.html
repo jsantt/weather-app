@@ -60,13 +60,15 @@
 
     <style>
         
-        .wf-loading {
-          display: none;
+        .loading-view {
+          height: 100vh;
+          display: flex;
+          justify-content: center;
+          align-items: center;
         }
-        
-        weather-app:not([loading]) {
-          box-shadow: 1px 1px 6px 0px rgba(0,0,0,0.2);
-          font-family: 'Open Sans Condensed', sans-serif;
+
+        html.wf-loading weather-app {
+          visibility: hidden;
         }
 
         body {
@@ -80,7 +82,9 @@
           --font-size-xxlarge: 2.441rem;
           --font-size-xxxlarge: 3.052rem;
           
-          
+          box-shadow: 1px 1px 6px 0px rgba(0,0,0,0.2);
+          font-family: 'Open Sans Condensed', sans-serif;
+
           font-size: 16px;
           max-width: 600px;
           
@@ -88,11 +92,13 @@
           padding: 0.3rem;
         }
 
-        weather-app[loading] {
-          min-height: 100vh;
-          opacity: 0.3;
-        }
+        .sun-icon {
+          display: block;
+          margin: auto;
 
+          width: 96px;
+          height: 96px;
+        }
 
     </style>
      <dom-module id="vaadin-text-field-styles" theme-for="vaadin-text-field">
@@ -126,7 +132,19 @@
 
   </head>
   <body>
-    <weather-app loading>Säät.fi</weather-app>
+    <weather-app loading>
+      <div class="loading-view">
+        <svg class="sun-icon" viewBox="0 0 37 37">
+          <g>
+            <polygon fill="#ffa800" points="18.5,7.032 20.703,11.237 24.828,8.891 24.406,13.618 29.146,13.875 26.236,17.625 
+              30.086,20.403 25.609,21.985 27.346,26.401 22.727,25.313 21.797,29.968 18.5,26.554 15.201,29.968 14.273,25.313 9.654,26.401 
+              11.389,21.985 6.914,20.403 10.762,17.625 7.854,13.875 12.592,13.618 12.172,8.891 16.297,11.237">
+            </polygon>
+            <circle fill="#ffa800" stroke="#FFFFFF" stroke-width="1.3028" cx="18.499" cy="18.363" r="6.362"></circle>
+          </g>
+        </svg>
+      </div>
+    </weather-app>
     <noscript>
       Please enable JavaScript to view this website!
     </noscript>

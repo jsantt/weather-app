@@ -16,7 +16,9 @@ const TOP_10_CITIES = [
 ];
 
 /**
- * Finnish cities alphabetically. Shown in city selection combobox
+ * Finnish cities alphabetically. Shown in city selection combobox.
+ * When specified, key property is used for FMI API, which does not 
+ * accept Finnish names for the cities that are officially Swedish speaking. 
  */
 const CITIES = [
   {city:'Akaa', coordinates: '61.166667,23.868056'},
