@@ -96,10 +96,20 @@
           display: block;
           margin: auto;
 
-          width: 96px;
-          height: 96px;
+          width: 128px;
+          height: 128px;
+
+          -webkit-animation: rotation 22s infinite linear;
         }
 
+       @-webkit-keyframes rotation {
+          from {
+              -webkit-transform: rotate(0deg);
+          }
+          to {
+              -webkit-transform: rotate(359deg);
+          }
+      }
     </style>
      <dom-module id="vaadin-text-field-styles" theme-for="vaadin-text-field">
       <template>
@@ -132,19 +142,31 @@
 
   </head>
   <body>
-    <weather-app loading>
-      <div class="loading-view">
-        <svg class="sun-icon" viewBox="0 0 37 37">
-          <g>
-            <polygon fill="#ffa800" points="18.5,7.032 20.703,11.237 24.828,8.891 24.406,13.618 29.146,13.875 26.236,17.625 
-              30.086,20.403 25.609,21.985 27.346,26.401 22.727,25.313 21.797,29.968 18.5,26.554 15.201,29.968 14.273,25.313 9.654,26.401 
-              11.389,21.985 6.914,20.403 10.762,17.625 7.854,13.875 12.592,13.618 12.172,8.891 16.297,11.237">
-            </polygon>
-            <circle fill="#ffa800" stroke="#FFFFFF" stroke-width="1.3028" cx="18.499" cy="18.363" r="6.362"></circle>
-          </g>
-        </svg>
-      </div>
+    <!-- show sun icon even before polymer is loaded -->
+    <div id="loading-view" class="loading-view">
+      <svg class="sun-icon" viewBox="0 0 37 37">
+        <g>
+          <polygon fill="#ffa800" points="18.5,7.032 20.703,11.237 24.828,8.891 24.406,13.618 29.146,13.875 26.236,17.625 
+            30.086,20.403 25.609,21.985 27.346,26.401 22.727,25.313 21.797,29.968 18.5,26.554 15.201,29.968 14.273,25.313 9.654,26.401 
+            11.389,21.985 6.914,20.403 10.762,17.625 7.854,13.875 12.592,13.618 12.172,8.891 16.297,11.237">
+          </polygon>
+          <circle fill="#ffa800" stroke="#FFFFFF" stroke-width="1.3028" cx="18.499" cy="18.363" r="6.362"></circle>
+        </g>
+      </svg>
+    </div>
+
+    <weather-app>
     </weather-app>
+
+    <script>
+      document.addEventListener('forecast-data.new-place', (event) => 
+      {
+        let loadingView = document.getElementById('loading-view');
+        if(loadingView) {
+          loadingView.parentNode.removeChild(loadingView);
+        }
+      });
+    </script>
     <noscript>
       Please enable JavaScript to view this website!
     </noscript>

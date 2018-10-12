@@ -55,7 +55,14 @@ class ForecastData extends PolymerElement {
         type: Array,
         notify: true
       },
+
       fetchError: {
+        type: Boolean,
+        notify: true,
+        value: false
+      },
+
+      loading: { 
         type: Boolean,
         notify: true,
         value: false
@@ -215,6 +222,8 @@ class ForecastData extends PolymerElement {
    */
   _newLocation() {
     this.fetchError = false;
+    this.loading = true;
+
     const harmonieRequest = this._prepareRequest('weatherHarmonie', this._getHarmonieParams(this.weatherLocation));
     const hirlamRequest = this._prepareRequest('weatherHirlam', this._getHirlamParams(this.weatherLocation));
 
@@ -231,9 +240,13 @@ class ForecastData extends PolymerElement {
         this.forecastData = this._combineDatas(harmonieResponse, hirlamResponse);
       })
       .catch(rejected => {
-          this.fetchError = true;
-          raiseEvent(this, 'forecast-data.fetch-error', {text: 'Virhe haettaessa ennustetietoja'});
-          console.log('error ' + rejected.stack);
+        this.fetchError = true;
+        raiseEvent(this, 'forecast-data.fetch-error', {text: 'Virhe haettaessa ennustetietoja'});
+        console.log('error ' + rejected.stack);
+      })
+      .finally(() => {
+        this.loading = false;
+        raiseEvent(this, 'forecast-data.fetch-done', {text: 'Fetch data done'});
       });
   }
 
