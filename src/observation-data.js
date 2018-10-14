@@ -16,7 +16,6 @@ class ObservationData extends PolymerElement {
           <iron-ajax 
             id="weather" 
             url="https://opendata.fmi.fi/wfs" 
-            params=[[_getParams(weatherLocation)]]
             handle-as="document" 
             timeout="8000"></iron-ajax>
       `;
@@ -28,7 +27,7 @@ class ObservationData extends PolymerElement {
           type: Boolean,
           notify: true
         },
-        // location object, e.g location: {geoid: "7521614", name: "Kattilalaakso"}
+        // location object, e.g {geoid: "7521614", name: "Kattilalaakso"}
         place: {
           type: Object,
           observer: '_newPlace'
@@ -49,13 +48,13 @@ class ObservationData extends PolymerElement {
     
     // other functions alphabetically
 
-    _getParams(location){
+    _getParams(geoid){
 
       let params = 
       {
         "request":"getFeature", 
         "storedquery_id":"fmi::observations::weather::timevaluepair",
-        "geoid": location,
+        "geoid": geoid,
         "maxlocations": 1,
         "starttime": this._roundDownToFullMinutes(-12), // get the latest data only
         "endtime": this._roundDownToFullMinutes(0) // get the latest data only
@@ -138,7 +137,8 @@ class ObservationData extends PolymerElement {
         temperature: parseFloat(getValue(observations.temperature)),
         weatherCode:  getValue(observations.weatherCode),
         wind: parseFloat(getValue(observations.wind)),
-        windDirection: parseFloat(getValue(observations.windDirection))
+        windDirection: parseFloat(getValue(observations.windDirection)),
+        windGust: parseFloat(getValue(observations.windGust))
       }
     }
 
@@ -165,7 +165,7 @@ class ObservationData extends PolymerElement {
 
     _newPlace() {
       this.fetchError = false;
-      this.$.weather.params = this._getParams(this.place.location.geoid);
+      this.$.weather.params = this._getParams(this.place.geoid);
       
       this.$.weather.generateRequest().completes
         .then(req => {

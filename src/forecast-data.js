@@ -30,15 +30,15 @@ class ForecastData extends PolymerElement {
         url="https://opendata.fmi.fi/wfs" 
         params="{{_getHarmonieParams(weatherLocation)}}"
         handle-as="document" 
-        timeout="8000">
+        timeout="18000">
       </iron-ajax>
 
       <iron-ajax 
         id="weatherHirlam" 
-        url="https://data.fmi.fi/fmi-apikey/412facb5-f1bc-44e7-88cc-dc9e08903e32/wfs"
+        url="https://opendata.fmi.fi/wfs"
         params="{{_getHirlamParams(weatherLocation)}}" 
         handle-as="document" 
-        timeout="8000">
+        timeout="18000">
       </iron-ajax>
     `;
   }
@@ -60,6 +60,11 @@ class ForecastData extends PolymerElement {
         type: Boolean,
         notify: true,
         value: false
+      },
+
+      forecastPlace: {
+        type: Object,
+        notify: true
       },
 
       loading: { 
@@ -149,17 +154,8 @@ class ForecastData extends PolymerElement {
       "endtime": this._tomorrowLastHour(),
     }
 
-    if(location.key) {
-      // key is used for swedish cities
-      params.place = location.key;
-    }
-    else if(location.city && location.city.length > 0) {
-      params.place = location.city;
-    }
-    else {
       params.latlon = location.coordinates;
-    }
-
+    
     return params;
   }
   
@@ -231,7 +227,8 @@ class ForecastData extends PolymerElement {
       .then((values) => {
         this._sendNotification(
           this._parseLocationGeoid(values[0].response),
-          parseLocationName(values[0].response)
+          parseLocationName(values[0].response),
+          this.weatherLocation.coordinates
         );
         
         const harmonieResponse = this._harmonieResponse(values[0].response);
@@ -267,14 +264,15 @@ class ForecastData extends PolymerElement {
     return location;
   }
 
-  _sendNotification(geoid, name) {
+  _sendNotification(geoid, name, coordinates) {
     const details = {
       location: {
         geoid: geoid,
-        name: name
+        name: name,
+        coordinates: coordinates
       }
     };
-
+    this.forecastPlace = details.location;
     raiseEvent(this, 'forecast-data.new-place', details);
   }
 

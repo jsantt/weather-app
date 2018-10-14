@@ -64,13 +64,14 @@ class WeatherApp extends PolymerElement {
       <observation-data 
         fetch-error="{{observationError}}"
         observation-data="{{observationData}}"
-        place="[[place]]">
+        place="[[forecastPlace]]">
       </observation-data> 
       
       <!-- rest of the data (forecast) -->
       <forecast-data 
         fetch-error="{{forecastError}}" 
         forecast-data="{{forecastData}}"
+        forecast-place="{{forecastPlace}}"
         loading="{{loading}}"
         weather-location="[[weatherLocation]]">
       </forecast-data>
@@ -92,7 +93,7 @@ class WeatherApp extends PolymerElement {
           <forecast-header
             loading="[[loading]]"
             next-iso-hour="[[nextIsoHour]]"
-            place="[[place]]"
+            place="[[forecastPlace]]"
             forecast-data="{{forecastData}}">
           </forecast-header>
           
@@ -105,14 +106,13 @@ class WeatherApp extends PolymerElement {
 
           <!-- today, tomorrow and a day after tomorrow -->
           <main>
-            
             <weather-days 
               forecast-data="[[forecastData]]" 
               show-wind="[[showWind]]">
             </weather-days>
 
           </main>
-      
+
           <!-- footer -->
           <weather-footer observation-data="[[observationData]]">
           </weather-footer>
@@ -137,10 +137,6 @@ class WeatherApp extends PolymerElement {
         computed: '_nextIsoHour()'
       },
 
-      place: {
-        type: Object,
-      },
-
       showWind: {
         type: Boolean,
         value: false
@@ -161,7 +157,6 @@ class WeatherApp extends PolymerElement {
     super();
     
     this.addEventListener('location-selector.location-changed', (event) => this._onNewLocation(event));
-    this.addEventListener('forecast-data.new-place', (event) => this._onNewPlace(event));
     this.addEventListener('wind-now.toggle-wind', (event) => this._onToggleWind(event));
 
     this.addEventListener('forecast-data.fetch-done', (event) => {this.firstLoading = false;});
@@ -227,11 +222,6 @@ class WeatherApp extends PolymerElement {
 
   _showError(event) {
     this.$.locateError.show({text: event.detail.text});
-  }
-
-  _onNewPlace(event) {
-    this._debugEvent(event);
-    this.place = event.detail; 
   }
 
   _onToggleWind(event) {

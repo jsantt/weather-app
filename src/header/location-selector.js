@@ -159,11 +159,9 @@ class LocationSelector extends PolymerElement {
       loading: {
         type: Boolean
       },
-      placeName: {
-        type: String,
-        computed: '_getPlace(place)',
-        observer: '_newPlace',
-        reflectToAttribute: true
+      place: {
+        type: Object,
+        observer: '_newPlace'
       }
     };
   }
@@ -185,16 +183,33 @@ class LocationSelector extends PolymerElement {
     this._dispatchEvent('location-selector.location-changed', currentPlace);
   }
 
+  _setComboboxValue(value) {
+    
+    setTimeout(()=> {
+      let combobox = this.shadowRoot.querySelector('#placeSelection');
+      
+      if(combobox) {
+        combobox.selectedItem = value;
+      }
+    }, 1000);
+  }
+
+  /**
+   * When customer chooses geolocate, we need to wait response containing place name
+   */
   _newPlace(){
+    
     let combobox = this.shadowRoot.querySelector('#placeSelection');
     
-    if(combobox) {
-      combobox.selectedItem = this._formPlaceObject(this.placeName);
+    console.log('place name: ' + this.place);
 
-      const url = this.placeName;
+    if(combobox) {
+      combobox.selectedItem = this.place.name;
+
+      const url = this.place.name;
       
       this._changeUrl('place', url);
-      this._store('place', this.placeName);
+      this._store('place', this.place.name, this.place.coordinates);
 
       combobox.items = this._placeList();
     }
@@ -203,6 +218,8 @@ class LocationSelector extends PolymerElement {
         this._newPlace();
       }, 1000);
     }
+    
+    
   }
 
   _isHighlighted(index) {
@@ -210,22 +227,18 @@ class LocationSelector extends PolymerElement {
   }
 
   _openedChanged(customEvent) {
-    
+    console.log(customEvent);
     let combobox = this.shadowRoot.querySelector('#placeSelection');
 
     if(this._isComboboxOpen(customEvent)) {
       combobox.focus();
-      this._previousPlace = this._formPlaceObject(this.placeName);//combobox.selectedItem;
+      this._previousPlace = combobox.selectedItem; //this._formPlaceObject(this.placeName);
       combobox.selectedItem = null;  
-    }
-    else if (this._isComboboxLocate(combobox)) {
-      this._geolocate();
     }
     else if(this._isComboboxPlaceSelected(combobox)) {
       this._dispatchEvent('location-selector.location-changed', combobox.selectedItem);
     } 
     else if(this._isComboboxDismiss(combobox)) { 
-      let storedCoordinates = localStorage.getItem('place');
       combobox.selectedItem = this._previousPlace || this._defaultPlace;
     }
   }
@@ -238,10 +251,6 @@ class LocationSelector extends PolymerElement {
     return combobox && combobox.selectedItem;
   }
 
-  _isComboboxLocate(combobox) {
-    return combobox && combobox.selectedItem && combobox.selectedItem.city === 'locate';
-  }
-
   /* return if user closes the city selection modal without any selections */
   _isComboboxDismiss(combobox) {
     return combobox && !combobox.selectedItem;
@@ -249,9 +258,8 @@ class LocationSelector extends PolymerElement {
 
   _placeList(){
     const previousLocations = this._getFromLocalStorage('place');
-    let allLocations = previousLocations.concat(CITIES);
+    const allLocations = previousLocations.concat(CITIES);
     
-    //const locate = [{city:'locate'}];
     return allLocations;
   }
 
@@ -298,15 +306,6 @@ class LocationSelector extends PolymerElement {
     }
 
     return decodeURIComponent(results[2].replace(/\+/g, " "));
-  }
-
-  _getPlace(placeName) {
-    
-    if(placeName && placeName.location){
-      return placeName.location.name;
-    }
-
-    return '';
   }
 
   _geolocate() {
