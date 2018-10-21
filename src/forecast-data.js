@@ -153,8 +153,12 @@ class ForecastData extends PolymerElement {
       "starttime": this._todayFirstHour(),
       "endtime": this._tomorrowLastHour(),
     }
-
+    if(location.coordinates) {
       params.latlon = location.coordinates;
+    }
+    else {
+      params.place = location.city;
+    }
     
     return params;
   }

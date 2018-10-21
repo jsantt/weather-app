@@ -1,7 +1,7 @@
 {
   "name": "Säät.fi",
-  "short_name": "sää",
-  "description": "Sääsovellus",
+  "short_name": "säät",
+  "description": "Sääennuste sekä toteutunut sää. Säädata tulee Ilmatieteen laitokselta.",
   "icons": [
     {
       "src": "image/weather-icon-57x57.png",
