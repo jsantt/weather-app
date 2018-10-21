@@ -51,8 +51,8 @@ class WeatherFooter extends PolymerElement {
         lämpötilan sekä tuulen ennusteessa käytetään tarkempaa 
         <a href="http://ilmatieteenlaitos.fi/tutkimustoiminta/-/asset_publisher/Dz9C/content/uusin-versio-harmonie-arome-saamallista-parantaa-pilvisyyden-ja-tuulen-ennusteita?redirect=http%3A%2F%2Filmatieteenlaitos.fi%2Ftutkimustoiminta%3Fp_p_id%3D101_INSTANCE_Dz9C%26p_p_lifecycle%3D0%26p_p_state%3Dnormal%26p_p_mode%3Dview%26p_p_col_id%3Dcolumn-2%26p_p_col_count%3D2">
         Harmonie-ennustetta</a>
-      </p><p>
-    </p><section>
+      </p><p></p>
+    </section>
 
     <section class="footer_section">
       <h3>Palaute</h3>  
@@ -61,13 +61,19 @@ class WeatherFooter extends PolymerElement {
             www.linkedin.com/in/janisantti
           </a>
       </p><p></p>
-    <section>
+    </section>
+
     <p class="footer_header">
       <ios-add-to-homescreen>        
       </ios-add-to-homescreen>
     </p>
 
-  </section></section></section></section></section></section></footer>
+  <template is="dom-if" if="[[_offline]]">
+    <section>
+      Ei verkkoyhteyttä <!-- - Ennuste on 3h vanha-->
+    </section>
+  </template>
+  </footer>
 `;
   }
 
@@ -77,12 +83,24 @@ class WeatherFooter extends PolymerElement {
     return {
       observationData: {
         type: Object
+      },
+      _offline: {
+        type: Boolean,
+        default: false
       }
     };
   }
 
   ready() {
     super.ready();
+
+    window.addEventListener('offline', () => {
+      this._offline = true;
+    });
+    
+    window.addEventListener('online', () => {
+      this._offline = false;
+    });
   }
 
   _formatTime(time) {
