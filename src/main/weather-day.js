@@ -72,9 +72,11 @@ class WeatherDay extends PolymerElement {
       .hour--empty {
         grid-column: span 1;
       }
+      
       .hour--dot {
         font-size: 0.75rem;
       }
+
       .hour--past {
         color: var(--color-gray--light);
       }
