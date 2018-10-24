@@ -32,6 +32,19 @@ function parseLocationName(response){
   return location;
 }
 
+/** 
+ * Parse region value from the following tag
+ * <target:region codeSpace="http://xml.fmi.fi/namespace/location/region">Helsinki</target:region> 
+ */
+function parseRegion(response) {
+  const regions = response.getElementsByTagName('target:region');
+  const regionRow = getByAttributeValue(regions, 'codeSpace', 'http://xml.fmi.fi/namespace/location/region');
+
+  const region = value(regionRow);
+
+  return region;
+}
+
 function raiseEvent(context, name, payload) {
   let message = payload;
 
@@ -49,5 +62,5 @@ function value(xmlElement) {
 }
 
 
-export { getByAttributeValue, getTime, getTimeAndValuePairs, getValue, parseLocationName, raiseEvent, value };
+export { getByAttributeValue, getTime, getTimeAndValuePairs, getValue, parseLocationName, parseRegion, raiseEvent, value };
 
