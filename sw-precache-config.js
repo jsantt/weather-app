@@ -19,30 +19,41 @@ module.exports = {
   runtimeCaching: [
     {
       urlPattern: /\/@webcomponents\/webcomponentsjs\//,
-      handler: 'fastest' 
+      handler: 'cacheFirst' 
     },
     {
-      urlPattern: /^https:\/\/www.gstatic.com\/firebasejs\/4.9.0\/firebase.js/,
-      handler: 'fastest'
+      urlPattern: /^https:\/\/gstatic.com\//,
+      handler: 'cacheFirst'
     },
     {
-      urlPattern: /^https:\/\/data.fmi.fi/,
+      urlPattern: /^https:\/\/fonts.googleapis.com\//,
+      handler: 'cacheFirst'
+    },
+    {
+      urlPattern: /^https:\/\/fonts.gstatic.com\//,
+      handler: 'cacheFirst'
+    },
+    {
+      urlPattern: /^https:\/\/ajax.googleapis.com\//,
+      handler: 'cacheFirst'
+    },
+    {
+      urlPattern: /^https:\/\/www.google-analytics.com\//,
+      handler: 'cacheFirst'
+    },
+    {
+      urlPattern: /^https:\/\/xn--st-viaa.fi\/image\//,
+      handler: 'cacheFirst'
+    },
+    {
+      urlPattern: /^https:\/\/opendata.fmi.fi\//,
       handler: 'networkFirst',
       options: {
         cache: {
           name: 'weather-data-cache',
         },
         ignoreUrlParametersMatching: '[/starttime/, /endtime/]'
-      },
-    },
-    {
-      urlPattern: /^https:\/\/fonts.googleapis.com\/css?family=Open+Sans+Condensed:300/,
-      handler: 'fastest',
-      options: {
-        cache: {
-          name: 'fonts-cache',
-        },
-      },
-    },
-  ],
+      }
+    }
+  ]
 };
