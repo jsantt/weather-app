@@ -1,13 +1,21 @@
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js'
+import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
 
 // lazy-resources are loaded in the app code
+
+
 //import './lazy-resources.js' 
+
+import './header/location-selector.js';
 
 import './error-notification.js';
 import './header/forecast-header';
 import './main/weather-days.js';
 import './footer/weather-footer.js';
 import './forecast-data.js';
+
+import '@vaadin/vaadin-combo-box/vaadin-combo-box.js';
+
 
 class WeatherApp extends PolymerElement {
 
@@ -156,6 +164,7 @@ class WeatherApp extends PolymerElement {
   constructor() { 
     super();
     
+    console.log('weather app listening');
     this.addEventListener('location-selector.location-changed', (event) => this._onNewLocation(event));
     this.addEventListener('wind-now.toggle-wind', (event) => this._onToggleWind(event));
 
@@ -214,9 +223,16 @@ class WeatherApp extends PolymerElement {
    * Comment this lazy import out and import in regular way to see the stack trace
    */
   _loadLazyResources() {
-      import('./lazy-resources.js')
-      .catch(error => {
-        console.log('error loading lazy resources: ' + error);
+      afterNextRender(this, () => {
+        import('./lazy-resources.js')
+        .then(() => {
+          if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('service-worker.js', {scope: '/'});
+          }
+        })
+        .catch(error => {
+          console.log('error loading lazy resources: ' + error);
+        });
       });
   }
 

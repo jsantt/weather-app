@@ -1,7 +1,4 @@
 import '@polymer/paper-toast/paper-toast.js';
-import '@vaadin/vaadin-combo-box/vaadin-combo-box.js';
-
-import './header/location-selector.js';
 import './header/observation-modal';
 import './header/observation-modal-content';
 import './header/weather-notification.js';

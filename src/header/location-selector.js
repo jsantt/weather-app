@@ -179,8 +179,11 @@ class LocationSelector extends PolymerElement {
       currentPlace = this._defaultPlace;
       this._storeIntoLocalStorage('place', TOP_10_CITIES);
     }
-    
+
+    // TO DO: UGLY HACK, without timeout parent won't catch the event
+    setTimeout(() => {
     this._dispatchEvent('location-selector.location-changed', currentPlace);
+    }, 1);
   }
 
   _setComboboxValue(value) {
