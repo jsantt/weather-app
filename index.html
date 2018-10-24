@@ -14,13 +14,22 @@
     <script type="module" src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
     <script type="module" src="src/weather-app.js"></script>
 
-    <script type="module" src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
-    <script type="module">
-      WebFont.load({
+    <!-- Loading web fonts asynchronoysly, see-->
+    <script>
+
+      WebFontConfig = {
         google: {
           families: ['Open Sans Condensed:300']
         }
-      });
+      };
+
+      (function(d) {
+            var wf = d.createElement('script'), s = d.scripts[0];
+            wf.src = 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js';
+            wf.async = true;
+            s.parentNode.insertBefore(wf, s);
+        })(document);
+
     </script>
     <script type="module">
         // can be registered after everything
