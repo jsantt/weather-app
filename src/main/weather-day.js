@@ -74,6 +74,7 @@ class WeatherDay extends PolymerElement {
       }
       
       .hour--dot {
+        color: var(--color-gray--light);
         font-size: 0.75rem;
       }
 

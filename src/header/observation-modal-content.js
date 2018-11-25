@@ -93,7 +93,7 @@ class ObservationModalContent extends PolymerElement {
     </style>
   
       <div class="header">
-        <h1>HAVAINTOASEMA</h1>
+        <h1>LÄHIN HAVAINTOASEMA</h1>
         <h2>[[observationData.weatherStation]]</h2>
         <h3>Kello [[_formatTime(observationData.time)]]</h3>
       </div>

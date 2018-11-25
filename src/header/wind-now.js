@@ -17,8 +17,8 @@ class WindNow extends PolymerElement {
       class="windIcon" 
       on-click="_toggleWind" 
       degrees="[[windDirection]]" 
-      large="" 
-      round="" 
+      large
+      round
       wind-speed="[[wind]]">
     </wind-icon>
 `;

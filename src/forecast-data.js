@@ -1,7 +1,7 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 
 import '@polymer/iron-ajax/iron-ajax.js';
-import {getByAttributeValue, getTime, getTimeAndValuePairs, getValue, parseLocationName, raiseEvent, value} from './xml-parser.js';
+import {getByAttributeValue, getTime, getTimeAndValuePairs, getValue, parseLocationName, raiseEvent, value, parseRegion} from './xml-parser.js';
 
 
 /**  
@@ -30,7 +30,7 @@ class ForecastData extends PolymerElement {
         url="https://opendata.fmi.fi/wfs" 
         params="{{_getHarmonieParams(weatherLocation)}}"
         handle-as="document" 
-        timeout="18000">
+        timeout="8000">
       </iron-ajax>
 
       <iron-ajax 
@@ -38,7 +38,7 @@ class ForecastData extends PolymerElement {
         url="https://opendata.fmi.fi/wfs"
         params="{{_getHirlamParams(weatherLocation)}}" 
         handle-as="document" 
-        timeout="18000">
+        timeout="8000">
       </iron-ajax>
     `;
   }
@@ -232,7 +232,8 @@ class ForecastData extends PolymerElement {
         this._sendNotification(
           this._parseLocationGeoid(values[0].response),
           parseLocationName(values[0].response),
-          this.weatherLocation.coordinates
+          this.weatherLocation.coordinates,
+          parseRegion(values[0].response)
         );
         
         const harmonieResponse = this._harmonieResponse(values[0].response);
@@ -268,12 +269,13 @@ class ForecastData extends PolymerElement {
     return location;
   }
 
-  _sendNotification(geoid, name, coordinates) {
+  _sendNotification(geoid, name, coordinates, region) {
     const details = {
       location: {
         geoid: geoid,
         name: name,
-        coordinates: coordinates
+        coordinates: coordinates,
+        region: region
       }
     };
     this.forecastPlace = details.location;

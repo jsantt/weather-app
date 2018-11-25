@@ -11,7 +11,7 @@
     <link rel="manifest" href="/manifest.json">
     <link rel="icon" type="image/png" href="image/weather-icon" sizes="57x57">  
     
-    <script type="module" src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+    <!--script type="module" src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script-->
     <script type="module" src="src/weather-app.js"></script>
 
     <!-- Loading web fonts asynchronoysly, see-->
@@ -31,6 +31,10 @@
         })(document);
 
     </script>
+
+    <!-- set mock backend -->
+    <!-- script src="node_modules/@polymer/sinonjs/sinon.js"></script>
+    <script type="module" src="src/mock/mockSetup.js"></script -->
     
     <meta name="theme-color" content="#84b9ff">
 
@@ -75,12 +79,17 @@
           /* Modular scale base 1em, ratio 1.25 (modularscale.com)
            * e.g. 1em, 1.25em, 1.563em, 1.953em, 2.441em, 3.052em, 3.814,
            */
+          --font-size-xxsmall: 0.64rem;
+          --font-size-xsmall: 0.8rem; 
           --font-size-small: 1rem;
           --font-size-medium: 1.25rem;
           --font-size-large: 1.563rem;
-          --font-size-xlarge: 1.953em;
+          --font-size-xlarge: 1.953rem;
           --font-size-xxlarge: 2.441rem;
           --font-size-xxxlarge: 3.052rem;
+          --font-size-xxxxlarge: 3.815rem;
+          --font-size-xxxxxlarge: 4.764rem;
+          --font-size-xxxxxxlarge: 5.96rem;
           
           box-shadow: 1px 1px 6px 0px rgba(0,0,0,0.2);
           font-family: 'Open Sans Condensed', sans-serif;
@@ -135,7 +144,6 @@
         [part="toggle-button"] {
           font-size: 32px !important; 
         }
-
         </style>
       </template>
     </dom-module>

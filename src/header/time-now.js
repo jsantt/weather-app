@@ -9,6 +9,7 @@ class TimeNow extends PolymerElement {
     <style>
       :host {
         display: block;
+        margin-left: -1rem;
         width: 100%;
       }
 
@@ -50,8 +51,13 @@ class TimeNow extends PolymerElement {
 
   _calculateMargin() {
     const hours = new Date().getHours();
-    const margin = ((hours - 1) / 24) * 100;
-    this.timeMargin = 'margin-left:' + margin + '%';
+    
+    const margin = ((hours - 1) / 24) * 100
+    
+    const correctLeftOverflow = Math.max(0, margin);
+    const correctRightOverflow = Math.min(correctLeftOverflow, 95);
+
+    this.timeMargin = 'margin-left:' + correctRightOverflow + '%';
   }
 
   _timeNow() {

@@ -7,7 +7,7 @@ class WeatherSymbol extends PolymerElement {
     return html`
     <style>
       :host {
-        display: block;
+        display: inline-block;
       }
 
       .symbol {
@@ -16,8 +16,8 @@ class WeatherSymbol extends PolymerElement {
       }
 
       .symbol--large {
-        --iron-icon-height: 70px;
-        --iron-icon-width: 70px;
+        --iron-icon-height: 80px;
+        --iron-icon-width: 80px;
       }
     </style>
   

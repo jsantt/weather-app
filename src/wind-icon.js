@@ -6,7 +6,6 @@ class WindIcon extends PolymerElement {
     return html`
     <style>
       :host {
-        margin-top: -0.3rem;
       }
       .windIcon {
         height: 24px;
@@ -16,8 +15,8 @@ class WindIcon extends PolymerElement {
       }
 
       .windIcon--large {
-        height: 32px;
-        width: 32px;
+        height: 30px;
+        width: 30px;
 
         transition: all .2s ease-in-out;
       }

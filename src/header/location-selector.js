@@ -14,7 +14,7 @@ class LocationSelector extends PolymerElement {
       :host {
         --paper-spinner-color:var(--color-palette-blue); 
         
-        display: block;
+        display: inline-block;
         color: var(--color-black);
         font-size: 1.563rem;
         
@@ -38,52 +38,6 @@ class LocationSelector extends PolymerElement {
         padding: 0 0.6rem;
       }
 
-      .locate_icon {
-        animation-name: resizeLocate;
-        animation-duration: 2s;
-        animation-timing-function: ease-in-out;
-
-        animation-iteration-count: 4;
-        animation-direction: alternate;
-
-        display: inline-block;
-        padding: 0 0 0 1rem;
-        transition: all .2s ease-in-out;
-        
-        vertical-align: middle;
-      }
-
-      .locate_icon:hover { 
-        transform: scale(1.1);        
-      }
-
-      .locate_text {
-        color: var(--color-white);
-        font-size: var(--font-size-small);
-      }
-
-      @keyframes resizeLocate {
-        from {
-          transform: scale(1);
-        }
-
-        to {
-          transform: scale(1.4);
-        }
-      }
-
-      .location_name {
-        display: inline-block;
-      }
-
-      .cities_locate {
-        border: 1px solid black;
-        padding: 0.5rem;
-        border-radius: 2rem;
-        width: 9.2rem;
-        display: block;
-      }
-
     </style>
 
     
@@ -94,30 +48,6 @@ class LocationSelector extends PolymerElement {
         </template>
 
         <template is="dom-if" if="[[!loading]]">
-          <div 
-            class="locate_icon"
-            on-click="_geolocate">
-
-            <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="24" height="24" viewBox="0 0 24 24">
-              <filter id="dropshadow" height="130%">
-
-                <feGaussianBlur in="SourceAlpha" stdDeviation="1"></feGaussianBlur> <!-- stdDeviation is how much to blur -->
-                <feOffset dx="0" dy="1" result="offsetblur"></feOffset> <!-- how much to offset -->
-                <feComponentTransfer>
-                  <feFuncA type="linear" slope="0.5"></feFuncA> <!-- slope is the opacity of the shadow -->
-                </feComponentTransfer>
-      
-                <feMerge>        
-                  <feMergeNode></feMergeNode> <!-- this contains the offset blurred image -->
-                  <feMergeNode in="SourceGraphic"></feMergeNode> <!-- this contains the element that the filter is applied to -->
-                </feMerge>
-      
-              </filter>
-
-              <path style="filter:url('#dropshadow')" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"></path>
-            </svg>
-          </div>
-        
           <vaadin-combo-box
             id="placeSelection"
             item-label-path="city"
@@ -152,9 +82,6 @@ class LocationSelector extends PolymerElement {
       },
       _previousPlace: {
         type: Object
-      },
-      headerSuffix: {
-        type: String
       },
       loading: {
         type: Boolean
@@ -205,9 +132,10 @@ class LocationSelector extends PolymerElement {
     let combobox = this.shadowRoot.querySelector('#placeSelection');
     
     console.log('place name: ' + this.place);
+    console.dir(this.place);
 
     if(combobox) {
-      combobox.selectedItem = this.place.name;
+      combobox.selectedItem = this.place.name
 
       const url = this.place.name;
       
@@ -309,28 +237,6 @@ class LocationSelector extends PolymerElement {
     }
 
     return decodeURIComponent(results[2].replace(/\+/g, " "));
-  }
-
-  _geolocate() {
-
-    this._dispatchEvent('location-selector.locate-started');
-
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          position => {
-      
-            const coordinates = position.coords.latitude + ',' + position.coords.longitude;
-            const url = position.coords.latitude + '-' + position.coords.longitude;
-
-            this._dispatchEvent('location-selector.location-changed', this._formPlaceObject(null, coordinates));
-
-          }, error => {
-            this._dispatchEvent('location-selector.locate-error', {text: 'salli paikannus nähdäksesi paikkakuntasi sää'});
-          });
-    } 
-    else { 
-      this._dispatchEvent('location-selector.locate-error', {text: 'paikantaminen epäonnistui, yritä uudelleen'});
-    }
   }
 
   _changeUrl(paramName, paramValue) {
