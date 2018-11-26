@@ -28,6 +28,8 @@ class ForecastHeader extends PolymerElement {
           'text  text obs   ';
 
         align-items: center;
+
+        margin-left: 2rem;
       }
       weather-symbol {
         grid-area: icon;
