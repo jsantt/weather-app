@@ -1,6 +1,5 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 
-
 class WindIcon extends PolymerElement {
   static get template() {
     return html`
@@ -26,21 +25,19 @@ class WindIcon extends PolymerElement {
       }
 
       .windSpeed {
-        fill: var(--color-gray--dark);
-        font-weight: 700;
-        font-size: 63px;
+        font-weight: 900;
+        font-size: 50px;
       }
 
       .windIcon_arrow {
-        fill: var(--color-gray--dark);
-        stroke: var(--color-gray--dark);;
+        fill: #ffcdd2;
+        stroke: var(--color-black);
       }
 
       .windIcon_circle {
         fill: var(--color-white);
-        stroke: var(--color-gray--dark);
+        stroke: var(--color-black);
       }
-
 
     </style>
 
@@ -129,7 +126,7 @@ class WindIcon extends PolymerElement {
     let line = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
     line.setAttribute('class', 'windIcon_arrow');
 
-    line.setAttribute('stroke-width', '6');      
+    line.setAttribute('stroke-width', '3');      
     line.setAttribute('points', '36,16 50,0 64,16');
 
     return line;
@@ -137,10 +134,11 @@ class WindIcon extends PolymerElement {
 
   _wind(speed) {
     let text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    speed < 10 
-      ? text.setAttribute('x', '36')
-      : text.setAttribute('x', '24');
-    text.setAttribute('y', '72');
+    
+    text.setAttribute('text-anchor', 'middle');
+    text.setAttribute('x', '49');
+    text.setAttribute('y', '70');
+    
     text.setAttribute('class', 'windSpeed');
     text.textContent = speed;
 
@@ -150,7 +148,7 @@ class WindIcon extends PolymerElement {
   _windIconCircle() {
     let circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
     circle.setAttribute('class', 'windIcon_circle');
-    circle.setAttribute('stroke-width', '3');      
+    circle.setAttribute('stroke-width', '3.5');      
 
     circle.setAttribute('cx', '50');
     circle.setAttribute('cy', '50');

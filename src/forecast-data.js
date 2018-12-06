@@ -89,14 +89,19 @@ class ForecastData extends PolymerElement {
     let weatherJson = [];
 
     for (let i = 0; i < temperature.length; i++) {
+      
+      const temperatureValue = getValue(temperature[i]);
+      const windValue = getValue(wind[i]);
+      
       weatherJson.push(
         { 
+          "feelsLike": this._feelsLike(temperatureValue, windValue),
           "humidity": getValue(humidity[i]),
           "rain": getValue(rain[i]),
           "symbol": getValue(symbol[i]),
           "time": getTime(temperature[i]),
-          "temperature": getValue(temperature[i]),
-          "wind": getValue(wind[i]),
+          "temperature": temperatureValue,
+          "wind": windValue,
           "windDirection": getValue(windDirection[i])
         });
     };
@@ -123,8 +128,16 @@ class ForecastData extends PolymerElement {
     return now > comparable;
   }
 
-  _feelsLike(t, v) {
-    let feelsLike3 = 13.12 + 0.6215*0.80 - 13.956*Math.pow(5, 0.16) + 0.4867*0.80*Math.pow(5,0.16)
+  /**
+   * Calculates "feels like" estimate based on wind and temperature.
+   * Formula by Ilmatieteen laitos: https://fi.wikipedia.org/wiki/Pakkasen_purevuus
+   * 
+   * @param {*} temperature in celcius 
+   * @param {*} wind metres per second
+   */
+  _feelsLike(temperature, wind) {
+    const feelsLike = 13.12 + 0.6215*temperature - 13.956*Math.pow(wind, 0.16) + 0.4867*temperature*Math.pow(wind,0.16);
+    return Math.round(feelsLike);
   }
 
   _getHarmonieParams(location){

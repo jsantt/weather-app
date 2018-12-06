@@ -168,7 +168,7 @@ class ObservationModalContent extends PolymerElement {
               
           <template is="dom-if" if="[[_snow(observationData.snow)]]">
             <div class="item">
-              Lumen syvyys: [[observationData.snow]]
+              Lumen syvyys: [[observationData.snow]] cm
             </div>
           </template>
       </div>

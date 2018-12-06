@@ -14,8 +14,8 @@ $_documentContainer.innerHTML =
 
       <g id="windIcon">
           
-              <circle cx="50" cy="50" r="30" stroke-width="3" fill="#67a9cf" stroke="#67a9cf"></circle>
-              <polygon fill="#67a9cf" stroke="#67a9cf" points="50 3, 29 27, 71 27"></polygon>
+              <circle cx="50" cy="50" r="80" stroke-width="3" stroke="#000"></circle>
+              <polygon fill="#ffcdd2" stroke="#67a9cf" points="50 3, 29 27, 71 27"></polygon>
       </g>
 
       <g id="iosShare">

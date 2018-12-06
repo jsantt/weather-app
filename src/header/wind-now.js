@@ -8,6 +8,7 @@ class WindNow extends PolymerElement {
     <style>
       :host {
         display: block;
+        padding-top: 0.5rem;
       }
 
     </style>
