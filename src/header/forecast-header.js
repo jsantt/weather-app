@@ -31,10 +31,12 @@ class ForecastHeader extends PolymerElement {
 
         margin-left: 3rem;
       }
+
       weather-symbol {
         grid-area: icon;
         margin: -1rem 0 -1.3rem 0;
       }
+      
       .place {
     
         text-align: center;
@@ -75,10 +77,7 @@ class ForecastHeader extends PolymerElement {
         
       .aside-item {
         align-self: stretch;
-
         border-bottom: 0.06rem solid #f5f5f59e;
-        /*border-image: linear-gradient(to left, #f5f5f59e, #f5f5f59e, #84b9ff);
-        border-image-slice: 1;*/
 
         display: flex;
         align-items: center;
@@ -126,8 +125,6 @@ class ForecastHeader extends PolymerElement {
 
       weather-symbol-name {
         grid-area: text;
-        /*align-self: flex-end;*/
-
         font-size: var(--font-size-medium);
         text-align: center;
       }
@@ -147,7 +144,6 @@ class ForecastHeader extends PolymerElement {
           </location-selector>
         </h1>
 
-    
         <div class="temperature">
           [[_round(selectedData.temperature)]]
           <span class="degree">°C</span>

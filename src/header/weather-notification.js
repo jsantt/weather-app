@@ -27,8 +27,6 @@ class WeatherNotification extends PolymerElement {
         padding: 1rem;
       }
 
-
-
     </style>
 
     <template is="dom-if" if="[[_forecastText]]">

@@ -1,4 +1,5 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+
 import '@polymer/iron-icon/iron-icon.js';
 
 
@@ -29,14 +30,8 @@ class iosAddToHomescreen extends PolymerElement {
 
   static get is() { return 'ios-add-to-homescreen'; }
 
-  static get properties() {
-    return {
-      
-    };
-  }
-
   _showPrompt() {
-    
+
     if (navigator.standalone) {
       return false;
     }

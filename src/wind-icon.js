@@ -4,8 +4,7 @@ class WindIcon extends PolymerElement {
   static get template() {
     return html`
     <style>
-      :host {
-      }
+      
       .windIcon {
         height: 24px;
         width: 24px;

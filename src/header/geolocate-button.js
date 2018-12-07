@@ -7,7 +7,7 @@ class GeolocateButton extends PolymerElement {
       :host {
         display: inline-block;
 
-        /* more space to click*/ 	   
+        /* more space to click */ 	   
         margin: -1rem;
         padding: 1rem 0.5rem 1rem 1rem;
 
