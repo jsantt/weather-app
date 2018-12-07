@@ -14,8 +14,8 @@ class WindIcon extends PolymerElement {
       }
 
       .windIcon--large {
-        height: 30px;
-        width: 30px;
+        height: 33px;
+        width: 33px;
 
         transition: all .2s ease-in-out;
       }
@@ -127,7 +127,7 @@ class WindIcon extends PolymerElement {
     line.setAttribute('class', 'windIcon_arrow');
 
     line.setAttribute('stroke-width', '3');      
-    line.setAttribute('points', '36,16 50,0 64,16');
+    line.setAttribute('points', '36,19 50,0 64,19');
 
     return line;
   }
@@ -137,7 +137,7 @@ class WindIcon extends PolymerElement {
     
     text.setAttribute('text-anchor', 'middle');
     text.setAttribute('x', '49');
-    text.setAttribute('y', '70');
+    text.setAttribute('y', '69');
     
     text.setAttribute('class', 'windSpeed');
     text.textContent = speed;
@@ -152,7 +152,7 @@ class WindIcon extends PolymerElement {
 
     circle.setAttribute('cx', '50');
     circle.setAttribute('cy', '50');
-    circle.setAttribute('r', '36');
+    circle.setAttribute('r', '33');
     
     return circle;
 

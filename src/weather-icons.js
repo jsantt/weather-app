@@ -12,12 +12,6 @@ $_documentContainer.innerHTML =
           <path d="M0 0h24v24H0z" fill="none"></path>
       </g>
 
-      <g id="windIcon">
-          
-              <circle cx="50" cy="50" r="80" stroke-width="3" stroke="#000"></circle>
-              <polygon fill="#ffcdd2" stroke="#67a9cf" points="50 3, 29 27, 71 27"></polygon>
-      </g>
-
       <g id="iosShare">
           <polyline class="arrow" stroke-width="3" stroke="#fff" points="40,12 50,2 60,12" fill="none"></polyline>
           <line class="arrow-line" stroke-width="3" stroke="#fff" x1="50" y1="2" x2="50" y2="45"></line>

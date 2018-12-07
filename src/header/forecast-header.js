@@ -20,7 +20,7 @@ class ForecastHeader extends PolymerElement {
 
       .header {
         display: grid;
-        grid-template-columns: 1fr 1fr 3.5rem;
+        grid-template-columns: 1fr 1fr 3rem;
         grid-template-rows: 3.4rem 3.4rem 3.4rem;
         grid-template-areas:     
           'place place wind'
@@ -40,15 +40,9 @@ class ForecastHeader extends PolymerElement {
         text-align: center;
       }      
 
-
-
-      .forecast {
-    
-      }
-
-
       .wind {
         grid-area: wind;
+        padding-top: 0.6rem;
         text-align: center;
       }
       .wind.selected, feelsLike.selected {
@@ -82,9 +76,9 @@ class ForecastHeader extends PolymerElement {
       .aside-item {
         align-self: stretch;
 
-        border-bottom: 1px solid #f5f5f59e;
-        border-image: linear-gradient(to left, #f5f5f59e, #f5f5f59e, #84b9ff);
-        border-image-slice: 1;
+        border-bottom: 0.06rem solid #f5f5f59e;
+        /*border-image: linear-gradient(to left, #f5f5f59e, #f5f5f59e, #84b9ff);
+        border-image-slice: 1;*/
 
         display: flex;
         align-items: center;
@@ -92,8 +86,6 @@ class ForecastHeader extends PolymerElement {
 
         color: var(--color-white);
         font-size: var(--font-size-xsmall);
-
-        padding-left: 0.45rem;
         text-align: center;
 
       }
@@ -166,12 +158,18 @@ class ForecastHeader extends PolymerElement {
           large="true">
         </weather-symbol>
 
-        <div id="wind" class="wind aside-item">
+        <div 
+          id="wind" 
+          class="wind aside-item"
+          on-click="_onToggleWind">
 
-          <wind-now 
-            wind="[[selectedData.wind]]"
-            wind-direction="[[selectedData.windDirection]]">
-          </wind-now>
+          <wind-icon 
+            class="windIcon" 
+            degrees="[[selectedData.windDirection]]" 
+            large
+            round
+            wind-speed="[[selectedData.wind]]">
+          </wind-icon>
         </div>
 
         <div id="feelsLike" 
@@ -191,11 +189,11 @@ class ForecastHeader extends PolymerElement {
         
         <div 
           class="observation aside-item"
-          on-click="_observationLinkClicked">
+          on-click="_openObservation">
           
           <svg
-            width="32px"
-            height="32px"
+            width="36px"
+            height="36px"
             viewBox="0 0 32 32">
 
             <path stroke="#000" stroke-width="1" fill="#fff" d="m19.27125,18.08333l0,-13.16322c0,-1.70222 -1.38385,-3.08056 -3.08423,-3.08056c-1.70406,0 -3.0824,1.37834 -3.0824,3.08056l0,13.05924c-1.93777,1.06182 -3.25354,3.12013 -3.25354,5.48483c0,3.45229 2.799,6.25037 6.25037,6.25037c3.4532,0 6.25036,-2.79808 6.25036,-6.25037c0.00092,-2.29385 -1.23848,-4.29511 -3.08056,-5.38085z"/>
@@ -238,8 +236,6 @@ class ForecastHeader extends PolymerElement {
 
   constructor()  {
     super();
-    this.addEventListener('wind-now.toggle-wind', (event) => this._onToggleWind(event));
-
   }
 
   ready() {
@@ -254,7 +250,7 @@ class ForecastHeader extends PolymerElement {
     }
   }
 
-  _observationLinkClicked() {
+  _openObservation() {
     const event = new CustomEvent('forecast-header.observation-link-click', {bubbles: true, composed: true});
     this.dispatchEvent(event);
   }
@@ -264,7 +260,10 @@ class ForecastHeader extends PolymerElement {
   }
 
   _onToggleWind() {
-    this.shadowRoot.querySelector("#wind").classList.toggle("selected");;
+    this.shadowRoot.querySelector("#wind").classList.toggle("selected");
+
+    var toggleWind = new CustomEvent('forecast-header.toggle-wind', {bubbles: true, composed: true});
+    this.dispatchEvent(toggleWind);
   }
 
   _parseHour(timestamp) {

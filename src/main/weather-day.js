@@ -132,7 +132,7 @@ class WeatherDay extends PolymerElement {
       
       .wind, .wind--empty {
         grid-column: span 3;
-        grid-row: 7;
+        grid-row: 6;
 
         margin-top: 0.6rem;
         margin-bottom: var(--margin-after-wind);
