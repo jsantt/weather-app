@@ -120,8 +120,7 @@ class WeatherDay extends PolymerElement {
         grid-column: span 3;
         grid-row: 6;
 
-        margin-top: 0.6rem;
-        margin-bottom: var(--margin-after-wind);
+        
         text-align: center;
       }
 
@@ -132,20 +131,20 @@ class WeatherDay extends PolymerElement {
       
       .wind, .wind--empty {
         grid-column: span 3;
-        grid-row: 6;
+        grid-row: 7;
 
         margin-top: 0.6rem;
         margin-bottom: var(--margin-after-wind);
         text-align: center;
       }
-      .wind--empty {
+      .wind--empty, .feelsLike--empty {
         grid-column: span 1;
       }
       
 
       .lineChart{
         grid-column: span 25;
-        grid-row: 7;
+        grid-row: 8;
       }
 
     </style>
@@ -166,6 +165,7 @@ class WeatherDay extends PolymerElement {
             
             <div class="symbol--empty"></div>
             <div class="temperature--empty"></div>
+            <div class="feelsLike--empty"></div>
             <div class="wind--empty"></div>
           </template>
        
@@ -196,20 +196,20 @@ class WeatherDay extends PolymerElement {
 
             </div>
 
-            <!--template is="dom-if" if="true">
-            <div 
-              class="feelsLike"
-              class$="[[_getClasses(entry.past, 'symbol', 'past-hour')]]">
+            <template is="dom-if" if="[[showFeelsLike]]">
+              <div 
+                class="feelsLike">
 
-              <svg width="32" height="32">
-                <ellipse cy="64.225224" cx="94.06314" stroke-width="1.5" stroke="#000" fill="#fff"/>
-                <ellipse stroke="#000" ry="7.291584" rx="7.291584" cy="8.178521" cx="15.999989" fill="#ffcdd2"/>
-                <ellipse ry="15.0625" rx="14.9375" id="svg_16" cy="30.868164" cx="15.9375" stroke="#000" fill="#fff"/>
-                <text text-anchor="middle" x="16" y="31" class="feelsLikeValue">[[entry.feelsLike]]</text>
-              </svg>
-
-            </div>
-          </template-->
+                <template is="dom-if" if="{{_notNaN(entry.feelsLike)}}">
+                  <svg width="32" height="32">
+                    <ellipse cy="64.225224" cx="94.06314" stroke-width="1.5" stroke="#000" fill="#fff"/>
+                    <ellipse stroke="#000" ry="7.291584" rx="7.291584" cy="8.178521" cx="15.999989" fill="#ffcdd2"/>
+                    <ellipse ry="15.0625" rx="14.9375" id="svg_16" cy="30.868164" cx="15.9375" stroke="#000" fill="#fff"/>
+                    <text text-anchor="middle" x="16" y="31" class="feelsLikeValue">[[entry.feelsLike]]</text>
+                  </svg>
+                </template>
+              </div>
+            </template>
 
             <template is="dom-if" if="[[showWind]]">
               <div class="wind">
@@ -268,6 +268,10 @@ class WeatherDay extends PolymerElement {
       showTimeNow: {
         type: Boolean,
         value: false
+      },
+
+      showFeelsLike: {
+        type: Boolean
       },
 
       showWind: {

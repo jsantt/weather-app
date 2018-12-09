@@ -14,8 +14,6 @@ import './main/weather-days.js';
 import './footer/weather-footer.js';
 import './forecast-data.js';
 
-import '@vaadin/vaadin-combo-box/vaadin-combo-box.js';
-
 
 class WeatherApp extends PolymerElement {
 
@@ -115,7 +113,8 @@ class WeatherApp extends PolymerElement {
           <!-- today, tomorrow and a day after tomorrow -->
           <main>
             <weather-days 
-              forecast-data="[[forecastData]]" 
+              forecast-data="[[forecastData]]"
+              show-feels-like="[[showFeelsLike]]" 
               show-wind="[[showWind]]">
             </weather-days>
 
@@ -127,7 +126,7 @@ class WeatherApp extends PolymerElement {
         
         </div>
       </template>
-`;
+    `;
   }
 
   static get is() { return 'weather-app'; }
@@ -143,6 +142,11 @@ class WeatherApp extends PolymerElement {
       nextIsoHour: {
         type: Number,
         computed: '_nextIsoHour()'
+      },
+
+      showFeelsLike: {
+        type: Boolean,
+        value: false
       },
 
       showWind: {
@@ -166,11 +170,12 @@ class WeatherApp extends PolymerElement {
     
     console.log('weather app listening');
     this.addEventListener('location-selector.location-changed', (event) => this._onNewLocation(event));
-    this.addEventListener('forecast-header.toggle-wind', (event) => this._onToggleWind(event));
+    this.addEventListener('forecast-header.toggle-wind', (event) => this._toggleWind(event));
+    this.addEventListener('forecast-header.toggle-feels-like', (event) => this._toggleFeelsLike(event));
 
     this.addEventListener('forecast-data.fetch-done', (event) => {this.firstLoading = false;});
-    this.addEventListener('forecast-header.observation-link-click', (event) => this._toggleObservationVisible());
-    this.addEventListener('observation-header.forecast-link-click', (event) => this._toggleObservationVisible());
+    this.addEventListener('forecast-header.toggle-observation', (event) => this._toggleObservationVisible());
+    this.addEventListener('observation-modal.toggle-observation', (event) => this._toggleObservationVisible());
   }
 
   ready(){
@@ -181,10 +186,6 @@ class WeatherApp extends PolymerElement {
     super.connectedCallback();
 
     this._loadLazyResources();
-  }
-
-  _debugEvent(event) {
-    console.log(event.type, event.detail);
   }
 
   _nextFullHour() {
@@ -210,12 +211,7 @@ class WeatherApp extends PolymerElement {
   }
 
   _onNewLocation(event) {
-    this._debugEvent(event);
     this.weatherLocation = event.detail;
-  }
-
-  _toggleObservationVisible() {
-    this.observationVisible = !this.observationVisible;
   }
 
   /** 
@@ -236,14 +232,22 @@ class WeatherApp extends PolymerElement {
       });
   }
 
+  _toggleWind(event) {
+    this.showWind = !this.showWind;
+  }
+  _toggleFeelsLike(event) {
+    this.showFeelsLike = !this.showFeelsLike;
+  }
+
   _showError(event) {
     this.$.locateError.show({text: event.detail.text});
   }
 
-  _onToggleWind(event) {
-    this._debugEvent(event);
-    
-    this.showWind = !this.showWind;
+  _toggleObservationVisible() {
+    const forecastHeader = this.shadowRoot.querySelector('forecast-header');
+    forecastHeader.toggleObservationHighlight();
+
+    this.observationVisible = !this.observationVisible;
   }
 }
 

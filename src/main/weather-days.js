@@ -16,6 +16,7 @@ class WeatherDays extends PolymerElement {
         class="weatherGrid" 
         day-number="1"
         min-temperature="[[minTemperature]]"
+        show-feels-like="[[showFeelsLike]]" 
         show-wind="[[showWind]]" 
         forecast-data="[[todayData]]"></weather-day>
   
@@ -23,7 +24,8 @@ class WeatherDays extends PolymerElement {
       <weather-day 
         class="weatherGrid" 
         day-number="2" 
-        min-temperature="[[minTemperature]]" 
+        min-temperature="[[minTemperature]]"
+        show-feels-like="[[showFeelsLike]]" 
         show-wind="[[showWind]]" 
         forecast-data="[[day2Data]]"></weather-day>
 
@@ -31,7 +33,8 @@ class WeatherDays extends PolymerElement {
       <weather-day 
         class="weatherGrid" 
         day-number="3" 
-        min-temperature="[[minTemperature]]" 
+        min-temperature="[[minTemperature]]"
+        show-feels-like="[[showFeelsLike]]" 
         show-wind="[[showWind]]" 
         forecast-data="[[day3Data]]"></weather-day>
 `;
@@ -45,6 +48,11 @@ class WeatherDays extends PolymerElement {
         type: Array
       },
   
+      showFeelsLike: {
+        type: Boolean,
+        reflectToAttribute: true
+      },
+
       showWind: {
         type: Boolean,
         reflectToAttribute: true

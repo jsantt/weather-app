@@ -60,13 +60,14 @@ class ObservationModal extends PolymerElement {
 
     </style>
   
-    <section hidden$=[[!visible]]>
+    <section 
+      on-click="_toggleObservation"
+      hidden$=[[!visible]]>
 
         <div class="modal">
 
           <span 
-            class="close"
-            on-click="_forecastLinkClicked">
+            class="close">
             &times;
           </span>
 
@@ -97,8 +98,8 @@ class ObservationModal extends PolymerElement {
     super.ready();
   }
 
-  _forecastLinkClicked() {
-    const event = new CustomEvent('observation-header.forecast-link-click', {bubbles: true, composed: true});
+  _toggleObservation() {
+    const event = new CustomEvent('observation-modal.toggle-observation', {bubbles: true, composed: true});
     this.dispatchEvent(event);
   }
 }

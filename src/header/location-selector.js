@@ -1,5 +1,6 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import '@polymer/paper-spinner/paper-spinner-lite.js';
+import '@vaadin/vaadin-combo-box/vaadin-combo-box.js';
 
 import {CITIES, TOP_10_CITIES} from './city-list';
 

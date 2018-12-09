@@ -36,7 +36,7 @@ class ForecastHeader extends PolymerElement {
         grid-area: icon;
         margin: -1rem 0 -1.3rem 0;
       }
-      
+
       .place {
     
         text-align: center;
@@ -47,7 +47,7 @@ class ForecastHeader extends PolymerElement {
         padding-top: 0.6rem;
         text-align: center;
       }
-      .wind.selected, feelsLike.selected {
+      .aside-item.selected {
         background-color: #f5f5f59e;
         border-bottom: none;
       }
@@ -65,7 +65,7 @@ class ForecastHeader extends PolymerElement {
         text-align: center;
       }
 
-      #observation_icon:hover {
+      .aside-icon:hover {
         transform: scale(1.1);
       }
     
@@ -157,7 +157,7 @@ class ForecastHeader extends PolymerElement {
         <div 
           id="wind" 
           class="wind aside-item"
-          on-click="_onToggleWind">
+          on-click="_toggleWind">
 
           <wind-icon 
             class="windIcon" 
@@ -169,10 +169,10 @@ class ForecastHeader extends PolymerElement {
         </div>
 
         <div id="feelsLike" 
-          on-click="_onToggleFeelsLike"
+          on-click="_toggleFeelsLike"
           class="feelsLike aside-item">
 
-          <svg width="32" height="32">
+          <svg class="aside-icon" width="32" height="32">
             <ellipse class="head" stroke="#000" ry="7.3" rx="7.5" cy="8.2" cx="16" fill="#ffcdd2"/>
             <ellipse class= body ry="15.1" rx="14.9" cy="30.9" cx="15.9" stroke="#000" fill="#fff"/>
             <text text-anchor="middle" x="16" y="31" class="feelsLikeValue">[[selectedData.feelsLike]]</text>
@@ -183,11 +183,13 @@ class ForecastHeader extends PolymerElement {
           symbol-id="[[selectedData.symbol]]">
         </weather-symbol-name>
         
-        <div 
+        <div
+          id="observation"
           class="observation aside-item"
-          on-click="_openObservation">
+          on-click="_toggleObservation">
           
           <svg
+            class="aside-icon"
             width="36px"
             height="36px"
             viewBox="0 0 32 32">
@@ -238,6 +240,10 @@ class ForecastHeader extends PolymerElement {
     super.ready();
   }
 
+  toggleObservationHighlight() {
+    this.shadowRoot.querySelector("#observation").classList.toggle("selected");
+  }
+
   _getWeatherNow(data, time) {
     if(data) {
       return data.filter(function (item) {
@@ -246,16 +252,19 @@ class ForecastHeader extends PolymerElement {
     }
   }
 
-  _openObservation() {
-    const event = new CustomEvent('forecast-header.observation-link-click', {bubbles: true, composed: true});
+  _toggleObservation() {
+    const event = new CustomEvent('forecast-header.toggle-observation', {bubbles: true, composed: true});
     this.dispatchEvent(event);
   }
 
-  _onToggleFeelsLike() {
-    this.shadowRoot.querySelector("#feelsLike").classList.toggle("selected");;
+  _toggleFeelsLike() {
+    this.shadowRoot.querySelector("#feelsLike").classList.toggle("selected");
+
+    var toggleFeelsLike = new CustomEvent('forecast-header.toggle-feels-like', {bubbles: true, composed: true});
+    this.dispatchEvent(toggleFeelsLike);
   }
 
-  _onToggleWind() {
+  _toggleWind() {
     this.shadowRoot.querySelector("#wind").classList.toggle("selected");
 
     var toggleWind = new CustomEvent('forecast-header.toggle-wind', {bubbles: true, composed: true});
