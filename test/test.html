@@ -1,0 +1,45 @@
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <title>shop-home</title>
+
+  <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+  <script src="../node_modules/chai/chai.js"></script>
+  <script src="../node_modules/mocha/mocha.js"></script>
+  <script src="../node_modules/wct-mocha/wct-mocha.js"></script>
+</head>
+<body>
+
+  <test-fixture id="basic">
+    <template>
+       <weather-app></weather-app>
+    </template>
+  </test-fixture>
+
+  <script type="module">
+    import '@polymer/test-fixture';
+    import sinon from 'sinon';
+    import '../src/weather-app.js';
+  
+    suite('shop-home tests', function() {
+      setup(function() {
+        home = fixture('basic');
+      });
+      test('title should render correctly', function(done) {
+        // Set categories property
+        home.categories = categories;
+        // Data bindings will stamp out new DOM asynchronously
+        // so wait to check for updates
+        flush(function() {
+          var title = home.shadowRoot.querySelector('h2');
+          assert.equal(categories[0].title, title.textContent);
+          done();
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>

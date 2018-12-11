@@ -1,20 +1,26 @@
 <!doctype html>
-<html lang="fi">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
-
-    <title>TEST ROOT</title>
-    
-    <script type="module" src="./test-weather-symbol.js"></script>
-    <script type="module" src="../src/weather-symbol.js"></script>
-  </head>
-
-  <body>
-    <test-weather-symbol></test-weather-symbol>
-  </body>
-
-  <script src="../bower_components/webcomponentsjs/webcomponents-loader.js"></script>
-
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE
+The complete set of authors may be found at http://polymer.github.io/AUTHORS
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS
+-->
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <title>Tests</title>
+  <script src="../node_modules/mocha/mocha.js"></script>
+  <script src="../node_modules/wct-mocha/wct-mocha.js"></script>
+</head>
+<body>
+  <script>
+    WCT.loadSuites([
+      'test.html'
+    ]);
+  </script>
+</body>
 </html>
-<script src="../../@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>

@@ -201,12 +201,7 @@ class WeatherDay extends PolymerElement {
                 class="feelsLike">
 
                 <template is="dom-if" if="{{_notNaN(entry.feelsLike)}}">
-                  <svg width="32" height="32">
-                    <ellipse cy="64.225224" cx="94.06314" stroke-width="1.5" stroke="#000" fill="#fff"/>
-                    <ellipse stroke="#000" ry="7.291584" rx="7.291584" cy="8.178521" cx="15.999989" fill="#ffcdd2"/>
-                    <ellipse ry="15.0625" rx="14.9375" id="svg_16" cy="30.868164" cx="15.9375" stroke="#000" fill="#fff"/>
-                    <text text-anchor="middle" x="16" y="31" class="feelsLikeValue">[[entry.feelsLike]]</text>
-                  </svg>
+                  ([[entry.feelsLike]]°)
                 </template>
               </div>
             </template>
