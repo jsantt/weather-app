@@ -131,9 +131,7 @@ class LocationSelector extends PolymerElement {
   _newPlace(){
     
     let combobox = this.shadowRoot.querySelector('#placeSelection');
-    
-    console.log('place name: ' + this.place);
-    console.dir(this.place);
+
 
     if(combobox) {
       combobox.selectedItem = this.place.name
@@ -159,7 +157,6 @@ class LocationSelector extends PolymerElement {
   }
 
   _openedChanged(customEvent) {
-    console.log(customEvent);
     let combobox = this.shadowRoot.querySelector('#placeSelection');
 
     if(this._isComboboxOpen(customEvent)) {

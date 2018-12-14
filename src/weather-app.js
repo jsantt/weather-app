@@ -168,7 +168,6 @@ class WeatherApp extends PolymerElement {
   constructor() { 
     super();
     
-    console.log('weather app listening');
     this.addEventListener('location-selector.location-changed', (event) => this._onNewLocation(event));
     this.addEventListener('forecast-header.toggle-wind', (event) => this._toggleWind(event));
     this.addEventListener('forecast-header.toggle-feels-like', (event) => this._toggleFeelsLike(event));

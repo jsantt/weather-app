@@ -20,6 +20,7 @@
   ],
   "extraDependencies": [
     "manifest.json",
+    "node_modules/@webcomponents/webcomponentsjs/**",
     "src/lazy-resources.js"
   ]
 }

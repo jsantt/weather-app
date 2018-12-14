@@ -57,9 +57,7 @@ class WeatherFooter extends PolymerElement {
           <section class="footer_section">
             <h3>Palaute</h3>  
             <p class="info">
-                <a href="https://www.linkedin.com/in/janisantti">
-                  www.linkedin.com/in/janisantti
-                </a>
+                palaute@saaennuste.fi
             </p><p></p>
           </section>
 
@@ -67,6 +65,8 @@ class WeatherFooter extends PolymerElement {
             <ios-add-to-homescreen>        
             </ios-add-to-homescreen>
           </p>
+
+          <img src="../image/FMI0DATA_small.png"/>
 
           <template is="dom-if" if="[[_offline]]">
             <section>
