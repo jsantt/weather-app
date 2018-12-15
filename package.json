@@ -17,17 +17,17 @@
     "@polymer/iron-iconset-svg": "3.0.1",
     "@polymer/paper-spinner": "3.0.1",
     "@polymer/paper-toast": "3.0.1",
-    "@polymer/polymer": "3.0.5",
-    "@vaadin/vaadin-combo-box": "4.2.0-alpha4",
-    "@webcomponents/webcomponentsjs": "2.1.3"
+    "@polymer/polymer": "3.1.0",
+    "@vaadin/vaadin-combo-box": "4.2.1",
+    "@webcomponents/webcomponentsjs": "2.2.1"
   },
   "devDependencies": {
-    "wct-browser-legacy": "1.0.1"
+    "wct-browser-legacy": "1.0.2"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Jani Säntti",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/jsantt/weather-app/issues"

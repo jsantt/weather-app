@@ -259,7 +259,7 @@ class ForecastData extends PolymerElement {
         raiseEvent(this, 'forecast-data.fetch-error', {text: 'Virhe haettaessa ennustetietoja'});
         console.log('error ' + rejected.stack);
       })
-      .finally(() => {
+      .then(() => {
         this.loading = false;
         raiseEvent(this, 'forecast-data.fetch-done', {text: 'Fetch data done'});
       });
