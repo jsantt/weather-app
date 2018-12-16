@@ -28,23 +28,8 @@ class GeolocateButton extends PolymerElement {
         class="locate_icon"
         on-click="_geolocate">
 
-        <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="24" height="24" viewBox="0 0 24 24">
-          <filter id="dropshadow" height="130%">
-
-            <feGaussianBlur in="SourceAlpha" stdDeviation="1"></feGaussianBlur> <!-- stdDeviation is how much to blur -->
-            <feOffset dx="0" dy="1" result="offsetblur"></feOffset> <!-- how much to offset -->
-            <feComponentTransfer>
-              <feFuncA type="linear" slope="0.5"></feFuncA> <!-- slope is the opacity of the shadow -->
-            </feComponentTransfer>
-
-            <feMerge>        
-              <feMergeNode></feMergeNode> <!-- this contains the offset blurred image -->
-              <feMergeNode in="SourceGraphic"></feMergeNode> <!-- this contains the element that the filter is applied to -->
-            </feMerge>
-
-          </filter>
-
-          <path style="filter:url('#dropshadow')" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"></path>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="28" height="28" viewBox="0 0 24 24">
+          <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"></path>
         </svg>
       </div>
     </template>        
