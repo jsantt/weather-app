@@ -13,9 +13,9 @@ $_documentContainer.innerHTML =
       </g>
 
       <g id="iosShare">
-          <polyline class="arrow" stroke-width="3" stroke="#fff" points="40,12 50,2 60,12" fill="none"></polyline>
-          <line class="arrow-line" stroke-width="3" stroke="#fff" x1="50" y1="2" x2="50" y2="45"></line>
-          <polyline class="rectangle" stroke-width="3" stroke="#fff" points="45,20 27,20 27,70 73,70 73,20 55,20" fill="none"></polyline> 
+          <polyline class="arrow" stroke-width="3" points="40,12 50,2 60,12" fill="none"></polyline>
+          <line class="arrow-line" stroke-width="3" x1="50" y1="2" x2="50" y2="45"></line>
+          <polyline class="rectangle" stroke-width="3" points="45,20 27,20 27,70 73,70 73,20 55,20" fill="none"></polyline> 
       </g>
 
       <g id="thermometer">

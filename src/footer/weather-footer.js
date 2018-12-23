@@ -42,8 +42,9 @@ class WeatherFooter extends PolymerElement {
       </style>
 
         <footer>
+
           <p class="footer_header">Säädata by Ilmatieteen laitos | avoin data</p>
-          
+
           <section class="footer_section">
           
             <p class="info">
@@ -54,17 +55,17 @@ class WeatherFooter extends PolymerElement {
             </p><p></p>
           </section>
 
+          <p class="footer_header">
+            <ios-add-to-homescreen>        
+            </ios-add-to-homescreen>
+          </p>
+
           <section class="footer_section">
             <h3>Palaute</h3>  
             <p class="info">
                 palaute@saaennuste.fi
             </p><p></p>
           </section>
-
-          <p class="footer_header">
-            <ios-add-to-homescreen>        
-            </ios-add-to-homescreen>
-          </p>
 
           <img src="../image/FMI0DATA_small.png"/>
 
@@ -86,7 +87,7 @@ class WeatherFooter extends PolymerElement {
       },
       _offline: {
         type: Boolean,
-        default: false
+        value: false
       }
     };
   }

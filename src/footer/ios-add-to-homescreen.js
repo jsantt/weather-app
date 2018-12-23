@@ -10,6 +10,64 @@ class iosAddToHomescreen extends PolymerElement {
       :host {
         display: block;
       }
+
+      .notification {
+        display: flex;
+        align-items:center;
+        justify-content: space-around;
+
+        color: black;
+      }
+
+      .notification--floating {
+
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: white;
+        
+        border-top: 1px solid var(--color-gray);
+
+        padding-bottom: 0.7rem;
+        z-index:10;
+      }
+
+      .test{
+        border: 0px dashed gray;
+      }
+
+      .sun {
+        --iron-icon-width: 32px;
+        --iron-icon-height: 32px;  
+      }
+
+      .text {
+        padding-top: 0.25rem;
+      }
+
+      .close {
+        font-size: var(--font-size-xxlarge);
+      }
+
+      .sun, .close {
+        padding: 0 1.5rem;
+      }
+
+      .share {
+        --iron-icon-stroke-color: var(--color-white);
+        --iron-icon-fill-color: var(--color-white);
+      }
+
+      .notification--floating .share {
+        --iron-icon-stroke-color: #000;
+        --iron-icon-fill-color: #000;
+      }
+
+      .notification--normal .close, .notification--normal .sun {
+        visibility: hidden;
+      }
+
       p {
         margin-bottom: 0;
       }
@@ -17,18 +75,40 @@ class iosAddToHomescreen extends PolymerElement {
     </style>
 
     <template is="dom-if" if="{{_showPrompt()}}">
-      <p>
-        Tykkäätkö? Napauta 
+      <div class$="{{_isFloating(_floating)}}">
+
+        <iron-icon class="sun test" icon="weather-symbol-icons:weatherSymbol1"></iron-icon>
         
-        <iron-icon icon="weather-icons:iosShare"></iron-icon> 
+        <div class="text test">
+          Tykkäätkö? Napauta 
+          
+          <iron-icon class="share" icon="weather-icons:iosShare"></iron-icon> 
+          
+          ja ‘lisää kotivalikkoon’
+        </div>
+
+        <div 
+          class="close test"
+          on-click="_onClose">
+          &times;
+        </div>
         
-        ja ‘lisää kotivalikkoon’
-      </p>
+      </div>  
     </template>
 `;
   }
 
   static get is() { return 'ios-add-to-homescreen'; }
+
+  static get properties() {
+    return {
+      _floating: {
+        type: Boolean,
+        value: true
+      }
+    };
+  }
+
 
   _showPrompt() {
 
@@ -39,6 +119,20 @@ class iosAddToHomescreen extends PolymerElement {
     let isApple = ['iPhone', 'iPad', 'iPod'].includes(navigator.platform);
     return isApple;
   }
+
+  _isFloating(floating) {
+    
+    if(floating === false) {
+      return 'notification notification--normal';
+    }
+    else {
+      return 'notification notification--floating';
+    }
+  }
+  _onClose() {
+    this._floating = false;
+  }
 }
+
 
 window.customElements.define(iosAddToHomescreen.is, iosAddToHomescreen);
