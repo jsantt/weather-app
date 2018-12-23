@@ -21,15 +21,17 @@ class iosAddToHomescreen extends PolymerElement {
 
       .notification--floating {
 
+        box-shadow: 0px -1px 4px 0px rgba(0, 0, 0, 0.46);
+
         position: fixed;
         left: 0;
         right: 0;
         bottom: 0;
         background-color: white;
         
-        border-top: 1px solid var(--color-gray);
+       
 
-        padding-bottom: 0.7rem;
+        padding: 0.7rem 0;
         z-index:10;
       }
 
@@ -111,7 +113,6 @@ class iosAddToHomescreen extends PolymerElement {
 
 
   _showPrompt() {
-
     if (navigator.standalone) {
       return false;
     }
