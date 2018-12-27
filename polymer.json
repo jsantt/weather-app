@@ -22,5 +22,12 @@
     "manifest.json",
     "node_modules/@webcomponents/webcomponentsjs/**",
     "src/lazy-resources.js"
-  ]
+  ],
+  "moduleResolution": "node",
+  "npm": true,
+  "lint": {
+    "rules": [
+      "polymer-3"
+    ]
+  }
 }

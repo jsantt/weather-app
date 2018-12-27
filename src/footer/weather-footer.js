@@ -67,6 +67,14 @@ class WeatherFooter extends PolymerElement {
             </p><p></p>
           </section>
 
+          <section class="footer_section">
+            <h3>Evästeet</h3>  
+            <p class="info">
+              Käytämme vain <a href="https://policies.google.com/technologies/partner-sites?hl=fi">
+              Googlen analytiikkatyökalun</a> tarvitsemia evästeitä. 
+            </p><p></p>
+          </section>
+
           <img src="../image/FMI0DATA_small.png"/>
 
           <template is="dom-if" if="[[_offline]]">

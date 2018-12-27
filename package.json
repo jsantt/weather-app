@@ -21,7 +21,9 @@
     "@vaadin/vaadin-combo-box": "4.2.1"
   },
   "devDependencies": {
-    "wct-browser-legacy": "1.0.2"
+    "@polymer/test-fixture": "^4.0.2",
+    "wct-browser-legacy": "1.0.2",
+    "wct-mocha": "^1.0.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

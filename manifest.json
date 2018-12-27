@@ -1,7 +1,7 @@
 {
   "name": "saaennuste.fi",
   "short_name": "saaennuste.fi",
-  "description": "Sääennuste sekä toteutunut sää. Säädata tulee Ilmatieteen laitokselta.",
+  "description": "Kännykälle optimoidusta palvelusta näet lähiajan sään yhdellä vilkaisulla ja nopeiten. Säädata tulee Ilmatieteen laitokselta.",
   "icons": [
     {
       "src": "image/weather-icon-57x57.png",

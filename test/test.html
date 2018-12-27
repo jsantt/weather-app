@@ -23,20 +23,24 @@
     import sinon from 'sinon';
     import '../src/weather-app.js';
   
-    suite('shop-home tests', function() {
+    suite('weather app tests', function() {
       setup(function() {
         home = fixture('basic');
+        console.log('setting up the tests');
       });
       test('title should render correctly', function(done) {
-        // Set categories property
-        home.categories = categories;
-        // Data bindings will stamp out new DOM asynchronously
-        // so wait to check for updates
+        console.log('testing...');
+        assert.equal("hip", 'hop');
+
         flush(function() {
-          var title = home.shadowRoot.querySelector('h2');
-          assert.equal(categories[0].title, title.textContent);
+          var title = document.title;
+          assert.equal(title, 'Sääennuste');
           done();
         });
+
+
+        done();
+        
       });
     });
   </script>
