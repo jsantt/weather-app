@@ -1,5 +1,7 @@
 # weather forecast application
 
+Application can be found on [saaennuste.fi](https://saaennuste.fi)
+
 ## Architecture
 
 Weather app uses component based architecture. Weather-app.js is a global mediator for inter-component communication.   
