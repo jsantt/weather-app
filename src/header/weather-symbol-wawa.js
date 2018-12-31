@@ -10,7 +10,7 @@ class WeatherSymbolWawa extends PolymerElement {
      
     </style>
     
-    <span>[[_symbolName(wawaId)]]</span>
+    <span>[[_symbolName(wawaId, cloudiness)]]</span>
 `;
   }
 
@@ -20,10 +20,24 @@ class WeatherSymbolWawa extends PolymerElement {
     return {
         wawaId: {
             type: Number
+        },
+        cloudiness: {
+          type: Number
         }
     };
   }
-  _symbolName(wawaId){    
+
+  _symbolName(wawaId, cloudiness) {
+    const wawaName = this._wawaName(wawaId);
+    
+    if(Number.isNaN(cloudiness)) {
+      return wawaName;
+    }
+
+    return wawaName === 'selkeää' ? this._cloudiness(cloudiness) : wawaName;
+  }
+
+  _wawaName(wawaId){    
     
       const wawaNames = {
         0: 'selkeää',            
@@ -91,6 +105,21 @@ class WeatherSymbolWawa extends PolymerElement {
     }
 
     return wawaNames[wawaId];
+  }
+  _cloudiness(cloudiness) {
+    const names = {
+      0: 'selkeää',
+      1: 'selkeää',
+      2: 'melko selkeää',
+      3: 'puolipilvistä',
+      4: 'puolipilvistä',
+      5: 'puolipilvistä',
+      6: 'melko pilvistä',
+      7: 'pilvistä',
+      8: 'pilvistä'      
+    }
+
+    return names[cloudiness]
   }
 }
 

@@ -52,19 +52,18 @@ class ObservationModalContent extends PolymerElement {
         align-items: center;
         justify-items: center;
 
+        padding-top: 1.4rem;
         text-align: center;
       }
       .item {
-        padding: 1.5rem 0;
+        padding: 1rem 0;
       }
 
       .temperature {
         justify-self: stretch;
-        border-bottom: 1px solid var(--color-gray--light);
+        /*border-bottom: 1px solid var(--color-gray--light);*/
         font-size: var(--font-size-xxlarge);
         grid-column: 1 / span 2;
-
-        padding: 3rem 0;
       }
       .degree {
         font-size: var(--font-size-large);
@@ -114,7 +113,8 @@ class ObservationModalContent extends PolymerElement {
           
             <weather-symbol-wawa 
               class="value"
-              wawa-id="[[observationData.weatherCode]]">
+              wawa-id="[[observationData.weatherCode]]"
+              cloudiness="[[observationData.cloudiness]]">
             </weather-symbol-wawa>
             
           </div>
@@ -165,7 +165,28 @@ class ObservationModalContent extends PolymerElement {
               <div class="explanation">ilmanpaine</div>
             </div>
           </template>
-              
+
+          <template is="dom-if" if="[[observationData.visibility]]">
+            <div class="item">
+              <div class="value">[[observationData.visibility]]m</div>
+              <div class="explanation">näkyvyys</div>
+            </div>
+          </template>
+
+          <template is="dom-if" if="[[observationData.dewPoint]]">
+            <div class="item">
+              <div class="value">[[observationData.dewPoint]]°C</div>
+              <div class="explanation">kastepiste</div>
+            </div>
+          </template>
+
+          <template is="dom-if" if="[[observationData.cloudiness]]">
+            <div class="item">
+              <div class="value">[[observationData.cloudiness]] / 8</div>
+              <div class="explanation">pilvisyys</div>
+            </div>
+          </template>
+
           <template is="dom-if" if="[[_snow(observationData.snow)]]">
             <div class="item">
               Lumen syvyys: [[observationData.snow]] cm
