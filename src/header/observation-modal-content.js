@@ -64,6 +64,11 @@ class ObservationModalContent extends PolymerElement {
         /*border-bottom: 1px solid var(--color-gray--light);*/
         font-size: var(--font-size-xxlarge);
         grid-column: 1 / span 2;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 1rem;
       }
       .degree {
         font-size: var(--font-size-large);
@@ -81,6 +86,12 @@ class ObservationModalContent extends PolymerElement {
       .windExplanation {
         margin-top: -0.26rem;
       }
+
+      .description {
+        font-size: var(--font-size-medium);
+        padding: 0 1rem;
+      }
+
       .footer {
         background-color: var(--color-primary);
         border-top: 0.2rem solid var(--color-gray--light); 
@@ -108,11 +119,13 @@ class ObservationModalContent extends PolymerElement {
 
           <div class="item temperature">
             <template is="dom-if" if="[[observationData.temperature]]">
-              <span>[[observationData.temperature]]</span> <span class="degree">°C</span>
+              <div>
+                <span>[[observationData.temperature]]°C</span> 
+              </div>
             </template>
           
             <weather-symbol-wawa 
-              class="value"
+              class="value description"
               wawa-id="[[observationData.weatherCode]]"
               cloudiness="[[observationData.cloudiness]]">
             </weather-symbol-wawa>

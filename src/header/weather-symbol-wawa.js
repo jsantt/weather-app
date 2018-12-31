@@ -29,18 +29,18 @@ class WeatherSymbolWawa extends PolymerElement {
 
   _symbolName(wawaId, cloudiness) {
     const wawaName = this._wawaName(wawaId);
-    
-    if(Number.isNaN(cloudiness)) {
+    const cloudinessDescription = this._cloudiness(cloudiness);
+
+    if(wawaId !== 0 || cloudinessDescription === null){
       return wawaName;
     }
 
-    return wawaName === 'selkeää' ? this._cloudiness(cloudiness) : wawaName;
+    return cloudinessDescription;
   }
 
   _wawaName(wawaId){    
-    
       const wawaNames = {
-        0: 'selkeää',            
+        0: 'ei merkittäviä sääilmiöitä',            
         4: 'Auerta, savua tai pölyä',
         5: 'Auerta, savua tai pölyä, näkyvyys alle 1km',
 
@@ -107,6 +107,11 @@ class WeatherSymbolWawa extends PolymerElement {
     return wawaNames[wawaId];
   }
   _cloudiness(cloudiness) {
+    if(Number.isNaN(cloudiness) || cloudiness < 0 || cloudiness > 8) {
+      return null;
+    }
+
+
     const names = {
       0: 'selkeää',
       1: 'selkeää',
