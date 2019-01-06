@@ -84,7 +84,7 @@ class ForecastData extends PolymerElement {
   
   // other functions alphabetically
 
-  _combine(humidity, rain, symbol, temperature, wind, windDirection) {
+  _combine(humidity, rain, symbol, temperature, wind, windDirection, windGust) {
     
     let weatherJson = [];
 
@@ -102,7 +102,8 @@ class ForecastData extends PolymerElement {
           "time": getTime(temperature[i]),
           "temperature": temperatureValue,
           "wind": windValue,
-          "windDirection": getValue(windDirection[i])
+          "windDirection": getValue(windDirection[i]),
+          "windGust": getValue(windGust[i])
         });
     };
 
@@ -110,7 +111,7 @@ class ForecastData extends PolymerElement {
   }
 
   _combineDatas(harmonie, hirlam) {
-    let combinedData = this._combine(harmonie.humidity, hirlam.rain, hirlam.symbol, harmonie.temperature, harmonie.wind, harmonie.windDirection);
+    let combinedData = this._combine(harmonie.humidity, hirlam.rain, hirlam.symbol, harmonie.temperature, harmonie.wind, harmonie.windDirection, harmonie.windGust);
 
     // enrich data to avoid application logic inside components
     const now = new Date();
@@ -145,7 +146,7 @@ class ForecastData extends PolymerElement {
     let params = this._commonParams(location);
 
     params.storedquery_id = 'fmi::forecast::harmonie::surface::point::timevaluepair';
-    params.parameters = 'Humidity,Temperature,WindDirection,WindSpeedMS';
+    params.parameters = 'Humidity,Temperature,WindDirection,WindSpeedMS,WindGust';
     
     return params;
   }
@@ -214,7 +215,9 @@ class ForecastData extends PolymerElement {
     harmonieResponse.temperature = getTimeAndValuePairs(timeSeries, 'mts-1-1-Temperature', 'temperature');
     harmonieResponse.wind = getTimeAndValuePairs(timeSeries, 'mts-1-1-WindSpeedMS', 'wind');
     harmonieResponse.windDirection = getTimeAndValuePairs(timeSeries, 'mts-1-1-WindDirection', 'windDirection');
+    harmonieResponse.windGust = getTimeAndValuePairs(timeSeries, 'mts-1-1-WindGust', 'windGust');
     
+
     return harmonieResponse;
   }
 

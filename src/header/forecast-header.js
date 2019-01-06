@@ -11,25 +11,23 @@ class ForecastHeader extends PolymerElement {
     <style>
       :host {
         display: block;
-      }
-      
-      header {
+
         background-color: var(--color-primary);
-        padding: var(--padding-header-footer) 0 0 var(--padding-header-footer);
       }
 
       .header {
         display: grid;
         grid-template-columns: 1fr 1fr 3rem;
-        grid-template-rows: 3.4rem 3.4rem 3.4rem;
-        grid-template-areas:     
+        grid-template-rows: 1.3rem 3.5rem 3.5rem 3.5rem;
+        grid-template-areas:
+          'empty empty empty'    
           'place place wind'
-          'temp  icon  feels  '
+          'temp  icon  feels'
           'text  text  obs ';
 
         align-items: center;
 
-        margin-left: 3rem;
+        margin-left: 2rem;
       }
 
       weather-symbol {
@@ -38,13 +36,12 @@ class ForecastHeader extends PolymerElement {
       }
 
       .place {
-    
         text-align: center;
       }      
 
       .wind {
         grid-area: wind;
-        padding-top: 0.6rem;
+        padding-top: 0.2rem;
         text-align: center;
       }
       .aside-item.selected {
@@ -52,10 +49,6 @@ class ForecastHeader extends PolymerElement {
         border-bottom: none;
       }
 
-      .feels {
-        grid-area: feels;
-        text-align: center;
-      }
       #feels_icon:hover {
         transform: scale(1.1);
       }
@@ -77,7 +70,7 @@ class ForecastHeader extends PolymerElement {
         
       .aside-item {
         align-self: stretch;
-        border-bottom: 0.06rem solid #f5f5f59e;
+        background-color: #f5f5f529;
 
         display: flex;
         align-items: center;
@@ -86,7 +79,6 @@ class ForecastHeader extends PolymerElement {
         color: var(--color-white);
         font-size: var(--font-size-xsmall);
         text-align: center;
-
       }
 
       .location {
@@ -99,7 +91,6 @@ class ForecastHeader extends PolymerElement {
         font-size: var(--font-size-xxxlarge);
         line-height: 1.15;
         margin: 0 0 0 auto;
-
       }
 
       .degree {
@@ -114,7 +105,7 @@ class ForecastHeader extends PolymerElement {
         margin-top: auto;
         line-height: var(--line-height--tight);
       }
-      .feels-like {
+      .feelsLike {
         grid-area: feels;
       }
 
@@ -163,7 +154,7 @@ class ForecastHeader extends PolymerElement {
             class="windIcon" 
             degrees="[[selectedData.windDirection]]" 
             large
-            round
+            wind-gust="[[selectedData.windGust]]"
             wind-speed="[[selectedData.wind]]">
           </wind-icon>
         </div>
@@ -262,6 +253,8 @@ class ForecastHeader extends PolymerElement {
 
     var toggleFeelsLike = new CustomEvent('forecast-header.toggle-feels-like', {bubbles: true, composed: true});
     this.dispatchEvent(toggleFeelsLike);
+
+    this._deselectWind();
   }
 
   _toggleWind() {
@@ -269,7 +262,30 @@ class ForecastHeader extends PolymerElement {
 
     var toggleWind = new CustomEvent('forecast-header.toggle-wind', {bubbles: true, composed: true});
     this.dispatchEvent(toggleWind);
+
+    this._deselectFeelsLike();
   }
+
+  _deselectWind() {
+    const windSelected = this.shadowRoot.querySelector("#wind").classList.contains("selected");
+
+    if(windSelected){
+      this.shadowRoot.querySelector("#wind").classList.remove("selected");
+      var toggleWind = new CustomEvent('forecast-header.toggle-wind', {bubbles: true, composed: true});
+    this.dispatchEvent(toggleWind);
+    }
+  }
+  _deselectFeelsLike(){
+    const feelsSelected = this.shadowRoot.querySelector("#feelsLike").classList.contains("selected");
+
+    if(feelsSelected) {
+      this.shadowRoot.querySelector("#feelsLike").classList.remove("selected");
+      var toggleFeelsLike = new CustomEvent('forecast-header.toggle-feels-like', {bubbles: true, composed: true});
+      this.dispatchEvent(toggleFeelsLike);
+  
+    }
+  }
+
 
   _parseHour(timestamp) {
     const date = new Date(timestamp);

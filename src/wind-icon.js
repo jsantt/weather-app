@@ -13,8 +13,8 @@ class WindIcon extends PolymerElement {
       }
 
       .windIcon--large {
-        height: 33px;
-        width: 33px;
+        height: 32px;
+        width: 32px;
 
         transition: all .2s ease-in-out;
       }
@@ -26,6 +26,12 @@ class WindIcon extends PolymerElement {
       .windSpeed {
         font-weight: 900;
         font-size: 50px;
+      }
+
+      .windGust {
+        font-weight: 300;
+        font-size: 55px;
+        font-style: italic;
       }
 
       .windIcon_arrow {
@@ -42,7 +48,7 @@ class WindIcon extends PolymerElement {
 
     <span id="iconPlaceholder"></span>
 
-    [[_createIcon(degrees, roundedWindSpeed)]]
+    [[_createIcon(degrees, roundedWindSpeed, roundedGustSpeed)]]
 `;
   }
 
@@ -56,14 +62,17 @@ class WindIcon extends PolymerElement {
       large: {
         type: Boolean
       },
-      round: {
-        type: Boolean
-      },
       windSpeed: {
         type: Number
       },
+      windGust: {
+        type: Number
+      },
       roundedWindSpeed: {
-        computed: '_round(windSpeed, round)'
+        computed: '_round(windSpeed)'
+      },
+      roundedGustSpeed: {
+        computed: '_round(windGust)'
       }
     };
   }
@@ -72,7 +81,7 @@ class WindIcon extends PolymerElement {
     super.ready();
   }
 
-  _createIcon(degrees, speed){
+  _createIcon(degrees, speed, gustSpeed){
     if(!Number.isNaN(degrees) && !Number.isNaN(speed)){
       let svg = this._svg(this.large);
       
@@ -82,6 +91,7 @@ class WindIcon extends PolymerElement {
                 
       svg.appendChild(group);
       svg.appendChild(this._wind(speed));
+      //svg.appendChild(this._windGust(gustSpeed));
 
 
       if(this.$.iconPlaceholder.children.length > 0) {
@@ -100,8 +110,8 @@ class WindIcon extends PolymerElement {
     return g;
   }
 
-  _round(speed, round) {
-    return round ? Math.round(speed) : speed;
+  _round(speed) {
+    return Math.round(speed);
   }
 
   _svg(large) {
@@ -140,6 +150,18 @@ class WindIcon extends PolymerElement {
     
     text.setAttribute('class', 'windSpeed');
     text.textContent = speed;
+
+    return text;
+  }
+  _windGust(gustSpeed) {
+    let text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    
+    text.setAttribute('text-anchor', 'middle');
+    text.setAttribute('x', '49');
+    text.setAttribute('y', '150');
+    
+    text.setAttribute('class', 'windGust');
+    text.textContent = gustSpeed;
 
     return text;
   }

@@ -120,7 +120,7 @@ class WeatherDay extends PolymerElement {
         grid-column: span 3;
         grid-row: 6;
 
-        
+        font-style: italic;
         text-align: center;
       }
 
@@ -137,6 +137,7 @@ class WeatherDay extends PolymerElement {
         margin-bottom: var(--margin-after-wind);
         text-align: center;
       }
+
       .wind--empty, .feelsLike--empty {
         grid-column: span 1;
       }
@@ -167,6 +168,8 @@ class WeatherDay extends PolymerElement {
             <div class="temperature--empty"></div>
             <div class="feelsLike--empty"></div>
             <div class="wind--empty"></div>
+            <div class="windGust--empty"></div>
+            
           </template>
        
           <template is="dom-if" if="[[!_isFourth(index)]]">
@@ -201,7 +204,7 @@ class WeatherDay extends PolymerElement {
                 class="feelsLike">
 
                 <template is="dom-if" if="{{_notNaN(entry.feelsLike)}}">
-                  ([[entry.feelsLike]]°)
+                  [[entry.feelsLike]]°
                 </template>
               </div>
             </template>
@@ -212,13 +215,13 @@ class WeatherDay extends PolymerElement {
                   <wind-icon 
                     class$="[[_getClasses(entry.past, 'symbol', 'past-hour')]]"
                     degrees="[[entry.windDirection]]" 
-                    round="" 
+                    wind-gust="[[entry.windGust]]"
                     wind-speed="[[entry.wind]]">
                   </wind-icon>
 
               </div>
             </template>
-
+            
           </template>  
             
         </template>
