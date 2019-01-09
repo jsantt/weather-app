@@ -14,31 +14,58 @@
 
   <test-fixture id="basic">
     <template>
-       <wind-icon></wind-icon>
+       <wind-icon 
+        wind-direction="180"
+        wind="7"
+       ></wind-icon>
     </template>
   </test-fixture>
 
+  <test-fixture id="largeIcon">
+      <template>
+         <wind-icon 
+          large
+          wind-direction="180"
+          wind="7"
+         ></wind-icon>
+      </template>
+    </test-fixture>
+
+
   <script type="module">
     import '@polymer/test-fixture';
-    console.log("before");
     import sinon from 'sinon';
-    console.log("after");
     import '../src/wind-icon.js';
   
     suite('wind-icon tests', function() {
-      let wind;
-      setup(function() {
-        wind = fixture('basic');
-        console.log('setting up the tests');
+      let icon;
+
+      setup(() => {
       });
-      test('title should render correctly', function(done) {
-        console.log('testing...');
-        assert.equal("hip", 'hop');
+
+      test('Wind attribute is reflected', function(done) {
+        const icon = fixture('basic');
+
+        flush(function() {    
+          assert.equal(icon.getAttribute('windSpeed'), icon.windSpeed);
+          done();
+        });
       });
-      test('check title', function(done) {
+
+      test('Degrees attribute is reflected', function(done) {
+        const icon = fixture('basic');
+
+        flush(function() {    
+          assert.equal(icon.getAttribute('degrees'), icon.degrees);
+          done();
+        });
+      });
+
+      test('Large attribute is reflected', function(done) {
+        const icon = fixture('largeIcon');
+
         flush(function() {
-          var title = document.title;
-          assert.equal(title, 'Sääennuste');
+          assert.isTrue(icon.hasAttribute('large'));
           done();
         });
       });

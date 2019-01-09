@@ -151,7 +151,6 @@ class ObservationModalContent extends PolymerElement {
               <wind-icon 
                 degrees="[[observationData.windDirection]]" 
                 large
-                wind-gust="[[observationData.windGust]]"
                 wind-speed="[[observationData.wind]]">
               </wind-icon>
               <div class="explanation windExplanation">10 min keskituuli</div>

@@ -227,14 +227,11 @@ class WeatherDay extends PolymerElement {
 
             <template is="dom-if" if="[[showWind]]">
               <div class="wind">
-      
                   <wind-icon 
                     class$="[[_getClasses(entry.past, 'symbol', 'past-hour')]]"
                     degrees="[[entry.windDirection]]" 
-                    wind-gust="[[entry.windGust]]"
                     wind-speed="[[entry.wind]]">
                   </wind-icon>
-
               </div>
             </template>
             

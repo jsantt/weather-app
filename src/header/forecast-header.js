@@ -154,7 +154,6 @@ class ForecastHeader extends PolymerElement {
             class="windIcon" 
             degrees="[[selectedData.windDirection]]" 
             large
-            wind-gust="[[selectedData.windGust]]"
             wind-speed="[[selectedData.wind]]">
           </wind-icon>
         </div>

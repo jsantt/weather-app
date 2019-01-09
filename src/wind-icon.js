@@ -28,12 +28,6 @@ class WindIcon extends PolymerElement {
         font-size: 50px;
       }
 
-      .windGust {
-        font-weight: 300;
-        font-size: 55px;
-        font-style: italic;
-      }
-
       .windIcon_arrow {
         fill: #ffcdd2;
         stroke: var(--color-black);
@@ -47,8 +41,6 @@ class WindIcon extends PolymerElement {
     </style>
 
     <span id="iconPlaceholder"></span>
-
-    [[_createIcon(degrees, roundedWindSpeed, roundedGustSpeed)]]
 `;
   }
 
@@ -63,43 +55,39 @@ class WindIcon extends PolymerElement {
         type: Boolean
       },
       windSpeed: {
-        type: Number
-      },
-      windGust: {
-        type: Number
+        type: Number,
+        observer: '_createIcon'
       },
       roundedWindSpeed: {
         computed: '_round(windSpeed)'
       },
-      roundedGustSpeed: {
-        computed: '_round(windGust)'
-      }
     };
   }
 
-  ready(){
-    super.ready();
-  }
+  _createIcon(){
+    const degrees = this.degrees;
+    const speed = this.roundedWindSpeed;
 
-  _createIcon(degrees, speed, gustSpeed){
-    if(!Number.isNaN(degrees) && !Number.isNaN(speed)){
-      let svg = this._svg(this.large);
-      
-      let group = this._group(degrees);
-      group.appendChild(this._windIconArrow());
-      group.appendChild(this._windIconCircle());
-                
-      svg.appendChild(group);
-      svg.appendChild(this._wind(speed));
-      //svg.appendChild(this._windGust(gustSpeed));
-
-
-      if(this.$.iconPlaceholder.children.length > 0) {
-        this.$.iconPlaceholder.removeChild(this.$.iconPlaceholder.children[0]);
-      }
-
-      this.$.iconPlaceholder.appendChild(svg);
+    if(Number.isNaN(degrees) || Number.isNaN(speed)){
+      return;
     }
+
+    let svg = this._svg(this.large);
+    
+    let group = this._group(degrees);
+    group.appendChild(this._windIconArrow());
+    group.appendChild(this._windIconCircle());
+              
+    svg.appendChild(group);
+    svg.appendChild(this._wind(speed));
+
+
+    if(this.$.iconPlaceholder.children.length > 0) {
+      this.$.iconPlaceholder.removeChild(this.$.iconPlaceholder.children[0]);
+    }
+
+    this.$.iconPlaceholder.appendChild(svg);
+  
   }
 
   _group(degrees){
@@ -153,18 +141,6 @@ class WindIcon extends PolymerElement {
 
     return text;
   }
-  _windGust(gustSpeed) {
-    let text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    
-    text.setAttribute('text-anchor', 'middle');
-    text.setAttribute('x', '49');
-    text.setAttribute('y', '150');
-    
-    text.setAttribute('class', 'windGust');
-    text.textContent = gustSpeed;
-
-    return text;
-  }
 
   _windIconCircle() {
     let circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
@@ -176,7 +152,6 @@ class WindIcon extends PolymerElement {
     circle.setAttribute('r', '33');
     
     return circle;
-
   }
 }
 
