@@ -6,8 +6,8 @@ class WindIcon extends PolymerElement {
     <style>
       
       .windIcon {
-        height: 24px;
-        width: 24px;
+        height: 28px;
+        width: 28px;
         
         padding-right: 0.35rem;
       }

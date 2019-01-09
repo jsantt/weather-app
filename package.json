@@ -22,13 +22,14 @@
   },
   "devDependencies": {
     "@polymer/test-fixture": "^4.0.2",
+    "jest": "^23.6.0",
     "sinon": "^7.2.2",
     "wct-browser-legacy": "1.0.2",
     "wct-mocha": "^1.0.0",
     "web-component-tester": "^6.9.2"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "author": "Jani Säntti",
   "license": "ISC",

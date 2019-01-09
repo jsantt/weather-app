@@ -112,10 +112,12 @@ class WeatherDay extends PolymerElement {
       }
 
       .feelsLike-header, .wind-header {
+        border-top: 1px solid #eee;
+        font-size: var(--font-size-xsmall);
         background-color: #f5f5f59e;
-        font-style: italic;
         padding-left: 0.5rem;
         grid-column: span 25;
+        text-align: center;
         
       }
       .feelsLike-header {
@@ -134,13 +136,18 @@ class WeatherDay extends PolymerElement {
       .temperature--empty, .feelsLike--empty, .wind--empty{
         grid-column: span 1;
       }
+
+      .feelsLike--empty, .wind--empty {
+        background-color: #f5f5f59e;
+      }
       
       .wind, .feelsLike {
-        /*border-bottom: 1px solid #ccc;*/
-        
+        background-color: #f5f5f59e;
         grid-column: span 3;
 
+        font-size: var(--font-size-medium);
         font-style: italic;
+        min-height: 2rem;
         text-align: center;
       }
       .wind, .wind--empty {
