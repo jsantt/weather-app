@@ -21,8 +21,8 @@ class ForecastHeader extends PolymerElement {
         grid-template-rows: 1.3rem 3.5rem 3.5rem 3.5rem;
         grid-template-areas:
           'empty empty empty'    
-          'place place wind'
-          'temp  icon  feels'
+          'place place feels'
+          'temp  icon  wind'
           'text  text  obs ';
 
         align-items: center;
@@ -254,7 +254,7 @@ class ForecastHeader extends PolymerElement {
     var toggleFeelsLike = new CustomEvent('forecast-header.toggle-feels-like', {bubbles: true, composed: true});
     this.dispatchEvent(toggleFeelsLike);
 
-    this._deselectWind();
+    //this._deselectWind();
   }
 
   _toggleWind() {
@@ -263,7 +263,7 @@ class ForecastHeader extends PolymerElement {
     var toggleWind = new CustomEvent('forecast-header.toggle-wind', {bubbles: true, composed: true});
     this.dispatchEvent(toggleWind);
 
-    this._deselectFeelsLike();
+    //this._deselectFeelsLike();
   }
 
   _deselectWind() {

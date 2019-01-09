@@ -3,7 +3,7 @@
 <html>
 <head>
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
-  <title>shop-home</title>
+  <title>wind-icon</title>
 
   <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
   <script src="../node_modules/chai/chai.js"></script>
@@ -14,33 +14,33 @@
 
   <test-fixture id="basic">
     <template>
-       <weather-app></weather-app>
+       <wind-icon></wind-icon>
     </template>
   </test-fixture>
 
   <script type="module">
     import '@polymer/test-fixture';
+    console.log("before");
     import sinon from 'sinon';
-    import '../src/weather-app.js';
+    console.log("after");
+    import '../src/wind-icon.js';
   
-    suite('weather app tests', function() {
+    suite('wind-icon tests', function() {
+      let wind;
       setup(function() {
-        home = fixture('basic');
+        wind = fixture('basic');
         console.log('setting up the tests');
       });
       test('title should render correctly', function(done) {
         console.log('testing...');
         assert.equal("hip", 'hop');
-
+      });
+      test('check title', function(done) {
         flush(function() {
           var title = document.title;
           assert.equal(title, 'Sääennuste');
           done();
         });
-
-
-        done();
-        
       });
     });
   </script>

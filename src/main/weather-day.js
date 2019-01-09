@@ -110,42 +110,47 @@ class WeatherDay extends PolymerElement {
         grid-row: 5;
         height: 0;
       }
-      
 
-      .feelsLike--empty {
+      .feelsLike-header, .wind-header {
+        background-color: #f5f5f59e;
+        font-style: italic;
+        padding-left: 0.5rem;
+        grid-column: span 25;
+        
+      }
+      .feelsLike-header {
+        grid-row:6;
+      }
+      .wind-header {
+        grid-row:8;
+      }
+
+    
+      .feelsLike, .feelsLike--empty{
+        grid-row:7;
+      }
+
+
+      .temperature--empty, .feelsLike--empty, .wind--empty{
         grid-column: span 1;
       }
       
-      .feelsLike, .feelsLike--empty {
+      .wind, .feelsLike {
+        /*border-bottom: 1px solid #ccc;*/
+        
         grid-column: span 3;
-        grid-row: 6;
 
         font-style: italic;
         text-align: center;
       }
-
-
-      .temperature--empty {
-        grid-column: span 1;
-      }
-      
       .wind, .wind--empty {
-        grid-column: span 3;
-        grid-row: 7;
-
-        margin-top: 0.6rem;
-        margin-bottom: var(--margin-after-wind);
-        text-align: center;
+        grid-row: 9;
       }
-
-      .wind--empty, .feelsLike--empty {
-        grid-column: span 1;
-      }
-      
 
       .lineChart{
         grid-column: span 25;
-        grid-row: 8;
+        grid-row: 10;
+        padding-top: 1.5rem;
       }
 
     </style>
@@ -159,6 +164,16 @@ class WeatherDay extends PolymerElement {
             <span>[[_weekday(dayNumber)]]</span>
         </span></span></div>
         
+        <!-- headers here outside of dom-repeat -->
+
+        <template is="dom-if" if="[[showFeelsLike]]">
+          <div class="feelsLike-header">tuntuu kuin</div>
+        </template>    
+
+        <template is="dom-if" if="[[showWind]]">
+          <div class="wind-header">keskituuli (m/s)</div>
+        </template>  
+
         <template is="dom-repeat" items="[[forecastData]]" as="entry">
           
           <!-- EMPTY COLUMN -->
@@ -200,12 +215,13 @@ class WeatherDay extends PolymerElement {
             </div>
 
             <template is="dom-if" if="[[showFeelsLike]]">
-              <div 
-                class="feelsLike">
+              <div class="feelsLike">
 
-                <template is="dom-if" if="{{_notNaN(entry.feelsLike)}}">
-                  [[entry.feelsLike]]°
-                </template>
+                <div  class$="[[_getClasses(entry.past, 'symbol', 'past-hour')]]">
+                  <template is="dom-if" if="{{_notNaN(entry.feelsLike)}}">
+                    [[entry.feelsLike]]°
+                  </template>
+                </div>
               </div>
             </template>
 
