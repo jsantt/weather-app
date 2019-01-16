@@ -115,7 +115,8 @@ class WeatherApp extends PolymerElement {
             <weather-days 
               forecast-data="[[forecastData]]"
               show-feels-like="[[showFeelsLike]]" 
-              show-wind="[[showWind]]">
+              show-wind="[[showWind]]"
+              show-wind-gust="[[showWindGust]]">
             </weather-days>
 
           </main>
@@ -153,7 +154,10 @@ class WeatherApp extends PolymerElement {
         type: Boolean,
         value: false
       },
-
+      showWindGust: {
+        type: Boolean,
+        value: false
+      },
       observationVisible: {
         type: Boolean,
         value: false
@@ -170,6 +174,7 @@ class WeatherApp extends PolymerElement {
     
     this.addEventListener('location-selector.location-changed', (event) => this._onNewLocation(event));
     this.addEventListener('forecast-header.toggle-wind', (event) => this._toggleWind(event));
+    this.addEventListener('forecast-header.toggle-wind-gust', (event) => this._toggleWindGust(event));
     this.addEventListener('forecast-header.toggle-feels-like', (event) => this._toggleFeelsLike(event));
 
     this.addEventListener('forecast-data.fetch-done', (event) => {this.firstLoading = false;});
@@ -234,6 +239,11 @@ class WeatherApp extends PolymerElement {
   _toggleWind(event) {
     this.showWind = !this.showWind;
   }
+
+  _toggleWindGust(event) {
+    this.showWindGust = !this.showWindGust;
+  }
+
   _toggleFeelsLike(event) {
     this.showFeelsLike = !this.showFeelsLike;
   }

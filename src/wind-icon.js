@@ -54,6 +54,9 @@ class WindIcon extends PolymerElement {
       large: {
         type: Boolean
       },
+      windGust: {
+        type: Boolean
+      },
       windSpeed: {
         type: Number,
         observer: '_createIcon'
@@ -76,7 +79,10 @@ class WindIcon extends PolymerElement {
     
     let group = this._group(degrees);
     group.appendChild(this._windIconArrow());
-    group.appendChild(this._windIconCircle());
+
+    if(!this.windGust) {
+      group.appendChild(this._windIconCircle());
+    }
               
     svg.appendChild(group);
     svg.appendChild(this._wind(speed));

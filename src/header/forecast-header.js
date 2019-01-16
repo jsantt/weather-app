@@ -20,10 +20,10 @@ class ForecastHeader extends PolymerElement {
         grid-template-columns: 1fr 1fr 3rem;
         grid-template-rows: 1.3rem 3.5rem 3.5rem 3.5rem;
         grid-template-areas:
-          'empty empty empty'    
-          'place place feels'
-          'temp  icon  wind'
-          'text  text  obs ';
+          'empty empty aside'    
+          'place place aside'
+          'temp  icon  aside'
+          'text  text  aside ';
 
         align-items: center;
 
@@ -40,7 +40,7 @@ class ForecastHeader extends PolymerElement {
       }      
 
       .wind {
-        grid-area: wind;
+        
         padding-top: 0.2rem;
         text-align: center;
       }
@@ -54,7 +54,7 @@ class ForecastHeader extends PolymerElement {
       }
 
       .observation {
-        grid-area: obs;
+        
         text-align: center;
       }
 
@@ -67,15 +67,21 @@ class ForecastHeader extends PolymerElement {
         margin: -0.5rem 0 0 0;
         padding: 0;
       }
+      
+      aside {
+        grid-area: aside;
+        display: flex;
+        flex-direction: column;
         
+      }
+
       .aside-item {
-        align-self: stretch;
         background-color: #f5f5f529;
 
         display: flex;
         align-items: center;
         justify-content: center;
-
+        height: 46px;
         color: var(--color-white);
         font-size: var(--font-size-xsmall);
         text-align: center;
@@ -104,9 +110,6 @@ class ForecastHeader extends PolymerElement {
 
         margin-top: auto;
         line-height: var(--line-height--tight);
-      }
-      .feelsLike {
-        grid-area: feels;
       }
 
       .feelsLikeValue {
@@ -145,6 +148,11 @@ class ForecastHeader extends PolymerElement {
           large="true">
         </weather-symbol>
 
+        <weather-symbol-name
+          symbol-id="[[selectedData.symbol]]">
+        </weather-symbol-name>
+
+        <aside>
         <div 
           id="wind" 
           class="wind aside-item"
@@ -158,6 +166,21 @@ class ForecastHeader extends PolymerElement {
           </wind-icon>
         </div>
 
+        <div 
+          id="windGust" 
+          class="wind aside-item"
+          on-click="_toggleWindGust">
+
+          <wind-icon
+            class="windIcon" 
+            degrees="[[selectedData.windDirection]]" 
+            large
+            wind-gust
+            wind-speed="[[selectedData.windGust]]">
+          </wind-icon>
+        </div>
+        
+
         <div id="feelsLike" 
           on-click="_toggleFeelsLike"
           class="feelsLike aside-item">
@@ -168,10 +191,6 @@ class ForecastHeader extends PolymerElement {
             <text text-anchor="middle" x="16" y="31" class="feelsLikeValue">[[selectedData.feelsLike]]</text>
           </svg>
         </div>
-
-        <weather-symbol-name
-          symbol-id="[[selectedData.symbol]]">
-        </weather-symbol-name>
         
         <div
           id="observation"
@@ -190,11 +209,11 @@ class ForecastHeader extends PolymerElement {
           
           </svg>
         </div>
-      
-        </div>
-        <time-now update-time="[[locationChanged]]"></time-now>
-      
-      </header>
+      </aside>
+    </div>
+    <time-now update-time="[[locationChanged]]"></time-now>
+  
+  </header>
     `;
   }
 
@@ -261,6 +280,14 @@ class ForecastHeader extends PolymerElement {
 
     var toggleWind = new CustomEvent('forecast-header.toggle-wind', {bubbles: true, composed: true});
     this.dispatchEvent(toggleWind);
+
+    //this._deselectFeelsLike();
+  }
+  _toggleWindGust() {
+    this.shadowRoot.querySelector("#windGust").classList.toggle("selected");
+
+    var toggleWindGust = new CustomEvent('forecast-header.toggle-wind-gust', {bubbles: true, composed: true});
+    this.dispatchEvent(toggleWindGust);
 
     //this._deselectFeelsLike();
   }
