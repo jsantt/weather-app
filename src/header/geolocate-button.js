@@ -5,33 +5,39 @@ class GeolocateButton extends PolymerElement {
     return html`
     <style>
       :host {
-        display: inline-block;
-
-        /* more space to click */ 	   
-        margin: -1rem;
-        padding: 1rem 0.5rem 1rem 1rem;
-
-        vertical-align: middle;
+        display: block;
       }
 
       .locate_icon {
         transition: all .2s ease-in-out;
       }
 
+      svg {
+        padding-top: 0.6rem;
+      }
+
       .locate_icon:hover { 
         transform: scale(1.1);        
       }
       .locate-text {
-        font-size: var(--font-size-xsmall)
+        font-size: var(--font-size-xsmall);
+        color: #fff;
+        margin-top: -0.3rem;
       }
 
     </style>
     <template is="dom-if" if="{{!hide}}">
       <div 
-        class="locate_icon"
         on-click="_geolocate">
 
-        <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="28" height="28" viewBox="0 0 24 24">
+        <svg 
+          class="icon"
+          xmlns="http://www.w3.org/2000/svg" 
+          fill="#fff" 
+          width="28" 
+          height="28" 
+          viewBox="0 0 24 24">
+          
           <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"></path>
         </svg>
         <div class="locate-text">paikanna</div>

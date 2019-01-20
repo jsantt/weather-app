@@ -17,17 +17,30 @@ class ForecastHeader extends PolymerElement {
 
       .header {
         display: grid;
-        grid-template-columns: 1fr 1fr 3rem;
+        grid-template-columns: 3rem 1fr 1fr 3rem;
         grid-template-rows: 1.3rem 3.5rem 3.5rem 3.5rem;
         grid-template-areas:
-          'empty empty aside'    
-          'place place aside'
-          'temp  icon  aside'
-          'text  text  aside ';
+          'left empty empty aside'    
+          'left place place aside'
+          'left temp  icon  aside'
+          'left text  text  aside ';
 
         align-items: center;
+      }
+      .geolocate {
+        /*background-color: #f5f5f529;*/
+        border-radius: 3rem;
+        width: 4rem;
+        height: 4rem;
+        text-align: center;
+        position: absolute;
+        top: 0.5rem;
+        
+      }
 
-        margin-left: 2rem;
+      .left{ 
+        grid-area: left;
+        display: flex;   
       }
 
       weather-symbol {
@@ -45,7 +58,7 @@ class ForecastHeader extends PolymerElement {
         text-align: center;
       }
       .aside-item.selected {
-        background-color: #f5f5f59e;
+        background-color: #f5f5f529;
         border-bottom: none;
       }
 
@@ -76,8 +89,6 @@ class ForecastHeader extends PolymerElement {
       }
 
       .aside-item {
-        background-color: #f5f5f529;
-
         display: flex;
         align-items: center;
         justify-content: center;
@@ -85,6 +96,7 @@ class ForecastHeader extends PolymerElement {
         color: var(--color-white);
         font-size: var(--font-size-xsmall);
         text-align: center;
+        border-radius: 7rem;
       }
 
       .location {
@@ -126,12 +138,17 @@ class ForecastHeader extends PolymerElement {
     </style>
     <header>
       <div class="header">
-        <h1 class="place">
+
+        <section class="left">
+
           <geolocate-button 
-            class="button"
+            class="geolocate"
             hide="[[loading]]">
           </geolocate-button>
 
+        </section>
+        <div class="circle"></div>
+        <h1 class="place">
           <location-selector 
             loading="[[loading]]" 
             place="[[place]]">
@@ -319,10 +336,12 @@ class ForecastHeader extends PolymerElement {
   }
 
   /*
-   * Round to one decimal. Add decimal to even numbers.
+   * Round to one decimal. 
    * */
   _round(temperature) {
-    return Math.round((temperature) * 10) / 10;
+    return Math.round(temperature);
+    //Add decimal to even numbers.
+    //return Math.round((temperature) * 10) / 10;
   }
 }
 

@@ -11,6 +11,7 @@ class DayItem extends PolymerElement {
 
       .item {
         background-color: #f9f9f9;
+        border-radius: 7rem;
       }
 
       .item--color1 {

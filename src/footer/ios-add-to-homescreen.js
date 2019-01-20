@@ -113,13 +113,20 @@ class iosAddToHomescreen extends PolymerElement {
 
 
   _showPrompt() {
+    // if launched as app
     if (navigator.standalone) {
       return false;
     }
 
-    let isApple = ['iPhone', 'iPad', 'iPod'].includes(navigator.platform);
-    return isApple;
+    const isApple = ['iPhone', 'iPad', 'iPod'].includes(navigator.platform);
+    const show = localStorage.getItem('prompt-install') !== null; 
+
+    localStorage.setItem('prompt-install', true);
+    
+
+    return isApple && show;
   }
+
 
   _isFloating(floating) {
     
