@@ -151,13 +151,14 @@ class ObservationModalContent extends PolymerElement {
               <wind-icon 
                 degrees="[[observationData.windDirection]]" 
                 large
-                wind-speed="[[observationData.wind]]">
+                wind-speed="[[observationData.wind]]"
+                wind-gust-speed="[[observationData.windGust]]">
               </wind-icon>
-              <div class="explanation windExplanation">10 min keskituuli</div>
+              <div class="explanation windExplanation">10 min keskituuli ja puuskat</div>
             </div>
           </template>
         
-          <template is="dom-if" if="[[observationData.windGust]]">
+          <!--template is="dom-if" if="[[observationData.windGust]]">
             <div class="item">
             <wind-icon 
                 degrees="[[observationData.windDirection]]" 
@@ -167,7 +168,7 @@ class ObservationModalContent extends PolymerElement {
               </wind-icon>
               <div class="explanation windExplanation">tuuli puuskissa (10 min)</div>
             </div>
-          </template>
+          </template-->
         
           <template is="dom-if" if="[[observationData.humidity]]">
             <div class="item">

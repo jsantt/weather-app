@@ -51,8 +51,7 @@ module.exports = {
       options: {
         cache: {
           name: 'weather-data-cache',
-        },
-        ignoreUrlParametersMatching: '[/starttime/, /endtime/]'
+        }
       }
     }
   ]

@@ -23,10 +23,11 @@ class WindIcon extends PolymerElement {
         transform: scale(1.1);
       }
 
-      .windSpeed {
+      .windSpeed, .windGustSpeed{
         font-weight: 900;
         font-size: 50px;
       }
+     
 
       .windIcon_arrow {
         fill: #ffcdd2;
@@ -54,8 +55,8 @@ class WindIcon extends PolymerElement {
       large: {
         type: Boolean
       },
-      windGust: {
-        type: Boolean
+      windGustSpeed: {
+        type: Number
       },
       windSpeed: {
         type: Number,
@@ -70,6 +71,7 @@ class WindIcon extends PolymerElement {
   _createIcon(){
     const degrees = this.degrees;
     const speed = this.roundedWindSpeed;
+    const gustSpeed = this.windGustSpeed;
 
     if(Number.isNaN(degrees) || Number.isNaN(speed)){
       return;
@@ -79,13 +81,11 @@ class WindIcon extends PolymerElement {
     
     let group = this._group(degrees);
     group.appendChild(this._windIconArrow());
-
-    if(!this.windGust) {
-      group.appendChild(this._windIconCircle());
-    }
+    group.appendChild(this._windIconCircle());
               
     svg.appendChild(group);
     svg.appendChild(this._wind(speed));
+    svg.appendChild(this._windGust(Math.round(gustSpeed)));
 
 
     if(this.$.iconPlaceholder.children.length > 0) {
@@ -144,6 +144,19 @@ class WindIcon extends PolymerElement {
     
     text.setAttribute('class', 'windSpeed');
     text.textContent = speed;
+
+    return text;
+  }
+
+  _windGust(gustSpeed) {
+    let text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    
+    text.setAttribute('text-anchor', 'middle');
+    text.setAttribute('x', '80');
+    text.setAttribute('y', '40');
+    
+    text.setAttribute('class', 'windGustSpeed');
+    text.textContent = gustSpeed;
 
     return text;
   }

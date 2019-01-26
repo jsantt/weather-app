@@ -247,7 +247,8 @@ class WeatherDay extends PolymerElement {
                   <wind-icon 
                     class$="[[_getClasses(entry.past, 'symbol', 'past-hour')]]"
                     degrees="[[entry.windDirection]]" 
-                    wind-speed="[[entry.wind]]">
+                    wind-speed="[[entry.wind]]"
+                    wind-gust-speed="[[entry.windGust]]">
                   </wind-icon>
 
               </day-item>

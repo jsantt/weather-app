@@ -50,7 +50,7 @@ class WindData extends PolymerElement {
     const maxWind = this._max(forecastData, 'wind');
     const description = this._windDescription(maxWind);
 
-    return description === undefined ? 'keskituuli (m/s)' : `${description}`
+    return description === undefined ? 'keskituuli / tuuli puuskissa (m/s)' : `${description}`
   }
 
   _windGustForecast(forecastData) {

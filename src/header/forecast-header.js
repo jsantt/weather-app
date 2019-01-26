@@ -30,17 +30,15 @@ class ForecastHeader extends PolymerElement {
       .geolocate {
         /*background-color: #f5f5f529;*/
         border-radius: 3rem;
-        width: 4rem;
-        height: 4rem;
+        padding: 0.3rem 0.5rem 0.5rem 0.5rem;
         text-align: center;
-        position: absolute;
-        top: 0.5rem;
+       
         
       }
 
       .left{ 
         grid-area: left;
-        display: flex;   
+        height: 100%;
       }
 
       weather-symbol {
@@ -83,13 +81,12 @@ class ForecastHeader extends PolymerElement {
       
       aside {
         grid-area: aside;
-        display: flex;
-        flex-direction: column;
-        
+        height: 100%;  
       }
 
       .aside-item {
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
         height: 46px;
@@ -97,6 +94,14 @@ class ForecastHeader extends PolymerElement {
         font-size: var(--font-size-xsmall);
         text-align: center;
         border-radius: 7rem;
+        margin: 1rem;
+      }
+
+      .item-text {
+        margin-top: -2px;
+      }
+      .item-text--wind {
+        margin-top: -9px;
       }
 
       .location {
@@ -170,44 +175,33 @@ class ForecastHeader extends PolymerElement {
         </weather-symbol-name>
 
         <aside>
-        <div 
-          id="wind" 
-          class="wind aside-item"
-          on-click="_toggleWind">
 
-          <wind-icon 
-            class="windIcon" 
-            degrees="[[selectedData.windDirection]]" 
-            large
-            wind-speed="[[selectedData.wind]]">
-          </wind-icon>
-        </div>
+          <div id="feelsLike" 
+            on-click="_toggleFeelsLike"
+            class="feelsLike aside-item">
 
-        <div 
-          id="windGust" 
-          class="wind aside-item"
-          on-click="_toggleWindGust">
+            <svg class="aside-icon" width="32" height="32">
+              <ellipse class="head" stroke="#000" ry="7.3" rx="7.5" cy="8.2" cx="16" fill="#ffcdd2"/>
+              <ellipse class= body ry="15.1" rx="14.9" cy="30.9" cx="15.9" stroke="#000" fill="#fff"/>
+              <text text-anchor="middle" x="16" y="31" class="feelsLikeValue">[[selectedData.feelsLike]]</text>
+            </svg>
+            <div class="item-text">tuntuu</div>
+          </div>
+          
+          <div 
+            id="wind"
+            class="wind aside-item"
+            on-click="_toggleWind">
 
-          <wind-icon
-            class="windIcon" 
-            degrees="[[selectedData.windDirection]]" 
-            large
-            wind-gust
-            wind-speed="[[selectedData.windGust]]">
-          </wind-icon>
-        </div>
-        
-
-        <div id="feelsLike" 
-          on-click="_toggleFeelsLike"
-          class="feelsLike aside-item">
-
-          <svg class="aside-icon" width="32" height="32">
-            <ellipse class="head" stroke="#000" ry="7.3" rx="7.5" cy="8.2" cx="16" fill="#ffcdd2"/>
-            <ellipse class= body ry="15.1" rx="14.9" cy="30.9" cx="15.9" stroke="#000" fill="#fff"/>
-            <text text-anchor="middle" x="16" y="31" class="feelsLikeValue">[[selectedData.feelsLike]]</text>
-          </svg>
-        </div>
+            <wind-icon 
+              class="windIcon" 
+              degrees="[[selectedData.windDirection]]" 
+              large
+              wind-speed="[[selectedData.wind]]"
+              wind-gust-speed="[[selectedData.windGust]]">
+            </wind-icon>
+            <div class="item-text item-text--wind">tuuli</div>
+          </div>
         
         <div
           id="observation"
@@ -225,6 +219,7 @@ class ForecastHeader extends PolymerElement {
             <ellipse stroke="#000" stroke-width="1" fill="#ffcdd2" ry="3.53125" rx="3.53125" id="svg_7" cy="23.402832" cx="16.0625"/>
           
           </svg>
+          <div class="item-text">havainto</div>
         </div>
       </aside>
     </div>
