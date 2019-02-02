@@ -5,25 +5,30 @@ class DayItem extends PolymerElement {
     return html`
     <style>
       :host {
-        display: block;
-        background-color: #f5f5f59e;
+       display: block;
+
+       --warning1-color: #ffa8004a;
+       --warning2-color: #ffa8004a;
+       --warning3-color: #ff00004a;
+
       }
 
       .item {
-        background-color: #f9f9f9;
-        border-radius: 7rem;
+        background-color: #f3f3f3;
+        padding: 0.5rem 0;
       }
 
       .item--color1 {
-        background-color: #fce8b2a3;
+        /*background-color: var(--warning1-color);*/
       }
 
       .item--color2 {
-        background-color: #c539298f;
+        /*background-color: var(--warning2-color);*/
+        
       }
 
       .item--color3 {
-        background-color: #c539298f;
+        /*background-color: var(--warning3-color);*/
       }
 
     </style>

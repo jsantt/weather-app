@@ -17,10 +17,9 @@ class LocationSelector extends PolymerElement {
         
         display: inline-block;
         color: var(--color-black);
-        font-size: 1.563rem;
-        
+      
         margin: 0 0 0.2rem 0;
-	    	text-align: center;	   
+	    	text-align: center;  
       }
 
       vaadin-combo-box {
@@ -28,11 +27,7 @@ class LocationSelector extends PolymerElement {
         --lumo-contrast-10pct: transparent;        
         --lumo-font-size-m: var(--font-size-large);
         --lumo-font-family: 'Open Sans Condensed', sans-serif;
-        --vaadin-text-field-default-width: 10.5rem;
-      }
-
-      .locate {
-        margin-left: .6rem;
+        --vaadin-text-field-default-width: 11.5rem;
       }
 
       .locate_loadIcon {
@@ -111,7 +106,7 @@ class LocationSelector extends PolymerElement {
     // TO DO: UGLY HACK, without timeout parent won't catch the event
     setTimeout(() => {
     this._dispatchEvent('location-selector.location-changed', currentPlace);
-    }, 1);
+    }, 50);
   }
 
   _setComboboxValue(value) {

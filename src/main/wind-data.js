@@ -22,14 +22,14 @@ class WindData extends PolymerElement {
     ]; 
   }
 
-  windClassification(windSpeed){
-    if(Number.isNaN(windSpeed) || windSpeed < 8){
-      return "0";
+  windClassification(windSpeed, gustSpeed){
+    if(Number.isNaN(gustSpeed) || gustSpeed < 8){
+      return 0;
     }
 
 
     const rows = this._WIND_TABLE.filter(
-      (item) => item.min <= windSpeed && windSpeed < item.max);
+      (item) => item.min <= gustSpeed && gustSpeed < item.max);
 
       return rows[0].warning;
   }
@@ -48,16 +48,23 @@ class WindData extends PolymerElement {
 
   _windForecast(forecastData){
     const maxWind = this._max(forecastData, 'wind');
-    const description = this._windDescription(maxWind);
+    const windDescription = this._windDescription(maxWind);
 
-    return description === undefined ? 'keskituuli / tuuli puuskissa (m/s)' : `${description}`
-  }
-
-  _windGustForecast(forecastData) {
     const maxGust = Math.round(this._max(forecastData, 'windGust'));
-    const description = this._windGustDescription(maxGust);
+    const gustDescription = this._windGustDescription(maxGust);
 
-    return description === undefined ? 'tuuli puuskissa (m/s)' : `${description} puuskissa`
+    if(windDescription && gustDescription) {
+       return `${windDescription} ja ${gustDescription} puuskissa`;
+    }
+    else if(gustDescription) {
+      return `${gustDescription} puuskissa`;
+    }
+    else if(windDescription){
+      return `${windDescription}`;
+    }
+    else{
+      return 'keskituuli ja tuuli puuskissa';
+    }
   }
 
   _max(forecastData, property) {

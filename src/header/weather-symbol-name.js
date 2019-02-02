@@ -7,11 +7,12 @@ class WeatherSymbolName extends PolymerElement {
     <style>
       :host {
         display: block;
+        padding-top: 0.5rem;
       }
 
     </style>
     
-    <span>[[_symbolName(symbolId)]]</span>
+    [[_symbolName(symbolId)]]
 `;
   }
 

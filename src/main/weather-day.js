@@ -23,6 +23,8 @@ class WeatherDay extends PolymerElement {
 
         --color-dayHeader-font: var(--color-gray--dark);
 
+        --color-toggle-background: #00000005;
+
       }
 
       .weatherDay {
@@ -42,17 +44,13 @@ class WeatherDay extends PolymerElement {
         border-top: 2px solid var(--color-dayHeader-delimiter);
 
         color: var(--color-dayHeader-font);
-        font-weight: 700;
-
-
-        display: flex;
-        align-items: flex-end;		
-        justify-content: space-between;	
-        
+        	
+        font-size: var(--font-size-small);
         grid-column: span 25;
         grid-row: 1;
 
-        padding-left: 0.3rem;
+        padding-left: 0.5rem;
+        text-transform: uppercase;
       }
 
       .symbol_svg {
@@ -115,59 +113,64 @@ class WeatherDay extends PolymerElement {
         height: 0;
       }
 
-      .feelsLike-header, .windGust-header, .wind-header {
-        border-top: 1px solid #eee;
+      .feelsLike_footer, .wind_footer, .feelsLike_header, .wind_header {
         font-size: var(--font-size-xsmall);
-        background-color: #f5f5f59e;
-        padding-left: 1rem;
-        grid-column: span 25; 
+        background-color: var(--color-toggle-background);
+        padding-left: 0.5rem;
+        grid-column: span 25;
       }
-      .wind-header {
-        grid-row:6;
-      }
-      .wind, .wind--empty {
-        grid-row: 7;
-      }
-      .windGust-header {
-        grid-row: 8;
-      }
-      .windGust, .windGust--empty {
-        grid-row: 9;
-      }
-      .feelsLike-header {
-        grid-row:10;
-      }
-      
-      .feelsLike, .feelsLike--empty{
-        grid-row:11;
-      }
-    
 
+    
+      .feelsLike_header {
+        grid-row: 6;
+        
+      }
+      .feelsLike, .feelsLike--empty {
+        grid-row:7;
+      }
+      .feelsLike_footer {
+        grid-row:8;
+      }
+
+      .wind_header {
+        grid-row: 9;
+       
+      }
+
+      .wind, .wind--empty {
+        grid-row: 10;
+        
+      }
+
+      .wind_footer {
+        grid-row: 11;
+      }
 
       .temperature--empty, .feelsLike--empty, .wind--empty{
         grid-column: span 1;
       }
 
-      .feelsLike--empty, .wind--empty, .windGust--empty {
-        background-color: #f5f5f59e;
-      }
-      
-      .wind, .windGust, .feelsLike {
-        background-color: #f5f5f59e;
+      .wind, .feelsLike {
         grid-column: span 3;
-
         font-size: var(--font-size-medium);
-        font-style: italic;
-        min-height: 2rem;
         text-align: center;
+        padding-bottom: 0.5rem;
+
+        background-color: var(--color-toggle-background);
+      }
+      .feelsLike--empty, .wind--empty{
+        background-color: var(--color-toggle-background);
       }
 
-      .lineChart{
+      .rainBars{
         grid-column: span 25;
         grid-row: 12;
         padding-top: 1.5rem;
       }
 
+      .feelsLikeValue {
+        font-size: 16px;
+      }
     </style>
 
     <!-- data components for getting warning texts & background colors -->
@@ -186,19 +189,11 @@ class WeatherDay extends PolymerElement {
         <!-- headers here outside of dom-repeat -->    
 
         <template is="dom-if" if="[[showWind]]">
-          <div class="wind-header">
-            [[_windHeaderText(forecastData)]]
-          </div>
-        </template>
-        
-        <template is="dom-if" if="[[showWindGust]]">
-          <div class="windGust-header">
-          [[_windGustHeaderText(forecastData)]]
-          </div>
+          <div class="wind_header">[[_windHeaderText(forecastData)]]</div>
         </template>
 
         <template is="dom-if" if="[[showFeelsLike]]">
-          <div class="feelsLike-header">tuntuu kuin</div>
+          <div class="feelsLike_header">tuntuu kuin</div>
         </template>
 
         <template is="dom-repeat" items="[[forecastData]]" as="entry">
@@ -210,7 +205,6 @@ class WeatherDay extends PolymerElement {
             <div class="temperature--empty"></div>
             <div class="feelsLike--empty"></div>
             <div class="wind--empty"></div>
-            <div class="windGust--empty"></div>
             
           </template>
        
@@ -228,7 +222,7 @@ class WeatherDay extends PolymerElement {
             </div>
             
             <div class$="[[_getClasses(entry.past, 'symbol', 'past-hour')]]">
-                <weather-symbol symbol-id="[[_symbolId(entry)]]"></weather-symbol>
+              <weather-symbol symbol-id="[[_symbolId(entry)]]"></weather-symbol>
             </div>
             
             <div class$="[[_getClasses(entry.past, 'temperature', 'past-hour')]]">
@@ -240,32 +234,14 @@ class WeatherDay extends PolymerElement {
             </div>
 
             <template is="dom-if" if="[[showWind]]">
-              <day-item 
-                class="wind"
-                highlight-color$="[[_windClassification(entry.wind)]]">
-
-                  <wind-icon 
-                    class$="[[_getClasses(entry.past, 'symbol', 'past-hour')]]"
-                    degrees="[[entry.windDirection]]" 
-                    wind-speed="[[entry.wind]]"
-                    wind-gust-speed="[[entry.windGust]]">
-                  </wind-icon>
-
-              </day-item>
-            </template>
-
-            <template is="dom-if" if="[[showWindGust]]">
-              <day-item 
-                class="windGust"
-                highlight-color="[[_windGustClassification(entry.windGust)]]">
-
-                  <wind-icon 
-                    class$="[[_getClasses(entry.past, 'symbol', 'past-hour')]]"
-                    degrees="[[entry.windDirection]]" 
-                    wind-speed="[[entry.windGust]]"
-                    wind-gust>
-                  </wind-icon>
-
+              <div class="wind">
+                <wind-icon 
+                  class$="[[_getClasses(entry.past, 'symbol', 'past-hour')]]"
+                  wind-gust-color="[[_windClassification(entry.wind, entry.windGust)]]"
+                  degrees="[[entry.windDirection]]" 
+                  wind-speed="[[entry.wind]]"
+                  wind-gust-speed="[[entry.windGust]]">
+                </wind-icon>
               </div>
             </template>
 
@@ -274,7 +250,7 @@ class WeatherDay extends PolymerElement {
 
                 <div  class$="[[_getClasses(entry.past, 'symbol', 'past-hour')]]">
                   <template is="dom-if" if="{{_notNaN(entry.feelsLike)}}">
-                    [[entry.feelsLike]]°
+                    [[entry.feelsLike]]<span class="degree">°</span>  
                   </template>
                 </div>
               </div>
@@ -289,14 +265,14 @@ class WeatherDay extends PolymerElement {
       
         <div class="temperature_line">
             
-            <temperature-line 
-              min-temperature="[[minTemperature]]" 
-              forecast-data="[[forecastData]]">
-            </temperature-line>
-      
-          </div>
+          <temperature-line 
+            min-temperature="[[minTemperature]]" 
+            forecast-data="[[forecastData]]">
+          </temperature-line>
+    
+        </div>
 
-        <section class="lineChart">
+        <section class="rainBars">
 
           <weather-chart 
             min-temperature="[[minTemperature]]" 
@@ -334,10 +310,6 @@ class WeatherDay extends PolymerElement {
         type: Boolean
       },
 
-      showWindGust: {
-        type: Boolean
-      },
-
       forecastData: {
         type: Array          
       }
@@ -364,19 +336,9 @@ class WeatherDay extends PolymerElement {
     return this.shadowRoot.querySelector('wind-data').windHeaderText(windToday);
   }
   
-  _windClassification(windSpeed){
-    console.log(windSpeed);
-    const wind = this.shadowRoot.querySelector('wind-data').windClassification(windSpeed);
-    console.log(wind);
+  _windClassification(windSpeed, gustSpeed){
+    const wind = this.shadowRoot.querySelector('wind-data').windClassification(windSpeed, gustSpeed);
     return wind;
-  }
-
-  _windGustHeaderText(windGustToday) {
-    return this.shadowRoot.querySelector('wind-data').windGustHeaderText(windGustToday);
-  }
-
-  _windGustClassification(windGustSpeed){
-    return this.shadowRoot.querySelector('wind-data').windGustClassification(windGustSpeed);
   }
 
   _everyFourth(index, item) {

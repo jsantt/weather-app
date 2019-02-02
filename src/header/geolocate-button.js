@@ -12,9 +12,7 @@ class GeolocateButton extends PolymerElement {
         transition: all .2s ease-in-out;
       }
 
-      svg {
-        padding-top: 0.6rem;
-      }
+
 
       .locate_icon:hover { 
         transform: scale(1.1);        
@@ -33,7 +31,7 @@ class GeolocateButton extends PolymerElement {
         <svg 
           class="icon"
           xmlns="http://www.w3.org/2000/svg" 
-          fill="#fff" 
+          fill="#fff"
           width="28" 
           height="28" 
           viewBox="0 0 24 24">

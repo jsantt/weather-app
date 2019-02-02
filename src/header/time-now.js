@@ -16,6 +16,7 @@ class TimeNow extends PolymerElement {
       .time {
         color: var(--color-white);
         white-space: nowrap;
+        font-size: var(--font-size-medium);
       }
     </style>
 

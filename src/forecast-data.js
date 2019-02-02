@@ -101,7 +101,7 @@ class ForecastData extends PolymerElement {
           "symbol": getValue(symbol[i]),
           "time": getTime(temperature[i]),
           "temperature": temperatureValue,
-          "wind": windValue,
+          "wind": windValue, 
           "windDirection": getValue(windDirection[i]),
           "windGust": getValue(windGust[i])
         });

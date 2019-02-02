@@ -27,6 +27,13 @@ class WindIcon extends PolymerElement {
         font-weight: 900;
         font-size: 50px;
       }
+
+      .windGustSpeed--color1 {
+        fill: orange;
+      }
+      .windGustSpeed--color2 {
+        fill: red;
+      }
      
 
       .windIcon_arrow {
@@ -49,6 +56,9 @@ class WindIcon extends PolymerElement {
 
   static get properties() {
     return {
+      windGustColor: {
+        type: String
+      },
       degrees: {
         type: Number
       },
@@ -85,7 +95,7 @@ class WindIcon extends PolymerElement {
               
     svg.appendChild(group);
     svg.appendChild(this._wind(speed));
-    svg.appendChild(this._windGust(Math.round(gustSpeed)));
+    svg.appendChild(this._windGust(Math.round(gustSpeed), this.windGustColor));
 
 
     if(this.$.iconPlaceholder.children.length > 0) {
@@ -99,7 +109,7 @@ class WindIcon extends PolymerElement {
   _group(degrees){
     const transform = (degrees + 180) % 360;
     let g = document.createElementNS("http://www.w3.org/2000/svg", "g");
-    g.setAttribute('transform', 'rotate(' + transform + ', 50, 50)');
+    g.setAttribute('transform', 'rotate(' + transform + ', 50, 60)');
 
     return g;
   }
@@ -114,7 +124,7 @@ class WindIcon extends PolymerElement {
     // min-x, min-y, width and height
     svg.setAttribute('id', 'windIcon');
     svg.setAttribute('class', 'windIcon');
-    svg.setAttribute('viewBox', '0 0 100 100');
+    svg.setAttribute('viewBox', '0 0 100 110');
     svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
 
     if(large) {
@@ -130,7 +140,7 @@ class WindIcon extends PolymerElement {
     line.setAttribute('class', 'windIcon_arrow');
 
     line.setAttribute('stroke-width', '3');      
-    line.setAttribute('points', '36,19 50,0 64,19');
+    line.setAttribute('points', '36,29 50,10 64,29');
 
     return line;
   }
@@ -140,7 +150,7 @@ class WindIcon extends PolymerElement {
     
     text.setAttribute('text-anchor', 'middle');
     text.setAttribute('x', '49');
-    text.setAttribute('y', '69');
+    text.setAttribute('y', '79');
     
     text.setAttribute('class', 'windSpeed');
     text.textContent = speed;
@@ -148,14 +158,15 @@ class WindIcon extends PolymerElement {
     return text;
   }
 
-  _windGust(gustSpeed) {
+  _windGust(gustSpeed, color) {
     let text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
     
     text.setAttribute('text-anchor', 'middle');
-    text.setAttribute('x', '80');
-    text.setAttribute('y', '40');
+    text.setAttribute('x', '85');
+    text.setAttribute('y', '36');
+    text.setAttribute('fill', '#666');
     
-    text.setAttribute('class', 'windGustSpeed');
+    text.setAttribute('class',  `windGustSpeed windGustSpeed--color${color}`);
     text.textContent = gustSpeed;
 
     return text;
@@ -167,7 +178,7 @@ class WindIcon extends PolymerElement {
     circle.setAttribute('stroke-width', '3.5');      
 
     circle.setAttribute('cx', '50');
-    circle.setAttribute('cy', '50');
+    circle.setAttribute('cy', '60');
     circle.setAttribute('r', '33');
     
     return circle;

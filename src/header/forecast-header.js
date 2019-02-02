@@ -11,14 +11,13 @@ class ForecastHeader extends PolymerElement {
     <style>
       :host {
         display: block;
-
         background-color: var(--color-primary);
       }
 
       .header {
         display: grid;
         grid-template-columns: 3rem 1fr 1fr 3rem;
-        grid-template-rows: 1.3rem 3.5rem 3.5rem 3.5rem;
+        grid-template-rows: 1rem 3.5rem 3.5rem 3rem;
         grid-template-areas:
           'left empty empty aside'    
           'left place place aside'
@@ -27,56 +26,26 @@ class ForecastHeader extends PolymerElement {
 
         align-items: center;
       }
-      .geolocate {
-        /*background-color: #f5f5f529;*/
-        border-radius: 3rem;
-        padding: 0.3rem 0.5rem 0.5rem 0.5rem;
-        text-align: center;
-       
-        
-      }
+     
 
-      .left{ 
+
+      .left { 
         grid-area: left;
         height: 100%;
       }
 
       weather-symbol {
         grid-area: icon;
-        margin: -1rem 0 -1.3rem 0;
+        margin: -1rem 0 -1.5rem 0;
       }
 
       .place {
         text-align: center;
+        margin-left: 1.8rem;
       }      
-
-      .wind {
-        
-        padding-top: 0.2rem;
-        text-align: center;
-      }
-      .aside-item.selected {
-        background-color: #f5f5f529;
-        border-bottom: none;
-      }
-
-      #feels_icon:hover {
-        transform: scale(1.1);
-      }
-
-      .observation {
-        
-        text-align: center;
-      }
-
-      .aside-icon:hover {
-        transform: scale(1.1);
-      }
-    
+      
       h1 {
         grid-area: place;
-        margin: -0.5rem 0 0 0;
-        padding: 0;
       }
       
       aside {
@@ -85,23 +54,29 @@ class ForecastHeader extends PolymerElement {
       }
 
       .aside-item {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 46px;
         color: var(--color-white);
         font-size: var(--font-size-xsmall);
         text-align: center;
-        border-radius: 7rem;
-        margin: 1rem;
+        border-radius: 45%;
+        padding: 0.5rem;
+      }
+      .aside-item + .aside-item{
+        padding-top: 0.25rem;
+      }
+
+      .aside-item.selected {
+        background-color: #f5f5f529;
+      }
+
+      .aside-icon:hover {
+        transform: scale(1.1);
       }
 
       .item-text {
-        margin-top: -2px;
+        margin-top: -0.3rem;
       }
       .item-text--wind {
-        margin-top: -9px;
+        margin-top: -0.5rem;
       }
 
       .location {
@@ -119,14 +94,6 @@ class ForecastHeader extends PolymerElement {
       .degree {
         font-size: var(--font-size-large);
         vertical-align: top;
-      }
-
-      .observation_link {
-        color: var(--color-white);
-        display: block;
-
-        margin-top: auto;
-        line-height: var(--line-height--tight);
       }
 
       .feelsLikeValue {
@@ -147,7 +114,7 @@ class ForecastHeader extends PolymerElement {
         <section class="left">
 
           <geolocate-button 
-            class="geolocate"
+            class="aside-item"
             hide="[[loading]]">
           </geolocate-button>
 
@@ -183,7 +150,7 @@ class ForecastHeader extends PolymerElement {
             <svg class="aside-icon" width="32" height="32">
               <ellipse class="head" stroke="#000" ry="7.3" rx="7.5" cy="8.2" cx="16" fill="#ffcdd2"/>
               <ellipse class= body ry="15.1" rx="14.9" cy="30.9" cx="15.9" stroke="#000" fill="#fff"/>
-              <text text-anchor="middle" x="16" y="31" class="feelsLikeValue">[[selectedData.feelsLike]]</text>
+              <text text-anchor="middle" x="15" y="30" class="feelsLikeValue">[[selectedData.feelsLike]]</text>
             </svg>
             <div class="item-text">tuntuu</div>
           </div>
