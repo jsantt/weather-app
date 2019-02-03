@@ -5,9 +5,7 @@ import {getByAttributeValue, getTime, getTimeAndValuePairs, getValue, parseLocat
 
 
 /**  
- *  Fetches weather forecast from Ilmatieteenlaitos. Prefer "Harmonie" model
- *  and do another call against Hirlam to get weather symbol and rain that are 
- *  missing from Harmonie. 
+ *  Fetches weather forecast from Ilmatieteenlaitos' "Harmonie" weather model API. 
  * 
  *  Exposes the data in forecastData property in the following format:
  * [{ hour: 1
@@ -29,14 +27,6 @@ class ForecastData extends PolymerElement {
         id="weatherHarmonie" 
         url="https://opendata.fmi.fi/wfs" 
         params="{{_getHarmonieParams(weatherLocation)}}"
-        handle-as="document" 
-        timeout="8000">
-      </iron-ajax>
-
-      <iron-ajax 
-        id="weatherHirlam" 
-        url="https://opendata.fmi.fi/wfs"
-        params="{{_getHirlamParams(weatherLocation)}}" 
         handle-as="document" 
         timeout="8000">
       </iron-ajax>
@@ -81,8 +71,38 @@ class ForecastData extends PolymerElement {
     super.ready();
   }
 
-  
-  // other functions alphabetically
+  /** 
+   * Fetches the data from the backend
+   */
+  _newLocation() {
+    this.fetchError = false;
+    this.loading = true;
+
+    const harmonieRequest = this._prepareRequest('weatherHarmonie', this._getHarmonieParams(this.weatherLocation));
+
+    harmonieRequest.completes
+      .then((data) => {
+        this._sendNotification(
+          this._parseLocationGeoid(data.response),
+          parseLocationName(data.response),
+          this.weatherLocation.coordinates,
+          parseRegion(data.response)
+        );
+        
+        const harmonieResponse = this._harmonieResponse(data.response);
+ 
+        this.forecastData = this._combineDatas(harmonieResponse);
+      })
+      .catch(rejected => {
+        this.fetchError = true;
+        raiseEvent(this, 'forecast-data.fetch-error', {text: 'Virhe haettaessa ennustetietoja'});
+        console.log('error ' + rejected.stack);
+      })
+      .then(() => {
+        this.loading = false;
+        raiseEvent(this, 'forecast-data.fetch-done', {text: 'Fetch data done'});
+      });
+  }
 
   _combine(humidity, rain, symbol, temperature, wind, windDirection, windGust) {
     
@@ -110,8 +130,8 @@ class ForecastData extends PolymerElement {
     return weatherJson;
   }
 
-  _combineDatas(harmonie, hirlam) {
-    let combinedData = this._combine(harmonie.humidity, hirlam.rain, hirlam.symbol, harmonie.temperature, harmonie.wind, harmonie.windDirection, harmonie.windGust);
+  _combineDatas(harmonie){//, hirlam) {
+    let combinedData = this._combine(harmonie.humidity, harmonie.rain, harmonie.symbol, harmonie.temperature, harmonie.wind, harmonie.windDirection, harmonie.windGust);
 
     // enrich data to avoid application logic inside components
     const now = new Date();
@@ -146,18 +166,8 @@ class ForecastData extends PolymerElement {
     let params = this._commonParams(location);
 
     params.storedquery_id = 'fmi::forecast::harmonie::surface::point::timevaluepair';
-    params.parameters = 'Humidity,Temperature,WindDirection,WindSpeedMS,WindGust';
+    params.parameters = 'Humidity,Temperature,WindDirection,WindSpeedMS,WindGust,Precipitation1h,WeatherSymbol3';
     
-    return params;
-  }
-
-   _getHirlamParams(location){
-   
-    let params = this._commonParams(location);
-    
-    params.storedquery_id = 'fmi::forecast::hirlam::surface::point::timevaluepair';
-    params.parameters = 'Precipitation1h,WeatherSymbol3';
-     
     return params;
   }
 
@@ -212,6 +222,8 @@ class ForecastData extends PolymerElement {
     let harmonieResponse = {};
 
     harmonieResponse.humidity = getTimeAndValuePairs(timeSeries, 'mts-1-1-Humidity', 'humidity');
+    harmonieResponse.rain = getTimeAndValuePairs(timeSeries, 'mts-1-1-Precipitation1h', 'rain');
+    harmonieResponse.symbol = getTimeAndValuePairs(timeSeries, 'mts-1-1-WeatherSymbol3', 'symbol');
     harmonieResponse.temperature = getTimeAndValuePairs(timeSeries, 'mts-1-1-Temperature', 'temperature');
     harmonieResponse.wind = getTimeAndValuePairs(timeSeries, 'mts-1-1-WindSpeedMS', 'wind');
     harmonieResponse.windDirection = getTimeAndValuePairs(timeSeries, 'mts-1-1-WindDirection', 'windDirection');
@@ -219,53 +231,6 @@ class ForecastData extends PolymerElement {
     
 
     return harmonieResponse;
-  }
-
-  _hirlamResponse(response) {
-  
-    const timeSeries = response.getElementsByTagName('wml2:MeasurementTimeseries');
-    
-    let hirlamResponse = {};
-
-    hirlamResponse.rain = getTimeAndValuePairs(timeSeries, 'mts-1-1-Precipitation1h', 'rain');
-    hirlamResponse.symbol = getTimeAndValuePairs(timeSeries, 'mts-1-1-WeatherSymbol3', 'symbol');
-    
-    return hirlamResponse;
-  }
-
-  /** 
-   *trigger call to get hirlam and harmonie weather data
-   */
-  _newLocation() {
-    this.fetchError = false;
-    this.loading = true;
-
-    const harmonieRequest = this._prepareRequest('weatherHarmonie', this._getHarmonieParams(this.weatherLocation));
-    const hirlamRequest = this._prepareRequest('weatherHirlam', this._getHirlamParams(this.weatherLocation));
-
-    Promise.all([harmonieRequest.completes, hirlamRequest.completes])
-      .then((values) => {
-        this._sendNotification(
-          this._parseLocationGeoid(values[0].response),
-          parseLocationName(values[0].response),
-          this.weatherLocation.coordinates,
-          parseRegion(values[0].response)
-        );
-        
-        const harmonieResponse = this._harmonieResponse(values[0].response);
-        const hirlamResponse = this._hirlamResponse(values[1].response);
-
-        this.forecastData = this._combineDatas(harmonieResponse, hirlamResponse);
-      })
-      .catch(rejected => {
-        this.fetchError = true;
-        raiseEvent(this, 'forecast-data.fetch-error', {text: 'Virhe haettaessa ennustetietoja'});
-        console.log('error ' + rejected.stack);
-      })
-      .then(() => {
-        this.loading = false;
-        raiseEvent(this, 'forecast-data.fetch-done', {text: 'Fetch data done'});
-      });
   }
 
   _prepareRequest(id, params){
