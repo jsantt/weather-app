@@ -89,9 +89,10 @@ class ForecastData extends PolymerElement {
           parseRegion(data.response)
         );
         
-        const harmonieResponse = this._harmonieResponse(data.response);
- 
-        this.forecastData = this._combineDatas(harmonieResponse);
+        const filteredResponse = this._filterResponse(data.response);
+        let json = this._toJson(filteredResponse);
+
+        this.forecastData = this._enrichData(json);
       })
       .catch(rejected => {
         this.fetchError = true;
@@ -104,71 +105,9 @@ class ForecastData extends PolymerElement {
       });
   }
 
-  _combine(humidity, rain, symbol, temperature, wind, windDirection, windGust) {
-    
-    let weatherJson = [];
-
-    for (let i = 0; i < temperature.length; i++) {
-      
-      const temperatureValue = getValue(temperature[i]);
-      const windValue = getValue(wind[i]);
-      
-      weatherJson.push(
-        { 
-          "feelsLike": this._feelsLike(temperatureValue, windValue),
-          "humidity": getValue(humidity[i]),
-          "rain": getValue(rain[i]),
-          "symbol": getValue(symbol[i]),
-          "time": getTime(temperature[i]),
-          "temperature": temperatureValue,
-          "wind": windValue, 
-          "windDirection": getValue(windDirection[i]),
-          "windGust": getValue(windGust[i])
-        });
-    };
-
-    return weatherJson;
-  }
-
-  _combineDatas(harmonie){//, hirlam) {
-    let combinedData = this._combine(harmonie.humidity, harmonie.rain, harmonie.symbol, harmonie.temperature, harmonie.wind, harmonie.windDirection, harmonie.windGust);
-
-    // enrich data to avoid application logic inside components
-    const now = new Date();
-    combinedData.forEach( element => {
-      element.hour = this._toHour(element.time);
-      element.past = this._isPast(now, element.time);
-    });
-
-    return combinedData;
-  }
-
-  _isPast(now, dateTime) {
-    const comparable = new Date(dateTime);
-    
-    return now > comparable;
-  }
-
-  /**
-   * Calculates "feels like" estimate based on wind and temperature.
-   * Formula by Ilmatieteen laitos: https://fi.wikipedia.org/wiki/Pakkasen_purevuus
-   * 
-   * @param {*} temperature in celcius 
-   * @param {*} wind metres per second
-   */
-  _feelsLike(temperature, wind) {
-    const feelsLike = 13.12 + 0.6215*temperature - 13.956*Math.pow(wind, 0.16) + 0.4867*temperature*Math.pow(wind,0.16);
-    return Math.round(feelsLike);
-  }
-
-  _getHarmonieParams(location){
-  
-    let params = this._commonParams(location);
-
-    params.storedquery_id = 'fmi::forecast::harmonie::surface::point::timevaluepair';
-    params.parameters = 'Humidity,Temperature,WindDirection,WindSpeedMS,WindGust,Precipitation1h,WeatherSymbol3';
-    
-    return params;
+  _prepareRequest(id, params){
+    this.$[id].params = params;
+    return this.$[id].generateRequest();
   }
 
   _commonParams(location) {
@@ -186,7 +125,18 @@ class ForecastData extends PolymerElement {
     
     return params;
   }
+
+  _getHarmonieParams(location){
   
+    let params = this._commonParams(location);
+
+    params.storedquery_id = 'fmi::forecast::harmonie::surface::point::timevaluepair';
+    params.parameters = 'Humidity,Temperature,WindDirection,WindSpeedMS,WindGust,Precipitation1h,WeatherSymbol3';
+    
+    return params;
+  }
+
+
   /**
    * Data comes from the following format from FMI open API
    * 
@@ -215,7 +165,7 @@ class ForecastData extends PolymerElement {
    *    {hour:2, ...}
    * ]
    */
-   _harmonieResponse(response) {
+  _filterResponse(response) {
 
     const timeSeries = response.getElementsByTagName('wml2:MeasurementTimeseries');
     
@@ -233,10 +183,63 @@ class ForecastData extends PolymerElement {
     return harmonieResponse;
   }
 
-  _prepareRequest(id, params){
-    this.$[id].params = params;
-    return this.$[id].generateRequest();
+
+  _toJson(data) {
+    
+    let weatherJson = [];
+
+    for (let i = 0; i < data.temperature.length; i++) {
+      
+      const temperatureValue = getValue(data.temperature[i]);
+      const windValue = getValue(data.wind[i]);
+      
+      weatherJson.push(
+        { 
+          "feelsLike": this._feelsLike(temperatureValue, windValue),
+          "humidity": getValue(data.humidity[i]),
+          "rain": getValue(data.rain[i]),
+          "symbol": getValue(data.symbol[i]),
+          "time": getTime(data.temperature[i]),
+          "temperature": temperatureValue,
+          "wind": windValue, 
+          "windDirection": getValue(data.windDirection[i]),
+          "windGust": getValue(data.windGust[i])
+        });
+    };
+
+    return weatherJson;
   }
+
+  _enrichData(combinedData) {
+    
+    // enrich data to avoid application logic inside components
+    const now = new Date();
+    combinedData.forEach( element => {
+      element.hour = this._toHour(element.time);
+      element.past = this._isPast(now, element.time);
+    });
+
+    return combinedData;
+  }
+
+  _isPast(now, dateTime) {
+    const comparable = new Date(dateTime);
+    
+    return now > comparable;
+  }
+
+  /**
+   * Calculates "feels like" estimate based on wind and temperature.
+   * Formula by Ilmatieteen laitos: https://fi.wikipedia.org/wiki/Pakkasen_purevuus
+   * 
+   * @param {*} temperature in celcius 
+   * @param {*} wind metres per second
+   */
+  _feelsLike(temperature, wind) {
+    const feelsLike = 13.12 + 0.6215*temperature - 13.956*Math.pow(wind, 0.16) + 0.4867*temperature*Math.pow(wind,0.16);
+    return Math.round(feelsLike);
+  }
+  
 
 
   /* <gml:name codeSpace="http://xml.fmi.fi/namespace/locationcode/name">Kattilalaakso</gml:name> 
