@@ -1,9 +1,9 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 
 
-class WindData extends PolymerElement {
+class WindHelper extends PolymerElement {
   
-  static get is() { return 'wind-data'; }
+  static get is() { return 'wind-helper'; }
 
   constructor() {
     super();
@@ -22,7 +22,7 @@ class WindData extends PolymerElement {
     ]; 
   }
 
-  windClassification(windSpeed, gustSpeed){
+  windClassification(gustSpeed){
     if(Number.isNaN(gustSpeed) || gustSpeed < 8){
       return 0;
     }
@@ -35,18 +35,6 @@ class WindData extends PolymerElement {
   }
 
   windHeaderText(forecastData){
-    return this._windForecast(forecastData);
-  }
-
-  windGustClassification(windSpeed) {
-    return this.windClassification(windSpeed);
-  }
-
-  windGustHeaderText(forecastData) {
-    return this._windGustForecast(forecastData);
-  }
-
-  _windForecast(forecastData){
     const maxWind = this._max(forecastData, 'wind');
     const windDescription = this._windDescription(maxWind);
 
@@ -65,6 +53,10 @@ class WindData extends PolymerElement {
     else{
       return 'keskituuli ja tuuli puuskissa';
     }
+  }
+
+  windGustClassification(windGustSpeed) {
+    return this.windClassification(windGustSpeed);
   }
 
   _max(forecastData, property) {
@@ -106,4 +98,4 @@ class WindData extends PolymerElement {
   }
 }
 
-window.customElements.define(WindData.is, WindData);
+window.customElements.define(WindHelper.is, WindHelper);

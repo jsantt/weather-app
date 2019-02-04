@@ -75,7 +75,7 @@ class WeatherFooter extends PolymerElement {
             </p><p></p>
           </section>
 
-          <img src="../image/FMI0DATA_small.png"/>
+          <img alt="fmi logo" src="../image/FMI0DATA_small.png"/>
 
           <template is="dom-if" if="[[_offline]]">
             <section>

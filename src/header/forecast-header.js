@@ -4,6 +4,7 @@ import './geolocate-button.js';
 import './time-now.js';
 import '../weather-symbol.js';
 import './weather-symbol-name.js';
+import '../main/wind-helper.js';
 
 class ForecastHeader extends PolymerElement {
   static get template() {
@@ -160,8 +161,9 @@ class ForecastHeader extends PolymerElement {
             class="wind aside-item"
             on-click="_toggleWind">
 
+            <wind-helper></wind-helper>
             <wind-icon 
-              class="windIcon" 
+              class="windIcon"
               degrees="[[selectedData.windDirection]]" 
               large
               wind-speed="[[selectedData.wind]]"
@@ -304,6 +306,10 @@ class ForecastHeader extends PolymerElement {
     return Math.round(temperature);
     //Add decimal to even numbers.
     //return Math.round((temperature) * 10) / 10;
+  }
+
+  _windClassification(windSpeed){
+    return this.shadowRoot.querySelector('wind-helper').windClassification(windSpeed);
   }
 }
 

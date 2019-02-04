@@ -5,7 +5,7 @@ import './temperature-line.js';
 import './weather-chart.js';
 
 import '../weather-symbol.js';
-import './wind-data.js';
+import './wind-helper.js';
 import '../wind-icon.js';
 
 class WeatherDay extends PolymerElement {
@@ -174,7 +174,7 @@ class WeatherDay extends PolymerElement {
     </style>
 
     <!-- data components for getting warning texts & background colors -->
-    <wind-data></wind-data>
+    <wind-helper></wind-helper>
 
     <div class="weatherDay">
      
@@ -237,7 +237,8 @@ class WeatherDay extends PolymerElement {
               <div class="wind">
                 <wind-icon 
                   class$="[[_getClasses(entry.past, 'symbol', 'past-hour')]]"
-                  wind-gust-color="[[_windClassification(entry.wind, entry.windGust)]]"
+                  wind-color="[[_windClassification(entry.wind)]]"
+                  wind-gust-color="[[_windClassification(entry.windGust)]]"
                   degrees="[[entry.windDirection]]" 
                   wind-speed="[[entry.wind]]"
                   wind-gust-speed="[[entry.windGust]]">
@@ -333,12 +334,11 @@ class WeatherDay extends PolymerElement {
   }
 
   _windHeaderText(windToday) {
-    return this.shadowRoot.querySelector('wind-data').windHeaderText(windToday);
+    return this.shadowRoot.querySelector('wind-helper').windHeaderText(windToday);
   }
   
-  _windClassification(windSpeed, gustSpeed){
-    const wind = this.shadowRoot.querySelector('wind-data').windClassification(windSpeed, gustSpeed);
-    return wind;
+  _windClassification(windSpeed){
+    return this.shadowRoot.querySelector('wind-helper').windClassification(windSpeed);
   }
 
   _everyFourth(index, item) {

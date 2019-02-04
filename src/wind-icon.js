@@ -28,14 +28,6 @@ class WindIcon extends PolymerElement {
         font-size: 50px;
       }
 
-      .windGustSpeed--color1 {
-        fill: orange;
-      }
-      .windGustSpeed--color2 {
-        fill: red;
-      }
-     
-
       .windIcon_arrow {
         fill: #ffcdd2;
         stroke: var(--color-black);
@@ -44,6 +36,13 @@ class WindIcon extends PolymerElement {
       .windIcon_circle {
         fill: var(--color-white);
         stroke: var(--color-black);
+      }
+
+      .warning--color1 {
+        fill: orange;
+      }
+      .warning--color2 {
+        fill: red;
       }
 
     </style>
@@ -56,6 +55,9 @@ class WindIcon extends PolymerElement {
 
   static get properties() {
     return {
+      windColor: {
+        type: String
+      },
       windGustColor: {
         type: String
       },
@@ -79,23 +81,20 @@ class WindIcon extends PolymerElement {
   }
 
   _createIcon(){
-    const degrees = this.degrees;
-    const speed = this.roundedWindSpeed;
-    const gustSpeed = this.windGustSpeed;
 
-    if(Number.isNaN(degrees) || Number.isNaN(speed)){
+    if(Number.isNaN(this.degrees) || Number.isNaN(this.roundedWindSpeed)){
       return;
     }
 
     let svg = this._svg(this.large);
     
-    let group = this._group(degrees);
-    group.appendChild(this._windIconArrow());
-    group.appendChild(this._windIconCircle());
+    let group = this._group(this.degrees);
+    group.appendChild(this._windIconArrow(this.windColor));
+    group.appendChild(this._windIconCircle(this.windColor));
               
     svg.appendChild(group);
-    svg.appendChild(this._wind(speed));
-    svg.appendChild(this._windGust(Math.round(gustSpeed), this.windGustColor));
+    svg.appendChild(this._wind(this.roundedWindSpeed));
+    svg.appendChild(this._windGust(Math.round(this.windGustSpeed), this.windGustColor));
 
 
     if(this.$.iconPlaceholder.children.length > 0) {
@@ -134,10 +133,10 @@ class WindIcon extends PolymerElement {
     return svg;
   }
 
-  _windIconArrow(){
+  _windIconArrow(color){
 
     let line = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
-    line.setAttribute('class', 'windIcon_arrow');
+    line.setAttribute('class', `windIcon_arrow warning--color${color}`);
 
     line.setAttribute('stroke-width', '3');      
     line.setAttribute('points', '36,29 50,10 64,29');
@@ -152,7 +151,7 @@ class WindIcon extends PolymerElement {
     text.setAttribute('x', '49');
     text.setAttribute('y', '79');
     
-    text.setAttribute('class', 'windSpeed');
+    text.setAttribute('class', `windSpeed`);
     text.textContent = speed;
 
     return text;
@@ -166,15 +165,15 @@ class WindIcon extends PolymerElement {
     text.setAttribute('y', '36');
     text.setAttribute('fill', '#666');
     
-    text.setAttribute('class',  `windGustSpeed windGustSpeed--color${color}`);
+    text.setAttribute('class',  `windGustSpeed warning--color${color}`);
     text.textContent = gustSpeed;
 
     return text;
   }
 
-  _windIconCircle() {
+  _windIconCircle(color) {
     let circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-    circle.setAttribute('class', 'windIcon_circle');
+    circle.setAttribute('class', `windIcon_circle warning--color${color}`);
     circle.setAttribute('stroke-width', '3.5');      
 
     circle.setAttribute('cx', '50');

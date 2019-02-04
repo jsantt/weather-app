@@ -1,6 +1,6 @@
 {
   "name": "saaennuste.fi",
-  "short_name": "saaennuste.fi",
+  "short_name": "saaennuste",
   "description": "Kännykälle optimoidusta palvelusta näet lähiajan sään yhdellä vilkaisulla ja nopeiten. Säädata tulee Ilmatieteen laitokselta.",
   "icons": [
     {
