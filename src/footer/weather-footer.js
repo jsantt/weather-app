@@ -48,10 +48,10 @@ class WeatherFooter extends PolymerElement {
           <section class="footer_section">
           
             <p class="info">
-              Sääsymbolit tulevat ilmatieteen laitoksen Hirlam-ennusteesta;
-              lämpötilan sekä tuulen ennusteessa käytetään tarkempaa 
+              Sekä ennuste että havaintoasemien sää 
+              helposti luettavassa muodossa. Säätiedot perustuvat Ilmatieteen laitoksen tarkkaan
               <a href="http://ilmatieteenlaitos.fi/tutkimustoiminta/-/asset_publisher/Dz9C/content/uusin-versio-harmonie-arome-saamallista-parantaa-pilvisyyden-ja-tuulen-ennusteita?redirect=http%3A%2F%2Filmatieteenlaitos.fi%2Ftutkimustoiminta%3Fp_p_id%3D101_INSTANCE_Dz9C%26p_p_lifecycle%3D0%26p_p_state%3Dnormal%26p_p_mode%3Dview%26p_p_col_id%3Dcolumn-2%26p_p_col_count%3D2">
-              Harmonie-ennustetta</a>
+              Harmonie-ennusteeseen</a>
             </p><p></p>
           </section>
 

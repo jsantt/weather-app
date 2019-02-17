@@ -25,7 +25,7 @@ class WeatherApp extends PolymerElement {
         display: block;
 
         /* don't use these directly (except below) */
-        --color-palette-yellow: #ffffd1;
+        --color-palette-yellow: #ffffd1;/*rgb(255,254,223);#f4f4f4; #ffffd1;*/
         --color-palette-brown: #916c25;
         --color-palette-orange: #ffa800;
         --color-palette-blue: #0060e8;

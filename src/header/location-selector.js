@@ -44,6 +44,7 @@ class LocationSelector extends PolymerElement {
         </template>
 
         <template is="dom-if" if="[[!loading]]">
+        
           <vaadin-combo-box
             id="placeSelection"
             item-label-path="city"
@@ -62,7 +63,7 @@ class LocationSelector extends PolymerElement {
       
             </template>
           </vaadin-combo-box>
-
+        
         </template>
     </div>
 `;

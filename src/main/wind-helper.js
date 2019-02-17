@@ -15,44 +15,30 @@ class WindHelper extends PolymerElement {
      * yli 32 m/s	hirmumyrskyä
      */
     this._WIND_TABLE = [
-      {min: 8, max: 14, warning: 1, description: 'navakkaa tuulta'}, 
-      {min: 14, max: 21, warning: 2, description: 'kovaa tuulta'},
-      {min: 21, max: 32, warning: 3, description: 'myrskyä'},
-      {min: 32, max: 99, warning: 3,description: 'hirmumyrskyä'}
+      {min: 8, max: 14, rate: 1, description: 'tuulista'}, 
+      {min: 14, max: 21, rate: 2, description: 'kovaa tuulta'},
+      {min: 21, max: 32, rate: 3, description: 'myrskyä'},
+      {min: 32, max: 99, rate: 3,description: 'hirmumyrskyä'}
     ]; 
   }
 
-  windClassification(gustSpeed){
-    if(Number.isNaN(gustSpeed) || gustSpeed < 8){
+  windClassification(windSpeed){
+    if(Number.isNaN(windSpeed) || windSpeed < 8){
       return 0;
     }
 
-
     const rows = this._WIND_TABLE.filter(
-      (item) => item.min <= gustSpeed && gustSpeed < item.max);
+      (item) => item.min <= windSpeed && windSpeed < item.max);
 
-      return rows[0].warning;
+      return rows[0].rate;
   }
 
-  windHeaderText(forecastData){
+  windWarning(forecastData){
     const maxWind = this._max(forecastData, 'wind');
     const windDescription = this._windDescription(maxWind);
+    const windRating = this.windClassification(maxWind);
 
-    const maxGust = Math.round(this._max(forecastData, 'windGust'));
-    const gustDescription = this._windGustDescription(maxGust);
-
-    if(windDescription && gustDescription) {
-       return `${windDescription} ja ${gustDescription} puuskissa`;
-    }
-    else if(gustDescription) {
-      return `${gustDescription} puuskissa`;
-    }
-    else if(windDescription){
-      return `${windDescription}`;
-    }
-    else{
-      return 'keskituuli ja tuuli puuskissa';
-    }
+    return {rating: windRating, description: windDescription};
   }
 
   windGustClassification(windGustSpeed) {

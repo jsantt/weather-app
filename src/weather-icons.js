@@ -23,6 +23,7 @@ $_documentContainer.innerHTML =
         <rect stroke="#000" stroke-width="1" fill="#ffcdd2" height="11.5625" width="1.4375" y="8.559082" x="15.46875" />
         <ellipse stroke="#000" stroke-width="1" fill="#ffcdd2" ry="3.53125" rx="3.53125" id="svg_7" cy="23.402832" cx="16.0625"/>
       </g>
+      
     </defs>
   </svg>
 </iron-iconset-svg>`;

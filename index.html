@@ -92,6 +92,10 @@
           --font-size-xxxxlarge: 3.815rem;
           --font-size-xxxxxlarge: 4.764rem;
           --font-size-xxxxxxlarge: 5.96rem;
+
+          /* Use 0.5rem grid everywhere */
+          --space-small: 0.5rem;
+          --space-medium: 1rem;
           
           box-shadow: 1px 1px 6px 0px rgba(0,0,0,0.2);
           font-family: 'Open Sans Condensed', sans-serif;
@@ -110,17 +114,27 @@
           width: 128px;
           height: 128px;
 
+          animation: rotation 22s infinite linear;
           -webkit-animation: rotation 22s infinite linear;
         }
 
-       @-webkit-keyframes rotation {
+        @keyframes rotation {
+          from {
+              transform: rotate(0deg);
+          }
+          to {
+              transform: rotate(359deg);
+          }
+        }
+        
+        @-webkit-keyframes rotation {
           from {
               -webkit-transform: rotate(0deg);
           }
           to {
               -webkit-transform: rotate(359deg);
           }
-      }
+        }
     </style>
      <dom-module id="vaadin-text-field-styles" theme-for="vaadin-text-field">
       <template>

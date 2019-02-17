@@ -18,22 +18,9 @@ class DayItem extends PolymerElement {
         padding: 0.5rem 0;
       }
 
-      .item--color1 {
-        /*background-color: var(--warning1-color);*/
-      }
-
-      .item--color2 {
-        /*background-color: var(--warning2-color);*/
-        
-      }
-
-      .item--color3 {
-        /*background-color: var(--warning3-color);*/
-      }
-
     </style>
     
-    <div class$="[[_getClazz(highlightColor)]]">
+    <div class$="[[_getClass(highlightColor)]]">
         <slot></slot>
     </div>
             
@@ -50,7 +37,7 @@ class DayItem extends PolymerElement {
     }
   }
 
-  _getClazz(color){
+  _getClass(color){
     const item = `item item--color${color}`;
     console.log(item);
     return item;
