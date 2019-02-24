@@ -2,8 +2,6 @@ import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
 
 // lazy-resources are loaded in the app code
-
-
 //import './lazy-resources.js' 
 
 import './header/location-selector.js';
@@ -61,10 +59,6 @@ class WeatherApp extends PolymerElement {
            
     </style>
       <weather-analytics key="UA-114081578-1"></weather-analytics>
-
-      <!--weather-notification 
-        forecast-data="[[forecastData]]">
-      </weather-notification-->
 
       <!-- weather now data (observation) -->
       <observation-data 
@@ -139,17 +133,14 @@ class WeatherApp extends PolymerElement {
         type: Boolean,
         value: true
       },
-
       nextIsoHour: {
         type: Number,
         computed: '_nextIsoHour()'
       },
-
       showFeelsLike: {
         type: Boolean,
         value: false
       },
-
       showWind: {
         type: Boolean,
         value: false
@@ -162,7 +153,6 @@ class WeatherApp extends PolymerElement {
         type: Boolean,
         value: false
       },
-
       weatherLocation: {
         type: String,
       }
@@ -190,19 +180,6 @@ class WeatherApp extends PolymerElement {
     super.connectedCallback();
 
     this._loadLazyResources();
-  }
-
-  _nextFullHour() {
-    let timeNow = new Date();
-
-    timeNow.setHours(timeNow.getHours() + 1);
-    timeNow.setMinutes(0,0,0);
-
-    let nextHour = timeNow.getHours();
-
-    nextHour = nextHour === 0 ? 24 : nextHour;
-
-    return nextHour;
   }
  
   _nextIsoHour() {

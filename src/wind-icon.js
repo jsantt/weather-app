@@ -8,8 +8,6 @@ class WindIcon extends PolymerElement {
       .windIcon {
         height: 28px;
         width: 28px;
-        
-        padding-right: 0.35rem;
       }
 
       .windIcon--large {
@@ -123,7 +121,7 @@ class WindIcon extends PolymerElement {
     // min-x, min-y, width and height
     svg.setAttribute('id', 'windIcon');
     svg.setAttribute('class', 'windIcon');
-    svg.setAttribute('viewBox', '0 0 100 110');
+    svg.setAttribute('viewBox', '0 0 115 110');
     svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
 
     if(large) {
@@ -161,8 +159,8 @@ class WindIcon extends PolymerElement {
     let text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
     
     text.setAttribute('text-anchor', 'middle');
-    text.setAttribute('x', '85');
-    text.setAttribute('y', '36');
+    text.setAttribute('x', '96');
+    text.setAttribute('y', '38');
     text.setAttribute('fill', '#666');
     
     text.setAttribute('class',  `windGustSpeed warning--color${color}`);

@@ -101,6 +101,12 @@ class ForecastHeader extends PolymerElement {
         font-size: var(--font-size-small);
         font-weight: 900;
       }
+      .wind {
+        padding-right: 0;
+      }
+      .feelsLike {
+        padding-right: 0.29rem;
+      }
 
       weather-symbol-name {
         grid-area: text;
@@ -192,7 +198,7 @@ class ForecastHeader extends PolymerElement {
         </div>
       </aside>
     </div>
-    <time-now update-time="[[locationChanged]]"></time-now>
+    <time-now update-time="[[_locationChanged]]"></time-now>
   
   </header>
     `;
@@ -205,7 +211,10 @@ class ForecastHeader extends PolymerElement {
       loading: {
         type: Boolean
       },
-      forecastData: {
+      _locationChanged: {
+        type: Boolean
+      },
+      forecastData: { //TODO: tämä ei päivity
         type: Object
       },
       nextIsoHour: {
@@ -222,24 +231,23 @@ class ForecastHeader extends PolymerElement {
     };
   }
 
-  constructor()  {
-    super();
-  }
-
-  ready() {
-    super.ready();
-  }
-
   toggleObservationHighlight() {
     this.shadowRoot.querySelector("#observation").classList.toggle("selected");
   }
 
   _getWeatherNow(data, time) {
-    if(data) {
-      return data.filter(function (item) {
-        return item.time === time;
-      })[0];
+   
+    if(data === undefined) {
+      return;
     }
+
+    const hourForecast = data.filter(function (item) {
+      return item.time === time;
+    })[0];
+
+    this._locationChanged = !this._locationChanged;
+
+    return hourForecast;
   }
 
   _toggleObservation() {
@@ -293,23 +301,8 @@ class ForecastHeader extends PolymerElement {
     }
   }
 
-
-  _parseHour(timestamp) {
-    const date = new Date(timestamp);
-    return date.getHours();
-  }
-
-  /*
-   * Round to one decimal. 
-   * */
   _round(temperature) {
     return Math.round(temperature);
-    //Add decimal to even numbers.
-    //return Math.round((temperature) * 10) / 10;
-  }
-
-  _windClassification(windSpeed){
-    return this.shadowRoot.querySelector('wind-helper').windClassification(windSpeed);
   }
 }
 

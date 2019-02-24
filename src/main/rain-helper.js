@@ -50,7 +50,7 @@ class RainHelper extends PolymerElement {
 
     let roundedTotal;
     if(0 < total && total < 0.5) {
-      roundedTotal = "< 1";
+      roundedTotal = "<1";
     }
     else{
       roundedTotal = total === 0 ? "" : Math.round(total)

@@ -91,23 +91,37 @@ class LocationSelector extends PolymerElement {
     };
   }
 
+  constructor(){
+    super();
+
+    document.addEventListener('visibilitychange', (event => {
+      if(document.hidden === false){
+        this._notifyPreviousPlace();
+      }
+    }));
+  }
+
   ready() {
     super.ready();
+    console.log("READY");
 
+    this._notifyPreviousPlace();
+  }
+
+  _notifyPreviousPlace() {
     const storedPlaces = this._getFromLocalStorage('place');
     let currentPlace;
-
-    if(storedPlaces) {
+    if (storedPlaces) {
       currentPlace = storedPlaces[0];
     }
-    else {  
+    else {
       currentPlace = this._defaultPlace;
       this._storeIntoLocalStorage('place', TOP_10_CITIES);
     }
-
     // TO DO: UGLY HACK, without timeout parent won't catch the event
     setTimeout(() => {
-    this._dispatchEvent('location-selector.location-changed', currentPlace);
+      console.log("new location: " + currentPlace);
+      this._dispatchEvent('location-selector.location-changed', currentPlace);
     }, 50);
   }
 
@@ -142,7 +156,7 @@ class LocationSelector extends PolymerElement {
     }
     else {
       setTimeout(()=> {
-        this._newPlace();
+        this._previousPlace();
       }, 1000);
     }
     

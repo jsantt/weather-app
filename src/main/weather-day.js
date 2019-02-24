@@ -179,7 +179,9 @@ class WeatherDay extends PolymerElement {
         padding-right: 0.5rem;
         color: #0060e8;
       }
-
+      rain-amount, snow-amount {
+        padding-left: 0.5rem;
+      }
 
       .rainBars{
         grid-column: span 25;
@@ -246,11 +248,11 @@ class WeatherDay extends PolymerElement {
         <!-- headers here outside of dom-repeat -->    
 
         <template is="dom-if" if="[[showWind]]">
-          <div class="wind_header">&nbsp;</div>
+          <div class="wind_header">keskituuli / tuuli puuskissa</div>
         </template>
 
         <template is="dom-if" if="[[showFeelsLike]]">
-          <div class="feelsLike_header">&nbsp;</div>
+          <div class="feelsLike_header">tuntuu kuin</div>
         </template>
 
         <template is="dom-repeat" items="[[forecastData]]" as="entry">

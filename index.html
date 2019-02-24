@@ -7,14 +7,14 @@
 
     <title>Sääennuste</title>
     <meta name="description" content="Paras sääennuste. Sekä ennuste että havaintoasemien sää 
-      helposti luettavassa muodossa. Säätiedot perustuvat Ilmatieteen laitoksen avoimeen dataan.">
+      helposti luettavassa muodossa. Säätiedot perustuvat Ilmatieteen laitoksen avoimeen dataan">
 
     <!-- See https://goo.gl/OOhYW5 -->
     <link rel="manifest" href="/manifest.json">
     <link rel="icon" type="image/png" href="image/logo-32x32.png" sizes="32x32">  
     
     <!--script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script-->
-    <script type="module" src="src/weather-app.js"></script>
+    <script type="module" src="src/weather-app.js"> </script>
 
     <!-- Loading web fonts asynchronoysly, see-->
     <script>
@@ -62,10 +62,7 @@
           media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)"
           rel="apple-touch-startup-image">
 
-
-
-    <style>
-        
+    <style>        
         .loading-view {
           height: 100vh;
           display: flex;
@@ -78,7 +75,8 @@
         }
 
         body {
-          /* Modular scale base 1em, ratio 1.25 (modularscale.com)
+          /* 
+           * Modular scale base 1em, ratio 1.25 (modularscale.com)
            * e.g. 1em, 1.25em, 1.563em, 1.953em, 2.441em, 3.052em, 3.814,
            */
           --font-size-xxsmall: 0.64rem;
@@ -114,8 +112,8 @@
           width: 128px;
           height: 128px;
 
-          animation: rotation 22s infinite linear;
-          -webkit-animation: rotation 22s infinite linear;
+          animation: rotation 23s infinite linear;
+          -webkit-animation: rotation 23s infinite linear;
         }
 
         @keyframes rotation {
@@ -179,8 +177,7 @@
       </svg>
     </div>
 
-    <weather-app>
-    </weather-app>
+    <weather-app></weather-app>
 
     <script>
       document.addEventListener('forecast-data.fetch-done', (event) => 
@@ -205,7 +202,6 @@
     databaseURL: "https://saa-appi.firebaseio.com",
     projectId: "saa-appi",
     storageBucket: "saa-appi.appspot.com",
-    messagingSenderId: "504374989166"
   };
   firebase.initializeApp(config);
   </script -->
