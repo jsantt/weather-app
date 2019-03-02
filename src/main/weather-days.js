@@ -19,7 +19,7 @@ class WeatherDays extends PolymerElement {
         show-feels-like="[[showFeelsLike]]" 
         show-wind="[[showWind]]"
         show-wind-gust="[[showWindGust]]"
-        forecast-data="[[todayData]]"></weather-day>
+        day-data="[[todayData]]"></weather-day>
   
       <!-- tomorrow -->
       <weather-day 
@@ -29,7 +29,7 @@ class WeatherDays extends PolymerElement {
         show-feels-like="[[showFeelsLike]]" 
         show-wind="[[showWind]]" 
         show-wind-gust="[[showWindGust]]" 
-        forecast-data="[[day2Data]]"></weather-day>
+        day-data="[[day2Data]]"></weather-day>
 
       <!-- day after tomorrow -->
       <weather-day 
@@ -39,7 +39,7 @@ class WeatherDays extends PolymerElement {
         show-feels-like="[[showFeelsLike]]" 
         show-wind="[[showWind]]"
         show-wind-gust="[[showWindGust]]" 
-        forecast-data="[[day3Data]]"></weather-day>
+        day-data="[[day3Data]]"></weather-day>
 `;
   }
 

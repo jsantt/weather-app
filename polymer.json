@@ -21,7 +21,8 @@
   "extraDependencies": [
     "manifest.json",
     "node_modules/@webcomponents/webcomponentsjs/**",
-    "src/lazy-resources.js"
+    "src/lazy-resources.js",
+    "robots.txt"
   ],
   "moduleResolution": "node",
   "npm": true,

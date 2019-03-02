@@ -204,44 +204,16 @@ class WeatherDay extends PolymerElement {
             <span class="day-name">[[_weekday(dayNumber)]]</span>
 
             <span class="wind-warning">
-              
               <wind-helper></wind-helper>
-              <template is="dom-repeat" items="[[_arrayForRepeater(forecastData)]]">
-                <svg
-                  class="wind-icon"
-                  width="16" 
-                  height="16" 
-                  viewBox="0 0 512 512">
-                  <g>
-                    <g>
-                      <path d="M287.64,94.921c-31.721,0-57.528,25.807-57.528,57.528h34.517c0-12.688,10.323-23.011,23.011-23.011
-                        c12.688,0,23.011,10.323,23.011,23.011c0,12.688-10.323,23.011-23.011,23.011H46.022v34.517H287.64
-                        c31.721,0,57.528-25.807,57.528-57.528C345.169,120.728,319.361,94.921,287.64,94.921z"/>
-                    </g>
-                  </g>
-                  <g>
-                    <g>
-                      <path d="M431.461,106.427c-34.893,0-63.281,28.388-63.281,63.281c0,25.377,20.646,46.022,46.022,46.022
-                        c25.377,0,46.022-20.646,46.022-46.022h-34.517c0,6.344-5.161,11.506-11.506,11.506c-6.344,0-11.506-5.161-11.506-11.506
-                        c0-15.861,12.904-28.764,28.764-28.764c25.377,0,46.022,20.646,46.022,46.022c0,25.377-20.646,46.022-46.022,46.022H0v34.517
-                        h431.461c44.409,0,80.539-36.13,80.539-80.539C512,142.557,475.87,106.427,431.461,106.427z"/>
-                    </g>
-                  </g>
-                  <g>
-                    <g>
-                      <path d="M345.169,290.517H46.022v34.517h299.146c15.861,0,28.764,12.904,28.764,28.764c0,15.861-12.904,28.764-28.764,28.764
-                        c-15.86,0-28.764-12.904-28.764-28.764h-34.517c0,34.893,28.388,63.281,63.281,63.281c34.893,0,63.281-28.388,63.281-63.281
-                        C408.449,318.905,380.062,290.517,345.169,290.517z"/>
-                    </g>
-                  </g>
-                  </svg>
-              </template>
-               [[_windDescription(forecastData)]]
+              <wind-speed 
+                wind-rating="[[_windRating(dayData)]]" 
+                wind-description="[[_windDescription(dayData)]]">
+              </wind-speed>
             </span>
             <span class="rain-amount">
               <rain-helper></rain-helper>
-              <snow-amount snow-amount="[[_snow(forecastData)]]"></snow-amount>
-              <rain-amount rain-amount="[[_rain(forecastData)]]"></rain-amount>
+              <snow-amount snow-amount="[[_snow(dayData)]]"></snow-amount>
+              <rain-amount rain-amount="[[_rain(dayData)]]"></rain-amount>
             </span>
         </span></span></div>
         
@@ -255,7 +227,7 @@ class WeatherDay extends PolymerElement {
           <div class="feelsLike_header">tuntuu kuin</div>
         </template>
 
-        <template is="dom-repeat" items="[[forecastData]]" as="entry">
+        <template is="dom-repeat" items="[[dayData]]" as="entry">
           
           <!-- EMPTY COLUMN -->
           <template is="dom-if" if="[[_isFirst(index)]]">
@@ -327,7 +299,7 @@ class WeatherDay extends PolymerElement {
             
           <temperature-line 
             min-temperature="[[minTemperature]]" 
-            forecast-data="[[forecastData]]">
+            day-data="[[dayData]]">
           </temperature-line>
     
         </div>
@@ -336,7 +308,7 @@ class WeatherDay extends PolymerElement {
 
           <weather-chart 
             min-temperature="[[minTemperature]]" 
-            forecast-data="[[forecastData]]">
+            day-data="[[dayData]]">
           </weather-chart>
 
         </section>
@@ -370,15 +342,10 @@ class WeatherDay extends PolymerElement {
         type: Boolean
       },
 
-      forecastData: {
+      dayData: {
         type: Array          
       }
     };
-  }
-
-  _arrayForRepeater(forecastData) {
-    const number = this._windRating(forecastData);
-    return new Array(number).fill(number);
   }
 
   _day(number){
@@ -397,12 +364,12 @@ class WeatherDay extends PolymerElement {
     return day.toLocaleString('fi-FI', {weekday: 'short'});
   }
 
-  _windDescription(windToday) {
-    return this.shadowRoot.querySelector('wind-helper').windWarning(windToday).description;
+  _windDescription(dayData) {
+    return this.shadowRoot.querySelector('wind-helper').windWarning(dayData).description;
   }
   
-  _windRating(windToday) {
-    return this.shadowRoot.querySelector('wind-helper').windWarning(windToday).rating;
+  _windRating(dayData) {
+    return this.shadowRoot.querySelector('wind-helper').windWarning(dayData).rating;
   }
 
   _windClassification(windSpeed){
@@ -413,12 +380,12 @@ class WeatherDay extends PolymerElement {
     return index % 3 === 0 ? this._hideNaN(item) : '';
   }
 
-  _rain(forecastData) {
-    return this.shadowRoot.querySelector('rain-helper').totalRain(forecastData);
+  _rain(dayData) {
+    return this.shadowRoot.querySelector('rain-helper').totalRain(dayData);
   }
 
-  _snow(forecastData) {
-    return this.shadowRoot.querySelector('rain-helper').totalSnow(forecastData);
+  _snow(dayData) {
+    return this.shadowRoot.querySelector('rain-helper').totalSnow(dayData);
   }
 
   _round(item){

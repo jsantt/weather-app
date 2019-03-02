@@ -17,7 +17,7 @@ class TemperatureLine extends PolymerElement {
         overflow: visible;
       }
     </style>
-    [[_createChart(forecastData)]]
+    [[_createChart(dayData)]]
 
     <!-- placeholder for chart -->
     <div class="chart" id="chart"></div>
@@ -31,7 +31,7 @@ class TemperatureLine extends PolymerElement {
       minTemperature: {
         type: Number
       },
-      forecastData: {
+      dayData: {
         type: Array
       },
       _chartHeight: {
@@ -47,10 +47,10 @@ class TemperatureLine extends PolymerElement {
   /**
    * Chart containing rain bars, temperature line, past time shadow and present time triangle
    */
-  _createChart(forecastData) {
+  _createChart(dayData) {
     let svg = this._svg();
     
-    let line = this._temperatureLine(this._temperatureCoordinates(forecastData));
+    let line = this._temperatureLine(this._temperatureCoordinates(dayData));
     svg.appendChild(line);
 
     // remove previous childs

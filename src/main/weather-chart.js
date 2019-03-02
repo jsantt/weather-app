@@ -22,7 +22,7 @@ class WeatherChart extends PolymerElement {
         z-index: -1;
       }
     </style>
-    [[_createChart(forecastData)]]
+    [[_createChart(dayData)]]
 
     <!-- placeholder for chart -->
     <div class="chart" id="chart"></div>
@@ -33,7 +33,7 @@ class WeatherChart extends PolymerElement {
 
   static get properties() {
     return {
-      forecastData: {
+      dayData: {
         type: Array
       },
     
@@ -54,10 +54,10 @@ class WeatherChart extends PolymerElement {
   /**
    * Chart containing rain bars and temperature line
    */
-  _createChart(forecastData) {
+  _createChart(dayData) {
     let svg = this._svg();
 
-    this._rainBars(svg, forecastData);
+    this._rainBars(svg, dayData);
     
     // remove previous childs
    
