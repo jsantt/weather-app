@@ -49,8 +49,7 @@ class LocationSelector extends PolymerElement {
             id="placeSelection"
             item-label-path="city"
             item-value-path="coordinates"
-            on-opened-changed="_openedChanged"
-            aria-label="paikka">
+            on-opened-changed="_openedChanged">
            
             <template>
               

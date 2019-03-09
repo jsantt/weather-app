@@ -2,7 +2,7 @@ import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
 
 // lazy-resources are loaded in the app code
-//import './lazy-resources.js' 
+import './lazy-resources.js' 
 
 import './header/location-selector.js';
 
@@ -201,15 +201,15 @@ class WeatherApp extends PolymerElement {
    */
   _loadLazyResources() {
       afterNextRender(this, () => {
-        import('./lazy-resources.js')
-        .then(() => {
+        //import('./lazy-resources.js')
+        //.then(() => {
           if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('service-worker.js', {scope: '/'});
           }
-        })
+        /*})
         .catch(error => {
           console.log('error loading lazy resources: ' + error);
-        });
+        });*/
       });
   }
 

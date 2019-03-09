@@ -3,10 +3,12 @@ import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import './day-item.js';
 import './rain-amount.js';
 import './rain-helper.js';
+
 import './snow-amount.js';
 import './temperature-line.js';
 import './weather-chart.js';
 
+import './wind-speed.js';
 import '../weather-symbol.js';
 import './wind-helper.js';
 import '../wind-icon.js';
@@ -172,7 +174,6 @@ class WeatherDay extends PolymerElement {
 
       .wind-warning {
         padding-left: 0.5rem;
-        color: #0060e8;
       }
       .rain-amount {
         float: right;

@@ -3,12 +3,19 @@ import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 class WindSpeed extends PolymerElement {
   static get template() {
     return html`
-      
+      <style>
+        :host {
+          color: #0060e8;
+        }
+        svg {
+          fill: #0060e8;
+        }
+      </style>
       <template is="dom-repeat" items="[[_arrayForRepeater(windRating)]]">
         <svg
         class="wind-icon"
-        width="16" 
-        height="16" 
+        width="14" 
+        height="14" 
         viewBox="0 0 512 512">
         <g>
             <g>
@@ -32,8 +39,9 @@ class WindSpeed extends PolymerElement {
                 C408.449,318.905,380.062,290.517,345.169,290.517z"/>
             </g>
         </g>
-        </svg> [[windDescription]]
+        </svg>
     </template>
+    [[windDescription]]
     `;
   }
 
