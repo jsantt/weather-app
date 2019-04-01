@@ -11,8 +11,8 @@ class WindIcon extends PolymerElement {
       }
 
       .windIcon--large {
-        height: 32px;
-        width: 32px;
+        height: 36px;
+        width: 36px;
 
         transition: all .2s ease-in-out;
       }
@@ -36,13 +36,6 @@ class WindIcon extends PolymerElement {
         stroke: var(--color-black);
       }
 
-      .warning--color1 {
-        fill: orange;
-      }
-      .warning--color2 {
-        fill: red;
-      }
-
     </style>
 
     <span id="iconPlaceholder"></span>
@@ -53,12 +46,6 @@ class WindIcon extends PolymerElement {
 
   static get properties() {
     return {
-      windColor: {
-        type: String
-      },
-      windGustColor: {
-        type: String
-      },
       degrees: {
         type: Number
       },
@@ -134,7 +121,7 @@ class WindIcon extends PolymerElement {
   _windIconArrow(color){
 
     let line = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
-    line.setAttribute('class', `windIcon_arrow warning--color${color}`);
+    line.setAttribute('class', `windIcon_arrow`);
 
     line.setAttribute('stroke-width', '3');      
     line.setAttribute('points', '36,29 50,10 64,29');

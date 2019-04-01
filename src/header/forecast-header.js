@@ -17,7 +17,7 @@ class ForecastHeader extends PolymerElement {
 
       .header {
         display: grid;
-        grid-template-columns: 3rem 1fr 1fr 3rem;
+        grid-template-columns: 2.75rem 1fr 1fr 2.75rem;
         grid-template-rows: 1rem 3.5rem 3.5rem 3rem;
         grid-template-areas:
           'left empty empty aside'    
@@ -28,11 +28,24 @@ class ForecastHeader extends PolymerElement {
         align-items: center;
       }
      
-
+      geolocate-button {
+       
+        position: fixed;
+        right: 0px;
+        bottom: 25vh;
+        z-index: 1000;
+        border-bottom-left-radius: 2px;
+        background-color: var(--color-palette-blue);
+        border-top-left-radius: 2px;
+        padding: 0.75rem 0.35rem;
+        opacity: 0.9;
+        line-height: 1;
+      }
 
       .left { 
         grid-area: left;
         height: 100%;
+        padding-top: 1rem;
       }
 
       weather-symbol {
@@ -42,6 +55,8 @@ class ForecastHeader extends PolymerElement {
 
       .place {
         text-align: center;
+        display: flex;
+        justify-content: center;
         margin-left: 1.8rem;
       }      
       
@@ -51,15 +66,16 @@ class ForecastHeader extends PolymerElement {
       
       aside {
         grid-area: aside;
-        height: 100%;  
+        height: 100%;
+        padding-top: 1.6rem;
+        opacity: 0.8;
       }
 
       .aside-item {
         color: var(--color-white);
         font-size: var(--font-size-xsmall);
+        
         text-align: center;
-        border-radius: 45%;
-        padding: 0.5rem;
       }
       .aside-item + .aside-item{
         padding-top: 0.25rem;
@@ -98,14 +114,11 @@ class ForecastHeader extends PolymerElement {
       }
 
       .feelsLikeValue {
-        font-size: var(--font-size-small);
+        font-size: 20px;
         font-weight: 900;
       }
-      .wind {
-        padding-right: 0;
-      }
-      .feelsLike {
-        padding-right: 0.29rem;
+      #wind{
+        padding-left: 0.25rem;
       }
 
       weather-symbol-name {
@@ -120,14 +133,12 @@ class ForecastHeader extends PolymerElement {
 
         <section class="left">
 
-          <geolocate-button 
-            class="aside-item"
-            hide="[[loading]]">
-          </geolocate-button>
-
         </section>
         <div class="circle"></div>
         <h1 class="place">
+          <geolocate-button 
+            hide="[[loading]]">
+          </geolocate-button>
           <location-selector 
             loading="[[loading]]" 
             place="[[place]]">
@@ -154,10 +165,11 @@ class ForecastHeader extends PolymerElement {
             on-click="_toggleFeelsLike"
             class="feelsLike aside-item">
 
-            <svg class="aside-icon" width="32" height="32">
+            <svg class="aside-icon" viewBox="-4 -4 40 40" width="32" height="32">
+              
+              <ellipse class= body ry="15.1" rx="14.9" cy="29" cx="15.9" stroke="#000" fill="#fff"/>
               <ellipse class="head" stroke="#000" ry="7.3" rx="7.5" cy="8.2" cx="16" fill="#ffcdd2"/>
-              <ellipse class= body ry="15.1" rx="14.9" cy="30.9" cx="15.9" stroke="#000" fill="#fff"/>
-              <text text-anchor="middle" x="15" y="30" class="feelsLikeValue">[[selectedData.feelsLike]]</text>
+              <text text-anchor="middle" x="15" y="34" class="feelsLikeValue">[[selectedData.feelsLike]]</text>
             </svg>
             <div class="item-text">tuntuu</div>
           </div>
@@ -168,8 +180,7 @@ class ForecastHeader extends PolymerElement {
             on-click="_toggleWind">
 
             <wind-helper></wind-helper>
-            <wind-icon 
-              class="windIcon"
+            <wind-icon
               degrees="[[selectedData.windDirection]]" 
               large
               wind-speed="[[selectedData.wind]]"
@@ -185,8 +196,8 @@ class ForecastHeader extends PolymerElement {
           
           <svg
             class="aside-icon"
-            width="36px"
-            height="36px"
+            width="32px"
+            height="32px"
             viewBox="0 0 32 32">
 
             <path stroke="#000" stroke-width="1" fill="#fff" d="m19.27125,18.08333l0,-13.16322c0,-1.70222 -1.38385,-3.08056 -3.08423,-3.08056c-1.70406,0 -3.0824,1.37834 -3.0824,3.08056l0,13.05924c-1.93777,1.06182 -3.25354,3.12013 -3.25354,5.48483c0,3.45229 2.799,6.25037 6.25037,6.25037c3.4532,0 6.25036,-2.79808 6.25036,-6.25037c0.00092,-2.29385 -1.23848,-4.29511 -3.08056,-5.38085z"/>

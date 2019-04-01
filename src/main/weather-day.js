@@ -269,8 +269,6 @@ class WeatherDay extends PolymerElement {
               <div class="wind">
                 <wind-icon 
                   class$="[[_getClasses(entry.past, 'symbol', 'past-hour')]]"
-                  wind-color="[[_windClassification(entry.wind)]]"
-                  wind-gust-color="[[_windClassification(entry.windGust)]]"
                   degrees="[[entry.windDirection]]" 
                   wind-speed="[[entry.wind]]"
                   wind-gust-speed="[[entry.windGust]]">
@@ -371,10 +369,6 @@ class WeatherDay extends PolymerElement {
   
   _windRating(dayData) {
     return this.shadowRoot.querySelector('wind-helper').windWarning(dayData).rating;
-  }
-
-  _windClassification(windSpeed){
-    return this.shadowRoot.querySelector('wind-helper').windClassification(windSpeed);
   }
 
   _everyFourth(index, item) {

@@ -19,7 +19,8 @@ class LocationSelector extends PolymerElement {
         color: var(--color-black);
       
         margin: 0 0 0.2rem 0;
-	    	text-align: center;  
+	    	text-align: center;
+        padding-bottom: 0.5rem;
       }
 
       vaadin-combo-box {
@@ -35,37 +36,33 @@ class LocationSelector extends PolymerElement {
       }
 
     </style>
-
     
-    <div class="locate" id="locate">
-        
-        <template is="dom-if" if="[[loading]]">
-          <paper-spinner-lite class="locate_loadIcon" active=""></paper-spinner-lite>
-        </template>
+    <template is="dom-if" if="[[loading]]">
+      <paper-spinner-lite class="locate_loadIcon" active=""></paper-spinner-lite>
+    </template>
 
-        <template is="dom-if" if="[[!loading]]">
+    <template is="dom-if" if="[[!loading]]">
+    
+      <vaadin-combo-box
+        id="placeSelection"
+        item-label-path="city"
+        item-value-path="coordinates"
+        on-opened-changed="_openedChanged">
         
-          <vaadin-combo-box
-            id="placeSelection"
-            item-label-path="city"
-            item-value-path="coordinates"
-            on-opened-changed="_openedChanged">
-           
-            <template>
-              
-              <template is="dom-if" if="[[_isHighlighted(index)]]">
-                <div>[[item.city]]</div>
-              </template>
-              <template is="dom-if" if="[[!_isHighlighted(index)]]">
-                <div style="color:#916c25;">[[item.city]]</div>
-              </template>
-      
-            </template>
-          </vaadin-combo-box>
-        
+        <template>
+          
+          <template is="dom-if" if="[[_isHighlighted(index)]]">
+            <div>[[item.city]]</div>
+          </template>
+          <template is="dom-if" if="[[!_isHighlighted(index)]]">
+            <div style="color:#916c25;">[[item.city]]</div>
+          </template>
+  
         </template>
-    </div>
-`;
+      </vaadin-combo-box>
+    
+    </template>
+  `;
   }
 
   static get is() { return 'location-selector'; }
