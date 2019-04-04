@@ -37,7 +37,7 @@ class ForecastHeader extends PolymerElement {
         border-bottom-left-radius: 2px;
         background-color: var(--color-palette-blue);
         border-top-left-radius: 2px;
-        padding: 0.75rem 0.35rem;
+        padding: 0.75rem 0.3rem 0.75rem 0.4rem;
         opacity: 0.9;
         line-height: 1;
       }
@@ -123,7 +123,6 @@ class ForecastHeader extends PolymerElement {
 
       weather-symbol-name {
         grid-area: text;
-        font-size: var(--font-size-medium);
         text-align: center;
       }
 
@@ -158,7 +157,7 @@ class ForecastHeader extends PolymerElement {
         <weather-symbol-name
           symbol-id="[[selectedData.symbol]]">
         </weather-symbol-name>
-
+        
         <aside>
 
           <div id="feelsLike" 

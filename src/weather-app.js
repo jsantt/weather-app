@@ -22,14 +22,12 @@ class WeatherApp extends PolymerElement {
       :host {
         display: block;
 
-        /* don't use these directly (except below) */
         --color-palette-yellow: #ffffd1;/*rgb(255,254,223);#f4f4f4; #ffffd1;*/
         --color-palette-brown: #916c25;
         --color-palette-orange: #ffa800;
         --color-palette-blue: #0060e8;
         --color-palette-lightBlue: #84b9ff;
-
-        /* pure black or white can be too hard, use these instead  */        
+     
         --color-black: #111;
         --color-white: #fff;
         --color-gray--dark: #555;

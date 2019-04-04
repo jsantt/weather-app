@@ -43,7 +43,7 @@ class WeatherDay extends PolymerElement {
 
       .day {
         background-color: var(--color-dayHeader);
-        border-top: 2px solid var(--color-dayHeader-delimiter);
+        /*border-top: 2px solid var(--color-dayHeader-delimiter);*/
 
         color: var(--color-dayHeader-font);
         	
@@ -55,7 +55,12 @@ class WeatherDay extends PolymerElement {
       }
 
       .day-name {
+        display: inline-block;
+        font-size: var(--font-size-small);
         text-transform: uppercase;
+        font-weight: 400;
+        padding: 0;
+        margin: 0;
       }
 
       .symbol_svg {
@@ -200,9 +205,7 @@ class WeatherDay extends PolymerElement {
       <div class="weatherDay_grid">
         
         <div class="day">
-            <span class="day-name">[[_day(dayNumber)]]</span>
-            <span class="separator"></span>
-            <span class="day-name">[[_weekday(dayNumber)]]</span>
+            <h3 class="day-name">[[_day(dayNumber)]] [[_weekday(dayNumber)]]</h3>
 
             <span class="wind-warning">
               <wind-helper></wind-helper>

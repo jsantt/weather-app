@@ -52,7 +52,7 @@ class WeatherChart extends PolymerElement {
   }
 
   /**
-   * Chart containing rain bars and temperature line
+   * Chart containing rain bars
    */
   _createChart(dayData) {
     let svg = this._svg();

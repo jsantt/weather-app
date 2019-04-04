@@ -38,6 +38,9 @@ class WeatherFooter extends PolymerElement {
           margin: 0;
           padding: 0;
         }
+        a:link, a:visited {
+          color: var(--color-palette-blue);
+        }
 
       </style>
 

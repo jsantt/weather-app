@@ -10,9 +10,14 @@ class WeatherSymbolName extends PolymerElement {
         padding-top: 0.5rem;
       }
 
+      h2{
+        font-size: var(--font-size-medium);
+        font-weight: 400;
+      }
+
     </style>
     
-    [[_symbolName(symbolId)]]
+    <h2>[[_symbolName(symbolId)]]</h2>
 `;
   }
 
