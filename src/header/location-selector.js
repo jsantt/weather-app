@@ -99,7 +99,6 @@ class LocationSelector extends PolymerElement {
 
   ready() {
     super.ready();
-    console.log("READY");
 
     this._notifyPreviousPlace();
   }
@@ -116,7 +115,6 @@ class LocationSelector extends PolymerElement {
     }
     // TO DO: UGLY HACK, without timeout parent won't catch the event
     setTimeout(() => {
-      console.log("new location: " + currentPlace);
       this._dispatchEvent('location-selector.location-changed', currentPlace);
     }, 50);
   }

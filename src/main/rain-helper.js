@@ -12,7 +12,6 @@ class RainHelper extends PolymerElement {
     const RAIN_SYMBOLS = [22, 23, 31, 32, 33, 63, 64, 72, 73, 81, 82, 83];
 
     let rain;
-    console.log("day");
     
     const total = weatherDay.reduce((previous, item) => {
       rain = 0;
@@ -37,7 +36,6 @@ class RainHelper extends PolymerElement {
       
       if(SNOW_SYMBOLS.includes(item.symbol)) {
         snow = (0.016 * Math.pow(item.temperature, 2) + 1) * item.rain;
-        console.log(item.rain, item.temperature, snow);
       }
   
       return previous + snow;

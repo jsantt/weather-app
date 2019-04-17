@@ -25,7 +25,7 @@ class WeatherDay extends PolymerElement {
 
         --color-dayHeader-font: var(--color-gray--dark);
 
-        --color-toggle-background: #00000005;
+        --color-toggle-background: rgb(250,250,250);
 
       }
 
@@ -93,6 +93,10 @@ class WeatherDay extends PolymerElement {
         color: var(--color-gray--light);
       }
 
+      .dot--past {
+        color: var(--color-dayHeader);
+      }
+
       .past-hour {
         opacity: 0.1;
       }
@@ -127,6 +131,7 @@ class WeatherDay extends PolymerElement {
         background-color: var(--color-toggle-background);
         padding-left: 0.5rem;
         grid-column: span 25;
+        z-index:11;
       }
 
     
@@ -166,9 +171,11 @@ class WeatherDay extends PolymerElement {
         padding-bottom: 0.5rem;
 
         background-color: var(--color-toggle-background);
+        z-index:11;
       }
       .feelsLike--empty, .wind--empty{
         background-color: var(--color-toggle-background);
+        z-index:11;
       }
 
 
@@ -193,6 +200,7 @@ class WeatherDay extends PolymerElement {
         grid-column: span 25;
         grid-row: 12;
         padding-top: 1.5rem;
+        z-index: 10;
       }
 
       .feelsLikeValue {
@@ -244,7 +252,7 @@ class WeatherDay extends PolymerElement {
           </template>
        
           <template is="dom-if" if="[[!_isFourth(index)]]">
-            <div class$="[[_getClasses(entry.past, 'hour hour--dot', 'hour--past')]]">
+            <div class$="[[_getClasses(entry.past, 'hour hour--dot', 'dot--past')]]">
               .
             </div>
           </template>

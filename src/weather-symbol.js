@@ -13,6 +13,7 @@ class WeatherSymbol extends PolymerElement {
       .symbol {
         --iron-icon-height: 45px;
         --iron-icon-width: 45px;
+        z-index:2;
       }
 
       .symbol--large {

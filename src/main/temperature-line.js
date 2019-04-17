@@ -10,10 +10,10 @@ class TemperatureLine extends PolymerElement {
       .chart {
         position: relative;
       }      
-      .svg {
+      svg {
         position: absolute;
         bottom: 0;
-       
+        /*border: 1px dashed red;*/
         overflow: visible;
       }
     </style>
@@ -37,6 +37,14 @@ class TemperatureLine extends PolymerElement {
       _chartHeight: {
         type: Number,
         value: 25
+      },
+      _lineVariance: {
+        type: Number,
+        value: 5,
+      }, 
+      _bottomMargin: {
+        type: Number,
+        value: 0
       }
     };
   }
@@ -49,8 +57,13 @@ class TemperatureLine extends PolymerElement {
    */
   _createChart(dayData) {
     let svg = this._svg();
+
+    const coordinates = this._temperatureCoordinates(dayData);
+    const firstX = this._xCoordinate(this._getFirstTemperatureIndex(dayData));
+    const lastX = this._xCoordinate(this._getLastTemperatureIndex(dayData));
     
-    let line = this._temperatureLine(this._temperatureCoordinates(dayData));
+    let line = this._temperatureLine(coordinates, firstX, lastX);
+    //line.appendChild(this._gradient());
     svg.appendChild(line);
 
     // remove previous childs
@@ -72,42 +85,95 @@ class TemperatureLine extends PolymerElement {
     svg.setAttribute('height', this._chartHeight);
     
     svg.setAttribute('preserveAspectRatio','none');
-    svg.setAttribute('class', 'svg');
     return svg;
   }
 
-  _temperatureLine(coordinates){
+  _temperatureLine(coordinates, firstX, lastX){
     let line = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
-    line.setAttribute('fill', 'none');
+    line.setAttribute('fill', '#fe0101');
+    line.setAttribute('fill-opacity', '0.045');
     line.setAttribute('stroke', '#fe0101');
 
-    line.setAttribute('stroke-width', '2');
-    line.setAttribute('stroke-opacity', '0.15');      
-    line.setAttribute('points', coordinates);
+    line.setAttribute('stroke-width', '0.3');
+    line.setAttribute('stroke-opacity', '0.10');      
+    line.setAttribute('points', `${firstX},50 ${coordinates} ${lastX} 50`);
 
     return line;
+  }
 
+  _gradient() {
+    let gradient = document.createElementNS('http://www.w3.org/2000/svg','linearGradient');
+
+    // Store an array of stop information for the <linearGradient>
+    var stops = [
+      {
+          "color": "#2121E5",
+          "offset": "0%"
+      },{
+          "color": "#206DFF",
+          "offset": "100%"
+      }
+    ];
+
+    // Parses an array of stop information and appends <stop> elements to the <linearGradient>
+    for (var i = 0, length = stops.length; i < length; i++) {
+
+      // Create a <stop> element and set its offset based on the position of the for loop.
+      var stop = document.createElementNS(svgns, 'stop');
+      stop.setAttribute('offset', stops[i].offset);
+      stop.setAttribute('stop-color', stops[i].color);
+
+      // Add the stop to the <lineargradient> element.
+      gradient.appendChild(stop);
+    }
+    return gradient;
+  }
+
+  _getFirstTemperatureIndex(dayData) {
+
+    function hasTemperature(element) {
+      return !Number.isNaN(element.temperature);
+    }
+
+    return dayData.findIndex(hasTemperature);
+  }
+
+  _getLastTemperatureIndex(dayData) {
+
+    function hasTemperature(element) {
+      return !Number.isNaN(element.temperature);
+    }
+
+    return dayData.length - 1 - dayData.slice().reverse().findIndex(hasTemperature);
   }
 
   _temperatureCoordinates(data){
     let points = '';
-
-    // bigger number indicate more variance in line height 
-    const lineVariance = 5; 
-    
-    // Min margin for temperature graph
-    const bottomMargin = 0;
-    const baseX = this._chartHeight + this.minTemperature*lineVariance - bottomMargin;
-
+    const baseY = this._maxYCoordinate(this._lineVariance, this._bottomMargin);
 
     for(let i = 0; i < data.length; i++) {
         if(!Number.isNaN(data[i].temperature)) {
-          points = points + (i*10) + ',' + (baseX + data[i].temperature*-lineVariance) + ' '; 
+          points = `${points}${this._xCoordinate(i)},
+                    ${this._yCoordinate(baseY, data[i].temperature, this._lineVariance)} `; 
         }
     }
 
     return points;
+  } 
+  _xCoordinate(index) {
+    return index * 10;
   }
-}
+  _yCoordinate(baseY, temperature, lineVariance) {
+    return baseY + temperature * -lineVariance;
+  }
+ 
+  /**
+   * @param { Number} lineHeightVariance - bigger number indicate more variance in line height
+   * @param { Number } marginBottom -  Min margin for temperature graph
+   */
+  _maxYCoordinate(lineHeightVariance, marginBottom){
+    return this._chartHeight + this.minTemperature*lineHeightVariance - marginBottom;
+  }
 
+}
 window.customElements.define(TemperatureLine.is, TemperatureLine);
