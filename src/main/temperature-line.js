@@ -1,27 +1,63 @@
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-/**
- * @customElement
- * @polymer
- */
-class TemperatureLine extends PolymerElement {
-  static get template() {
-    return html`
-    <style>
+import { css, html, LitElement } from 'lit-element';
+
+class TemperatureLine extends LitElement {
+  static get styles() {
+    return css`
+      :host {
+        --color-30: rgb(255, 172, 172);
+        --color-30: rgb(255, 182, 182);
+        --color-20: rgb(255, 193, 193);
+        --color-15: rgb(255, 205, 205);
+        --color-10: rgb(255, 215, 215);
+        --color-5: rgb(255, 225, 225);
+        --color-0: rgb(255, 236, 236);
+        --color--5: rgb(239,244,252);
+        --color--10: rgb(220, 233, 250);
+        --color--15: rgb(143,177,211);
+        --color--20: rgb(202,221,247);
+      }
       .chart {
         position: relative;
-      }      
+      }    
       svg {
         position: absolute;
         bottom: 0;
-        /*border: 1px dashed red;*/
         overflow: visible;
+        animation: growTemperatureLine 0.2s ease-out;
       }
-    </style>
-    [[_createChart(dayData)]]
 
-    <!-- placeholder for chart -->
-    <div class="chart" id="chart"></div>
-`;
+      @keyframes growTemperatureLine {
+        0% { height: 0; }
+        100% { height: 25; }
+      }
+    `
+  }
+  render() {
+    return html`
+      <svg>
+      <defs>
+          <!--linearGradient id="grad1" x1="0%" y1="100%" x2="0" y2="0">
+            <stop offset="0%" stop-color="rgb(255,244,244)" />
+            <stop offset="100%" stop-color="rgb(255,238,238)" />
+          </linearGradient-->
+        </defs>
+      </svg>
+      <!-- placeholder for chart -->
+      <div class="chart"></div>
+    `;
+  }
+  constructor() {
+    super();
+
+    this._chartHeight = 25;
+    this._lineVariance = 5;
+    this._bottomMargin = 0;
+  }
+
+  firstUpdated() {
+    setTimeout(() => {
+      this._createChart(this.dayData);
+    },600)
   }
 
   static get is() { return 'temperature-line'; }
@@ -35,27 +71,23 @@ class TemperatureLine extends PolymerElement {
         type: Array
       },
       _chartHeight: {
-        type: Number,
-        value: 25
+        type: Number
       },
       _lineVariance: {
-        type: Number,
-        value: 5,
+        type: Number
       }, 
       _bottomMargin: {
-        type: Number,
-        value: 0
+        type: Number
       }
     };
-  }
-  ready() {
-    super.ready();
   }
 
   /**
    * Chart containing rain bars, temperature line, past time shadow and present time triangle
    */
   _createChart(dayData) {
+    
+
     let svg = this._svg();
 
     const coordinates = this._temperatureCoordinates(dayData);
@@ -67,12 +99,11 @@ class TemperatureLine extends PolymerElement {
     svg.appendChild(line);
 
     // remove previous childs
-   
-    if(this.$.chart.children.length > 0) {
-      this.$.chart.removeChild(this.$.chart.children[0]);
-    }
+    //if(this._$("#chart").children.length > 0) {
+      //this._$("#chart").removeChild(this._$("#chart").children[0]);
+    //}
 
-    this.$.chart.appendChild(svg);
+    this._$(".chart").appendChild(svg);
   }
 
   _svg(){
@@ -90,11 +121,11 @@ class TemperatureLine extends PolymerElement {
 
   _temperatureLine(coordinates, firstX, lastX){
     let line = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
-    line.setAttribute('fill', '#fe0101');
-    line.setAttribute('fill-opacity', '0.045');
+    line.setAttribute('fill', 'rgb(255,241,241)');
+    line.setAttribute('fill-opacity', '1');
     line.setAttribute('stroke', '#fe0101');
 
-    line.setAttribute('stroke-width', '0.3');
+    line.setAttribute('stroke-width', '0');
     line.setAttribute('stroke-opacity', '0.10');      
     line.setAttribute('points', `${firstX},50 ${coordinates} ${lastX} 50`);
 
@@ -173,6 +204,18 @@ class TemperatureLine extends PolymerElement {
    */
   _maxYCoordinate(lineHeightVariance, marginBottom){
     return this._chartHeight + this.minTemperature*lineHeightVariance - marginBottom;
+  }
+
+  _getMinColor(minTemp) {
+    const red = Math.round(minTemp) * 10;
+    const redColor = Math.min(red, 255);
+
+    console.log(minTemp, redColor);
+
+  }
+
+  _$(selector) {
+    return this.shadowRoot.querySelector(selector); 
   }
 
 }

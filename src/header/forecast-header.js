@@ -13,6 +13,10 @@ class ForecastHeader extends PolymerElement {
       :host {
         display: block;
         background-color: var(--color-primary);
+        
+        /*background: linear-gradient(90deg, rgb(176, 224, 230), rgb(215,239,242));
+        background: linear-gradient(-70deg, #84b9ffed 20%, var(--color-primary) 20%), rgb(50,50,50);
+        background: linear-gradient(90deg, rgb(255, 225, 225), rgb(255, 215, 215));*/
       }
 
       .header {
@@ -33,7 +37,7 @@ class ForecastHeader extends PolymerElement {
         position: fixed;
         right: 0px;
         bottom: 25vh;
-        z-index: 1000;
+        z-index: 100;
         border-bottom-left-radius: 2px;
         background-color: var(--color-palette-blue);
         border-top-left-radius: 2px;
@@ -72,7 +76,6 @@ class ForecastHeader extends PolymerElement {
       }
 
       .aside-item {
-        color: var(--color-white);
         font-size: var(--font-size-xsmall);
         
         text-align: center;

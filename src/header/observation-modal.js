@@ -20,7 +20,7 @@ class ObservationModal extends PolymerElement {
         position: absolute;
         right: 1rem;
 
-        z-index: 11;
+        z-index: 100;
       }
       .close:hover,
       .close:focus {
@@ -30,13 +30,13 @@ class ObservationModal extends PolymerElement {
       }
 
       section {
-        position: fixed; /* Stay in place */
-        z-index: 10; 
+        position: fixed;
+        z-index: 100; 
         left: 0;
         top: 0;
-        width: 100%; /* Full width */
-        height: 100%; /* Full height */
-        overflow: auto; /* Enable scroll if needed */
+        width: 100%;
+        height: 100%;
+        overflow: auto;
         background-color: rgb(0,0,0); /* Fallback color */
         background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
       }

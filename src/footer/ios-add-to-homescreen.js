@@ -32,7 +32,7 @@ class iosAddToHomescreen extends PolymerElement {
        
 
         padding: 0.7rem 0;
-        z-index:10;
+        z-index:100;
       }
 
       .test{

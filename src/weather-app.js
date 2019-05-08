@@ -41,7 +41,6 @@ class WeatherApp extends PolymerElement {
 
         --line-height--tight: 1;
         --padding-header-footer: 1rem;
-
       }
 
       div[hidden] {

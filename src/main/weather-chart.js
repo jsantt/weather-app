@@ -10,6 +10,7 @@ class WeatherChart extends PolymerElement {
 
       .rainBar {
         fill: var(--color-primary);
+        animation: growRainBars 0.2s ease-out;
       }
 
       .svg {
@@ -19,7 +20,12 @@ class WeatherChart extends PolymerElement {
         bottom: 0;
 
         overflow: visible;
-        z-index: -1;
+      }
+
+
+      @keyframes growRainBars {
+        0% { height: 0; }
+        100% { height: 25; }
       }
     </style>
     [[_createChart(dayData)]]

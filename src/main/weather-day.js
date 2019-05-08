@@ -25,7 +25,7 @@ class WeatherDay extends PolymerElement {
 
         --color-dayHeader-font: var(--color-gray--dark);
 
-        --color-toggle-background: rgb(250,250,250);
+        --color-toggle-background: rgba(240,240,240, 0.8);
 
       }
 
@@ -85,7 +85,7 @@ class WeatherDay extends PolymerElement {
       }
       
       .hour--dot {
-        color: var(--color-gray--light);
+        color: #fff;
         font-size: 0.75rem;
       }
 
@@ -117,7 +117,7 @@ class WeatherDay extends PolymerElement {
 
         font-size: var(--font-size-medium);
         text-align: center;
-        z-index: 1;
+        z-index: 2;
       }
 
        .temperature_line {
@@ -131,7 +131,7 @@ class WeatherDay extends PolymerElement {
         background-color: var(--color-toggle-background);
         padding-left: 0.5rem;
         grid-column: span 25;
-        z-index:11;
+        z-index:2;
       }
 
     
@@ -171,11 +171,11 @@ class WeatherDay extends PolymerElement {
         padding-bottom: 0.5rem;
 
         background-color: var(--color-toggle-background);
-        z-index:11;
+        z-index:2;
       }
       .feelsLike--empty, .wind--empty{
         background-color: var(--color-toggle-background);
-        z-index:11;
+        z-index:2;
       }
 
 
@@ -200,7 +200,7 @@ class WeatherDay extends PolymerElement {
         grid-column: span 25;
         grid-row: 12;
         padding-top: 1.5rem;
-        z-index: 10;
+        z-index: 1;
       }
 
       .feelsLikeValue {
