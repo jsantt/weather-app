@@ -190,6 +190,7 @@ class WeatherApp extends PolymerElement {
 
   _onNewLocation(event) {
     this.weatherLocation = event.detail;
+    console.log(this.weatherLocation);
   }
 
   /** 

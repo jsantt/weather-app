@@ -22,7 +22,8 @@
     "manifest.json",
     "node_modules/@webcomponents/webcomponentsjs/**",
     "src/lazy-resources.js",
-    "robots.txt"
+    "robots.txt",
+    "sitemap.xml"
   ],
   "moduleResolution": "node",
   "npm": true,

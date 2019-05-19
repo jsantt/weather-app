@@ -19,6 +19,16 @@ class ForecastHeader extends PolymerElement {
         background: linear-gradient(90deg, rgb(255, 225, 225), rgb(255, 215, 215));*/
       }
 
+      .visually-hidden {
+          position: absolute !important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding:0 !important;
+          border:0 !important;
+          height: 1px !important; 
+          width: 1px !important; 
+          overflow: hidden;
+        }
+
       .header {
         display: grid;
         grid-template-columns: 2.75rem 1fr 1fr 2.75rem;
@@ -64,7 +74,7 @@ class ForecastHeader extends PolymerElement {
         margin-left: 1.8rem;
       }      
       
-      h1 {
+      h2 {
         grid-area: place;
       }
       
@@ -132,12 +142,12 @@ class ForecastHeader extends PolymerElement {
     </style>
     <header>
       <div class="header">
-
+        <h3 class="visually-hidden">sää nyt</h3>
         <section class="left">
 
         </section>
         <div class="circle"></div>
-        <h1 class="place">
+        <h2 class="place">
           <geolocate-button 
             hide="[[loading]]">
           </geolocate-button>
@@ -145,7 +155,7 @@ class ForecastHeader extends PolymerElement {
             loading="[[loading]]" 
             place="[[place]]">
           </location-selector>
-        </h1>
+        </h2>
 
         <div class="temperature">
           [[_round(selectedData.temperature)]]

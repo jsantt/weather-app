@@ -107,6 +107,17 @@
           padding: 0.3rem;
         }
 
+        .visually-hidden {
+          position: absolute !important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding:0 !important;
+          border:0 !important;
+          height: 1px !important; 
+          width: 1px !important; 
+          overflow: hidden;
+        }
+
+
         .sun-icon {
           display: block;
           margin: auto;
@@ -166,6 +177,7 @@
 
   </head>
   <body>
+    <h1 class="visually-hidden">Sääennuste</h1>
     <!-- show sun icon even before polymer is loaded -->
     <div id="loading-view" class="loading-view">
       <svg 
