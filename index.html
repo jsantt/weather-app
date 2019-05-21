@@ -198,7 +198,7 @@
     <weather-app></weather-app>
 
     <script>
-      document.addEventListener('forecast-data.fetch-done', (event) => 
+      document.addEventListener('forecast-data.fetch-done', function (event)
       {
         let loadingView = document.getElementById('loading-view');
         if(loadingView) {

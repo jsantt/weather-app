@@ -12,6 +12,8 @@ import './main/weather-days.js';
 import './footer/weather-footer.js';
 import './forecast-data.js';
 
+import './footer/sunrise-sunset.js';
+
 
 class WeatherApp extends PolymerElement {
 
@@ -115,6 +117,8 @@ class WeatherApp extends PolymerElement {
           <!-- footer -->
           <weather-footer observation-data="[[observationData]]">
           </weather-footer>
+ 
+          <sunrise-sunset location="[[this.weatherLocation]]""></sunrise-sunset>
         
         </div>
       </template>
