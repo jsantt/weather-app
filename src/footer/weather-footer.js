@@ -49,6 +49,15 @@ class WeatherFooter extends PolymerElement {
           <p class="footer_header">Säädata by Ilmatieteen laitos | avoin data</p>
 
           <section class="footer_section">
+            <h3>AURINGON VAIHEET TÄNÄÄN</h3>  
+            <p class="info">
+              <slot></slot>
+            </p>
+          </section>
+          
+
+          <section class="footer_section">
+            <h3>TIETOJA PALVELUSTA</h3>  
             <p class="info">
               Sekä ennuste että havaintoasemien sää 
               helposti luettavassa muodossa. Säätiedot perustuvat Ilmatieteen laitoksen tarkkaan

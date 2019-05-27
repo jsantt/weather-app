@@ -79,7 +79,6 @@ class ForecastData extends PolymerElement {
     this.loading = true;
 
     const harmonieRequest = this._prepareRequest('weatherHarmonie', this._getHarmonieParams(this.weatherLocation));
-
     harmonieRequest.completes
       .then((data) => {
         this._sendNotification(
@@ -119,7 +118,7 @@ class ForecastData extends PolymerElement {
     if(location.coordinates) {
       params.latlon = location.coordinates;
     }
-    else {
+    else { // TODO: remove this branch if unused?
       params.place = location.city;
     }
     

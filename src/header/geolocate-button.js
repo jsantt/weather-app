@@ -63,7 +63,7 @@ class GeolocateButton extends PolymerElement {
             const coordinates = position.coords.latitude + ',' + position.coords.longitude;
             const url = position.coords.latitude + '-' + position.coords.longitude;
 
-            this._dispatchEvent('location-selector.location-changed', this._formPlaceObject(null, coordinates));
+            this._dispatchEvent('location-selector.location-changed', this._formPlaceObject(coordinates));
 
           }, error => {
             this._dispatchEvent('location-selector.locate-error', {text: 'salli paikannus nähdäksesi paikkakuntasi sää'});
@@ -79,8 +79,8 @@ class GeolocateButton extends PolymerElement {
     this.dispatchEvent(event);
   }
 
-  _formPlaceObject(city, coordinates) {
-    return {city: city, coordinates: coordinates};
+  _formPlaceObject(coordinates) {
+    return {city: undefined, coordinates: coordinates};
   }    
 }
 

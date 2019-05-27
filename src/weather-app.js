@@ -116,9 +116,8 @@ class WeatherApp extends PolymerElement {
 
           <!-- footer -->
           <weather-footer observation-data="[[observationData]]">
+          <sunrise-sunset coordinates="[[weatherLocation.coordinates]]"></sunrise-sunset>
           </weather-footer>
- 
-          <sunrise-sunset location="[[this.weatherLocation]]""></sunrise-sunset>
         
         </div>
       </template>
@@ -194,7 +193,6 @@ class WeatherApp extends PolymerElement {
 
   _onNewLocation(event) {
     this.weatherLocation = event.detail;
-    console.log(this.weatherLocation);
   }
 
   /** 
@@ -215,15 +213,15 @@ class WeatherApp extends PolymerElement {
       });
   }
 
-  _toggleWind(event) {
+  _toggleWind() {
     this.showWind = !this.showWind;
   }
 
-  _toggleWindGust(event) {
+  _toggleWindGust() {
     this.showWindGust = !this.showWindGust;
   }
 
-  _toggleFeelsLike(event) {
+  _toggleFeelsLike() {
     this.showFeelsLike = !this.showFeelsLike;
   }
 
