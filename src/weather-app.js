@@ -13,7 +13,7 @@ import './footer/weather-footer.js';
 import './forecast-data.js';
 
 import './footer/sunrise-sunset.js';
-
+import './footer/geolocate-button.js';
 
 class WeatherApp extends PolymerElement {
 
@@ -89,6 +89,8 @@ class WeatherApp extends PolymerElement {
       <template is="dom-if" if="{{!forecastError}}">
 
         <div hidden\$="[[firstLoading]]">
+
+          <slot id="place"></slot>
           <forecast-header
             loading="[[loading]]"
             next-iso-hour="[[nextIsoHour]]"
@@ -104,6 +106,8 @@ class WeatherApp extends PolymerElement {
           </observation-modal>
 
           <!-- today, tomorrow and a day after tomorrow -->
+          <slot id="header"></slot>
+          
           <main>
             <weather-days 
               forecast-data="[[forecastData]]"
@@ -118,7 +122,17 @@ class WeatherApp extends PolymerElement {
           <weather-footer observation-data="[[observationData]]">
           <sunrise-sunset coordinates="[[weatherLocation.coordinates]]"></sunrise-sunset>
           </weather-footer>
-        
+
+          <style></style>
+          <bottom-menu>
+            [[observationData.weatherStation]]
+            [[observationData.time]]
+            [[observationData.temperature]]
+            [[observationData.weatherCode]]
+            <geolocate-button 
+              hide="[[loading]]">
+            </geolocate-button>
+          </bottom-menu>
         </div>
       </template>
     `;

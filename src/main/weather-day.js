@@ -99,6 +99,7 @@ class WeatherDay extends PolymerElement {
 
       .past-hour {
         opacity: 0.1;
+        z-index: 1;
       }
 
       .symbol, .symbol--empty {

@@ -1,6 +1,5 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 
-import './geolocate-button.js';
 import './time-now.js';
 import '../weather-symbol.js';
 import './weather-symbol-name.js';
@@ -40,20 +39,6 @@ class ForecastHeader extends PolymerElement {
           'left text  text  aside ';
 
         align-items: center;
-      }
-     
-      geolocate-button {
-       
-        position: fixed;
-        right: 0px;
-        bottom: 25vh;
-        z-index: 100;
-        border-bottom-left-radius: 2px;
-        background-color: var(--color-palette-blue);
-        border-top-left-radius: 2px;
-        padding: 0.75rem 0.3rem 0.75rem 0.4rem;
-        opacity: 0.9;
-        line-height: 1;
       }
 
       .left { 
@@ -148,9 +133,6 @@ class ForecastHeader extends PolymerElement {
         </section>
         <div class="circle"></div>
         <h2 class="place">
-          <geolocate-button 
-            hide="[[loading]]">
-          </geolocate-button>
           <location-selector 
             loading="[[loading]]" 
             place="[[place]]">
