@@ -181,14 +181,14 @@
     <!-- show sun icon even before polymer is loaded -->
     
     <weather-app>
-      <h2 slot="place" class="visually-hidden">Sää <span id="place">Espoo</span>nyt</h2>
+      <h2 slot="place" class="visually-hidden">Sää <span id="place">Espoo</span> nyt</h2>
       <div slot="header">
         <h2 class="visually-hidden">Sääennuste</h2>
         <h3 class="visually-hidden">Sää tänään, huomenna ja ylihuomenna</h3>
       </div
     </weather-app>
 
-    <div id="loading-view" class="loading-view">
+    <div id="loading-view" class="loading-view" aria-label="ladataan...">
         <svg 
           class="sun-icon" 
           version="1.1"

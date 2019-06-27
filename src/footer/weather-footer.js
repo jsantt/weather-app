@@ -48,12 +48,12 @@ class WeatherFooter extends PolymerElement {
 
           <p class="footer_header">Säädata by Ilmatieteen laitos | avoin data</p>
 
-          <section class="footer_section">
-            <h3>AURINGON VAIHEET TÄNÄÄN</h3>  
+          <section class="footer_section"> 
             <p class="info">
               <slot></slot>
             </p>
           </section>
+          
           
 
           <section class="footer_section">

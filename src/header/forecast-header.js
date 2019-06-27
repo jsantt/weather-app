@@ -183,7 +183,7 @@ class ForecastHeader extends PolymerElement {
             <div class="item-text item-text--wind">tuuli</div>
           </div>
         
-        <div
+        <!--div
           id="observation"
           class="observation aside-item"
           on-click="_toggleObservation">
@@ -200,7 +200,7 @@ class ForecastHeader extends PolymerElement {
           
           </svg>
           <div class="item-text">havainto</div>
-        </div>
+        </div-->
       </aside>
     </div>
     <time-now update-time="[[_locationChanged]]"></time-now>
@@ -236,9 +236,9 @@ class ForecastHeader extends PolymerElement {
     };
   }
 
-  toggleObservationHighlight() {
+  /*toggleObservationHighlight() {
     this.shadowRoot.querySelector("#observation").classList.toggle("selected");
-  }
+  }*/
 
   _getWeatherNow(data, time) {
    
@@ -255,10 +255,10 @@ class ForecastHeader extends PolymerElement {
     return hourForecast;
   }
 
-  _toggleObservation() {
+  /*_toggleObservation() {
     const event = new CustomEvent('forecast-header.toggle-observation', {bubbles: true, composed: true});
     this.dispatchEvent(event);
-  }
+  }*/
 
   _toggleFeelsLike() {
     this.shadowRoot.querySelector("#feelsLike").classList.toggle("selected");

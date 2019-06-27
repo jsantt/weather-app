@@ -9,11 +9,12 @@ import './header/location-selector.js';
 import './error-notification.js';
 import './header/forecast-header';
 import './main/weather-days.js';
-import './footer/weather-footer.js';
 import './forecast-data.js';
 
-import './footer/sunrise-sunset.js';
+import './footer/bottom-menu.js';
 import './footer/geolocate-button.js';
+import './footer/sunrise-sunset.js';
+import './footer/weather-footer.js';
 
 class WeatherApp extends PolymerElement {
 
@@ -43,6 +44,7 @@ class WeatherApp extends PolymerElement {
 
         --line-height--tight: 1;
         --padding-header-footer: 1rem;
+        --notification-shadow: 0px -1px 4px 0px rgba(0, 0, 0, 0.05);
       }
 
       div[hidden] {
@@ -120,15 +122,11 @@ class WeatherApp extends PolymerElement {
 
           <!-- footer -->
           <weather-footer observation-data="[[observationData]]">
-          <sunrise-sunset coordinates="[[weatherLocation.coordinates]]"></sunrise-sunset>
+            <sunrise-sunset coordinates="[[weatherLocation.coordinates]]"></sunrise-sunset>
           </weather-footer>
 
           <style></style>
-          <bottom-menu>
-            [[observationData.weatherStation]]
-            [[observationData.time]]
-            [[observationData.temperature]]
-            [[observationData.weatherCode]]
+          <bottom-menu observation-data="[[observationData]]">
             <geolocate-button 
               hide="[[loading]]">
             </geolocate-button>
@@ -245,7 +243,7 @@ class WeatherApp extends PolymerElement {
 
   _toggleObservationVisible() {
     const forecastHeader = this.shadowRoot.querySelector('forecast-header');
-    forecastHeader.toggleObservationHighlight();
+    //forecastHeader.toggleObservationHighlight();
 
     this.observationVisible = !this.observationVisible;
   }

@@ -9,9 +9,10 @@ class SunriseSunset extends LitElement {
         return css`
             .sun {
                 display: flex;
+                margin-bottom: 1rem;
             }
             .sunrise {
-                margin-right: 1rem;
+                margin-right: 2rem;
             }
         `;
     }
@@ -22,12 +23,12 @@ class SunriseSunset extends LitElement {
         <div class="sunrise">
             <svg width="40" height="27" xmlns="http://www.w3.org/2000/svg">
             <g>
-            <title>background</title>
-            <rect fill="none" id="canvas_background" height="29" width="42" y="-1" x="-1"/>
+            
+              <rect fill="none" id="canvas_background" height="29" width="42" y="-1" x="-1"/>
             </g>
 
             <g>
-            <title>Layer 1</title>
+            
             <g id="weatherSymbol1">
             <polygon id="svg_1" points="25.37457847595215,7.4070011377334595 27.577577590942383,11.612001061439514 31.702577590942383,9.266000390052795 31.280576705932617,13.993000626564026 36.020578384399414,14.250000596046448 33.110578536987305,18.000000596046448 36.9605770111084,20.778000473976135 32.48357582092285,22.36000120639801 34.22057914733887,26.775999665260315 29.60157585144043,25.688000321388245 28.671579360961914,30.343001008033752 25.37457847595215,26.929001450538635 22.075578689575195,30.343001008033752 21.1475772857666,25.688000321388245 16.52857780456543,26.775999665260315 18.26357650756836,22.36000120639801 13.788578033447266,20.778000473976135 17.636577606201172,18.000000596046448 14.728578567504883,14.250000596046448 19.466577529907227,13.993000626564026 19.04657745361328,9.266000390052795 23.171579360961914,11.612001061439514 " fill="#ffa800"/>
             <circle id="svg_2" r="6.362" cy="18.738" cx="25.37357" stroke-width="1.3028" stroke="#FFFFFF" fill="#ffa800"/>
@@ -89,9 +90,20 @@ class SunriseSunset extends LitElement {
       const longitude = coordinatesArray[1];
 
       const times = SunCalc.getTimes(new Date(), latitude, longitude);
+      if(Number.isNaN(times.sunrise.getMinutes())) {
+        this._sunrise = 'ei tänään';
+      }
+      else {
+        this._sunrise = this._formatTime(times.sunrise);
+      }
 
-      this._sunrise = this._formatTime(times.sunrise);
-      this._sunset = this._formatTime(times.sunset);
+      if(Number.isNaN(times.sunset.getMinutes())) {
+        this._sunset = 'ei huomenna';
+      }
+      else {
+        this._sunset = this._formatTime(times.sunset);
+      }
+      
       this._solarNoon = this._formatTime(times.solarNoon);
       this._darkestNight = this._formatTime(times.nadir);
   }

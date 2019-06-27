@@ -5,20 +5,8 @@ class GeolocateButton extends PolymerElement {
     return html`
     <style>
       :host {
-        display: flex;
-        justify-content: center;
-        position: fixed;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: 100;
-        border-top-left-radius: 2px;
-        background-color: #fff;
-        border-top-right-radius: 2px;
-        color: var(--color-palette-blue);
-        padding: 0.25rem;
-        opacity: 0.95;
-        line-height: 1;
+        display: block;
+        padding: 0 1rem;
       }
       div {
         display: flex;

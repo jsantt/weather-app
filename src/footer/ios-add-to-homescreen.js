@@ -21,7 +21,7 @@ class iosAddToHomescreen extends PolymerElement {
 
       .notification--floating {
 
-        box-shadow: 0px -1px 4px 0px rgba(0, 0, 0, 0.46);
+        box-shadow: var(--notification-shadow);
 
         position: fixed;
         left: 0;
@@ -32,7 +32,7 @@ class iosAddToHomescreen extends PolymerElement {
        
 
         padding: 0.7rem 0;
-        z-index:100;
+        z-index:101;
       }
 
       .test{
