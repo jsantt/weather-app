@@ -1,7 +1,7 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 
 import '@polymer/iron-ajax/iron-ajax.js';
-import { getByAttributeValue, getTime, getTimeAndValuePairs, getValue, parseLocationName, raiseEvent } from './xml-parser.js';
+import { getByAttributeValue, getTime, getTimeAndValuePairs, getValue, parseLatLon, parseLocationName, raiseEvent } from './xml-parser.js';
 
 
 /** 
@@ -130,6 +130,7 @@ class ObservationData extends PolymerElement {
     
       this.observationData = {
         weatherStation: parseLocationName(request.response),
+        latLon: parseLatLon(request.response),
         time: getTime(observations.temperature),
         cloudiness: getValue(observations.cloudiness),
         dewPoint: getValue(observations.dewPoint),

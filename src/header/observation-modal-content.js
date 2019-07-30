@@ -1,13 +1,13 @@
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-
+import { css, html, LitElement } from 'lit-element';
 import '../error-notification';
 import './weather-symbol-wawa.js';
 
-class ObservationModalContent extends PolymerElement {
-  static get template() {
-    return html`
-    <style>
+class ObservationModalContent extends LitElement {
 
+  static get is() { return 'observation-modal-content'; }
+
+  static get styles() { 
+    return css`
       .header {
         background-color: var(--color-primary);
         border-bottom: 0.2rem solid var(--color-gray--light); 
@@ -95,130 +95,127 @@ class ObservationModalContent extends PolymerElement {
       .footer {
         background-color: var(--color-primary);
         border-top: 0.2rem solid var(--color-gray--light); 
-        height: 2rem;
-
+    
         margin-top: 1rem;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        padding: 0.5rem;
       }
-  
-    </style>
-  
+    `;
+  }
+
+  render() {
+    return html`
       <div class="header">
         <h1>LÄHIN HAVAINTOASEMA</h1>
-        <h2>[[observationData.weatherStation]]</h2>
-        <h3>Kello [[_formatTime(observationData.time)]]</h3>
+        <h2>
+            ${this.observationData.weatherStation}
+        </h2>
+        <h3>Kello ${this._formatTime(this.observationData.time)}</h3>
       </div>
 
-      <template is="dom-if" if="{{observationError}}">
+      ${this.observationError ? html`
         <error-notification
           error-text="Sääasemalle ei valitettavasti saatu yhteyttä">
         </error-notification>
-      </template>
-
-      <template is="dom-if" if="{{!observationError}}">
-        <div class="content">
+      ` : html`
+       
+      <div class="content">
 
           <div class="item temperature">
-            <template is="dom-if" if="[[observationData.temperature]]">
-              <div>
-                <span>[[observationData.temperature]]°C</span> 
-              </div>
-            </template>
+            ${this.observationData.temperature ?
+              html`
+                <div>
+                  <span>${this.observationData.temperature}°C</span> 
+                </div>
+                ` : ``}
+            
           
             <weather-symbol-wawa 
               class="value description"
-              wawa-id="[[observationData.weatherCode]]"
-              cloudiness="[[observationData.cloudiness]]">
+              wawa-id="${this.observationData.weatherCode}"
+              cloudiness="${this.observationData.cloudiness}">
             </weather-symbol-wawa>
             
           </div>
             
-          <template is="dom-if" if="[[observationData.rainExplanation]]">  
-            <div class="item">
-              <div class="value">[[observationData.rainExplanation]]mm/h</div>
-              <div class="explanation">sateen rankkuus</div>
-            <div>
-          </template>
+          ${this.observationData.rainExplanation ?   
+            html`
+              <div class="item">
+                <div class="value">${this.observationData.rainExplanation}mm/h</div>
+                <div class="explanation">sateen rankkuus</div>
+              <div>`  : ``}
         
-          <template is="dom-if" if="[[observationData.rain]]">
+          ${this.observationData.rain ? 
+            html` 
             <div>
-              <div class="value">[[observationData.rain]]</div> 
+              <div class="value">${this.observationData.rain}</div> 
               <div class="explanation"> mm sadetta / edeltävä tunti</div>
             </div>
-          </template>
+          ` : ``}
         
-          <template is="dom-if" if="[[observationData.wind]]">
-            <div class="item">
+          ${this.observationData.wind ?
+            html`<div class="item">
               <wind-icon 
-                degrees="[[observationData.windDirection]]" 
+                degrees="${this.observationData.windDirection}" 
                 large
-                wind-speed="[[observationData.wind]]"
-                wind-gust-speed="[[observationData.windGust]]">
+                wind-speed="${this.observationData.wind}"
+                wind-gust-speed="${this.observationData.windGust}">
               </wind-icon>
               <div class="explanation windExplanation">10 min keskituuli ja puuskat</div>
             </div>
-          </template>
+          ` : ``}
         
-          <!--template is="dom-if" if="[[observationData.windGust]]">
+          ${this.observationData.humidity ? html`
             <div class="item">
-            <wind-icon 
-                degrees="[[observationData.windDirection]]" 
-                large
-                wind-speed="[[observationData.windGust]]"
-                wind-gust>
-              </wind-icon>
-              <div class="explanation windExplanation">tuuli puuskissa (10 min)</div>
-            </div>
-          </template-->
-        
-          <template is="dom-if" if="[[observationData.humidity]]">
-            <div class="item">
-              <div class="value">[[observationData.humidity]]%</div>
+              <div class="value">${this.observationData.humidity}%</div>
               <div class="explanation">ilmankosteus</div>
             </div>
-          </template>
+          `: ``}
         
-          <template is="dom-if" if="[[observationData.pressure]]">
+          ${this.observationData.pressure ? html`
             <div class="item">
-              <div class="value">[[observationData.pressure]] hPa</div>
+              <div class="value">${this.observationData.pressure} hPa</div>
               <div class="explanation">ilmanpaine</div>
             </div>
-          </template>
+          ` : ``}
 
-          <template is="dom-if" if="[[observationData.visibility]]">
+          ${this.observationData.visibility ? html`
             <div class="item">
-              <div class="value">[[observationData.visibility]]m</div>
+              <div class="value">${this.observationData.visibility}m</div>
               <div class="explanation">näkyvyys</div>
             </div>
-          </template>
+            ` : ``}
 
-          <template is="dom-if" if="[[observationData.dewPoint]]">
+          ${this.observationData.dewPoint ? html`
             <div class="item">
-              <div class="value">[[observationData.dewPoint]]°C</div>
+              <div class="value">${this.observationData.dewPoint}°C</div>
               <div class="explanation">kastepiste</div>
             </div>
-          </template>
+            ` : ``}
 
-          <template is="dom-if" if="[[observationData.cloudiness]]">
+          ${this.observationData.cloudiness ? html`
             <div class="item">
-              <div class="value">[[observationData.cloudiness]] / 8</div>
+              <div class="value">${this.observationData.cloudiness} / 8</div>
               <div class="explanation">pilvisyys</div>
             </div>
-          </template>
+            ` : ``}
 
-          <template is="dom-if" if="[[_snow(observationData.snow)]]">
+          ${this._snow(this.observationData.snow) ? html`
             <div class="item">
-              Lumen syvyys: [[observationData.snow]] cm
+              Lumen syvyys: ${this.observationData.snow} cm
             </div>
-          </template>
+            ` : ``}
       </div>
-    </template>
+    `}
     <div class="footer">
-      
+        <a href="${this._googleMapsURl(this.observationData.latLon)}">${this.observationData.weatherStation} kartalla</a>
     </div>
     `;
   }
-
-  static get is() { return 'observation-modal-content'; }
 
   static get properties() {
     return {
@@ -233,6 +230,7 @@ class ObservationModalContent extends PolymerElement {
 
   ready() {
     super.ready();
+    console.log(this._distance(60, 20, 60, 21));
   }
 
   _formatTime(time) {
@@ -243,9 +241,35 @@ class ObservationModalContent extends PolymerElement {
 
     return  parsedTime.getHours() + '.' + fullMinutes;
   }
+  
+  _googleMapsURl(latitudeLongitude) {
+    return `https://www.google.com/maps/search/?api=1&query=${latitudeLongitude}&zoom=12`;
+  }
+
   _snow(centimeters) {
     return centimeters > -1;
   }
+
+  /* Formula from https://stackoverflow.com/questions/18883601/function-to-calculate-distance-between-two-coordinates*/ 
+  _distance(lat1, lon1, lat2, lon2) {
+      const R = 6371; // km
+      const dLat = this._toRadian(lat2-lat1);
+      const dLon = this._toRadian(lon2-lon1);
+      const latitude1 = this._toRadian(lat1);
+      const latitude2 = this._toRadian(lat2);
+
+      const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+        Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(latitude1) * Math.cos(latitude2); 
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+      const d = R * c;
+      return d;
+    }
+
+    // Converts numeric degrees to radians
+    _toRadian(degrees) 
+    {
+        return degrees * Math.PI / 180;
+    }
 }
 
 window.customElements.define(ObservationModalContent.is, ObservationModalContent);

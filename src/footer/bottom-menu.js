@@ -47,7 +47,6 @@ class BottomMenu extends LitElement {
     }
 
     render() {
-        console.log(this.observationData);
         return html`
             ${this.observationData !== undefined ? 
                 html`
