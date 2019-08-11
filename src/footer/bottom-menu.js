@@ -12,14 +12,12 @@ class BottomMenu extends LitElement {
                 justify-content: space-around;
                 align-items: center;
 
-                position: fixed;
+                position: sticky;
                 left: 0;
                 right: 0;
                 bottom: 0;
                 
-                border-top-left-radius: 2px;
                 background-color: #fff;
-                border-top-right-radius: 2px;
                 color: var(--color-palette-blue);
 
                 padding: 0.25rem;
