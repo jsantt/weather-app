@@ -12,11 +12,11 @@ class BottomMenu extends LitElement {
                 justify-content: space-around;
                 align-items: center;
 
-                position: sticky;
+                position: fixed;
                 left: 0;
                 right: 0;
                 bottom: 0;
-                
+
                 background-color: #fff;
                 color: var(--color-palette-blue);
 
@@ -27,6 +27,7 @@ class BottomMenu extends LitElement {
 
                 z-index: 100;
             }
+
             a {
                 color: var(--color-palette-blue);
             }

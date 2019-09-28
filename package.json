@@ -30,7 +30,8 @@
     "web-component-tester": "^6.9.2"
   },
   "scripts": {
-    "test": "polymer test -l chrome"
+    "test": "polymer test -l chrome",
+    "start": "polymer serve"
   },
   "author": "Jani Säntti",
   "license": "ISC",
