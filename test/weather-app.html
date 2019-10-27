@@ -1,0 +1,45 @@
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <title>Weather-app</title>
+
+  <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+  <script src="../node_modules/chai/chai.js"></script>
+  <script src="../node_modules/mocha/mocha.js"></script>
+  <script src="../node_modules/wct-mocha/wct-mocha.js"></script>
+</head>
+<body>
+
+  <test-fixture id="basic">
+    <template>
+       <weather-app></weather-app>
+    </template>
+  </test-fixture>
+
+  <script type="module">
+    import '@polymer/test-fixture';
+    import sinon from 'sinon';
+    import '../src/weather-app.js';
+  
+    suite('weather-app tests', function() {
+      let icon;
+
+      setup(() => {
+      });
+
+      test('defaults', function(done) {
+        const app = fixture('basic');
+        
+        flush(function() {    
+          console.log(app);
+          assert.isTrue(false);
+          done();
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>

@@ -1,5 +1,6 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import '@polymer/paper-spinner/paper-spinner-lite.js';
+import '@vaadin/vaadin-combo-box/vaadin-combo-box.js';
 
 import {CITIES, TOP_10_CITIES} from './city-list';
 
@@ -14,12 +15,12 @@ class LocationSelector extends PolymerElement {
       :host {
         --paper-spinner-color:var(--color-palette-blue); 
         
-        display: block;
+        display: inline-block;
         color: var(--color-black);
-        font-size: 1.563rem;
-        
+      
         margin: 0 0 0.2rem 0;
-	    	text-align: center;	   
+	    	text-align: center;
+        padding-bottom: 0.5rem;
       }
 
       vaadin-combo-box {
@@ -27,118 +28,41 @@ class LocationSelector extends PolymerElement {
         --lumo-contrast-10pct: transparent;        
         --lumo-font-size-m: var(--font-size-large);
         --lumo-font-family: 'Open Sans Condensed', sans-serif;
-        --vaadin-text-field-default-width: 10.5rem;
-      }
-
-      .locate {
-        margin-left: .6rem;
+        --vaadin-text-field-default-width: 11.5rem;
       }
 
       .locate_loadIcon {
         padding: 0 0.6rem;
       }
 
-      .locate_icon {
-        animation-name: resizeLocate;
-        animation-duration: 2s;
-        animation-timing-function: ease-in-out;
-
-        animation-iteration-count: 4;
-        animation-direction: alternate;
-
-        display: inline-block;
-        padding: 0 0 0 1rem;
-        transition: all .2s ease-in-out;
-        
-        vertical-align: middle;
-      }
-
-      .locate_icon:hover { 
-        transform: scale(1.1);        
-      }
-
-      .locate_text {
-        color: var(--color-white);
-        font-size: var(--font-size-small);
-      }
-
-      @keyframes resizeLocate {
-        from {
-          transform: scale(1);
-        }
-
-        to {
-          transform: scale(1.4);
-        }
-      }
-
-      .location_name {
-        display: inline-block;
-      }
-
-      .cities_locate {
-        border: 1px solid black;
-        padding: 0.5rem;
-        border-radius: 2rem;
-        width: 9.2rem;
-        display: block;
-      }
-
     </style>
-
     
-    <div class="locate" id="locate">
+    <template is="dom-if" if="[[loading]]">
+      <paper-spinner-lite class="locate_loadIcon" active=""></paper-spinner-lite>
+    </template>
+
+    <template is="dom-if" if="[[!loading]]">
+    
+      <vaadin-combo-box
+        id="placeSelection"
+        item-label-path="city"
+        item-value-path="coordinates"
+        on-opened-changed="_openedChanged">
         
-        <template is="dom-if" if="[[loading]]">
-          <paper-spinner-lite class="locate_loadIcon" active=""></paper-spinner-lite>
+        <template>
+          
+          <template is="dom-if" if="[[_isHighlighted(index)]]">
+            <div>[[item.city]]</div>
+          </template>
+          <template is="dom-if" if="[[!_isHighlighted(index)]]">
+            <div style="color:#916c25;">[[item.city]]</div>
+          </template>
+  
         </template>
-
-        <template is="dom-if" if="[[!loading]]">
-          <div 
-            class="locate_icon"
-            on-click="_geolocate">
-
-            <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="24" height="24" viewBox="0 0 24 24">
-              <filter id="dropshadow" height="130%">
-
-                <feGaussianBlur in="SourceAlpha" stdDeviation="1"></feGaussianBlur> <!-- stdDeviation is how much to blur -->
-                <feOffset dx="0" dy="1" result="offsetblur"></feOffset> <!-- how much to offset -->
-                <feComponentTransfer>
-                  <feFuncA type="linear" slope="0.5"></feFuncA> <!-- slope is the opacity of the shadow -->
-                </feComponentTransfer>
-      
-                <feMerge>        
-                  <feMergeNode></feMergeNode> <!-- this contains the offset blurred image -->
-                  <feMergeNode in="SourceGraphic"></feMergeNode> <!-- this contains the element that the filter is applied to -->
-                </feMerge>
-      
-              </filter>
-
-              <path style="filter:url('#dropshadow')" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"></path>
-            </svg>
-          </div>
-        
-          <vaadin-combo-box
-            id="placeSelection"
-            item-label-path="city"
-            item-value-path="coordinates"
-            on-opened-changed="_openedChanged">
-           
-            <template>
-              
-              <template is="dom-if" if="[[_isHighlighted(index)]]">
-                <div>[[item.city]]</div>
-              </template>
-              <template is="dom-if" if="[[!_isHighlighted(index)]]">
-                <div style="color:#916c25;">[[item.city]]</div>
-              </template>
-      
-            </template>
-          </vaadin-combo-box>
-
-        </template>
-    </div>
-`;
+      </vaadin-combo-box>
+    
+    </template>
+  `;
   }
 
   static get is() { return 'location-selector'; }
@@ -153,9 +77,6 @@ class LocationSelector extends PolymerElement {
       _previousPlace: {
         type: Object
       },
-      headerSuffix: {
-        type: String
-      },
       loading: {
         type: Boolean
       },
@@ -166,21 +87,36 @@ class LocationSelector extends PolymerElement {
     };
   }
 
+  constructor(){
+    super();
+
+    document.addEventListener('visibilitychange', (event => {
+      if(document.hidden === false){
+        this._notifyPreviousPlace();
+      }
+    }));
+  }
+
   ready() {
     super.ready();
 
+    this._notifyPreviousPlace();
+  }
+
+  _notifyPreviousPlace() {
     const storedPlaces = this._getFromLocalStorage('place');
     let currentPlace;
-
-    if(storedPlaces) {
+    if (storedPlaces) {
       currentPlace = storedPlaces[0];
     }
-    else {  
+    else {
       currentPlace = this._defaultPlace;
       this._storeIntoLocalStorage('place', TOP_10_CITIES);
     }
-    
-    this._dispatchEvent('location-selector.location-changed', currentPlace);
+    // TO DO: UGLY HACK, without timeout parent won't catch the event
+    setTimeout(() => {
+      this._dispatchEvent('location-selector.location-changed', currentPlace);
+    }, 50);
   }
 
   _setComboboxValue(value) {
@@ -200,11 +136,10 @@ class LocationSelector extends PolymerElement {
   _newPlace(){
     
     let combobox = this.shadowRoot.querySelector('#placeSelection');
-    
-    console.log('place name: ' + this.place);
+
 
     if(combobox) {
-      combobox.selectedItem = this.place.name;
+      combobox.selectedItem = this.place.name
 
       const url = this.place.name;
       
@@ -215,7 +150,7 @@ class LocationSelector extends PolymerElement {
     }
     else {
       setTimeout(()=> {
-        this._newPlace();
+        this._previousPlace();
       }, 1000);
     }
     
@@ -227,7 +162,6 @@ class LocationSelector extends PolymerElement {
   }
 
   _openedChanged(customEvent) {
-    console.log(customEvent);
     let combobox = this.shadowRoot.querySelector('#placeSelection');
 
     if(this._isComboboxOpen(customEvent)) {
@@ -306,28 +240,6 @@ class LocationSelector extends PolymerElement {
     }
 
     return decodeURIComponent(results[2].replace(/\+/g, " "));
-  }
-
-  _geolocate() {
-
-    this._dispatchEvent('location-selector.locate-started');
-
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          position => {
-      
-            const coordinates = position.coords.latitude + ',' + position.coords.longitude;
-            const url = position.coords.latitude + '-' + position.coords.longitude;
-
-            this._dispatchEvent('location-selector.location-changed', this._formPlaceObject(null, coordinates));
-
-          }, error => {
-            this._dispatchEvent('location-selector.locate-error', {text: 'salli paikannus nähdäksesi paikkakuntasi sää'});
-          });
-    } 
-    else { 
-      this._dispatchEvent('location-selector.locate-error', {text: 'paikantaminen epäonnistui, yritä uudelleen'});
-    }
   }
 
   _changeUrl(paramName, paramValue) {

@@ -8,32 +8,46 @@ class WeatherDays extends PolymerElement {
       :host {
         display: block;
       }
-
+      .visually-hidden {
+          position: absolute !important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding:0 !important;
+          border:0 !important;
+          height: 1px !important; 
+          width: 1px !important; 
+          overflow: hidden;
+        }
     </style>
 
-      <!-- today -->
+      <h3 class="visually-hidden">sää tänään</h2>
       <weather-day 
         class="weatherGrid" 
         day-number="1"
         min-temperature="[[minTemperature]]"
-        show-wind="[[showWind]]" 
-        forecast-data="[[todayData]]"></weather-day>
+        show-feels-like="[[showFeelsLike]]" 
+        show-wind="[[showWind]]"
+        show-wind-gust="[[showWindGust]]"
+        day-data="[[todayData]]"></weather-day>
   
-      <!-- tomorrow -->
+      <h3 class="visually-hidden">sää huomenna</h2>
       <weather-day 
         class="weatherGrid" 
         day-number="2" 
-        min-temperature="[[minTemperature]]" 
+        min-temperature="[[minTemperature]]"
+        show-feels-like="[[showFeelsLike]]" 
         show-wind="[[showWind]]" 
-        forecast-data="[[day2Data]]"></weather-day>
+        show-wind-gust="[[showWindGust]]" 
+        day-data="[[day2Data]]"></weather-day>
 
-      <!-- day after tomorrow -->
+      <h3 class="visually-hidden">sää ylihuomenna</h2>
       <weather-day 
         class="weatherGrid" 
         day-number="3" 
-        min-temperature="[[minTemperature]]" 
-        show-wind="[[showWind]]" 
-        forecast-data="[[day3Data]]"></weather-day>
+        min-temperature="[[minTemperature]]"
+        show-feels-like="[[showFeelsLike]]" 
+        show-wind="[[showWind]]"
+        show-wind-gust="[[showWindGust]]" 
+        day-data="[[day3Data]]"></weather-day>
 `;
   }
 
@@ -45,11 +59,19 @@ class WeatherDays extends PolymerElement {
         type: Array
       },
   
-      showWind: {
+      showFeelsLike: {
         type: Boolean,
         reflectToAttribute: true
       },
 
+      showWind: {
+        type: Boolean,
+        reflectToAttribute: true
+      },
+      showWindGust: {
+        type: Boolean,
+        reflectToAttribute: true
+      },
       todayData: {
         type: Array,
         computed: '_sliceToday(forecastData)'

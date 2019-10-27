@@ -2,35 +2,43 @@
 <html lang="fi">
   <head>
     <meta charset="utf-8">
+    <base href="/">
+    <meta name="keywords" content="sää, sääennuste, ennuste, paikallissää, helsinki, espoo, tampere, vantaa, oulu, turku">
+    <meta name="author" content="Jani Säntti">
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
-    <title>Säät</title>
-    <meta name="description" content="weather forecast application">
+    <title>🌞Sääennuste - uusi parempi sääsovellus - Ilmatieteen laitoksen sää</title>
+    <meta name="description" content="Tarkista juuri sinun alueesi täsmäsää mobiilioptimoidusta palvelusta.  
+    Sääennuste sekä havaintoasemien sää perustuvat Ilmatieteen laitoksen avoimeen dataan">
 
     <!-- See https://goo.gl/OOhYW5 -->
     <link rel="manifest" href="/manifest.json">
-    <link rel="icon" type="image/png" href="image/weather-icon" sizes="57x57">  
+    <link rel="icon" type="image/png" href="image/logo-32x32.png" sizes="32x32">  
     
-    <script type="module" src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
-    <script type="module" src="src/weather-app.js"></script>
+    <!--script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script-->
+    <script type="module" src="src/weather-app.js"> </script>
 
-    <script type="module" src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
-    <script type="module">
-      WebFont.load({
+    <!-- Loading web fonts asynchronoysly, see-->
+    <script>
+
+      WebFontConfig = {
         google: {
           families: ['Open Sans Condensed:300']
         }
-      });
+      };
+
+      (function(d) {
+            var wf = d.createElement('script'), s = d.scripts[0];
+            wf.src = 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js';
+            wf.async = true;
+            s.parentNode.insertBefore(wf, s);
+        })(document);
+
     </script>
-    <script type="module">
-        // can be registered after everything
-        // Load and register pre-caching Service Worker
-        if ('serviceWorker' in navigator) {
-          window.addEventListener('load', function() {
-            navigator.serviceWorker.register('service-worker.js');
-          });
-        }
-      </script>
+
+    <!-- set mock backend -->
+    <!-- script src="node_modules/@polymer/sinonjs/sinon.js"></script>
+    <script type="module" src="src/mock/mockSetup.js"></script -->
     
     <meta name="theme-color" content="#84b9ff">
 
@@ -56,10 +64,7 @@
           media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)"
           rel="apple-touch-startup-image">
 
-
-
-    <style>
-        
+    <style>        
         .loading-view {
           height: 100vh;
           display: flex;
@@ -72,15 +77,25 @@
         }
 
         body {
-          /* Modular scale base 1em, ratio 1.25 (modularscale.com)
+          /* 
+           * Modular scale base 1em, ratio 1.25 (modularscale.com)
            * e.g. 1em, 1.25em, 1.563em, 1.953em, 2.441em, 3.052em, 3.814,
            */
+          --font-size-xxsmall: 0.64rem;
+          --font-size-xsmall: 0.8rem; 
           --font-size-small: 1rem;
           --font-size-medium: 1.25rem;
           --font-size-large: 1.563rem;
-          --font-size-xlarge: 1.953em;
+          --font-size-xlarge: 1.953rem;
           --font-size-xxlarge: 2.441rem;
           --font-size-xxxlarge: 3.052rem;
+          --font-size-xxxxlarge: 3.815rem;
+          --font-size-xxxxxlarge: 4.764rem;
+          --font-size-xxxxxxlarge: 5.96rem;
+
+          /* Use 0.5rem grid everywhere */
+          --space-small: 0.5rem;
+          --space-medium: 1rem;
           
           box-shadow: 1px 1px 6px 0px rgba(0,0,0,0.2);
           font-family: 'Open Sans Condensed', sans-serif;
@@ -92,6 +107,17 @@
           padding: 0.3rem;
         }
 
+        .visually-hidden {
+          position: absolute !important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding:0 !important;
+          border:0 !important;
+          height: 1px !important; 
+          width: 1px !important; 
+          overflow: hidden;
+        }
+
+
         .sun-icon {
           display: block;
           margin: auto;
@@ -99,17 +125,27 @@
           width: 128px;
           height: 128px;
 
-          -webkit-animation: rotation 22s infinite linear;
+          animation: rotation 23s infinite linear;
+          -webkit-animation: rotation 23s infinite linear;
         }
 
-       @-webkit-keyframes rotation {
+        @keyframes rotation {
+          from {
+              transform: rotate(0deg);
+          }
+          to {
+              transform: rotate(359deg);
+          }
+        }
+        
+        @-webkit-keyframes rotation {
           from {
               -webkit-transform: rotate(0deg);
           }
           to {
               -webkit-transform: rotate(359deg);
           }
-      }
+        }
     </style>
      <dom-module id="vaadin-text-field-styles" theme-for="vaadin-text-field">
       <template>
@@ -135,31 +171,44 @@
         [part="toggle-button"] {
           font-size: 32px !important; 
         }
-
         </style>
       </template>
     </dom-module>
 
   </head>
   <body>
+    <h1 class="visually-hidden">Sääennuste - paras sääsovellus Ilmatieteen laitoksen datalla</h1>
     <!-- show sun icon even before polymer is loaded -->
-    <div id="loading-view" class="loading-view">
-      <svg class="sun-icon" viewBox="0 0 37 37">
-        <g>
-          <polygon fill="#ffa800" points="18.5,7.032 20.703,11.237 24.828,8.891 24.406,13.618 29.146,13.875 26.236,17.625 
-            30.086,20.403 25.609,21.985 27.346,26.401 22.727,25.313 21.797,29.968 18.5,26.554 15.201,29.968 14.273,25.313 9.654,26.401 
-            11.389,21.985 6.914,20.403 10.762,17.625 7.854,13.875 12.592,13.618 12.172,8.891 16.297,11.237">
-          </polygon>
-          <circle fill="#ffa800" stroke="#FFFFFF" stroke-width="1.3028" cx="18.499" cy="18.363" r="6.362"></circle>
-        </g>
-      </svg>
-    </div>
-
+    
     <weather-app>
+      <h2 slot="place" class="visually-hidden">Sää <span id="place">Espoo</span> nyt</h2>
+      <div slot="header">
+        <h2 class="visually-hidden">Sääennuste</h2>
+        <h3 class="visually-hidden">Sää tänään, huomenna ja ylihuomenna</h3>
+      </div
     </weather-app>
 
+    <div id="loading-view" class="loading-view" aria-label="ladataan...">
+        <svg 
+          class="sun-icon" 
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 37 37">
+          <g>
+            <polygon fill="#ffa800" points="18.5,7.032 20.703,11.237 24.828,8.891 24.406,13.618 29.146,13.875 26.236,17.625 
+              30.086,20.403 25.609,21.985 27.346,26.401 22.727,25.313 21.797,29.968 18.5,26.554 15.201,29.968 14.273,25.313 9.654,26.401 
+              11.389,21.985 6.914,20.403 10.762,17.625 7.854,13.875 12.592,13.618 12.172,8.891 16.297,11.237">
+            </polygon>
+            <circle fill="#ffa800" stroke="#FFFFFF" stroke-width="1.3028" cx="18.499" cy="18.363" r="6.362"></circle>
+          </g>
+        </svg>
+      </div>  
+
     <script>
-      document.addEventListener('forecast-data.fetch-done', (event) => 
+      document.addEventListener('location-selector.location-changed', (event) => {
+        document.querySelector("#place").innerHTML = event.detail.city;
+      });
+      document.addEventListener('forecast-data.fetch-done', function (event)
       {
         let loadingView = document.getElementById('loading-view');
         if(loadingView) {
@@ -181,7 +230,6 @@
     databaseURL: "https://saa-appi.firebaseio.com",
     projectId: "saa-appi",
     storageBucket: "saa-appi.appspot.com",
-    messagingSenderId: "504374989166"
   };
   firebase.initializeApp(config);
   </script -->

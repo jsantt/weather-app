@@ -10,6 +10,7 @@ class WeatherChart extends PolymerElement {
 
       .rainBar {
         fill: var(--color-primary);
+        animation: growRainBars 0.2s ease-out;
       }
 
       .svg {
@@ -19,10 +20,15 @@ class WeatherChart extends PolymerElement {
         bottom: 0;
 
         overflow: visible;
-        z-index: -1;
+      }
+
+
+      @keyframes growRainBars {
+        0% { height: 0; }
+        100% { height: 25; }
       }
     </style>
-    [[_createChart(forecastData)]]
+    [[_createChart(dayData)]]
 
     <!-- placeholder for chart -->
     <div class="chart" id="chart"></div>
@@ -33,7 +39,7 @@ class WeatherChart extends PolymerElement {
 
   static get properties() {
     return {
-      forecastData: {
+      dayData: {
         type: Array
       },
     
@@ -52,12 +58,12 @@ class WeatherChart extends PolymerElement {
   }
 
   /**
-   * Chart containing rain bars and temperature line
+   * Chart containing rain bars
    */
-  _createChart(forecastData) {
+  _createChart(dayData) {
     let svg = this._svg();
 
-    this._rainBars(svg, forecastData);
+    this._rainBars(svg, dayData);
     
     // remove previous childs
    
@@ -96,7 +102,7 @@ class WeatherChart extends PolymerElement {
         bar.setAttribute('width', '9');
       
         // draw rectangle of height 20 x rain amount, 120 being maximum height
-        const rectHeight = Number.isNaN(data[i].rain) ? 0 : Math.min(data[i].rain*20, 120);
+        const rectHeight = Number.isNaN(data[i].rain) ? 0 : Math.min(data[i].rain*10, 107);
 
         bar.setAttribute('height', rectHeight);
 

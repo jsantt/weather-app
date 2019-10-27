@@ -1,29 +1,7 @@
 {
-  "name": "Säät.fi",
-  "short_name": "säät",
-  "description": "Sääennuste sekä toteutunut sää. Säädata tulee Ilmatieteen laitokselta.",
-  "icons": [
-    {
-      "src": "image/weather-icon-57x57.png",
-      "sizes": "57x57",
-      "type": "image/png"
-    },
-    {
-      "src": "image/weather-icon-144x144.png",
-      "sizes": "144x144",
-      "type": "image/png"
-    },
-    {
-      "src": "image/weather-icon-192x192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "image/weather-icon-512x512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ],
+  "name": "saaennuste.fi",
+  "short_name": "saaennuste",
+  "description": "Kännykälle optimoidusta palvelusta näet lähiajan sään yhdellä vilkaisulla ja nopeiten. Säädata tulee Ilmatieteen laitokselta.",
   "start_url": "index.html",
   "display": "standalone",
   "theme_color": "#84b9ff",

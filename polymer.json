@@ -20,6 +20,16 @@
   ],
   "extraDependencies": [
     "manifest.json",
-    "src/lazy-resources.js"
-  ]
+    "node_modules/@webcomponents/webcomponentsjs/**",
+    "src/lazy-resources.js",
+    "robots.txt",
+    "sitemap.xml"
+  ],
+  "moduleResolution": "node",
+  "npm": true,
+  "lint": {
+    "rules": [
+      "polymer-3"
+    ]
+  }
 }

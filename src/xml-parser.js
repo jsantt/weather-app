@@ -32,6 +32,30 @@ function parseLocationName(response){
   return location;
 }
 
+/** 
+ * Parse region value from the following tag
+ * <target:region codeSpace="http://xml.fmi.fi/namespace/location/region">Helsinki</target:region> 
+ */
+function parseRegion(response) {
+  const regions = response.getElementsByTagName('target:region');
+  const regionRow = getByAttributeValue(regions, 'codeSpace', 'http://xml.fmi.fi/namespace/location/region');
+
+  const region = value(regionRow);
+
+  return region;
+}
+
+/** 
+ * Parse latitude and longitude from gml:pos tag. All of them have the same value and we take the first
+ * <gml:pos>61.92411 25.74815 </gml:pos> 
+ */
+function parseLatLon(response) {
+  const latLon = response.getElementsByTagName('gml:pos')[0];
+  const value = latLon.innerHTML;
+
+  return value;
+}
+
 function raiseEvent(context, name, payload) {
   let message = payload;
 
@@ -49,5 +73,5 @@ function value(xmlElement) {
 }
 
 
-export { getByAttributeValue, getTime, getTimeAndValuePairs, getValue, parseLocationName, raiseEvent, value };
+export { getByAttributeValue, getTime, getTimeAndValuePairs, getValue, parseLatLon, parseLocationName, parseRegion, raiseEvent, value };
 

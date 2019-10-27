@@ -27,15 +27,13 @@ class WeatherNotification extends PolymerElement {
         padding: 1rem;
       }
 
-
-
     </style>
 
     <template is="dom-if" if="[[_forecastText]]">
       <section class="notification">
         <div class="notification_stripe"></div>
         <div class="notification_content">
-          Luvassa [[_forecastText]]. Katso tarkempi ennuste painamalla tuuli-ikonia.
+          Luvassa [[_forecastText]]. Tuulen nopeus puuskissa on jopa [[_windGust]]m/s. Katso tarkempi ennuste painamalla tuuli-ikonia.
         </div>
       </section>
     </template>
@@ -47,6 +45,10 @@ class WeatherNotification extends PolymerElement {
   static get properties() {
     return {
       _forecastText: {
+        type: String,
+        value: null
+      },
+      _windGust: {
         type: String,
         value: null
       },
@@ -63,25 +65,29 @@ class WeatherNotification extends PolymerElement {
 
   _createTextualForecasts(forecastData){
     this._forecastText = this._windForecast(forecastData);
+    this._windGust = this._windGustForecast(forecastData);
   }
 
-  _maxWind(forecastData) {
+  _max(forecastData, property) {
     let maxWind = 0;
     
     const upcomingHours = forecastData.filter(item => !item.past);
-  
+
     upcomingHours.map(item => {
-      maxWind = item.wind > maxWind ? item.wind : maxWind;
+      maxWind = item[property] > maxWind ? item[property] : maxWind;
     });
 
     return maxWind;
   }
 
   _windForecast(forecastData){
-    let maxWind = this._maxWind(forecastData);
+    let maxWind = this._max(forecastData, 'wind');
     
-    return this._windDescription(maxWind);
-     
+    return this._windDescription(maxWind);  
+  }
+
+  _windGustForecast(forecastData) {
+    return Math.round(this._max(forecastData, 'windGust'));
   }
 
   /**

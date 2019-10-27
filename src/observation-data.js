@@ -1,7 +1,7 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 
 import '@polymer/iron-ajax/iron-ajax.js';
-import { getByAttributeValue, getTime, getTimeAndValuePairs, getValue, parseLocationName, raiseEvent } from './xml-parser.js';
+import { getByAttributeValue, getTime, getTimeAndValuePairs, getValue, parseLatLon, parseLocationName, raiseEvent } from './xml-parser.js';
 
 
 /** 
@@ -105,6 +105,8 @@ class ObservationData extends PolymerElement {
      *   ri_10min = sateen rankkuus
      *   snow_aws = lumen syvyys niiltä asemilta jossa se on
      * 
+     *   vis = näkyvyys
+     * 
      * And it is converted to the following JSON and stored into this.observationData 
      * 
      * {
@@ -128,13 +130,17 @@ class ObservationData extends PolymerElement {
     
       this.observationData = {
         weatherStation: parseLocationName(request.response),
+        latLon: parseLatLon(request.response),
         time: getTime(observations.temperature),
+        cloudiness: getValue(observations.cloudiness),
+        dewPoint: getValue(observations.dewPoint),
         humidity: getValue(observations.humidity),
         pressure: getValue(observations.pressure),
         rain: getValue(observations.rain),
         rainExplanation: getValue(observations.rainExplanation),
         snow: getValue(observations.snow),
         temperature: parseFloat(getValue(observations.temperature)),
+        visibility: getValue(observations.visibility),
         weatherCode:  getValue(observations.weatherCode),
         wind: parseFloat(getValue(observations.wind)),
         windDirection: parseFloat(getValue(observations.windDirection)),
@@ -149,12 +155,15 @@ class ObservationData extends PolymerElement {
       let observation = {};
 
       //measurementTVP
+      observation.cloudiness = getTimeAndValuePairs(timeSeries, 'obs-obs-1-1-n_man', 'cloudiness')[0];
+      observation.dewPoint = getTimeAndValuePairs(timeSeries, 'obs-obs-1-1-td', 'dewPoint')[0];
       observation.humidity = getTimeAndValuePairs(timeSeries, 'obs-obs-1-1-rh', 'humidity')[0];
       observation.pressure = getTimeAndValuePairs(timeSeries, 'obs-obs-1-1-p_sea', 'pressure')[0];
       observation.rain = getTimeAndValuePairs(timeSeries, 'obs-obs-1-1-r_1h', 'rain')[0];
       observation.rainExplanation = getTimeAndValuePairs(timeSeries, 'obs-obs-1-1-ri_10min', 'rainExplanation')[0];
       observation.snow = getTimeAndValuePairs(timeSeries, 'obs-obs-1-1-snow_aws', 'snow')[0];
       observation.temperature = getTimeAndValuePairs(timeSeries, 'obs-obs-1-1-t2m', 'temperature')[0];
+      observation.visibility = getTimeAndValuePairs(timeSeries, 'obs-obs-1-1-vis', 'visibility')[0],
       observation.weatherCode = getTimeAndValuePairs(timeSeries, 'obs-obs-1-1-wawa', 'weatherCode')[0];
       observation.wind = getTimeAndValuePairs(timeSeries, 'obs-obs-1-1-ws_10min', 'wind')[0];
       observation.windDirection = getTimeAndValuePairs(timeSeries, 'obs-obs-1-1-wd_10min', 'windDirection')[0];
