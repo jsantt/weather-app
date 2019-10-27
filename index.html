@@ -206,7 +206,6 @@
 
     <script>
       document.addEventListener('location-selector.location-changed', (event) => {
-        console.log(event.detail.city);
         document.querySelector("#place").innerHTML = event.detail.city;
       });
       document.addEventListener('forecast-data.fetch-done', function (event)

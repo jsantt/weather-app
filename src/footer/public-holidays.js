@@ -14,18 +14,12 @@ class PublicHolidays extends LitElement {
   static get styles() {
     return css`
       section {
-        display: flex;
+        display: grid;
+        grid-template-columns: 5rem 3.5rem 2rem auto;
       }
-      .day {
-        width: 5rem;
+      .date {
         text-align: right;
         padding-right: 0.5rem;
-      }
-      .flag {
-        width: 2rem;
-      }
-      .free {
-        width: 3rem;
       }
     `;
   }
@@ -36,7 +30,7 @@ class PublicHolidays extends LitElement {
         item =>
           html`
             <section>
-              <div class="day">
+              <div class="date">
                 ${new Date(item.d).toLocaleDateString("fi-FI", {
                   weekday: "short"
                 })}
