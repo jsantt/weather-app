@@ -93,7 +93,6 @@ class WeatherApp extends PolymerElement {
           <slot id="place"></slot>
           <forecast-header
             loading="[[loading]]"
-            next-iso-hour="[[nextIsoHour]]"
             place="[[forecastPlace]]"
             forecast-data="{{forecastData}}"
           >
@@ -147,10 +146,6 @@ class WeatherApp extends PolymerElement {
       firstLoading: {
         type: Boolean,
         value: true
-      },
-      nextIsoHour: {
-        type: Number,
-        computed: "_nextIsoHour()"
       },
       showFeelsLike: {
         type: Boolean,
@@ -209,15 +204,6 @@ class WeatherApp extends PolymerElement {
     super.connectedCallback();
 
     this._loadLazyResources();
-  }
-
-  _nextIsoHour() {
-    let timeNow = new Date();
-
-    timeNow.setHours(timeNow.getHours() + 1);
-    timeNow.setMinutes(0, 0, 0);
-
-    return timeNow.toISOString().split(".")[0] + "Z";
   }
 
   _onNewLocation(event) {
