@@ -15,7 +15,7 @@ class PublicHolidays extends LitElement {
     return css`
       section {
         display: grid;
-        grid-template-columns: 5rem 3.5rem 2rem auto;
+        grid-template-columns: 5.5rem 3.5rem 2rem auto;
       }
       .date {
         text-align: right;
