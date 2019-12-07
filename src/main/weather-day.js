@@ -1,17 +1,17 @@
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import { PolymerElement, html } from "@polymer/polymer/polymer-element.js";
 
-import './day-item.js';
-import './rain-amount.js';
-import './rain-helper.js';
+import "./day-item.js";
+import "./rain-amount.js";
+import "./rain-helper.js";
 
-import './snow-amount.js';
-import './temperature-line.js';
-import './weather-chart.js';
+import "./snow-amount.js";
+import "./temperature-line.js";
+import "./weather-chart.js";
 
-import './wind-speed.js';
-import '../weather-symbol.js';
-import './wind-helper.js';
-import '../wind-icon.js';
+import "./wind-speed.js";
+import "../weather-symbol.js";
+import "./wind-helper.js";
+import "../wind-icon.js";
 
 class WeatherDay extends PolymerElement {
   static get template() {
@@ -26,15 +26,16 @@ class WeatherDay extends PolymerElement {
         --color-dayHeader-font: var(--color-gray--dark);
 
         --color-toggle-background: rgba(240,240,240, 0.8);
-
       }
 
       .weatherDay {
         min-height: 8rem;
         position: relative;
+        margin: 0.25rem 0;
       }
 
       .weatherDay_grid {
+        background-color: #fff;
         display: grid;
         grid-row-gap: 0;
         grid-template-columns: repeat(25, 1fr);
@@ -328,14 +329,16 @@ class WeatherDay extends PolymerElement {
 `;
   }
 
-  static get is() { return 'weather-day'; }
+  static get is() {
+    return "weather-day";
+  }
 
   static get properties() {
     return {
       dayNumber: {
         type: Number
       },
-    
+
       minTemperature: {
         type: Number
       },
@@ -354,52 +357,56 @@ class WeatherDay extends PolymerElement {
       },
 
       dayData: {
-        type: Array          
+        type: Array
       }
     };
   }
 
-  _day(number){
-    const dayNames = ['Tänään', 'Huomenna', 'Ylihuomenna'];
+  _day(number) {
+    const dayNames = ["Tänään", "Huomenna", "Ylihuomenna"];
     return dayNames[number - 1];
   }
 
   _getClasses(showBoth, baseClasses, pastClass) {
-    const classes = showBoth ? baseClasses.concat(' ').concat(pastClass) : baseClasses;
+    const classes = showBoth
+      ? baseClasses.concat(" ").concat(pastClass)
+      : baseClasses;
     return classes;
   }
 
-  _weekday(number){
+  _weekday(number) {
     let day = new Date();
     day.setDate(day.getDate() + (number - 1));
-    return day.toLocaleString('fi-FI', {weekday: 'short'});
+    return day.toLocaleString("fi-FI", { weekday: "short" });
   }
 
   _windDescription(dayData) {
-    return this.shadowRoot.querySelector('wind-helper').windWarning(dayData).description;
+    return this.shadowRoot.querySelector("wind-helper").windWarning(dayData)
+      .description;
   }
-  
+
   _windRating(dayData) {
-    return this.shadowRoot.querySelector('wind-helper').windWarning(dayData).rating;
+    return this.shadowRoot.querySelector("wind-helper").windWarning(dayData)
+      .rating;
   }
 
   _everyFourth(index, item) {
-    return index % 3 === 0 ? this._hideNaN(item) : '';
+    return index % 3 === 0 ? this._hideNaN(item) : "";
   }
 
   _rain(dayData) {
-    return this.shadowRoot.querySelector('rain-helper').totalRain(dayData);
+    return this.shadowRoot.querySelector("rain-helper").totalRain(dayData);
   }
 
   _snow(dayData) {
-    return this.shadowRoot.querySelector('rain-helper').totalSnow(dayData);
+    return this.shadowRoot.querySelector("rain-helper").totalSnow(dayData);
   }
 
-  _round(item){
+  _round(item) {
     const rounded = Math.round(item);
-    const result = Number.isNaN(rounded) ? '' : rounded;
+    const result = Number.isNaN(rounded) ? "" : rounded;
 
-    return result; 
+    return result;
   }
 
   _isFirst(index) {

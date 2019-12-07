@@ -1,5 +1,5 @@
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-import './weather-day.js';
+import { PolymerElement, html } from "@polymer/polymer/polymer-element.js";
+import "./weather-day.js";
 
 class WeatherDays extends PolymerElement {
   static get template() {
@@ -51,14 +51,16 @@ class WeatherDays extends PolymerElement {
 `;
   }
 
-  static get is() { return 'weather-days'; }
+  static get is() {
+    return "weather-days";
+  }
 
   static get properties() {
     return {
       forecastData: {
         type: Array
       },
-  
+
       showFeelsLike: {
         type: Boolean,
         reflectToAttribute: true
@@ -74,23 +76,23 @@ class WeatherDays extends PolymerElement {
       },
       todayData: {
         type: Array,
-        computed: '_sliceToday(forecastData)'
+        computed: "_sliceToday(forecastData)"
       },
 
       day2Data: {
         type: Array,
-        computed: '_sliceDay2(forecastData)'
+        computed: "_sliceDay2(forecastData)"
       },
 
       day3Data: {
         type: Array,
-        computed: '_sliceDay3(forecastData)'
+        computed: "_sliceDay3(forecastData)"
       },
-      
+
       minTemperature: {
         type: Number,
-        computed: '_minTemp(forecastData)'
-      },
+        computed: "_minTemp(forecastData)"
+      }
     };
   }
 
@@ -109,9 +111,10 @@ class WeatherDays extends PolymerElement {
   }
 
   _minTemp(data) {
-    const min = data.reduce(function (previous, current) {
-      
-      const currentTemp = Number.isNaN(current.temperature) ? Number.MAX_VALUE : current.temperature;
+    const min = data.reduce(function(previous, current) {
+      const currentTemp = Number.isNaN(current.temperature)
+        ? Number.MAX_VALUE
+        : current.temperature;
       return previous.temperature < currentTemp ? previous : current;
     });
     return min.temperature;

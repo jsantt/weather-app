@@ -13,6 +13,9 @@ class ForecastHeader extends PolymerElement {
           display: block;
           background-color: var(--color-primary);
 
+          border-top-left-radius: 0.5rem;
+          border-top-right-radius: 0.5rem;
+
           /*background: linear-gradient(90deg, rgb(176, 224, 230), rgb(215,239,242));
         background: linear-gradient(-70deg, #84b9ffed 20%, var(--color-primary) 20%), rgb(50,50,50);
         background: linear-gradient(90deg, rgb(255, 225, 225), rgb(255, 215, 215));*/
