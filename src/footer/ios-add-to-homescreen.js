@@ -85,7 +85,7 @@ class iosAddToHomescreen extends PolymerElement {
 
             <iron-icon class="share" icon="weather-icons:iosShare"></iron-icon>
 
-            ja ‘lisää kotivalikkoon’
+            , scrollaa alas ja lisää kotivalikkoon
           </div>
 
           <div class="close test" on-click="_onClose">
