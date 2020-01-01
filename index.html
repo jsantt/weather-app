@@ -94,9 +94,11 @@
           --font-size-xxxxxlarge: 4.764rem;
           --font-size-xxxxxxlarge: 5.96rem;
 
-          /* Use 0.5rem grid everywhere */
-          --space-small: 0.5rem;
-          --space-medium: 1rem;
+          /* Use 0.25rem grid everywhere */
+          --space-s: 0.25rem;
+          --space-m: 0.5rem;
+          --space-l: 1rem;
+          --space-xl: 2rem;
           
           box-shadow: 1px 1px 6px 0px rgba(0,0,0,0.2);
           font-family: 'Open Sans Condensed', sans-serif;
@@ -105,7 +107,6 @@
           max-width: 600px;
           
           margin: 0 auto;
-          padding: 0.3rem;
         }
 
         .visually-hidden {
@@ -167,6 +168,7 @@
 
         [part="text-field"] {
           margin-left: -1rem;
+          color: var(--color-blue-800);
         }
 
         [part="toggle-button"] {

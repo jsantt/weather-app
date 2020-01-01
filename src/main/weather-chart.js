@@ -1,52 +1,57 @@
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import { PolymerElement, html } from "@polymer/polymer/polymer-element.js";
 
 class WeatherChart extends PolymerElement {
   static get template() {
     return html`
-    <style>
-      .chart {
-        position: relative;
-      }  
+      <style>
+        .chart {
+          position: relative;
+        }
 
-      .rainBar {
-        fill: var(--color-primary);
-        animation: growRainBars 0.2s ease-out;
-      }
+        .rainBar {
+          fill: var(--color-blue-700);
+          animation: growRainBars 0.2s ease-out;
+        }
 
-      .svg {
-        padding-bottom: 0.1rem;
+        .svg {
+          padding-bottom: 0.1rem;
 
-        position: absolute;
-        bottom: 0;
+          position: absolute;
+          bottom: 0;
 
-        overflow: visible;
-      }
+          overflow: visible;
+        }
 
+        @keyframes growRainBars {
+          0% {
+            height: 0;
+          }
+          100% {
+            height: 25;
+          }
+        }
+      </style>
+      [[_createChart(dayData)]]
 
-      @keyframes growRainBars {
-        0% { height: 0; }
-        100% { height: 25; }
-      }
-    </style>
-    [[_createChart(dayData)]]
-
-    <!-- placeholder for chart -->
-    <div class="chart" id="chart"></div>
-`;
+      <!-- placeholder for chart -->
+      <div class="chart" id="chart"></div>
+    `;
   }
 
-  static get is() { return 'weather-chart'; }
+  static get is() {
+    return "weather-chart";
+  }
 
   static get properties() {
     return {
       dayData: {
         type: Array
       },
-    
+
       minTemperature: {
         type: Number
       },
-      
+
       _chartHeight: {
         type: Number,
         value: 50
@@ -64,79 +69,85 @@ class WeatherChart extends PolymerElement {
     let svg = this._svg();
 
     this._rainBars(svg, dayData);
-    
+
     // remove previous childs
-   
-    if(this.$.chart.children.length > 0) {
+
+    if (this.$.chart.children.length > 0) {
       this.$.chart.removeChild(this.$.chart.children[0]);
     }
 
     this.$.chart.appendChild(svg);
   }
 
-  _svg(){
+  _svg() {
     let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    
+
     // min-x, min-y, width and height
-    svg.setAttribute('viewBox', '0 0 240 ' + this._chartHeight); 
-    svg.setAttribute('id', 'chartsvg'); 
-    svg.setAttribute('width','100%');
-    svg.setAttribute('height', this._chartHeight);
-    
-    svg.setAttribute('preserveAspectRatio','none');
-    svg.setAttribute('class', 'svg');
+    svg.setAttribute("viewBox", "0 0 240 " + this._chartHeight);
+    svg.setAttribute("id", "chartsvg");
+    svg.setAttribute("width", "100%");
+    svg.setAttribute("height", this._chartHeight);
+
+    svg.setAttribute("preserveAspectRatio", "none");
+    svg.setAttribute("class", "svg");
     return svg;
   }
 
   _rainBars(svg, data) {
-    
-    for(let i = 0; i < data.length; i++) {
-      
-      if(!Number.isNaN([i].rain)) {
-        let bar = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-        
-        bar.setAttribute('class', 'rainBar');
-        
-        let opacity = data[i].past ? '0.3' : '1'; 
-        bar.setAttribute('fill-opacity', opacity);      
-        bar.setAttribute('width', '9');
-      
-        // draw rectangle of height 20 x rain amount, 120 being maximum height
-        const rectHeight = Number.isNaN(data[i].rain) ? 0 : Math.min(data[i].rain*10, 107);
+    for (let i = 0; i < data.length; i++) {
+      if (!Number.isNaN([i].rain)) {
+        let bar = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "rect"
+        );
 
-        bar.setAttribute('height', rectHeight);
+        bar.setAttribute("class", "rainBar");
+
+        let opacity = data[i].past ? "0.3" : "1";
+        bar.setAttribute("fill-opacity", opacity);
+        bar.setAttribute("width", "9");
+
+        // draw rectangle of height 20 x rain amount, 120 being maximum height
+        const rectHeight = Number.isNaN(data[i].rain)
+          ? 0
+          : Math.min(data[i].rain * 10, 107);
+
+        bar.setAttribute("height", rectHeight);
 
         // define top left corner of rectangle
-        bar.setAttribute('y', this._chartHeight - rectHeight);
-        bar.setAttribute('x', i*9.6);
-      
+        bar.setAttribute("y", this._chartHeight - rectHeight);
+        bar.setAttribute("x", i * 9.6);
+
         svg.appendChild(bar);
       }
-    } 
+    }
   }
 
-  _timeNowTriangle(){
-    let line = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
-    line.setAttribute('stroke-opacity', '1');
-    line.setAttribute('fill', '#fff');
-    line.setAttribute('points', this._trianglePoints(this._hoursNow()));
-    return line;   
+  _timeNowTriangle() {
+    let line = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "polyline"
+    );
+    line.setAttribute("stroke-opacity", "1");
+    line.setAttribute("fill", "#fff");
+    line.setAttribute("points", this._trianglePoints(this._hoursNow()));
+    return line;
   }
 
-  _trianglePoints(time){
-    const bottomX = (time / 24)*230;
+  _trianglePoints(time) {
+    const bottomX = (time / 24) * 230;
     const bottomY = 10;
 
     const topLeftX = bottomX - 5;
     const topLeftY = 0;
 
     const topRightX = bottomX + 5;
-    const topRightY = 0
+    const topRightY = 0;
 
     return `${topLeftX},${topLeftY} ${bottomX},${bottomY} ${topRightX},${topRightY}`;
   }
 
-  _hoursNow(){
+  _hoursNow() {
     return new Date().getHours();
   }
 }

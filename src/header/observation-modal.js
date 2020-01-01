@@ -51,7 +51,7 @@ class ObservationModal extends PolymerElement {
         padding: var(--content-padding);
         position: relative;
         border: 1px solid #888;
-        border-radius: 0.6rem;
+        border-radius: var(--border-radius);
       }
 
       .loading {

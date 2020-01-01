@@ -1,43 +1,42 @@
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import { PolymerElement, html } from "@polymer/polymer/polymer-element.js";
 
 class DayItem extends PolymerElement {
   static get template() {
     return html`
-    <style>
-      :host {
-       display: block;
+      <style>
+        :host {
+          display: block;
 
-       --warning1-color: #ffa8004a;
-       --warning2-color: #ffa8004a;
-       --warning3-color: #ff00004a;
+          --warning1-color: #ffa8004a;
+          --warning2-color: #ffa8004a;
+          --warning3-color: #ff00004a;
+        }
 
-      }
+        .item {
+          background-color: #f3f3f3;
+          padding: 0.5rem 0;
+        }
+      </style>
 
-      .item {
-        background-color: #f3f3f3;
-        padding: 0.5rem 0;
-      }
-
-    </style>
-    
-    <div class$="[[_getClass(highlightColor)]]">
+      <div class$="[[_getClass(highlightColor)]]">
         <slot></slot>
-    </div>
-            
-`;
+      </div>
+    `;
   }
 
-  static get is() { return 'day-item'; }
+  static get is() {
+    return "day-item";
+  }
 
   static get properties() {
     return {
       highlightColor: {
         type: Number
       }
-    }
+    };
   }
 
-  _getClass(color){
+  _getClass(color) {
     const item = `item item--color${color}`;
     console.log(item);
     return item;

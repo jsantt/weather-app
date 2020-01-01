@@ -24,26 +24,52 @@ class WeatherApp extends PolymerElement {
         :host {
           display: block;
 
-          --color-palette-yellow: #ffffd1; /*rgb(255,254,223);#f4f4f4; #ffffd1;*/
-          --color-palette-brown: #916c25;
-          --color-palette-orange: #ffa800;
-          --color-palette-blue: #0060e8;
-          --color-palette-lightBlue: #84b9ff;
+          /* NEW COLORS */
+          --color-gray-300: #f5f5f5;
+          --color-gray-500: #ccc;
+          --color-gray-600: #999;
+          --color-gray-800: #545454;
+          --color-gray-900: #424242;
 
           --color-black: #111;
           --color-white: #fff;
+
+          --color-red-300: #ff4d87d4;
+          --color-red-500: rgb(255, 77, 135);
+
+          --color-blue-500: #bce8f3;
+          --color-blue-700: #219ebd;
+          --color-blue-800: #187187;
+
+          --color-beige-500: #faebd7;
+          --color-beige-900: #57360a;
+
+          --color-green-400: #e5f9eb;
+          --color-green-500: #d7fae1;
+          --color-green-700: #94e0a9;
+          --color-green-900: #1b5f2e;
+
+          --font-family: "Open Sans Condensed", sans-serif;
+          --font-family-secondary: sans-serif;
+
+          /* TODO: REMOVE OLD COLORS */
+
+          --color-palette-blue: #187187;
+
           --color-gray--dark: #555;
           --color-gray: #999;
           --color-gray--light: #ddd;
 
           /* main colors */
-          --color-primary: var(--color-palette-lightBlue);
-          --color-secondary: var(--color-palette-yellow);
+          --color-primary: var(--color-blue-500);
+          --color-secondary: var(--color-green-400);
           --color-tertiary: #ddd;
 
           --line-height--tight: 1;
           --padding-header-footer: 1rem;
           --notification-shadow: 0px -1px 4px 0px rgba(0, 0, 0, 0.05);
+
+          --border-radius: 0.75rem;
         }
 
         div[hidden] {

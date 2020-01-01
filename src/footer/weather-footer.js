@@ -15,12 +15,12 @@ class WeatherFooter extends PolymerElement {
         }
 
         footer section {
-          margin: 1rem 0;
+          margin: var(--space-l) 0;
         }
 
         .footer_header {
-          color: var(--color-white);
-          margin: 1rem 0 2rem 0;
+          color: var(--color-blue-800);
+          margin: var(--space-l) 0 var(--space-xl) 0;
           text-align: center;
         }
 

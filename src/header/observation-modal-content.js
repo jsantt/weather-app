@@ -1,24 +1,25 @@
-import { css, html, LitElement } from 'lit-element';
-import '../error-notification';
-import './weather-symbol-wawa.js';
+import { css, html, LitElement } from "lit-element";
+import "../error-notification";
+import "./weather-symbol-wawa.js";
 
 class ObservationModalContent extends LitElement {
+  static get is() {
+    return "observation-modal-content";
+  }
 
-  static get is() { return 'observation-modal-content'; }
-
-  static get styles() { 
+  static get styles() {
     return css`
       .header {
         background-color: var(--color-primary);
-        border-bottom: 0.2rem solid var(--color-gray--light); 
-
+        color: var(--color-blue-800);
         grid-column: span 2;
         padding: 1.5rem 1rem;
         text-align: center;
       }
 
-      h1, h2, h3 { 
-        color: var(--color-black);
+      h1,
+      h2,
+      h3 {
         font-weight: 500;
         margin: 0;
 
@@ -48,7 +49,7 @@ class ObservationModalContent extends LitElement {
       .content {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        
+
         align-items: center;
         justify-items: center;
 
@@ -61,7 +62,6 @@ class ObservationModalContent extends LitElement {
 
       .temperature {
         justify-self: stretch;
-        /*border-bottom: 1px solid var(--color-gray--light);*/
         font-size: var(--font-size-xxlarge);
         grid-column: 1 / span 2;
 
@@ -94,8 +94,6 @@ class ObservationModalContent extends LitElement {
 
       .footer {
         background-color: var(--color-primary);
-        border-top: 0.2rem solid var(--color-gray--light); 
-    
         margin-top: 1rem;
 
         display: flex;
@@ -103,6 +101,9 @@ class ObservationModalContent extends LitElement {
         align-items: center;
 
         padding: 0.5rem;
+      }
+      a {
+        color: var(--color-blue-800);
       }
     `;
   }
@@ -112,108 +113,134 @@ class ObservationModalContent extends LitElement {
       <div class="header">
         <h1>LÄHIN HAVAINTOASEMA</h1>
         <h2>
-            ${this.observationData.weatherStation}
+          ${this.observationData.weatherStation}
         </h2>
         <h3>Kello ${this._formatTime(this.observationData.time)}</h3>
       </div>
 
-      ${this.observationError ? html`
-        <error-notification
-          error-text="Sääasemalle ei valitettavasti saatu yhteyttä">
-        </error-notification>
-      ` : html`
-       
-      <div class="content">
+      ${this.observationError
+        ? html`
+            <error-notification
+              error-text="Sääasemalle ei valitettavasti saatu yhteyttä"
+            >
+            </error-notification>
+          `
+        : html`
+            <div class="content">
+              <div class="item temperature">
+                ${this.observationData.temperature
+                  ? html`
+                      <div>
+                        <span>${this.observationData.temperature}°C</span>
+                      </div>
+                    `
+                  : ``}
 
-          <div class="item temperature">
-            ${this.observationData.temperature ?
-              html`
-                <div>
-                  <span>${this.observationData.temperature}°C</span> 
-                </div>
-                ` : ``}
-            
-          
-            <weather-symbol-wawa 
-              class="value description"
-              wawa-id="${this.observationData.weatherCode}"
-              cloudiness="${this.observationData.cloudiness}">
-            </weather-symbol-wawa>
-            
-          </div>
-            
-          ${this.observationData.rainExplanation ?   
-            html`
-              <div class="item">
-                <div class="value">${this.observationData.rainExplanation}mm/h</div>
-                <div class="explanation">sateen rankkuus</div>
-              <div>`  : ``}
-        
-          ${this.observationData.rain ? 
-            html` 
-            <div>
-              <div class="value">${this.observationData.rain}</div> 
-              <div class="explanation"> mm sadetta / edeltävä tunti</div>
-            </div>
-          ` : ``}
-        
-          ${this.observationData.wind ?
-            html`<div class="item">
-              <wind-icon 
-                degrees="${this.observationData.windDirection}" 
-                large
-                wind-speed="${this.observationData.wind}"
-                wind-gust-speed="${this.observationData.windGust}">
-              </wind-icon>
-              <div class="explanation windExplanation">10 min keskituuli ja puuskat</div>
-            </div>
-          ` : ``}
-        
-          ${this.observationData.humidity ? html`
-            <div class="item">
-              <div class="value">${this.observationData.humidity}%</div>
-              <div class="explanation">ilmankosteus</div>
-            </div>
-          `: ``}
-        
-          ${this.observationData.pressure ? html`
-            <div class="item">
-              <div class="value">${this.observationData.pressure} hPa</div>
-              <div class="explanation">ilmanpaine</div>
-            </div>
-          ` : ``}
+                <weather-symbol-wawa
+                  class="value description"
+                  wawa-id="${this.observationData.weatherCode}"
+                  cloudiness="${this.observationData.cloudiness}"
+                >
+                </weather-symbol-wawa>
+              </div>
 
-          ${this.observationData.visibility ? html`
-            <div class="item">
-              <div class="value">${this.observationData.visibility}m</div>
-              <div class="explanation">näkyvyys</div>
+              ${this.observationData.rainExplanation
+                ? html`
+                    <div class="item">
+                      <div class="value">
+                        ${this.observationData.rainExplanation}mm/h
+                      </div>
+                      <div class="explanation">sateen rankkuus</div>
+                      <div></div>
+                    </div>
+                  `
+                : ``}
+              ${this.observationData.rain
+                ? html`
+                    <div>
+                      <div class="value">${this.observationData.rain}</div>
+                      <div class="explanation">mm sadetta / edeltävä tunti</div>
+                    </div>
+                  `
+                : ``}
+              ${this.observationData.wind
+                ? html`
+                    <div class="item">
+                      <wind-icon
+                        degrees="${this.observationData.windDirection}"
+                        large
+                        wind-speed="${this.observationData.wind}"
+                        wind-gust-speed="${this.observationData.windGust}"
+                      >
+                      </wind-icon>
+                      <div class="explanation windExplanation">
+                        10 min keskituuli ja puuskat
+                      </div>
+                    </div>
+                  `
+                : ``}
+              ${this.observationData.humidity
+                ? html`
+                    <div class="item">
+                      <div class="value">${this.observationData.humidity}%</div>
+                      <div class="explanation">ilmankosteus</div>
+                    </div>
+                  `
+                : ``}
+              ${this.observationData.pressure
+                ? html`
+                    <div class="item">
+                      <div class="value">
+                        ${this.observationData.pressure} hPa
+                      </div>
+                      <div class="explanation">ilmanpaine</div>
+                    </div>
+                  `
+                : ``}
+              ${this.observationData.visibility
+                ? html`
+                    <div class="item">
+                      <div class="value">
+                        ${this.observationData.visibility}m
+                      </div>
+                      <div class="explanation">näkyvyys</div>
+                    </div>
+                  `
+                : ``}
+              ${this.observationData.dewPoint
+                ? html`
+                    <div class="item">
+                      <div class="value">
+                        ${this.observationData.dewPoint}°C
+                      </div>
+                      <div class="explanation">kastepiste</div>
+                    </div>
+                  `
+                : ``}
+              ${this.observationData.cloudiness
+                ? html`
+                    <div class="item">
+                      <div class="value">
+                        ${this.observationData.cloudiness} / 8
+                      </div>
+                      <div class="explanation">pilvisyys</div>
+                    </div>
+                  `
+                : ``}
+              ${this._snow(this.observationData.snow)
+                ? html`
+                    <div class="item">
+                      Lumen syvyys: ${this.observationData.snow} cm
+                    </div>
+                  `
+                : ``}
             </div>
-            ` : ``}
-
-          ${this.observationData.dewPoint ? html`
-            <div class="item">
-              <div class="value">${this.observationData.dewPoint}°C</div>
-              <div class="explanation">kastepiste</div>
-            </div>
-            ` : ``}
-
-          ${this.observationData.cloudiness ? html`
-            <div class="item">
-              <div class="value">${this.observationData.cloudiness} / 8</div>
-              <div class="explanation">pilvisyys</div>
-            </div>
-            ` : ``}
-
-          ${this._snow(this.observationData.snow) ? html`
-            <div class="item">
-              Lumen syvyys: ${this.observationData.snow} cm
-            </div>
-            ` : ``}
+          `}
+      <div class="footer">
+        <a href="${this._googleMapsURl(this.observationData.latLon)}"
+          >${this.observationData.weatherStation} kartalla</a
+        >
       </div>
-    `}
-    <div class="footer">
-        <a href="${this._googleMapsURl(this.observationData.latLon)}">${this.observationData.weatherStation} kartalla</a>
-    </div>
     `;
   }
 
@@ -235,13 +262,13 @@ class ObservationModalContent extends LitElement {
 
   _formatTime(time) {
     const parsedTime = new Date(time);
-    
-    const minutes = parsedTime.getMinutes();
-    const fullMinutes = minutes < 10 ? '0' + minutes : minutes;
 
-    return  parsedTime.getHours() + '.' + fullMinutes;
+    const minutes = parsedTime.getMinutes();
+    const fullMinutes = minutes < 10 ? "0" + minutes : minutes;
+
+    return parsedTime.getHours() + "." + fullMinutes;
   }
-  
+
   _googleMapsURl(latitudeLongitude) {
     return `https://www.google.com/maps/search/?api=1&query=${latitudeLongitude}&zoom=12`;
   }
@@ -250,26 +277,33 @@ class ObservationModalContent extends LitElement {
     return centimeters > -1;
   }
 
-  /* Formula from https://stackoverflow.com/questions/18883601/function-to-calculate-distance-between-two-coordinates*/ 
+  /* Formula from https://stackoverflow.com/questions/18883601/function-to-calculate-distance-between-two-coordinates*/
+
   _distance(lat1, lon1, lat2, lon2) {
-      const R = 6371; // km
-      const dLat = this._toRadian(lat2-lat1);
-      const dLon = this._toRadian(lon2-lon1);
-      const latitude1 = this._toRadian(lat1);
-      const latitude2 = this._toRadian(lat2);
+    const R = 6371; // km
+    const dLat = this._toRadian(lat2 - lat1);
+    const dLon = this._toRadian(lon2 - lon1);
+    const latitude1 = this._toRadian(lat1);
+    const latitude2 = this._toRadian(lat2);
 
-      const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-        Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(latitude1) * Math.cos(latitude2); 
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-      const d = R * c;
-      return d;
-    }
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.sin(dLon / 2) *
+        Math.sin(dLon / 2) *
+        Math.cos(latitude1) *
+        Math.cos(latitude2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const d = R * c;
+    return d;
+  }
 
-    // Converts numeric degrees to radians
-    _toRadian(degrees) 
-    {
-        return degrees * Math.PI / 180;
-    }
+  // Converts numeric degrees to radians
+  _toRadian(degrees) {
+    return (degrees * Math.PI) / 180;
+  }
 }
 
-window.customElements.define(ObservationModalContent.is, ObservationModalContent);
+window.customElements.define(
+  ObservationModalContent.is,
+  ObservationModalContent
+);

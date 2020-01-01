@@ -23,7 +23,7 @@ class WeatherDay extends PolymerElement {
         --color-dayHeader: var(--color-secondary);
         --color-dayHeader-delimiter: var(--color-gray--light);
 
-        --color-dayHeader-font: var(--color-gray--dark);
+        --color-dayHeader-font: var(--color-green-900);
 
         --color-toggle-background: rgba(240,240,240, 0.8);
       }
@@ -31,7 +31,6 @@ class WeatherDay extends PolymerElement {
       .weatherDay {
         min-height: 8rem;
         position: relative;
-        margin: 0.25rem 0;
       }
 
       .weatherDay_grid {
@@ -44,15 +43,16 @@ class WeatherDay extends PolymerElement {
 
       .day {
         background-color: var(--color-dayHeader);
-        /*border-top: 2px solid var(--color-dayHeader-delimiter);*/
-
         color: var(--color-dayHeader-font);
         	
         font-size: var(--font-size-small);
         grid-column: span 25;
         grid-row: 1;
 
-        padding-left: 0.5rem;
+        padding-left: var(--space-m);
+
+        padding-top: var(--space-s);
+        padding-bottom: var(--space-s);
       }
 
       .day-name {
@@ -69,7 +69,7 @@ class WeatherDay extends PolymerElement {
       }
 
       .hour, .hour--empty {
-        background-color: var(--color-dayHeader);
+        /*background-color: #f3fcf5;*/
         font-size: var(--font-size-small);
       
         grid-row: 2; 
@@ -78,8 +78,7 @@ class WeatherDay extends PolymerElement {
         text-align: center;
 
         color: var(--color-gray--dark);
-        /*font-weight: 700;*/
-        margin-bottom: 0.75rem;
+        margin: var(--space-l) 0 var(--space-s) 0;
       }
       .hour--empty {
         grid-column: span 1;
@@ -183,7 +182,7 @@ class WeatherDay extends PolymerElement {
 
       .wind-icon {
         vertical-align: sub;
-        fill: #0060e8;
+        fill: var(--color-blue-700);
       }
 
       .wind-warning {
@@ -192,7 +191,7 @@ class WeatherDay extends PolymerElement {
       .rain-amount {
         float: right;
         padding-right: 0.5rem;
-        color: #0060e8;
+        color: var(--color-blue-800);/*#0060e8;*/
       }
       rain-amount, snow-amount {
         padding-left: 0.5rem;
@@ -208,10 +207,10 @@ class WeatherDay extends PolymerElement {
       .feelsLikeValue {
         font-size: 16px;
       }
+
     </style>
 
-    <div class="weatherDay">
-     
+    <div class="weatherDay"> 
       <div class="weatherDay_grid">
         
         <div class="day">
