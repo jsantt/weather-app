@@ -70,47 +70,81 @@ class PublicHolidays extends LitElement {
   constructor() {
     super();
 
-    // free=vapaapäivä, f=liputuspäivä
+    // free=vapaapäivä, f=liputuspäivä, static=always the same date
     this._holidays = [
-      { d: "2019-01-01", n: "Uudenvuodenpäivä", free: true },
-      { d: "2019-01-06", n: "Loppiainen", free: true },
-      { d: "2019-02-05", n: "J.L.Runebergin päivä", flag: true },
+      { d: "2020-01-01", n: "Uudenvuodenpäivä", free: true, static: true },
+      { d: "2020-01-06", n: "Loppiainen", free: true, static: true },
+      { d: "2020-02-05", n: "J.L.Runebergin päivä", flag: true, static: true },
 
-      { d: "2019-02-28", n: "Kalevalan päivä", flag: true },
-      { d: "2019-03-19", n: "Minna Canthin ja tasa-arvon päivä", flag: true },
-      { d: "2019-04-21", n: "Pääsiäissunnuntai", free: true },
-
-      { d: "2019-04-22", n: "Toinen pääsiäispäivä", free: true },
-      { d: "2019-04-27", n: "Kansallinen veteraanipäivä", flag: true },
-      { d: "2019-05-01", n: "Vappu", free: true, flag: true },
-
-      { d: "2019-05-09", n: "Eurooppa-päivä", flag: true },
-      { d: "2019-05-12", n: "Äitienpäivä", flag: true },
+      { d: "2020-02-28", n: "Kalevalan päivä", flag: true, static: true },
       {
-        d: "2019-05-12",
+        d: "2020-03-19",
+        n: "Minna Canthin ja tasa-arvon päivä",
+        flag: true,
+        static: true
+      },
+      { d: "2020-04-12", n: "Pääsiäissunnuntai", free: true },
+
+      { d: "2020-04-13", n: "Toinen pääsiäispäivä", free: true },
+      {
+        d: "2020-04-27",
+        n: "Kansallinen veteraanipäivä",
+        flag: true,
+        static: true
+      },
+      { d: "2020-05-01", n: "Vappu", free: true, flag: true, static: true },
+
+      { d: "2020-05-09", n: "Eurooppa-päivä", flag: true, static: true },
+      { d: "2020-05-10", n: "Äitienpäivä", flag: true },
+      {
+        d: "2020-05-12",
         n: "J.V. Snellmanin ja suomalaisuuden päivä",
-        flag: true
+        flag: true,
+        static: true
       },
 
-      { d: "2019-05-19", n: "Kaatuneiden muistopäivä", flag: true },
-      { d: "2019-05-30", n: "Helatorstai", free: true },
-      { d: "2019-06-04", n: "Puolustusvoimain lippujuhlan päivä", flag: true },
+      { d: "2020-05-17", n: "Kaatuneiden muistopäivä", flag: true },
+      { d: "2020-05-21", n: "Helatorstai", free: true },
+      {
+        d: "2020-06-04",
+        n: "Puolustusvoimain lippujuhlan päivä",
+        flag: true,
+        static: true
+      },
 
-      { d: "2019-06-09", n: "Helluntai", free: true },
-      { d: "2019-06-22", n: "Juhannus", free: true, flag: true },
-      { d: "2019-07-06", n: "Eino Leinon päivä", flag: true },
+      { d: "2020-05-31", n: "Helluntai", free: true },
+      { d: "2020-06-19", n: "Juhannusaatto" },
+      { d: "2020-06-20", n: "Juhannus", free: true, flag: true },
+      { d: "2020-07-06", n: "Eino Leinon päivä", flag: true, static: true },
 
-      { d: "2019-10-10", n: "Aleksis Kiven päivä", flag: true },
-      { d: "2019-10-24", n: "yhdistyneiden kansakuntien päivä", flag: true },
-      { d: "2019-11-02", n: "Pyhäinpäivä", free: true },
+      { d: "2020-10-10", n: "Aleksis Kiven päivä", flag: true, static: true },
+      {
+        d: "2020-10-24",
+        n: "yhdistyneiden kansakuntien päivä",
+        flag: true,
+        static: true
+      },
+      { d: "2020-10-31", n: "Pyhäinpäivä", free: true },
 
-      { d: "2019-11-06", n: "Ruotsalaisuuden päivä", flag: true },
-      { d: "2019-11-10", n: "Isänpäivä", flag: true },
-      { d: "2019-12-06", n: "Itsenäisyyspäivä", free: true, flag: true },
+      { d: "2020-11-06", n: "Ruotsalaisuuden päivä", flag: true, static: true },
+      { d: "2020-11-08", n: "Isänpäivä", flag: true },
+      {
+        d: "2020-12-06",
+        n: "Itsenäisyyspäivä",
+        free: true,
+        flag: true,
+        static: true
+      },
 
-      { d: "2019-12-08", n: "Jean Sibeliuksen päivä", flag: true },
-      { d: "2019-12-25", n: "Joulupäivä", free: true },
-      { d: "2019-12-26", n: "Tapaninpäivä", free: true }
+      {
+        d: "2020-12-08",
+        n: "Jean Sibeliuksen päivä",
+        flag: true,
+        static: true
+      },
+      { d: "2020-12-25", n: "Jouluaatto", static: true },
+      { d: "2020-12-25", n: "Joulupäivä", free: true, static: true },
+      { d: "2020-12-26", n: "Tapaninpäivä", free: true, static: true }
     ];
   }
 }

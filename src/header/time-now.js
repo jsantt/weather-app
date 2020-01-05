@@ -11,6 +11,7 @@ class TimeNow extends PolymerElement {
           display: block;
           margin-left: -1rem;
           width: 100%;
+          margin-bottom: -0.25rem;
         }
 
         .time {
@@ -18,6 +19,13 @@ class TimeNow extends PolymerElement {
           fill: var(--color-blue-800);
           white-space: nowrap;
           font-size: var(--font-size-medium);
+
+          background-color: var(--color-green-400);
+          display: inline-block;
+          padding: 0 var(--space-l) 0 var(--space-m);
+          border-top-left-radius: 4rem;
+          border-top-right-radius: 4rem;
+          vertical-align: bottom;
         }
       </style>
 
