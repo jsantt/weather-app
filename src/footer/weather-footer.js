@@ -42,16 +42,31 @@ class WeatherFooter extends PolymerElement {
         a:visited {
           color: var(--color-palette-blue);
         }
+        .logo {
+          margin-top: var(--space-m);
+        }
       </style>
 
       <footer>
-        <p class="footer_header">Säädata by Ilmatieteen laitos | avoin data</p>
+        <p class="footer_header">
+          Säädata by Ilmatieteen laitos | avoin data<br />
+          <img class="logo" alt="fmi logo" src="../image/FMI0DATA_small.png" />
+        </p>
 
         <section class="footer_section">
+          <h3>Aurinko</h3>
           <p class="info">
             <slot name="sunrise-sunset"></slot>
           </p>
         </section>
+
+        <section class="footer_section">
+          <h3>2019 Kalenteri</h3>
+          <p class="info">
+            <slot name="public-holidays"></slot>
+          </p>
+        </section>
+
         <section class="footer_section">
           <h3>TIETOJA PALVELUSTA</h3>
           <p class="info">
@@ -92,21 +107,13 @@ class WeatherFooter extends PolymerElement {
           <p></p>
         </section>
 
-        <section class="footer_section">
-          <h3>2019 Kalenteri</h3>
-          <p class="info">
-            <slot name="public-holidays"></slot>
-          </p>
-        </section>
-
-        <img alt="fmi logo" src="../image/FMI0DATA_small.png" />
-
         <template is="dom-if" if="[[_offline]]">
           <section>
             Ei verkkoyhteyttä
             <!-- - Ennuste on 3h vanha-->
           </section>
         </template>
+        <br /><br /><br />
       </footer>
     `;
   }

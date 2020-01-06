@@ -69,8 +69,8 @@ class TimeNow extends PolymerElement {
 
     const margin = ((hours - 1) / 24) * 100;
 
-    const correctLeftOverflow = Math.max(0, margin);
-    const correctRightOverflow = Math.min(correctLeftOverflow, 95);
+    const correctLeftOverflow = Math.max(10, margin);
+    const correctRightOverflow = Math.min(correctLeftOverflow, 85);
 
     this.timeMargin = "margin-left:" + correctRightOverflow + "%";
   }
