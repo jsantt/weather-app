@@ -67,7 +67,8 @@ class TimeNow extends PolymerElement {
   _calculateMargin() {
     const hours = new Date().getHours();
 
-    const margin = ((hours - 1) / 24) * 100;
+    const visualCorrection = -3;
+    const margin = ((hours - 1) / 24) * 100 + visualCorrection;
 
     const correctLeftOverflow = Math.max(10, margin);
     const correctRightOverflow = Math.min(correctLeftOverflow, 85);
