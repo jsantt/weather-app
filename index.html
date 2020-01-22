@@ -76,6 +76,10 @@
           visibility: hidden;
         }
 
+        html {
+          background-color: rgb(232, 233, 236);
+        }
+
         body {
       
           /* 
@@ -100,14 +104,25 @@
           --space-l: 1rem;
           --space-xl: 2rem;
           
-          box-shadow: 1px 1px 6px 0px rgba(0,0,0,0.2);
+          /*box-shadow: 1px 1px 6px 0px rgba(0,0,0,0.2);*/
           font-family: 'Open Sans Condensed', sans-serif;
 
           font-size: 16px;
           max-width: 600px;
           
           margin: 0 auto;
+
+          background-color: #eee;
+          color: white;
+          /*background: radial-gradient(
+            circle,
+            #173F5F 3%,
+            #20639B 96%
+          );*/
+        
+         
         }
+        
 
         .visually-hidden {
           position: absolute !important;
@@ -168,7 +183,7 @@
 
         [part="text-field"] {
           margin-left: -1rem;
-          color: var(--color-blue-800);
+          color: var(--color-white);
         }
 
         [part="toggle-button"] {

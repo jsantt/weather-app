@@ -34,20 +34,19 @@ class WeatherApp extends PolymerElement {
           --color-black: #111;
           --color-white: #fff;
 
-          --color-red-300: #ff4d87d4;
-          --color-red-500: rgb(255, 77, 135);
+          --color-red-500: #ed332b;
 
-          --color-blue-500: #bce8f3;
-          --color-blue-700: #219ebd;
-          --color-blue-800: #187187;
+          --color-blue-300: #219ebd;
+          --color-blue-500: #20639b;
+          --color-blue-800: #173f5f;
 
           --color-beige-500: #faebd7;
           --color-beige-900: #57360a;
 
-          --color-green-400: #e5f9eb;
-          --color-green-500: #d7fae1;
-          --color-green-700: #94e0a9;
-          --color-green-900: #1b5f2e;
+          --color-green-500: #3caea3;
+
+          --color-yellow-500: #f6d55c;
+          --color-orange-500: #ffa800;
 
           --font-family: "Open Sans Condensed", sans-serif;
           --font-family-secondary: sans-serif;
@@ -62,8 +61,8 @@ class WeatherApp extends PolymerElement {
 
           /* main colors */
           --color-primary: var(--color-blue-500);
-          --color-secondary: var(--color-green-400);
-          --color-tertiary: #ddd;
+          --color-secondary: var(--color-blue-800);
+          --color-tertiary: var(--color-blue-800);
 
           --line-height--tight: 1;
           --padding-header-footer: 1rem;

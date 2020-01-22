@@ -11,7 +11,7 @@ class ObservationModalContent extends LitElement {
     return css`
       .header {
         background-color: var(--color-primary);
-        color: var(--color-blue-800);
+        color: var(--color-white);
         grid-column: span 2;
         padding: 1.5rem 1rem;
         text-align: center;
@@ -55,6 +55,7 @@ class ObservationModalContent extends LitElement {
 
         padding-top: 1.4rem;
         text-align: center;
+        color: var(--color-blue-800);
       }
       .item {
         padding: 1rem 0;
@@ -103,7 +104,7 @@ class ObservationModalContent extends LitElement {
         padding: 0.5rem;
       }
       a {
-        color: var(--color-blue-800);
+        color: var(--color-white);
       }
     `;
   }

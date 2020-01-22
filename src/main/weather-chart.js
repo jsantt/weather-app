@@ -9,7 +9,7 @@ class WeatherChart extends PolymerElement {
         }
 
         .rainBar {
-          fill: var(--color-blue-700);
+          fill: var(--color-blue-300);
           animation: growRainBars 0.2s ease-out;
         }
 

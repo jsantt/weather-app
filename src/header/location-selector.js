@@ -13,7 +13,7 @@ class LocationSelector extends PolymerElement {
     return html`
       <style>
         :host {
-          --paper-spinner-color: var(--color-palette-blue);
+          --paper-spinner-color: var(--color-white);
 
           display: inline-block;
 

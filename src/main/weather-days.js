@@ -7,6 +7,7 @@ class WeatherDays extends PolymerElement {
     <style>
       :host {
         display: block;
+        margin-top: -4rem;
       }
       .visually-hidden {
           position: absolute !important;

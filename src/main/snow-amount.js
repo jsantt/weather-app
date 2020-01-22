@@ -6,10 +6,10 @@ class SnowAmount extends PolymerElement {
       <template is="dom-if" if="{{_hasSnow(snowAmount)}}">
         <style>
           :host {
-            color: var(--color-blue-800);
+            color: var(--color-white);
           }
           svg {
-            fill: var(--color-blue-700);
+            fill: var(--color-white);
           }
         </style>
 

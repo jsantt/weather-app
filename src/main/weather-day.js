@@ -23,18 +23,22 @@ class WeatherDay extends PolymerElement {
         --color-dayHeader: var(--color-secondary);
         --color-dayHeader-delimiter: var(--color-gray--light);
 
-        --color-dayHeader-font: var(--color-green-900);
+        --color-dayHeader-font: var(--color-white);
 
         --color-toggle-background: rgba(240,240,240, 0.8);
+        
       }
 
       .weatherDay {
         min-height: 8rem;
         position: relative;
+        margin: 0 var(--space-m) var(--space-l) var(--space-m);
+        
       }
 
       .weatherDay_grid {
         background-color: #fff;
+        border-radius: 0.5rem;
         display: grid;
         grid-row-gap: 0;
         grid-template-columns: repeat(25, 1fr);
@@ -43,6 +47,8 @@ class WeatherDay extends PolymerElement {
 
       .day {
         background-color: var(--color-dayHeader);
+        border-top-left-radius: 0.5rem;
+        border-top-right-radius: 0.5rem;
         color: var(--color-dayHeader-font);
         	
         font-size: var(--font-size-small);
@@ -113,6 +119,7 @@ class WeatherDay extends PolymerElement {
 
 
       .temperature, .temperature--empty {
+        color: var(--color-black);
         grid-column: span 3;
         grid-row: 5;
 
@@ -130,6 +137,7 @@ class WeatherDay extends PolymerElement {
       .feelsLike_footer, .wind_footer, .feelsLike_header, .wind_header {
         font-size: var(--font-size-xsmall);
         background-color: var(--color-toggle-background);
+        color: var(--color-black);
         padding-left: 0.5rem;
         grid-column: span 25;
         z-index:2;
@@ -166,6 +174,7 @@ class WeatherDay extends PolymerElement {
       }
 
       .wind, .feelsLike {
+        color: var(--color-black);
         grid-column: span 3;
         font-size: var(--font-size-medium);
         text-align: center;
@@ -182,7 +191,7 @@ class WeatherDay extends PolymerElement {
 
       .wind-icon {
         vertical-align: sub;
-        fill: var(--color-blue-700);
+        fill: var(--color-blue-300);
       }
 
       .wind-warning {
@@ -191,7 +200,6 @@ class WeatherDay extends PolymerElement {
       .rain-amount {
         float: right;
         padding-right: 0.5rem;
-        color: var(--color-blue-800);/*#0060e8;*/
       }
       rain-amount, snow-amount {
         padding-left: 0.5rem;

@@ -11,14 +11,14 @@ class ForecastHeader extends PolymerElement {
       <style>
         :host {
           display: block;
-          background: var(--color-primary);
-          background: radial-gradient(
-            circle,
-            rgba(188, 232, 243, 1) 3%,
-            rgba(153, 217, 234, 1) 96%
+          background-color: var(--color-primary);
+          background: linear-gradient(
+            to right,
+            var(--color-primary),
+            #20639bcc
           );
-
-          color: var(--color-blue-800);
+          padding-bottom: 4rem;
+          /*background: radial-gradient(circle, #20639b 3%, #173f5f 96%);*/
         }
 
         .visually-hidden {

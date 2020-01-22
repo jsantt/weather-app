@@ -15,12 +15,12 @@ class TimeNow extends PolymerElement {
         }
 
         .time {
-          color: var(--color-blue-800);
-          fill: var(--color-blue-800);
+          color: var(--color-white);
+          fill: var(--color-white);
           white-space: nowrap;
           font-size: var(--font-size-medium);
 
-          background-color: var(--color-green-400);
+          background-color: var(--color-tertiary);
           display: inline-block;
           padding: 0 var(--space-l) 0 var(--space-m);
           border-top-left-radius: 4rem;
@@ -71,7 +71,7 @@ class TimeNow extends PolymerElement {
     const margin = ((hours - 1) / 24) * 100 + visualCorrection;
 
     const correctLeftOverflow = Math.max(10, margin);
-    const correctRightOverflow = Math.min(correctLeftOverflow, 85);
+    const correctRightOverflow = Math.min(correctLeftOverflow, 80);
 
     this.timeMargin = "margin-left:" + correctRightOverflow + "%";
   }

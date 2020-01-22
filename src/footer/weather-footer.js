@@ -7,10 +7,10 @@ class WeatherFooter extends PolymerElement {
       <style>
         :host {
           display: block;
+          color: var(--color-black);
         }
 
         footer {
-          background-color: var(--color-primary);
           padding: var(--padding-header-footer);
         }
 
@@ -19,13 +19,11 @@ class WeatherFooter extends PolymerElement {
         }
 
         .footer_header {
-          color: var(--color-blue-800);
           margin: var(--space-l) 0 var(--space-xl) 0;
           text-align: center;
         }
 
         footer h3 {
-          color: var(--color-palette-blue);
           font-size: var(--font-size-small);
           font-weight: 400;
 
@@ -40,7 +38,7 @@ class WeatherFooter extends PolymerElement {
         }
         a:link,
         a:visited {
-          color: var(--color-palette-blue);
+          color: var(--color-black);
         }
         .logo {
           margin-top: var(--space-m);
