@@ -68,7 +68,8 @@ class WeatherApp extends PolymerElement {
           --padding-header-footer: 1rem;
           --notification-shadow: 0px -1px 4px 0px rgba(0, 0, 0, 0.05);
 
-          --border-radius: 0.75rem;
+          --border-radius: 0.5rem;
+          --header-background-expand: 3rem;
         }
 
         div[hidden] {

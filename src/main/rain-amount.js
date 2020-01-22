@@ -6,7 +6,7 @@ class RainAmount extends PolymerElement {
       <template is="dom-if" if="{{_hasRain(rainAmount)}}">
         <style>
           svg {
-            fill: var(--color-blue-700);
+            fill: var(--color-blue-300);
           }
         </style>
         <svg class="wind-icon" width="12" height="12" viewBox="0 0 32 32">

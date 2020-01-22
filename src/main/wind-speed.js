@@ -8,7 +8,7 @@ class WindSpeed extends PolymerElement {
           color: var(--color-white);
         }
         svg {
-          fill: var(--color-white);
+          fill: var(--color-yellow-500);
         }
       </style>
       <template is="dom-repeat" items="[[_arrayForRepeater(windRating)]]">

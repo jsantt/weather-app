@@ -66,7 +66,7 @@ class SunriseSunset extends LitElement {
                 id="svg_10"
                 d="m3.03391,15.93057l4.8437,-7.18066l4.8437,7.18066l-2.42185,0l0,7.2152l-4.8437,0l0,-7.2152l-2.42185,0z"
                 stroke-width="0"
-                fill="#fff"
+                fill="#000"
               />
             </g>
           </svg>
@@ -94,7 +94,7 @@ class SunriseSunset extends LitElement {
                 id="svg_3"
                 d="m27.65561,16.49653l4.8437,7.25316l4.8437,-7.25316l-2.42185,0l0,-7.28806l-4.8437,0l0,7.28806l-2.42185,0z"
                 stroke-width="0"
-                fill="#fff"
+                fill="#000"
               />
               <g id="svg_8">
                 <polygon

@@ -9,7 +9,7 @@ class SnowAmount extends PolymerElement {
             color: var(--color-white);
           }
           svg {
-            fill: var(--color-white);
+            fill: var(--color-blue-300);
           }
         </style>
 

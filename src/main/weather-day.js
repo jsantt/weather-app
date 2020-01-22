@@ -38,7 +38,7 @@ class WeatherDay extends PolymerElement {
 
       .weatherDay_grid {
         background-color: #fff;
-        border-radius: 0.5rem;
+        border-radius: var(--border-radius);
         display: grid;
         grid-row-gap: 0;
         grid-template-columns: repeat(25, 1fr);
@@ -91,16 +91,12 @@ class WeatherDay extends PolymerElement {
       }
       
       .hour--dot {
-        color: #fff;
+        color: transparent;
         font-size: 0.75rem;
       }
 
       .hour--past {
         color: var(--color-gray--light);
-      }
-
-      .dot--past {
-        color: var(--color-dayHeader);
       }
 
       .past-hour {
@@ -208,7 +204,7 @@ class WeatherDay extends PolymerElement {
       .rainBars{
         grid-column: span 25;
         grid-row: 12;
-        padding-top: 1.5rem;
+        padding-top: 1.55rem;
         z-index: 1;
       }
 
