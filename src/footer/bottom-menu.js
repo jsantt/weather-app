@@ -27,6 +27,9 @@ class BottomMenu extends LitElement {
         line-height: 1;
         box-shadow: var(--notification-shadow);
 
+        max-width: 800px;
+        margin: 0 auto;
+
         z-index: 100;
       }
 
