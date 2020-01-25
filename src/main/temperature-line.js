@@ -102,11 +102,6 @@ class TemperatureLine extends LitElement {
     //line.appendChild(this._gradient());
     svg.appendChild(line);
 
-    // remove previous childs
-    //if(this._$("#chart").children.length > 0) {
-    //this._$("#chart").removeChild(this._$("#chart").children[0]);
-    //}
-
     this._$(".chart").appendChild(svg);
   }
 
@@ -128,7 +123,7 @@ class TemperatureLine extends LitElement {
       "http://www.w3.org/2000/svg",
       "polyline"
     );
-    line.setAttribute("fill", "rgb(255,241,241)");
+    line.setAttribute("fill", "rgb(225, 61, 55, 0.2)");
     line.setAttribute("fill-opacity", "1");
     line.setAttribute("stroke", "#fe0101");
 
@@ -232,8 +227,6 @@ class TemperatureLine extends LitElement {
   _getMinColor(minTemp) {
     const red = Math.round(minTemp) * 10;
     const redColor = Math.min(red, 255);
-
-    console.log(minTemp, redColor);
   }
 
   _$(selector) {

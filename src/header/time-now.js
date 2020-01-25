@@ -11,6 +11,7 @@ class TimeNow extends PolymerElement {
           display: block;
           margin-left: -1rem;
           width: 100%;
+          margin-top: var(--space-m);
           margin-bottom: -0.25rem;
         }
 

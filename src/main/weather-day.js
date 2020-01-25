@@ -21,7 +21,7 @@ class WeatherDay extends PolymerElement {
         --grid-last-column: 25;
 
         --color-dayHeader: var(--color-secondary);
-        --color-dayHeader-delimiter: var(--color-gray--light);
+        --color-dayHeader-delimiter: var(--color-gray-300);
 
         --color-dayHeader-font: var(--color-white);
 
@@ -83,7 +83,7 @@ class WeatherDay extends PolymerElement {
       
         text-align: center;
 
-        color: var(--color-gray--dark);
+        color: var(--color-gray-900);
         margin: var(--space-l) 0 var(--space-s) 0;
       }
       .hour--empty {

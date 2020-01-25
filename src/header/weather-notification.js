@@ -17,12 +17,12 @@ class WeatherNotification extends PolymerElement {
       }
 
       .notification_stripe {
-        background-color:var(--color-gray);
+        background-color:var(--color-gray-600);
         flex: 0 0 0.3rem;
       }
 
       .notification_content {
-        background-color: var(--color-gray--light);
+        background-color: var(--color-gray-300);
         flex: 1 1 auto;
         padding: 1rem;
       }

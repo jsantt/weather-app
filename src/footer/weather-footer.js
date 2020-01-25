@@ -10,30 +10,28 @@ class WeatherFooter extends PolymerElement {
           color: var(--color-black);
         }
 
-        footer {
-          padding: var(--padding-header-footer);
-        }
-
-        footer section {
-          margin: var(--space-l) 0;
-        }
-
         .footer_header {
-          margin: var(--space-l) 0 var(--space-xl) 0;
+          color: var(--color-white);
+          padding: var(--space-m) 0 var(--space-xl) 0;
           text-align: center;
+          margin: var(--space-m) 0;
+          text-align: center;
+      
+          background-color: var(--color-primary);
+          background: var(--header-footer-gradient);  
         }
 
-        footer h3 {
+        footer h3 {          
           font-size: var(--font-size-small);
-          font-weight: 400;
-
-          margin: 0;
-          padding: 0;
-          text-transform: uppercase;
+          font-weight: 600;
+          
+          margin: var(--space-l) 0;
+          padding: 0 var(--space-l);
+          
         }
 
         footer p {
-          margin: 0;
+          margin: 0 var(--space-l);
           padding: 0;
         }
         a:link,
@@ -44,75 +42,78 @@ class WeatherFooter extends PolymerElement {
           margin-top: var(--space-m);
         }
       </style>
-
-      <footer>
-        <p class="footer_header">
-          Säädata by Ilmatieteen laitos | avoin data<br />
-          <img class="logo" alt="fmi logo" src="../image/FMI0DATA_small.png" />
-        </p>
-
-        <section class="footer_section">
-          <h3>Aurinko</h3>
-          <p class="info">
-            <slot name="sunrise-sunset"></slot>
+        <footer>
+          <p class="footer_header">
+            Säädata by Ilmatieteen laitos | avoin data<br />
+            <img
+              class="logo"
+              alt="fmi logo"
+              src="../image/FMI0DATA_small.png"
+            />
           </p>
-        </section>
 
-        <section class="footer_section">
-          <h3>2019 Kalenteri</h3>
-          <p class="info">
-            <slot name="public-holidays"></slot>
-          </p>
-        </section>
-
-        <section class="footer_section">
-          <h3>TIETOJA PALVELUSTA</h3>
-          <p class="info">
-            Sekä ennuste että havaintoasemien sää helposti luettavassa muodossa.
-            Säätiedot perustuvat Ilmatieteen laitoksen tarkkaan
-            <a
-              href="http://ilmatieteenlaitos.fi/tutkimustoiminta/-/asset_publisher/Dz9C/content/uusin-versio-harmonie-arome-saamallista-parantaa-pilvisyyden-ja-tuulen-ennusteita?redirect=http%3A%2F%2Filmatieteenlaitos.fi%2Ftutkimustoiminta%3Fp_p_id%3D101_INSTANCE_Dz9C%26p_p_lifecycle%3D0%26p_p_state%3Dnormal%26p_p_mode%3Dview%26p_p_col_id%3Dcolumn-2%26p_p_col_count%3D2"
-            >
-              Harmonie-ennusteeseen</a
-            >
-          </p>
-          <p></p>
-        </section>
-
-        <p class="footer_header">
-          <ios-add-to-homescreen> </ios-add-to-homescreen>
-        </p>
-
-        <section class="footer_section">
-          <h3>Palaute</h3>
-          <p class="info">
-            palaute@saaennuste.fi
-          </p>
-          <p></p>
-        </section>
-
-        <section class="footer_section">
-          <h3>Evästeet</h3>
-          <p class="info">
-            Käytämme vain
-            <a
-              href="https://policies.google.com/technologies/partner-sites?hl=fi"
-            >
-              Googlen analytiikkatyökalun</a
-            >
-            tarvitsemia evästeitä.
-          </p>
-          <p></p>
-        </section>
-
-        <template is="dom-if" if="[[_offline]]">
-          <section>
-            Ei verkkoyhteyttä
-            <!-- - Ennuste on 3h vanha-->
+          <section class="footer_section">
+            <h3>Aurinko</h3>
+            <p class="info">
+              <slot name="sunrise-sunset"></slot>
+            </p>
           </section>
-        </template>
-        <br /><br /><br />
-      </footer>
+
+          <section class="footer_section">
+            <h3>2020 Kalenteri</h3>
+            <p class="info">
+              <slot name="public-holidays"></slot>
+            </p>
+          </section>
+
+          <section class="footer_section">
+            <h3>Tietoja palvelusta</h3>
+            <p class="info">
+              Sekä ennuste että havaintoasemien sää helposti luettavassa
+              muodossa. Säätiedot perustuvat Ilmatieteen laitoksen tarkkaan
+              <a
+                href="http://ilmatieteenlaitos.fi/tutkimustoiminta/-/asset_publisher/Dz9C/content/uusin-versio-harmonie-arome-saamallista-parantaa-pilvisyyden-ja-tuulen-ennusteita?redirect=http%3A%2F%2Filmatieteenlaitos.fi%2Ftutkimustoiminta%3Fp_p_id%3D101_INSTANCE_Dz9C%26p_p_lifecycle%3D0%26p_p_state%3Dnormal%26p_p_mode%3Dview%26p_p_col_id%3Dcolumn-2%26p_p_col_count%3D2"
+              >
+                Harmonie-ennusteeseen</a
+              >
+            </p>
+            <p></p>
+          </section>
+
+          
+          <ios-add-to-homescreen> </ios-add-to-homescreen>
+          
+          <section class="footer_section">
+            <h3>Palaute</h3>
+            <p class="info">
+              palaute@saaennuste.fi
+            </p>
+            <p></p>
+          </section>
+
+          <section class="footer_section">
+            <h3>Evästeet</h3>
+            <p class="info">
+              Käytämme vain
+              <a
+                href="https://policies.google.com/technologies/partner-sites?hl=fi"
+              >
+                Googlen analytiikkatyökalun</a
+              >
+              tarvitsemia evästeitä.
+            </p>
+            <p></p>
+          </section>
+
+          <template is="dom-if" if="[[_offline]]">
+            <section>
+              Ei verkkoyhteyttä
+              <!-- - Ennuste on 3h vanha-->
+            </section>
+          </template>
+          <br /><br /><br />
+        </footer>
+      </div>
     `;
   }
 
