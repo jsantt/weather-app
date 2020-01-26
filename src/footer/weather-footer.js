@@ -11,14 +11,10 @@ class WeatherFooter extends PolymerElement {
         }
 
         .footer_header {
-          color: var(--color-white);
-          padding: var(--space-m) 0 var(--space-xl) 0;
+          padding: var(--space-m) 0 var(--space-l) 0;
           text-align: center;
           margin: var(--space-m) 0;
           text-align: center;
-      
-          background-color: var(--color-primary);
-          background: var(--header-footer-gradient);  
         }
 
         footer h3 {          
@@ -52,6 +48,8 @@ class WeatherFooter extends PolymerElement {
             />
           </p>
 
+          <ios-add-to-homescreen> </ios-add-to-homescreen>
+
           <section class="footer_section">
             <h3>Aurinko</h3>
             <p class="info">
@@ -79,9 +77,6 @@ class WeatherFooter extends PolymerElement {
             </p>
             <p></p>
           </section>
-
-          
-          <ios-add-to-homescreen> </ios-add-to-homescreen>
           
           <section class="footer_section">
             <h3>Palaute</h3>

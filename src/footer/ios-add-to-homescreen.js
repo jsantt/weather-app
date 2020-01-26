@@ -1,10 +1,26 @@
-import { PolymerElement, html } from "@polymer/polymer/polymer-element.js";
+import { css, html, LitElement } from "lit-element";
 
 import "@polymer/iron-icon/iron-icon.js";
 
-class iosAddToHomescreen extends PolymerElement {
-  static get template() {
-    return html`
+class iosAddToHomescreen extends LitElement {
+  static get is() {
+    return "ios-add-to-homescreen";
+  }
+
+  static get properties() {
+    return {
+      forceShow: { type: Boolean }
+    };
+  }
+
+  constructor() {
+    super();
+    this.forceShow = false;
+    this._floating = true;
+  }
+
+  static get styles() {
+    return css`
       <style>
         :host {
           display: block;
@@ -15,98 +31,54 @@ class iosAddToHomescreen extends PolymerElement {
           align-items: center;
           justify-content: space-around;
 
-          color: black;
-        }
+          background-color: var(--color-primary);
+          color: var(--color-white);
 
-        .notification--floating {
-          box-shadow: var(--notification-shadow);
-
-          position: fixed;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background-color: white;
-
-          padding: 0.7rem 0;
-          z-index: 101;
-        }
-
-        .test {
-          border: 0px dashed gray;
+          margin: var(--space-m) 0;
         }
 
         .sun {
           --iron-icon-width: 32px;
           --iron-icon-height: 32px;
+
+          padding: 0 var(--space-l);
         }
 
         .text {
-          padding-top: 0.25rem;
-        }
-
-        .close {
-          font-size: var(--font-size-xxlarge);
-        }
-
-        .sun,
-        .close {
-          padding: 0 1.5rem;
+          padding: var(--space-l) var(--space-l) var(--space-l) 0;
         }
 
         .share {
           --iron-icon-stroke-color: var(--color-white);
           --iron-icon-fill-color: var(--color-white);
         }
-
-        .notification--floating .share {
-          --iron-icon-stroke-color: #000;
-          --iron-icon-fill-color: #000;
-        }
-
-        .notification--normal .close,
-        .notification--normal .sun {
-          visibility: hidden;
-        }
-
-        p {
-          margin-bottom: 0;
-        }
       </style>
+      `;
+  }
 
-      <template is="dom-if" if="{{_showPrompt()}}">
-        <div class$="{{_isFloating(_floating)}}">
-          <iron-icon
-            class="sun test"
-            icon="weather-symbol-icons:weatherSymbol1"
-          ></iron-icon>
+  render() {
+    return html`
+      ${this._showPrompt() === true
+        ? html`
+            <div class="notification">
+              <iron-icon
+                class="sun"
+                icon="weather-symbol-icons:weatherSymbol1"
+              ></iron-icon>
 
-          <div class="text test">
-            Tykkäätkö? Napauta
+              <div class="text">
+                Tykkäätkö? Napauta
 
-            <iron-icon class="share" icon="weather-icons:iosShare"></iron-icon>
-
-            , scrollaa alas ja lisää kotivalikkoon
-          </div>
-
-          <div class="close test" on-click="_onClose">
-            &times;
-          </div>
-        </div>
-      </template>
+                <iron-icon
+                  class="share"
+                  icon="weather-icons:iosShare"
+                ></iron-icon
+                >, scrollaa alas ja lisää kotivalikkoon
+              </div>
+            </div>
+          `
+        : ""}
     `;
-  }
-
-  static get is() {
-    return "ios-add-to-homescreen";
-  }
-
-  static get properties() {
-    return {
-      _floating: {
-        type: Boolean,
-        value: true
-      }
-    };
   }
 
   _showPrompt() {
@@ -116,22 +88,8 @@ class iosAddToHomescreen extends PolymerElement {
     }
 
     const isApple = ["iPhone", "iPad", "iPod"].includes(navigator.platform);
-    const show = localStorage.getItem("prompt-install") !== null;
 
-    localStorage.setItem("prompt-install", true);
-
-    return isApple && show;
-  }
-
-  _isFloating(floating) {
-    if (floating === false) {
-      return "notification notification--normal";
-    } else {
-      return "notification notification--floating";
-    }
-  }
-  _onClose() {
-    this._floating = false;
+    return isApple || this.forceShow;
   }
 }
 

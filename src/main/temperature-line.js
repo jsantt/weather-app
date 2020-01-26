@@ -123,7 +123,7 @@ class TemperatureLine extends LitElement {
       "http://www.w3.org/2000/svg",
       "polyline"
     );
-    line.setAttribute("fill", "rgb(225, 61, 55, 0.2)");
+    line.setAttribute("fill", "rgb(225, 61, 55, 0.10)");
     line.setAttribute("fill-opacity", "1");
     line.setAttribute("stroke", "#fe0101");
 
