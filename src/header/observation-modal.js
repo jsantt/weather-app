@@ -1,4 +1,4 @@
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import { PolymerElement, html } from "@polymer/polymer/polymer-element.js";
 
 class ObservationModal extends PolymerElement {
   static get template() {
@@ -50,7 +50,6 @@ class ObservationModal extends PolymerElement {
 
         padding: var(--content-padding);
         position: relative;
-        border: 1px solid #888;
         border-radius: var(--border-radius);
       }
 
@@ -78,7 +77,9 @@ class ObservationModal extends PolymerElement {
     `;
   }
 
-  static get is() { return 'observation-modal'; }
+  static get is() {
+    return "observation-modal";
+  }
 
   static get properties() {
     return {
@@ -99,7 +100,10 @@ class ObservationModal extends PolymerElement {
   }
 
   _toggleObservation() {
-    const event = new CustomEvent('observation-modal.toggle-observation', {bubbles: true, composed: true});
+    const event = new CustomEvent("observation-modal.toggle-observation", {
+      bubbles: true,
+      composed: true
+    });
     this.dispatchEvent(event);
   }
 }
