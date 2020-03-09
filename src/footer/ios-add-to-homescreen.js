@@ -10,6 +10,7 @@ class iosAddToHomescreen extends LitElement {
   static get properties() {
     return {
       forceShow: { type: Boolean },
+      _deferredPrompt: { type: Object },
       _showIosInstructions: { type: Boolean }
     };
   }
@@ -18,6 +19,10 @@ class iosAddToHomescreen extends LitElement {
     super();
     this.forceShow = false;
     this._floating = true;
+
+    window.addEventListener("beforeinstallprompt", event => {
+      this._deferredPrompt = event;
+    });
   }
 
   static get styles() {
@@ -98,7 +103,7 @@ class iosAddToHomescreen extends LitElement {
                 ></iron-icon
                 >, scrollaa alas ja lisää kotivalikkoon
               </div>
-            </div-->
+            </div>
             </section>`
                 : ""}
             </section>
@@ -108,7 +113,22 @@ class iosAddToHomescreen extends LitElement {
   }
 
   _install() {
-    this._showIosInstructions = !this._showIosInstructions;
+    const promptEvent = this._deferredPrompt;
+
+    if (this._showPrompt) {
+      this._showIosInstructions = !this._showIosInstructions;
+    } else if (promptEvent != null) {
+      // Show the install prompt.
+      promptEvent.prompt();
+      // Log the result
+      promptEvent.userChoice.then(result => {
+        // Reset the deferred prompt variable, since
+        // prompt() can only be called once.
+        this._deferredPrompt = null;
+
+        // Hide the install button.
+      });
+    }
   }
 
   _showPrompt() {
@@ -119,7 +139,7 @@ class iosAddToHomescreen extends LitElement {
 
     const isApple = ["iPhone", "iPad", "iPod"].includes(navigator.platform);
 
-    return isApple || this.forceShow;
+    return isApple || window.DeferredPrompt != null || this.forceShow;
   }
 }
 
