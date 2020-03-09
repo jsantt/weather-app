@@ -9,7 +9,8 @@ class iosAddToHomescreen extends LitElement {
 
   static get properties() {
     return {
-      forceShow: { type: Boolean }
+      forceShow: { type: Boolean },
+      _showIosInstructions: { type: Boolean }
     };
   }
 
@@ -26,7 +27,23 @@ class iosAddToHomescreen extends LitElement {
           display: block;
         }
 
+        button{
+          all: unset;
+          -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+          background-color: var(--color-blue-500);
+          border-radius: 4px;
+          color: var(--color-white);
+          font-weight: 700;
+          text-align: center;
+          text-transform: uppercase;
+          
+          padding: 1rem;
+          width: 100%;
+        }
+
         .notification {
+          border-radius: 4px;
           display: flex;
           align-items: center;
           justify-content: space-around;
@@ -60,7 +77,13 @@ class iosAddToHomescreen extends LitElement {
     return html`
       ${this._showPrompt() === true
         ? html`
-            <div class="notification">
+            <section id="install-prompt">
+              <button @click="${this._install}">
+                ASENNA SOVELLUS
+              </button>
+              ${this._showIosInstructions === true
+                ? html`
+              <div class="notification">
               <iron-icon
                 class="sun"
                 icon="weather-symbol-icons:weatherSymbol1"
@@ -75,10 +98,17 @@ class iosAddToHomescreen extends LitElement {
                 ></iron-icon
                 >, scrollaa alas ja lisää kotivalikkoon
               </div>
-            </div>
+            </div-->
+            </section>`
+                : ""}
+            </section>
           `
         : ""}
     `;
+  }
+
+  _install() {
+    this._showIosInstructions = !this._showIosInstructions;
   }
 
   _showPrompt() {

@@ -39,6 +39,11 @@ class WeatherFooter extends PolymerElement {
         }
       </style>
         <footer>
+   
+        <p class="footer_section">
+          <ios-add-to-homescreen> </ios-add-to-homescreen>
+        </p>
+
           <p class="footer_header">
             Säädata by Ilmatieteen laitos | avoin data<br />
             <img
@@ -46,10 +51,8 @@ class WeatherFooter extends PolymerElement {
               alt="fmi logo"
               src="../image/FMI0DATA_small.png"
             />
-          </p>
-
-          <ios-add-to-homescreen> </ios-add-to-homescreen>
-
+      </p>
+          
           <section class="footer_section">
             <h3>Aurinko</h3>
             <p class="info">
