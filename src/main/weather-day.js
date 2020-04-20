@@ -29,6 +29,16 @@ class WeatherDay extends PolymerElement {
         
       }
 
+      .visually-hidden {
+          position: absolute !important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding:0 !important;
+          border:0 !important;
+          height: 1px !important; 
+          width: 1px !important; 
+          overflow: hidden;
+        }
+
       .weatherDay {
         min-height: 8rem;
         position: relative;
@@ -218,7 +228,7 @@ class WeatherDay extends PolymerElement {
       <div class="weatherDay_grid">
         
         <div class="day">
-            <h3 class="day-name">[[_day(dayNumber)]] [[_weekday(dayNumber)]]</h3>
+            <h3 class="day-name"><span class="visually-hidden">SÄÄ</span> [[_day(dayNumber)]] [[_weekday(dayNumber)]]</h3>
 
             <span class="wind-warning">
               <wind-helper></wind-helper>
@@ -339,29 +349,29 @@ class WeatherDay extends PolymerElement {
   static get properties() {
     return {
       dayNumber: {
-        type: Number
+        type: Number,
       },
 
       minTemperature: {
-        type: Number
+        type: Number,
       },
 
       showTimeNow: {
         type: Boolean,
-        value: false
+        value: false,
       },
 
       showFeelsLike: {
-        type: Boolean
+        type: Boolean,
       },
 
       showWind: {
-        type: Boolean
+        type: Boolean,
       },
 
       dayData: {
-        type: Array
-      }
+        type: Array,
+      },
     };
   }
 

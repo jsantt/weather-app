@@ -112,10 +112,10 @@ class ObservationModalContent extends LitElement {
   render() {
     return html`
       <div class="header">
-        <h1>LÄHIN HAVAINTOASEMA</h1>
-        <h2>
+        <h2>LÄHIN HAVAINTOASEMA</h2>
+        <h3>
           ${this.observationData.weatherStation}
-        </h2>
+        </h3>
         <h3>Kello ${this._formatTime(this.observationData.time)}</h3>
       </div>
 
@@ -248,11 +248,11 @@ class ObservationModalContent extends LitElement {
   static get properties() {
     return {
       observationData: {
-        type: Object
+        type: Object,
       },
       observationError: {
-        type: Boolean
-      }
+        type: Boolean,
+      },
     };
   }
 
