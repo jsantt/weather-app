@@ -33,6 +33,10 @@ class iosAddToHomescreen extends LitElement {
           display: block;
         }
 
+        ::slotted(button) {
+          color: var(--color-white);
+        }
+
         button{
           all: unset;
           box-sizing: border-box;
