@@ -1,26 +1,27 @@
-import { css, html, LitElement } from "lit-element";
+import { css, html, LitElement } from 'lit-element';
 
-import "@polymer/iron-icon/iron-icon.js";
+import '@polymer/iron-icon/iron-icon.js';
 
 class iosAddToHomescreen extends LitElement {
   static get is() {
-    return "ios-add-to-homescreen";
+    return 'ios-add-to-homescreen';
   }
 
   static get properties() {
     return {
       forceShow: { type: Boolean },
       _deferredPrompt: { type: Object },
-      _showIosInstructions: { type: Boolean }
+      _showIosInstructions: { type: Boolean },
     };
   }
 
   constructor() {
     super();
+
     this.forceShow = false;
     this._floating = true;
 
-    window.addEventListener("beforeinstallprompt", event => {
+    window.addEventListener('beforeinstallprompt', (event) => {
       this._deferredPrompt = event;
     });
   }
@@ -34,11 +35,15 @@ class iosAddToHomescreen extends LitElement {
 
         button{
           all: unset;
-          -webkit-box-sizing: border-box;
           box-sizing: border-box;
           background-color: var(--color-blue-500);
           border-radius: 4px;
           color: var(--color-white);
+          
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          
           font-weight: 700;
           text-align: center;
           text-transform: uppercase;
@@ -49,14 +54,12 @@ class iosAddToHomescreen extends LitElement {
 
         .notification {
           border-radius: 4px;
-          display: flex;
-          align-items: center;
-          justify-content: space-around;
 
           background-color: var(--color-primary);
           color: var(--color-white);
 
           margin: var(--space-m) 0;
+          padding: var(--space-l);
         }
 
         .sun {
@@ -66,8 +69,8 @@ class iosAddToHomescreen extends LitElement {
           padding: 0 var(--space-l);
         }
 
-        .text {
-          padding: var(--space-l) var(--space-l) var(--space-l) 0;
+        .sun--hidden {
+          visibility: hidden;
         }
 
         .share {
@@ -84,15 +87,20 @@ class iosAddToHomescreen extends LitElement {
         ? html`
             <section id="install-prompt">
               <button @click="${this._install}">
-                ASENNA SOVELLUS
+                <iron-icon
+                  class="sun"
+                  icon="weather-symbol-icons:weatherSymbol1"
+                ></iron-icon>
+                <div color="white">ASENNA SOVELLUS</div>
+                <iron-icon
+                  class="sun sun--hidden"
+                  icon="weather-symbol-icons:weatherSymbol1"
+                ></iron-icon>
               </button>
+
               ${this._showIosInstructions === true
                 ? html`
               <div class="notification">
-              <iron-icon
-                class="sun"
-                icon="weather-symbol-icons:weatherSymbol1"
-              ></iron-icon>
 
               <div class="text">
                 Tykkäätkö? Napauta
@@ -105,10 +113,10 @@ class iosAddToHomescreen extends LitElement {
               </div>
             </div>
             </section>`
-                : ""}
+                : ''}
             </section>
           `
-        : ""}
+        : ''}
     `;
   }
 
@@ -117,11 +125,16 @@ class iosAddToHomescreen extends LitElement {
 
     if (this._showPrompt) {
       this._showIosInstructions = !this._showIosInstructions;
+
+      if (this._showIosInstructions === true) {
+        const element = this.shadowRoot.querySelector('#install-prompt');
+        element.scrollIntoView();
+      }
     } else if (promptEvent != null) {
       // Show the install prompt.
       promptEvent.prompt();
       // Log the result
-      promptEvent.userChoice.then(result => {
+      promptEvent.userChoice.then((result) => {
         // Reset the deferred prompt variable, since
         // prompt() can only be called once.
         this._deferredPrompt = null;
@@ -137,7 +150,7 @@ class iosAddToHomescreen extends LitElement {
       return false;
     }
 
-    const isApple = ["iPhone", "iPad", "iPod"].includes(navigator.platform);
+    const isApple = ['iPhone', 'iPad', 'iPod'].includes(navigator.platform);
 
     return isApple || window.DeferredPrompt != null || this.forceShow;
   }
