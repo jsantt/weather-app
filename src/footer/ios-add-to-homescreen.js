@@ -132,7 +132,7 @@ class iosAddToHomescreen extends LitElement {
 
       if (this._showIosInstructions === true) {
         const element = this.shadowRoot.querySelector('#install-prompt');
-        element.scrollIntoView();
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     } else if (promptEvent != null) {
       // Show the install prompt.
