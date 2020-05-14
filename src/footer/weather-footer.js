@@ -1,5 +1,6 @@
-import { PolymerElement, html } from "@polymer/polymer/polymer-element.js";
-import "./ios-add-to-homescreen.js";
+import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import './ios-add-to-homescreen.js';
+import './share-app.js';
 
 class WeatherFooter extends PolymerElement {
   static get template() {
@@ -78,7 +79,9 @@ class WeatherFooter extends PolymerElement {
                 Harmonie-malliin</a
               >
             </p>
-            <p></p>
+            <p>
+              
+            </p>
           </section>
           
           <section class="footer_section">
@@ -109,6 +112,8 @@ class WeatherFooter extends PolymerElement {
               <!-- - Ennuste on 3h vanha-->
             </section>
           </template>
+
+          <share-app></share-app>
           <br /><br /><br />
         </footer>
       </div>
@@ -116,7 +121,7 @@ class WeatherFooter extends PolymerElement {
   }
 
   static get is() {
-    return "weather-footer";
+    return 'weather-footer';
   }
 
   static get properties() {
@@ -134,11 +139,11 @@ class WeatherFooter extends PolymerElement {
   ready() {
     super.ready();
 
-    window.addEventListener("offline", () => {
+    window.addEventListener('offline', () => {
       this._offline = true;
     });
 
-    window.addEventListener("online", () => {
+    window.addEventListener('online', () => {
       this._offline = false;
     });
   }
@@ -147,9 +152,9 @@ class WeatherFooter extends PolymerElement {
     const parsedTime = new Date(time);
 
     const minutes = parsedTime.getMinutes();
-    const fullMinutes = minutes < 10 ? "0" + minutes : minutes;
+    const fullMinutes = minutes < 10 ? '0' + minutes : minutes;
 
-    return parsedTime.getHours() + "." + fullMinutes;
+    return parsedTime.getHours() + '.' + fullMinutes;
   }
 }
 
