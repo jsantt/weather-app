@@ -34,7 +34,7 @@ class iosAddToHomescreen extends LitElement {
         }
 
         ::slotted(button) {
-          color: var(--color-white);
+          color: var(--color-white) !important;
         }
 
         button{
@@ -95,7 +95,12 @@ class iosAddToHomescreen extends LitElement {
                   class="sun"
                   icon="weather-symbol-icons:weatherSymbol1"
                 ></iron-icon>
-                <div color="white">ASENNA SOVELLUS</div>
+                <div
+                  color="white"
+                  style="color:white !important; font-weight:900 !important"
+                >
+                  ASENNA SOVELLUS
+                </div>
                 <iron-icon
                   class="sun sun--hidden"
                   icon="weather-symbol-icons:weatherSymbol1"
@@ -129,11 +134,6 @@ class iosAddToHomescreen extends LitElement {
 
     if (this._showPrompt) {
       this._showIosInstructions = !this._showIosInstructions;
-
-      if (this._showIosInstructions === true) {
-        const element = this.shadowRoot.querySelector('#install-prompt');
-        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
     } else if (promptEvent != null) {
       // Show the install prompt.
       promptEvent.prompt();
