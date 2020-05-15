@@ -35,24 +35,26 @@ class ShareApp extends LitElement {
   }
 
   render() {
-    return html`
-      <button @click="${this._share}">
-        Jaa sovellus
-        <iron-icon class="share" icon="weather-icons:iosShare"></iron-icon>
-      </button>
-    `;
+    return html` ${this._show === true
+      ? html` <a @click="${this._share}">
+          Jaa sovellus
+          <iron-icon class="share" icon="weather-icons:iosShare"></iron-icon>
+        </a>`
+      : ''}`;
+  }
+
+  _show() {
+    return navigator.share;
   }
 
   _share() {
     if (navigator.share) {
-      navigator
-        .share({
-          title: 'Sääennuste',
-          text: 'Paras sääennustes',
-          url: 'https://saaennuste.fi',
-        })
-        .then(() => console.log('Successful share'))
-        .catch((error) => console.log('Error sharing', error));
+      navigator.share({
+        title: 'Sääennuste',
+        text:
+          'Paras, yksinkertaisin ja nopein sääennuste. Perustuu Ilmatieteen laitoksen avoimeen dataan.',
+        url: 'https://saaennuste.fi',
+      });
     }
   }
 }

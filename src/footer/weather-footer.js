@@ -71,17 +71,16 @@ class WeatherFooter extends PolymerElement {
           <section class="footer_section">
             <h3>Tietoja palvelusta</h3>
             <p class="info">
-              Paras sääsovellus - sekä sääennuste että havaintoasemien sää helposti luettavassa
-              muodossa. Ennuste perustuu Ilmatieteen laitoksen tarkkaan
+              Saaennuste.fi on nopein ja paras sääsovellus. Löydät Helsingin, Espoon ja muiden kaupunkien lisäksi myös
+              tarkan täsmäsään 2.5km alueelle.  Ennuste perustuu luotettavaan ja tarkkaan Ilmatieteen laitoksen
               <a
                 href="http://ilmatieteenlaitos.fi/tutkimustoiminta/-/asset_publisher/Dz9C/content/uusin-versio-harmonie-arome-saamallista-parantaa-pilvisyyden-ja-tuulen-ennusteita?redirect=http%3A%2F%2Filmatieteenlaitos.fi%2Ftutkimustoiminta%3Fp_p_id%3D101_INSTANCE_Dz9C%26p_p_lifecycle%3D0%26p_p_state%3Dnormal%26p_p_mode%3Dview%26p_p_col_id%3Dcolumn-2%26p_p_col_count%3D2"
               >
                 Harmonie-malliin</a
               >
             </p>
-            <p>
-              
-            </p>
+            
+            
           </section>
           
           <section class="footer_section">
@@ -113,8 +112,9 @@ class WeatherFooter extends PolymerElement {
             </section>
           </template>
 
-          <share-app></share-app>
           <br /><br /><br />
+          <share-app></share-app>
+          <br /><br /><br /><br />
         </footer>
       </div>
     `;
