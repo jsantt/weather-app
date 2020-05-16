@@ -132,7 +132,7 @@ class iosAddToHomescreen extends LitElement {
   _install() {
     const promptEvent = this._deferredPrompt;
 
-    if (this._showPrompt) {
+    if (this._showPrompt() === true && this._isSafari() === true) {
       this._showIosInstructions = !this._showIosInstructions;
     } else if (promptEvent != null) {
       // Show the install prompt.
@@ -157,6 +157,16 @@ class iosAddToHomescreen extends LitElement {
     const isApple = ['iPhone', 'iPad', 'iPod'].includes(navigator.platform);
 
     return isApple || window.DeferredPrompt != null || this.forceShow;
+  }
+
+  _isSafari() {
+    const userAgent = window.navigator.userAgent;
+    return (
+      !/CriOS/.test(userAgent) &&
+      !/FxiOS/.test(userAgent) &&
+      !/OPiOS/.test(userAgent) &&
+      !/mercury/.test(userAgent)
+    );
   }
 }
 
