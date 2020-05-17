@@ -3,29 +3,6 @@ import { css, html, LitElement } from 'lit-element';
 import '@polymer/iron-icon/iron-icon.js';
 
 class iosAddToHomescreen extends LitElement {
-  static get is() {
-    return 'ios-add-to-homescreen';
-  }
-
-  static get properties() {
-    return {
-      forceShow: { type: Boolean },
-      _deferredPrompt: { type: Object },
-      _iosInstructionsVisible: { type: Boolean },
-    };
-  }
-
-  constructor() {
-    super();
-
-    this.forceShow = false;
-    this._floating = true;
-
-    window.addEventListener('beforeinstallprompt', (event) => {
-      this._deferredPrompt = event;
-    });
-  }
-
   static get styles() {
     return css`
       <style>
@@ -87,10 +64,13 @@ class iosAddToHomescreen extends LitElement {
 
   render() {
     return html`
-      ${this._showPrompt() === true
+      ${this._showInstallButton() === true
         ? html`
             <section id="install-prompt">
-              <button @click="${this._install}">
+              <button
+                @click="${this._install}"
+                style="color:white !important; font-weight:900 !important"
+              >
                 <iron-icon
                   class="sun"
                   icon="weather-symbol-icons:weatherSymbol1"
@@ -129,36 +109,59 @@ class iosAddToHomescreen extends LitElement {
     `;
   }
 
-  _install() {
-    const promptEvent = this._deferredPrompt;
+  static get is() {
+    return 'ios-add-to-homescreen';
+  }
 
+  static get properties() {
+    return {
+      forceShow: { type: Boolean },
+      _deferredPrompt: { type: Object },
+      _installButtonVisible: { type: Boolean },
+      _iosInstructionsVisible: { type: Boolean },
+    };
+  }
+
+  constructor() {
+    super();
+
+    this.forceShow = false;
+    this._floating = true;
+    this._installButtonVisible = this._showInstallButton();
+
+    window.addEventListener('beforeinstallprompt', (event) => {
+      // prevent install prompt so it can be triggered later
+      event.preventDefault();
+      this._deferredPrompt = event;
+      this._installButtonVisible = true;
+    });
+  }
+
+  _install() {
     if (this._showIosInstructions() === true) {
       this._iosInstructionsVisible = !this._iosInstructionsVisible;
-    } else if (promptEvent != null) {
+    } else if (this._deferredPrompt != null) {
       // Show the install prompt.
-      promptEvent.prompt();
+      this._deferredPrompt.prompt();
       // Log the result
-      promptEvent.userChoice.then((result) => {
+      this._deferredPrompt.userChoice.then(() => {
         // Reset the deferred prompt variable, since
         // prompt() can only be called once.
         this._deferredPrompt = null;
 
         // Hide the install button.
+        this._showInstallButton = false;
       });
     }
   }
 
-  _showPrompt() {
-    // if launched as app
+  _showInstallButton() {
+    // if already installed
     if (navigator.standalone) {
       return false;
     }
 
-    if (this.forceShow === true || window.DeferredPrompt != null) {
-      return true;
-    }
-
-    return this._showIosInstructions();
+    return this.forceShow === true || this._showIosInstructions();
   }
 
   _showIosInstructions() {
@@ -166,7 +169,7 @@ class iosAddToHomescreen extends LitElement {
   }
 
   _isPortableApple() {
-    return (isApple = ['iPhone', 'iPad', 'iPod'].includes(navigator.platform));
+    return ['iPhone', 'iPad', 'iPod'].includes(navigator.platform);
   }
 
   _isSafari() {
