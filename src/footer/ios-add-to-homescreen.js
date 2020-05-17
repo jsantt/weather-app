@@ -11,7 +11,7 @@ class iosAddToHomescreen extends LitElement {
     return {
       forceShow: { type: Boolean },
       _deferredPrompt: { type: Object },
-      _showIosInstructions: { type: Boolean },
+      _iosInstructionsVisible: { type: Boolean },
     };
   }
 
@@ -107,7 +107,7 @@ class iosAddToHomescreen extends LitElement {
                 ></iron-icon>
               </button>
 
-              ${this._showIosInstructions === true
+              ${this._iosInstructionsVisible === true
                 ? html`
               <div class="notification">
 
@@ -132,8 +132,8 @@ class iosAddToHomescreen extends LitElement {
   _install() {
     const promptEvent = this._deferredPrompt;
 
-    if (this._showPrompt() === true && this._isSafari() === true) {
-      this._showIosInstructions = !this._showIosInstructions;
+    if (this._showIosInstructions() === true) {
+      this._iosInstructionsVisible = !this._iosInstructionsVisible;
     } else if (promptEvent != null) {
       // Show the install prompt.
       promptEvent.prompt();
@@ -154,9 +154,19 @@ class iosAddToHomescreen extends LitElement {
       return false;
     }
 
-    const isApple = ['iPhone', 'iPad', 'iPod'].includes(navigator.platform);
+    if (this.forceShow === true || window.DeferredPrompt != null) {
+      return true;
+    }
 
-    return isApple || window.DeferredPrompt != null || this.forceShow;
+    return this._showIosInstructions();
+  }
+
+  _showIosInstructions() {
+    return this._isPortableApple() === true && this._isSafari() === true;
+  }
+
+  _isPortableApple() {
+    return (isApple = ['iPhone', 'iPad', 'iPod'].includes(navigator.platform));
   }
 
   _isSafari() {
