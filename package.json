@@ -32,7 +32,8 @@
   "scripts": {
     "test": "polymer test -l chrome",
     "start": "polymer serve",
-    "deploy": "polymer build && firebase deploy"
+    "deploy-test": "polymer build && firebase serve",
+    "deploy-prod": "polymer build && firebase deploy"
   },
   "author": "Jani Säntti",
   "license": "ISC",

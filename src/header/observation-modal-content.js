@@ -1,10 +1,10 @@
-import { css, html, LitElement } from "lit-element";
-import "../error-notification";
-import "./weather-symbol-wawa.js";
+import { css, html, LitElement } from 'lit-element';
+import '../error-notification';
+import './weather-symbol-wawa.js';
 
 class ObservationModalContent extends LitElement {
   static get is() {
-    return "observation-modal-content";
+    return 'observation-modal-content';
   }
 
   static get styles() {
@@ -110,13 +110,19 @@ class ObservationModalContent extends LitElement {
   }
 
   render() {
+    if (this.observationData === undefined) {
+      return;
+    }
+
     return html`
       <div class="header">
         <h2>LÄHIN HAVAINTOASEMA</h2>
         <h3>
           ${this.observationData.weatherStation}
         </h3>
-        <h3>Kello ${this._formatTime(this.observationData.time)}</h3>
+        <h3>
+          Kello ${this._formatTime(this.observationData.time)}
+        </h3>
       </div>
 
       ${this.observationError
@@ -265,9 +271,9 @@ class ObservationModalContent extends LitElement {
     const parsedTime = new Date(time);
 
     const minutes = parsedTime.getMinutes();
-    const fullMinutes = minutes < 10 ? "0" + minutes : minutes;
+    const fullMinutes = minutes < 10 ? '0' + minutes : minutes;
 
-    return parsedTime.getHours() + "." + fullMinutes;
+    return parsedTime.getHours() + '.' + fullMinutes;
   }
 
   _googleMapsURl(latitudeLongitude) {

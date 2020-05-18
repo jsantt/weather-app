@@ -1,21 +1,22 @@
-import { PolymerElement, html } from "@polymer/polymer/polymer-element.js";
-import { afterNextRender } from "@polymer/polymer/lib/utils/render-status.js";
+import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
 
 // lazy-resources are loaded in the app code
-import "./lazy-resources.js";
+import './lazy-resources.js';
 
-import "./header/location-selector.js";
+import './header/location-selector.js';
 
-import "./error-notification.js";
-import "./header/forecast-header";
-import "./main/weather-days.js";
-import "./forecast-data.js";
+import './error-notification.js';
+import './header/forecast-header';
+import './main/weather-days.js';
+import './forecast-data.js';
 
-import "./footer/bottom-menu.js";
-import "./footer/geolocate-button.js";
-import "./footer/sunrise-sunset.js";
-import "./footer/public-holidays.js";
-import "./footer/weather-footer.js";
+import './footer/add-to-homescreen.js';
+import './footer/bottom-menu.js';
+import './footer/geolocate-button.js';
+import './footer/sunrise-sunset.js';
+import './footer/public-holidays.js';
+import './footer/weather-footer.js';
 
 class WeatherApp extends PolymerElement {
   static get template() {
@@ -69,6 +70,7 @@ class WeatherApp extends PolymerElement {
 
       <template is="dom-if" if="{{!forecastError}}">
         <div hidden$="[[firstLoading]]">
+          <add-to-homescreen></add-to-homescreen>
           <slot id="place"></slot>
           <forecast-header
             loading="[[loading]]"
@@ -117,66 +119,72 @@ class WeatherApp extends PolymerElement {
   }
 
   static get is() {
-    return "weather-app";
+    return 'weather-app';
   }
 
   static get properties() {
     return {
       firstLoading: {
         type: Boolean,
-        value: true
+        value: true,
       },
       showFeelsLike: {
         type: Boolean,
-        value: false
+        value: false,
       },
       showWind: {
         type: Boolean,
-        value: false
+        value: false,
       },
       showWindGust: {
         type: Boolean,
-        value: false
+        value: false,
       },
       observationVisible: {
         type: Boolean,
-        value: false
+        value: false,
       },
       weatherLocation: {
-        type: String
-      }
+        type: String,
+      },
     };
   }
 
   constructor() {
     super();
 
-    this.addEventListener("location-selector.location-changed", event =>
+    this.addEventListener('location-selector.location-changed', (event) =>
       this._onNewLocation(event)
     );
-    this.addEventListener("forecast-header.toggle-wind", event =>
+    this.addEventListener('forecast-header.toggle-wind', (event) =>
       this._toggleWind(event)
     );
-    this.addEventListener("forecast-header.toggle-wind-gust", event =>
+    this.addEventListener('forecast-header.toggle-wind-gust', (event) =>
       this._toggleWindGust(event)
     );
-    this.addEventListener("forecast-header.toggle-feels-like", event =>
+    this.addEventListener('forecast-header.toggle-feels-like', (event) =>
       this._toggleFeelsLike(event)
     );
 
-    this.addEventListener("forecast-data.fetch-done", event => {
+    this.addEventListener('forecast-data.fetch-done', (event) => {
       this.firstLoading = false;
     });
-    this.addEventListener("forecast-header.toggle-observation", event =>
+    this.addEventListener('forecast-header.toggle-observation', (event) =>
       this._toggleObservationVisible()
     );
-    this.addEventListener("observation-modal.toggle-observation", event =>
+    this.addEventListener('observation-modal.toggle-observation', (event) =>
       this._toggleObservationVisible()
     );
   }
 
   ready() {
     super.ready();
+    // hide possible add to homescreen button
+    setTimeout(() => {
+      this.shadowRoot
+        .querySelector('forecast-header')
+        .scrollIntoView({ behavior: 'smooth' });
+    }, 1500);
   }
 
   connectedCallback() {
@@ -197,8 +205,8 @@ class WeatherApp extends PolymerElement {
     afterNextRender(this, () => {
       //import('./lazy-resources.js')
       //.then(() => {
-      if ("serviceWorker" in navigator) {
-        navigator.serviceWorker.register("service-worker.js", { scope: "/" });
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('service-worker.js', { scope: '/' });
       }
       /*})
         .catch(error => {
@@ -224,7 +232,7 @@ class WeatherApp extends PolymerElement {
   }
 
   _toggleObservationVisible() {
-    const forecastHeader = this.shadowRoot.querySelector("forecast-header");
+    const forecastHeader = this.shadowRoot.querySelector('forecast-header');
     //forecastHeader.toggleObservationHighlight();
 
     this.observationVisible = !this.observationVisible;

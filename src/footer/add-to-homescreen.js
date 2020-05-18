@@ -2,7 +2,11 @@ import { css, html, LitElement } from 'lit-element';
 
 import '@polymer/iron-icon/iron-icon.js';
 
-class iosAddToHomescreen extends LitElement {
+class AddToHomescreen extends LitElement {
+  static get is() {
+    return 'add-to-homescreen';
+  }
+
   static get styles() {
     return css`
       <style>
@@ -10,37 +14,43 @@ class iosAddToHomescreen extends LitElement {
           display: block;
         }
 
-        ::slotted(button) {
-          color: var(--color-white) !important;
+        #install-prompt {
+          margin: var(--space-l);
         }
 
         button{
-          all: unset;
           box-sizing: border-box;
-          background-color: var(--color-blue-500);
-          border-radius: 4px;
-          color: var(--color-white);
-          
+          background-color: var(--color-white);
+          border-style: none;
+          color: var(--color-black);
+
           display: flex;
           align-items: center;
           justify-content: center;
-          
-          font-weight: 700;
+
+          font: inherit;
+          font-weight: 900;
           text-align: center;
           text-transform: uppercase;
-          
+
+          outline: none;
           padding: 1rem;
           width: 100%;
+
+          /* Corrects inability to style clickable input types in iOS */
+          -webkit-appearance: none;
         }
 
         .notification {
-          border-radius: 4px;
+          background-color: var(--color-white);
+          color: var(--color-black);
+          padding: 0 var(--space-m) var(--space-l) var(--space-m);
+        }
 
-          background-color: var(--color-primary);
-          color: var(--color-white);
-
-          margin: var(--space-m) 0;
-          padding: var(--space-l);
+        ol {
+          line-height: 1.7;
+          margin: 0 0 0 2rem;
+          padding: 0;
         }
 
         .sun {
@@ -55,8 +65,8 @@ class iosAddToHomescreen extends LitElement {
         }
 
         .share {
-          --iron-icon-stroke-color: var(--color-white);
-          --iron-icon-fill-color: var(--color-white);
+          --iron-icon-stroke-color: var(--color-black);
+          --iron-icon-fill-color: var(--color-black);
         }
       </style>
       `;
@@ -64,21 +74,15 @@ class iosAddToHomescreen extends LitElement {
 
   render() {
     return html`
-      ${this._showInstallButton() === true
+      ${this._installButtonVisible === true
         ? html`
             <section id="install-prompt">
-              <button
-                @click="${this._install}"
-                style="color:white !important; font-weight:900 !important"
-              >
+              <button @click="${this._install}">
                 <iron-icon
                   class="sun"
                   icon="weather-symbol-icons:weatherSymbol1"
                 ></iron-icon>
-                <div
-                  color="white"
-                  style="color:white !important; font-weight:900 !important"
-                >
+                <div>
                   ASENNA SOVELLUS
                 </div>
                 <iron-icon
@@ -91,15 +95,16 @@ class iosAddToHomescreen extends LitElement {
                 ? html`
               <div class="notification">
 
-              <div class="text">
-                Tykkäätkö? Napauta
-
-                <iron-icon
-                  class="share"
-                  icon="weather-icons:iosShare"
-                ></iron-icon
-                >, scrollaa alas ja lisää kotivalikkoon
-              </div>
+              <ol class="text">
+                <li>Napauta 
+                  <iron-icon
+                    class="share"
+                    icon="weather-icons:iosShare"
+                  ></iron-icon>
+                </li>
+                <li>scrollaa alas</li>
+                <li>lisää kotivalikkoon</li>
+              </ol>
             </div>
             </section>`
                 : ''}
@@ -107,10 +112,6 @@ class iosAddToHomescreen extends LitElement {
           `
         : ''}
     `;
-  }
-
-  static get is() {
-    return 'ios-add-to-homescreen';
   }
 
   static get properties() {
@@ -165,6 +166,10 @@ class iosAddToHomescreen extends LitElement {
   }
 
   _showIosInstructions() {
+    if (this.forceShow === true) {
+      return true;
+    }
+
     return this._isPortableApple() === true && this._isSafari() === true;
   }
 
@@ -183,4 +188,4 @@ class iosAddToHomescreen extends LitElement {
   }
 }
 
-window.customElements.define(iosAddToHomescreen.is, iosAddToHomescreen);
+window.customElements.define(AddToHomescreen.is, AddToHomescreen);

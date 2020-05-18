@@ -1,5 +1,4 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-import './ios-add-to-homescreen.js';
 import './share-app.js';
 
 class WeatherFooter extends PolymerElement {
@@ -40,10 +39,6 @@ class WeatherFooter extends PolymerElement {
         }
       </style>
         <footer>
-   
-        <p class="footer_section">
-          <ios-add-to-homescreen> </ios-add-to-homescreen>
-        </p>
 
           <p class="footer_header">
             Sääennuste by Ilmatieteen laitos | avoin data<br />
@@ -52,7 +47,7 @@ class WeatherFooter extends PolymerElement {
               alt="fmi logo"
               src="../image/FMI0DATA_small.png"
             />
-      </p>
+          </p>
           
           <section class="footer_section">
             <h3>Aurinko</h3>
