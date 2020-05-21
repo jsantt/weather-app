@@ -73,10 +73,18 @@
 
     <style>        
         .loading-view {
+          background-color: white;
           height: 100vh;
+
           display: flex;
           justify-content: center;
           align-items: center;
+          
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
         }
 
         html.wf-loading weather-app {
@@ -163,13 +171,6 @@
 
           background-color: #eee;
           color: white;
-          /*background: radial-gradient(
-            circle,
-            #173F5F 3%,
-            #20639B 96%
-          );*/
-        
-         
         }
         
         .visually-hidden {

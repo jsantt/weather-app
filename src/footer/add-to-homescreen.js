@@ -44,7 +44,7 @@ class AddToHomescreen extends LitElement {
         .notification {
           background-color: var(--color-white);
           color: var(--color-black);
-          padding: 0 var(--space-m) var(--space-l) var(--space-m);
+          padding: var(--space-l) var(--space-m);
         }
 
         ol {
@@ -96,14 +96,14 @@ class AddToHomescreen extends LitElement {
               <div class="notification">
 
               <ol class="text">
-                <li>Napauta 
+                <li>Napauta sivun alalaidasta
                   <iron-icon
                     class="share"
                     icon="weather-icons:iosShare"
                   ></iron-icon>
                 </li>
-                <li>scrollaa alas</li>
-                <li>lisää kotivalikkoon</li>
+                <li>vieritä alaspäin</li>
+                <li>valitse "lisää Koti-valikkoon"</li>
               </ol>
             </div>
             </section>`
