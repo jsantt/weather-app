@@ -9,6 +9,10 @@ class ObservationModalContent extends LitElement {
 
   static get styles() {
     return css`
+      :host {
+        display: block;
+      }
+
       .header {
         background-color: var(--color-primary);
         color: var(--color-white);
@@ -111,7 +115,7 @@ class ObservationModalContent extends LitElement {
 
   render() {
     if (this.observationData === undefined) {
-      return;
+      return html``;
     }
 
     return html`
