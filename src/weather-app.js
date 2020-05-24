@@ -110,9 +110,8 @@ class WeatherApp extends PolymerElement {
           </weather-footer>
 
           <style></style>
-          <bottom-menu observation-data="[[observationData]]">
-            <geolocate-button hide="[[loading]]"> </geolocate-button>
-          </bottom-menu>
+          <!-- bottom-menu observation-data="[[observationData]]"> </bottom-menu-->
+          <geolocate-button hide="[[loading]]"> </geolocate-button>
         </div>
       </template>
     `;
