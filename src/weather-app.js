@@ -18,6 +18,8 @@ import './footer/sunrise-sunset.js';
 import './footer/public-holidays.js';
 import './footer/weather-footer.js';
 
+import '../node_modules/interactjs/dist/interact.min.js';
+
 class WeatherApp extends PolymerElement {
   static get template() {
     return html`
@@ -28,6 +30,13 @@ class WeatherApp extends PolymerElement {
 
         div[hidden] {
           visibility: hidden;
+        }
+
+        .locate-button-container {
+          position: relative;
+          width: 100%;
+          display: flex;
+          justify-content: center;
         }
 
         error-notification {
@@ -111,7 +120,9 @@ class WeatherApp extends PolymerElement {
 
           <style></style>
           <!-- bottom-menu observation-data="[[observationData]]"> </bottom-menu-->
-          <geolocate-button hide="[[loading]]"> </geolocate-button>
+          <div class="locate-button-container">
+            <geolocate-button hide="[[loading]]"> </geolocate-button>
+          </div>
         </div>
       </template>
     `;
@@ -184,6 +195,113 @@ class WeatherApp extends PolymerElement {
         .querySelector('forecast-header')
         .scrollIntoView({ behavior: 'smooth' });
     }, 1500);
+
+    setTimeout(() => {
+      interact('geolocate-button').draggable({
+        listeners: {
+          // call this function on every dragmove event
+          move: dragMoveListener,
+
+          // call this function on every dragend event
+          end(event) {
+            var textEl = event.target.querySelector('p');
+
+            textEl &&
+              (textEl.textContent =
+                'moved a distance of ' +
+                Math.sqrt(
+                  (Math.pow(event.pageX - event.x0, 2) +
+                    Math.pow(event.pageY - event.y0, 2)) |
+                    0
+                ).toFixed(2) +
+                'px');
+          },
+        },
+      });
+    }, 1000);
+
+    function dragMoveListener(event) {
+      var target = event.target;
+      // keep the dragged position in the data-x/data-y attributes
+      var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+      var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+
+      // translate the element
+      target.style.webkitTransform = target.style.transform =
+        'translate(' + x + 'px, ' + y + 'px)';
+
+      // update the posiion attributes
+      target.setAttribute('data-x', x);
+      target.setAttribute('data-y', y);
+    }
+
+    // move into separate component
+    /*
+    setTimeout(() => {
+      var object = this.shadowRoot.querySelector('geolocate-button'),
+        initX,
+        initY,
+        firstX,
+        firstY;
+
+      object.addEventListener(
+        'mousedown',
+        function (e) {
+          e.preventDefault();
+          initX = this.offsetLeft;
+          initY = this.offsetTop;
+          firstX = e.pageX;
+          firstY = e.pageY;
+
+          this.addEventListener('mousemove', dragIt, false);
+
+          window.addEventListener(
+            'mouseup',
+            function () {
+              object.removeEventListener('mousemove', dragIt, false);
+            },
+            false
+          );
+        },
+        false
+      );
+
+      object.addEventListener(
+        'touchstart',
+        function (e) {
+          e.preventDefault();
+          initX = this.offsetLeft;
+          initY = this.offsetTop;
+          var touch = e.touches;
+          firstX = touch[0].pageX;
+          firstY = touch[0].pageY;
+
+          this.addEventListener('touchmove', swipeIt, false);
+
+          window.addEventListener(
+            'touchend',
+            function (e) {
+              e.preventDefault();
+              object.removeEventListener('touchmove', swipeIt, false);
+            },
+            false
+          );
+        },
+        false
+      );
+
+      function dragIt(e) {
+        this.style.left = initX + e.pageX - firstX + 'px';
+        this.style.top = initY + e.pageY - firstY + 'px';
+      }
+
+      function swipeIt(e) {
+        var contact = e.touches;
+        this.style.left = initX + contact[0].pageX - firstX + 'px';
+        this.style.top = initY + contact[0].pageY - firstY + 'px';
+      }
+    }, 1000);
+    */
   }
 
   connectedCallback() {

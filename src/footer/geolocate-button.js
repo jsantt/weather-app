@@ -16,18 +16,15 @@ class GeolocateButton extends PolymerElement {
           user-select: none;
 
           position: fixed;
-          left: 0px;
-          right: 0px;
-          bottom: 1rem;
+
+          top: calc(100vh - 5rem);
           z-index: 101;
         }
         :host(:hover) {
           cursor: pointer;
         }
         svg {
-          -webkit-filter: drop-shadow(3px 3px 2px rgba(0, 0, 0, 0.3));
-          filter: drop-shadow(3px 3px 2px rgba(0, 0, 0, 0.3));
-          /* Similar syntax to box-shadow */
+          filter: drop-shadow(0px 3px 4px rgba(0, 0, 0, 0.3));
         }
 
         .locate-icon-shadow {
@@ -41,6 +38,9 @@ class GeolocateButton extends PolymerElement {
           margin-top: -1.8rem;
           z-index: 1;
           margin-left: 0.2rem;
+
+          touch-action: none;
+          user-select: none;
         }
       </style>
       <template is="dom-if" if="{{!hide}}">
