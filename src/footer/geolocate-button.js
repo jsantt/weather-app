@@ -46,17 +46,17 @@ class GeolocateButton extends PolymerElement {
       <template is="dom-if" if="{{!hide}}">
         <svg
           on-click="_geolocate"
-          width="64"
-          height="64"
+          width="72"
+          height="72"
           viewbox="0 0 32 32"
           xmlns="http://www.w3.org/2000/svg"
         >
           <g>
             <title>paikanna</title>
             <ellipse
-              stroke="#fff"
-              stroke-width="2.6"
-              fill="#e5e5e5"
+              stroke="#f5f5f5"
+              stroke-width="3"
+              fill="#fff"
               cx="15.94793"
               cy="17.3763"
               id="svg_1"
@@ -65,7 +65,7 @@ class GeolocateButton extends PolymerElement {
             />
             <path
               class="locate-icon"
-              stroke-width="0.2"
+              stroke-width="0"
               stroke="#fff"
               fill="#ed332b"
               d="m16.18757,0.12498c-3.69724,0 -6.68752,2.99028 -6.68752,6.68752c0,5.01564 6.68752,12.41967 6.68752,12.41967s6.68752,-7.40403 6.68752,-12.41967c0,-3.69724 -2.99028,-6.68752 -6.68752,-6.68752zm0,9.07591c-1.3184,0 -2.38839,-1.07 -2.38839,-2.38839s1.07,-2.38839 2.38839,-2.38839s2.38839,1.07 2.38839,2.38839s-1.07,2.38839 -2.38839,2.38839z"
