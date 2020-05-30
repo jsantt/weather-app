@@ -1,8 +1,8 @@
-import { PolymerElement, html } from "@polymer/polymer/polymer-element.js";
-import "@polymer/paper-spinner/paper-spinner-lite.js";
-import "@vaadin/vaadin-combo-box/vaadin-combo-box.js";
+import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import '@polymer/paper-spinner/paper-spinner-lite.js';
+import '@vaadin/vaadin-combo-box/vaadin-combo-box.js';
 
-import { CITIES, TOP_10_CITIES } from "./city-list";
+import { CITIES, TOP_10_CITIES } from './city-list';
 
 /**
  * @customElement
@@ -26,7 +26,7 @@ class LocationSelector extends PolymerElement {
           /* overwriting Vaadin's default styles */
           --lumo-contrast-10pct: transparent;
           --lumo-font-size-m: var(--font-size-large);
-          --lumo-font-family: "Open Sans Condensed", sans-serif;
+          --lumo-font-family: 'Open Sans Condensed', sans-serif;
           --vaadin-text-field-default-width: 11.5rem;
         }
 
@@ -63,33 +63,33 @@ class LocationSelector extends PolymerElement {
   }
 
   static get is() {
-    return "location-selector";
+    return 'location-selector';
   }
 
   static get properties() {
     return {
       _defaultPlace: {
         type: Object,
-        value: { city: "Helsinki", coordinates: "60.1698557,24.9383791" },
-        readOnly: true
+        value: { city: 'Helsinki', coordinates: '60.1698557,24.9383791' },
+        readOnly: true,
       },
       _previousPlace: {
-        type: Object
+        type: Object,
       },
       loading: {
-        type: Boolean
+        type: Boolean,
       },
       place: {
         type: Object,
-        observer: "_newPlace"
-      }
+        observer: '_newPlace',
+      },
     };
   }
 
   constructor() {
     super();
 
-    document.addEventListener("visibilitychange", event => {
+    document.addEventListener('visibilitychange', (event) => {
       if (document.hidden === false) {
         this._notifyPreviousPlace();
       }
@@ -103,23 +103,23 @@ class LocationSelector extends PolymerElement {
   }
 
   _notifyPreviousPlace() {
-    const storedPlaces = this._getFromLocalStorage("place");
+    const storedPlaces = this._getFromLocalStorage('place');
     let currentPlace;
     if (storedPlaces) {
       currentPlace = storedPlaces[0];
     } else {
       currentPlace = this._defaultPlace;
-      this._storeIntoLocalStorage("place", TOP_10_CITIES);
+      this._storeIntoLocalStorage('place', TOP_10_CITIES);
     }
     // TO DO: UGLY HACK, without timeout parent won't catch the event
     setTimeout(() => {
-      this._dispatchEvent("location-selector.location-changed", currentPlace);
+      this._dispatchEvent('location-selector.location-changed', currentPlace);
     }, 50);
   }
 
   _setComboboxValue(value) {
     setTimeout(() => {
-      let combobox = this.shadowRoot.querySelector("#placeSelection");
+      let combobox = this.shadowRoot.querySelector('#placeSelection');
 
       if (combobox) {
         combobox.selectedItem = value;
@@ -131,15 +131,15 @@ class LocationSelector extends PolymerElement {
    * When customer chooses geolocate, we need to wait response containing place name
    */
   _newPlace() {
-    let combobox = this.shadowRoot.querySelector("#placeSelection");
+    let combobox = this.shadowRoot.querySelector('#placeSelection');
 
     if (combobox) {
       combobox.selectedItem = this.place.name;
 
       const url = this.place.name;
 
-      this._changeUrl("place", url);
-      this._store("place", this.place.name, this.place.coordinates);
+      this._changeUrl('place', url);
+      this._store('place', this.place.name, this.place.coordinates);
 
       combobox.items = this._placeList();
     } else {
@@ -154,7 +154,7 @@ class LocationSelector extends PolymerElement {
   }
 
   _openedChanged(customEvent) {
-    let combobox = this.shadowRoot.querySelector("#placeSelection");
+    let combobox = this.shadowRoot.querySelector('#placeSelection');
 
     if (this._isComboboxOpen(customEvent)) {
       combobox.focus();
@@ -162,7 +162,7 @@ class LocationSelector extends PolymerElement {
       combobox.selectedItem = null;
     } else if (this._isComboboxPlaceSelected(combobox)) {
       this._dispatchEvent(
-        "location-selector.location-changed",
+        'location-selector.location-changed',
         combobox.selectedItem
       );
     } else if (this._isComboboxDismiss(combobox)) {
@@ -184,7 +184,7 @@ class LocationSelector extends PolymerElement {
   }
 
   _placeList() {
-    const previousLocations = this._getFromLocalStorage("place");
+    const previousLocations = this._getFromLocalStorage('place');
     const allLocations = previousLocations.concat(CITIES);
 
     return allLocations;
@@ -204,43 +204,43 @@ class LocationSelector extends PolymerElement {
    */
 
   _locationAlreadyAllowed() {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
       if (!this._responseApi()) {
         reject;
       } else {
         navigator.permissions
-          .query({ name: "geolocation" })
-          .then(permission =>
-            permission.state === "granted" ? resolve : reject
+          .query({ name: 'geolocation' })
+          .then((permission) =>
+            permission.state === 'granted' ? resolve : reject
           );
       }
     });
   }
 
   _getUrlParams(name, url) {
-    name = name.replace(/[\[\]]/g, "\\$&");
+    name = name.replace(/[\[\]]/g, '\\$&');
 
-    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
       results = regex.exec(url);
     if (!results) {
       return null;
     }
     if (!results[2]) {
-      return "";
+      return '';
     }
 
-    return decodeURIComponent(results[2].replace(/\+/g, " "));
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
   }
 
   _changeUrl(paramName, paramValue) {
-    history.replaceState(null, null, "?" + paramName + "=" + paramValue);
+    history.replaceState(null, null, '?' + paramName + '=' + paramValue);
   }
 
   _dispatchEvent(name, payload) {
     const event = new CustomEvent(name, {
       detail: payload,
       bubbles: true,
-      composed: true
+      composed: true,
     });
     this.dispatchEvent(event);
   }
@@ -251,10 +251,10 @@ class LocationSelector extends PolymerElement {
 
   _store(key, city, coordinates) {
     const newPlace = [this._formPlaceObject(city, coordinates)];
-    const previousPlaces = this._getFromLocalStorage("place");
+    const previousPlaces = this._getFromLocalStorage('place');
 
     const filtered10 = newPlace.concat(
-      previousPlaces.filter(item => item.city !== city).slice(0, 9)
+      previousPlaces.filter((item) => item.city !== city).slice(0, 9)
     );
     this._storeIntoLocalStorage(key, filtered10);
   }

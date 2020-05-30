@@ -88,13 +88,13 @@ class WeatherApp extends PolymerElement {
           >
           </forecast-header>
 
-          <observation-modal visible="[[observationVisible]]">
+          <!--observation-modal visible="[[observationVisible]]">
             <observation-modal-content
               observation-data="{{observationData}}"
               observation-error="{{observationError}}"
             >
             </observation-modal-content>
-          </observation-modal>
+          </observation-modal-->
 
           <!-- today, tomorrow and a day after tomorrow -->
           <slot id="header"></slot>
@@ -111,6 +111,18 @@ class WeatherApp extends PolymerElement {
 
           <!-- footer -->
           <weather-footer observation-data="[[observationData]]">
+            <!--bottom-menu
+              slot="observations"
+              observation-data="[[observationData]]"
+            >
+            </bottom-menu-->
+            <observation-modal-content
+              slot="observations"
+              observation-data="{{observationData}}"
+              observation-error="{{observationError}}"
+            >
+            </observation-modal-content>
+
             <sunrise-sunset
               slot="sunrise-sunset"
               coordinates="[[weatherLocation.coordinates]]"
@@ -119,7 +131,6 @@ class WeatherApp extends PolymerElement {
           </weather-footer>
 
           <style></style>
-          <!-- bottom-menu observation-data="[[observationData]]"> </bottom-menu-->
           <div class="locate-button-container">
             <geolocate-button hide="[[loading]]"> </geolocate-button>
           </div>
@@ -196,6 +207,7 @@ class WeatherApp extends PolymerElement {
         .scrollIntoView({ behavior: 'smooth' });
     }, 1500);
 
+    // TODO: Switch using Dragula or other lightweight option
     setTimeout(() => {
       interact('geolocate-button').draggable({
         listeners: {
@@ -234,74 +246,6 @@ class WeatherApp extends PolymerElement {
       target.setAttribute('data-x', x);
       target.setAttribute('data-y', y);
     }
-
-    // move into separate component
-    /*
-    setTimeout(() => {
-      var object = this.shadowRoot.querySelector('geolocate-button'),
-        initX,
-        initY,
-        firstX,
-        firstY;
-
-      object.addEventListener(
-        'mousedown',
-        function (e) {
-          e.preventDefault();
-          initX = this.offsetLeft;
-          initY = this.offsetTop;
-          firstX = e.pageX;
-          firstY = e.pageY;
-
-          this.addEventListener('mousemove', dragIt, false);
-
-          window.addEventListener(
-            'mouseup',
-            function () {
-              object.removeEventListener('mousemove', dragIt, false);
-            },
-            false
-          );
-        },
-        false
-      );
-
-      object.addEventListener(
-        'touchstart',
-        function (e) {
-          e.preventDefault();
-          initX = this.offsetLeft;
-          initY = this.offsetTop;
-          var touch = e.touches;
-          firstX = touch[0].pageX;
-          firstY = touch[0].pageY;
-
-          this.addEventListener('touchmove', swipeIt, false);
-
-          window.addEventListener(
-            'touchend',
-            function (e) {
-              e.preventDefault();
-              object.removeEventListener('touchmove', swipeIt, false);
-            },
-            false
-          );
-        },
-        false
-      );
-
-      function dragIt(e) {
-        this.style.left = initX + e.pageX - firstX + 'px';
-        this.style.top = initY + e.pageY - firstY + 'px';
-      }
-
-      function swipeIt(e) {
-        var contact = e.touches;
-        this.style.left = initX + contact[0].pageX - firstX + 'px';
-        this.style.top = initY + contact[0].pageY - firstY + 'px';
-      }
-    }, 1000);
-    */
   }
 
   connectedCallback() {

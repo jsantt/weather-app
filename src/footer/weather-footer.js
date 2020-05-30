@@ -18,9 +18,13 @@ class WeatherFooter extends PolymerElement {
         }
 
         footer h3 {          
+          color: var(--color-gray-800);
           font-size: var(--font-size-small);
           font-weight: 600;
-          
+
+          text-transform: uppercase;
+          font-weight: 900;
+
           margin: var(--space-l) 0;
           padding: 0 var(--space-l);
           
@@ -49,6 +53,12 @@ class WeatherFooter extends PolymerElement {
             />
           </p>
           
+          <section class="footer_section">
+            <h3>Lähin sääasema</h3>
+            <p class="info">
+              <slot name="observations"></slot>
+            </p>
+          </section>
           <section class="footer_section">
             <h3>Aurinko</h3>
             <p class="info">

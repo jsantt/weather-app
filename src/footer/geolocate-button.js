@@ -35,9 +35,9 @@ class GeolocateButton extends PolymerElement {
           color: var(--color-red-800);
           font-size: var(--font-size-small);
           font-weight: 900;
-          margin-top: -1.8rem;
+          margin-top: -1.9rem;
           z-index: 1;
-          margin-left: 0.2rem;
+          margin-left: 0.1rem;
 
           touch-action: none;
           user-select: none;
@@ -55,13 +55,13 @@ class GeolocateButton extends PolymerElement {
             <title>paikanna</title>
             <ellipse
               stroke="#f5f5f5"
-              stroke-width="3"
+              stroke-width="0"
               fill="#fff"
               cx="15.94793"
               cy="17.3763"
               id="svg_1"
-              rx="13.98955"
-              ry="13.98955"
+              rx="15"
+              ry="15"
             />
             <path
               class="locate-icon"

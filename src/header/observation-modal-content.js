@@ -11,14 +11,7 @@ class ObservationModalContent extends LitElement {
     return css`
       :host {
         display: block;
-      }
-
-      .header {
-        background-color: var(--color-primary);
-        color: var(--color-white);
-        grid-column: span 2;
-        padding: 1.5rem 1rem;
-        text-align: center;
+        background-color: #b7e1cd;
       }
 
       h1,
@@ -68,6 +61,7 @@ class ObservationModalContent extends LitElement {
       .temperature {
         justify-self: stretch;
         font-size: var(--font-size-xxlarge);
+        font-weight: 900;
         grid-column: 1 / span 2;
 
         display: flex;
@@ -75,6 +69,12 @@ class ObservationModalContent extends LitElement {
         align-items: center;
         padding: 1rem;
       }
+
+      .place {
+        grid-column: 1 / span 2;
+        font-size: var(--font-size-medium);
+      }
+
       .degree {
         font-size: var(--font-size-large);
         vertical-align: super;
@@ -87,6 +87,7 @@ class ObservationModalContent extends LitElement {
       }
       .value {
         font-size: var(--font-size-large);
+        font-weight: 900;
       }
       .windExplanation {
         margin-top: -0.26rem;
@@ -98,7 +99,7 @@ class ObservationModalContent extends LitElement {
       }
 
       .footer {
-        background-color: var(--color-primary);
+        background-color: #9ad5b9;
         margin-top: 1rem;
 
         display: flex;
@@ -119,15 +120,14 @@ class ObservationModalContent extends LitElement {
     }
 
     return html`
-      <div class="header">
-        <h2>LÄHIN HAVAINTOASEMA</h2>
+      <!--div class="header">
         <h3>
           ${this.observationData.weatherStation}
         </h3>
         <h3>
           Kello ${this._formatTime(this.observationData.time)}
         </h3>
-      </div>
+      </div-->
 
       ${this.observationError
         ? html`
@@ -138,6 +138,9 @@ class ObservationModalContent extends LitElement {
           `
         : html`
             <div class="content">
+              <div class="place">
+                ${this.observationData.weatherStation}
+              </div>
               <div class="item temperature">
                 ${this.observationData.temperature
                   ? html`
@@ -146,7 +149,6 @@ class ObservationModalContent extends LitElement {
                       </div>
                     `
                   : ``}
-
                 <weather-symbol-wawa
                   class="value description"
                   wawa-id="${this.observationData.weatherCode}"
@@ -248,8 +250,9 @@ class ObservationModalContent extends LitElement {
             </div>
           `}
       <div class="footer">
+        Kello ${this._formatTime(this.observationData.time)} &nbsp;
         <a href="${this._googleMapsURl(this.observationData.latLon)}"
-          >${this.observationData.weatherStation} kartalla</a
+          >sijainti kartalla</a
         >
       </div>
     `;
