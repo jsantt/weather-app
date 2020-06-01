@@ -88,14 +88,6 @@ class WeatherApp extends PolymerElement {
           >
           </forecast-header>
 
-          <!--observation-modal visible="[[observationVisible]]">
-            <observation-modal-content
-              observation-data="{{observationData}}"
-              observation-error="{{observationError}}"
-            >
-            </observation-modal-content>
-          </observation-modal-->
-
           <!-- today, tomorrow and a day after tomorrow -->
           <slot id="header"></slot>
 
@@ -111,17 +103,12 @@ class WeatherApp extends PolymerElement {
 
           <!-- footer -->
           <weather-footer observation-data="[[observationData]]">
-            <!--bottom-menu
-              slot="observations"
-              observation-data="[[observationData]]"
-            >
-            </bottom-menu-->
-            <observation-modal-content
+            <weather-station
               slot="observations"
               observation-data="{{observationData}}"
               observation-error="{{observationError}}"
             >
-            </observation-modal-content>
+            </weather-station>
 
             <sunrise-sunset
               slot="sunrise-sunset"
@@ -190,12 +177,6 @@ class WeatherApp extends PolymerElement {
     this.addEventListener('forecast-data.fetch-done', (event) => {
       this.firstLoading = false;
     });
-    this.addEventListener('forecast-header.toggle-observation', (event) =>
-      this._toggleObservationVisible()
-    );
-    this.addEventListener('observation-modal.toggle-observation', (event) =>
-      this._toggleObservationVisible()
-    );
   }
 
   ready() {
@@ -290,13 +271,6 @@ class WeatherApp extends PolymerElement {
 
   _showError(event) {
     this.$.locateError.show({ text: event.detail.text });
-  }
-
-  _toggleObservationVisible() {
-    const forecastHeader = this.shadowRoot.querySelector('forecast-header');
-    //forecastHeader.toggleObservationHighlight();
-
-    this.observationVisible = !this.observationVisible;
   }
 }
 

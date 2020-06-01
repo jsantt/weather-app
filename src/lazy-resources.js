@@ -1,6 +1,5 @@
 import '@polymer/paper-toast/paper-toast.js';
-import './header/observation-modal';
-import './header/observation-modal-content';
+import './footer/weather-station';
 
 import './header/weather-notification.js';
 import './observation-data.js';

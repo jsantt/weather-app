@@ -1,17 +1,19 @@
 import { css, html, LitElement } from 'lit-element';
 import '../error-notification';
-import './weather-symbol-wawa.js';
+import '../header/weather-symbol-wawa.js';
 
-class ObservationModalContent extends LitElement {
+class WeatherStation extends LitElement {
   static get is() {
-    return 'observation-modal-content';
+    return 'weather-station';
   }
 
   static get styles() {
     return css`
       :host {
-        display: block;
         background-color: #b7e1cd;
+        color: var(--color-green-800);
+
+        display: block;
       }
 
       h1,
@@ -52,7 +54,6 @@ class ObservationModalContent extends LitElement {
 
         padding-top: 1.4rem;
         text-align: center;
-        color: var(--color-blue-800);
       }
       .item {
         padding: 1rem 0;
@@ -120,15 +121,6 @@ class ObservationModalContent extends LitElement {
     }
 
     return html`
-      <!--div class="header">
-        <h3>
-          ${this.observationData.weatherStation}
-        </h3>
-        <h3>
-          Kello ${this._formatTime(this.observationData.time)}
-        </h3>
-      </div-->
-
       ${this.observationError
         ? html`
             <error-notification
@@ -317,7 +309,4 @@ class ObservationModalContent extends LitElement {
   }
 }
 
-window.customElements.define(
-  ObservationModalContent.is,
-  ObservationModalContent
-);
+window.customElements.define(WeatherStation.is, WeatherStation);

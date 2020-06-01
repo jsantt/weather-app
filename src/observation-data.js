@@ -126,6 +126,7 @@ class ObservationData extends PolymerElement {
      */
      _handleResponse(request) {
 
+      //TODO: request.response may be undefined
       let observations = this._parseObservations(request.response);
     
       this.observationData = {
