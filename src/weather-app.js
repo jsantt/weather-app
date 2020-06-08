@@ -82,9 +82,14 @@ class WeatherApp extends PolymerElement {
           <add-to-homescreen></add-to-homescreen>
           <slot id="place"></slot>
           <forecast-header
+            feelsLike="[[_getWeatherNow(forecastData).feelsLike]]"
             loading="[[loading]]"
             place="[[forecastPlace]]"
-            forecast-data="{{forecastData}}"
+            symbol="[[_getWeatherNow(forecastData).symbol]]"
+            temperature="[[_getWeatherNow(forecastData).temperature]]"
+            weatherNowData="[[_getWeatherNow(forecastData)]]"
+            windDirection="[[_getWeatherNow(forecastData).windDirection]]"
+            windGust="[[_getWeatherNow(forecastData).windGust]]"
           >
           </forecast-header>
 
@@ -96,7 +101,6 @@ class WeatherApp extends PolymerElement {
               forecast-data="[[forecastData]]"
               show-feels-like="[[showFeelsLike]]"
               show-wind="[[showWind]]"
-              show-wind-gust="[[showWindGust]]"
             >
             </weather-days>
           </main>
@@ -144,10 +148,6 @@ class WeatherApp extends PolymerElement {
         type: Boolean,
         value: false,
       },
-      showWindGust: {
-        type: Boolean,
-        value: false,
-      },
       observationVisible: {
         type: Boolean,
         value: false,
@@ -167,9 +167,7 @@ class WeatherApp extends PolymerElement {
     this.addEventListener('forecast-header.toggle-wind', (event) =>
       this._toggleWind(event)
     );
-    this.addEventListener('forecast-header.toggle-wind-gust', (event) =>
-      this._toggleWindGust(event)
-    );
+
     this.addEventListener('forecast-header.toggle-feels-like', (event) =>
       this._toggleFeelsLike(event)
     );
@@ -257,12 +255,24 @@ class WeatherApp extends PolymerElement {
     });
   }
 
-  _toggleWind() {
-    this.showWind = !this.showWind;
+  _getWeatherNow(data) {
+    const time = this._nextIsoHour();
+
+    if (data === undefined) {
+      return {};
+    }
+
+    const hourForecast = data.filter(function (item) {
+      return item.time === time;
+    })[0];
+
+    this._locationChanged = !this._locationChanged;
+
+    return hourForecast;
   }
 
-  _toggleWindGust() {
-    this.showWindGust = !this.showWindGust;
+  _toggleWind() {
+    this.showWind = !this.showWind;
   }
 
   _toggleFeelsLike() {

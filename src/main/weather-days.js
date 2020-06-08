@@ -1,100 +1,112 @@
-import { PolymerElement, html } from "@polymer/polymer/polymer-element.js";
-import "./weather-day.js";
+import { css, html, LitElement } from 'lit-element';
 
-class WeatherDays extends PolymerElement {
-  static get template() {
-    return html`
-    <style>
+import './weather-day.js';
+
+class WeatherDays extends LitElement {
+  static get styles() {
+    return css`
       :host {
         display: block;
-        margin-top: calc(-1*var(--header-background-expand));
+        margin-top: calc(-1 * var(--header-background-expand));
       }
       .visually-hidden {
-          position: absolute !important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding:0 !important;
-          border:0 !important;
-          height: 1px !important; 
-          width: 1px !important; 
-          overflow: hidden;
-        }
-    </style>
+        position: absolute !important;
+        clip: rect(1px, 1px, 1px, 1px);
+        padding: 0 !important;
+        border: 0 !important;
+        height: 1px !important;
+        width: 1px !important;
+        overflow: hidden;
+      }
+    `;
+  }
 
+  render() {
+    return html`
       <h3 class="visually-hidden">sää tänään</h2>
       <weather-day 
         class="weatherGrid" 
-        day-number="1"
-        min-temperature="[[minTemperature]]"
-        show-feels-like="[[showFeelsLike]]" 
-        show-wind="[[showWind]]"
-        show-wind-gust="[[showWindGust]]"
-        day-data="[[todayData]]"></weather-day>
+        .dayNumber="${1}"
+        .minTemperature="${this._minTemperature}"
+        .showFeelsLike="${this.showFeelsLike}" 
+        .showWind="${this.showWind}"
+        .dayData="${this._todayData}"></weather-day>
   
       <h3 class="visually-hidden">sää huomenna</h2>
       <weather-day 
         class="weatherGrid" 
-        day-number="2" 
-        min-temperature="[[minTemperature]]"
-        show-feels-like="[[showFeelsLike]]" 
-        show-wind="[[showWind]]" 
-        show-wind-gust="[[showWindGust]]" 
-        day-data="[[day2Data]]"></weather-day>
+        .dayNumber="${2}" 
+        .minTemperature="${this._minTemperature}"
+        .showFeelsLike="${this.showFeelsLike}" 
+        .showWind="${this.showWind}" 
+        .dayData="${this._day2Data}"></weather-day>
 
       <h3 class="visually-hidden">sää ylihuomenna</h2>
       <weather-day 
         class="weatherGrid" 
-        day-number="3" 
-        min-temperature="[[minTemperature]]"
-        show-feels-like="[[showFeelsLike]]" 
-        show-wind="[[showWind]]"
-        show-wind-gust="[[showWindGust]]" 
-        day-data="[[day3Data]]"></weather-day>
+        .dayNumber="${3}" 
+        .minTemperature="${this._minTemperature}"
+        .showFeelsLike="${this.showFeelsLike}" 
+        .showWind="${this.showWind}"
+        .dayData="${this._day3Data}"></weather-day>
 `;
   }
 
   static get is() {
-    return "weather-days";
+    return 'weather-days';
   }
 
   static get properties() {
     return {
       forecastData: {
-        type: Array
+        type: Array,
       },
 
       showFeelsLike: {
         type: Boolean,
-        reflectToAttribute: true
+        reflect: true,
       },
 
       showWind: {
         type: Boolean,
-        reflectToAttribute: true
-      },
-      showWindGust: {
-        type: Boolean,
-        reflectToAttribute: true
-      },
-      todayData: {
-        type: Array,
-        computed: "_sliceToday(forecastData)"
+        reflect: true,
       },
 
-      day2Data: {
+      _todayData: {
         type: Array,
-        computed: "_sliceDay2(forecastData)"
       },
 
-      day3Data: {
+      _day2Data: {
         type: Array,
-        computed: "_sliceDay3(forecastData)"
       },
 
-      minTemperature: {
+      _day3Data: {
+        type: Array,
+      },
+
+      _minTemperature: {
         type: Number,
-        computed: "_minTemp(forecastData)"
-      }
+        reflect: true,
+      },
     };
+  }
+
+  constructor() {
+    super();
+    this._todayData = [];
+    this._day2Data = [];
+    this._day3Data = [];
+  }
+
+  updated(changedProperties) {
+    changedProperties.forEach((oldValue, propName) => {
+      if (propName === 'forecastData' && this.forecastData !== undefined) {
+        this._todayData = this._sliceToday(this.forecastData);
+        this._day2Data = this._sliceDay2(this.forecastData);
+        this._day3Data = this._sliceDay3(this.forecastData);
+        this._minTemperature = this._minTemp(this.forecastData);
+      }
+    });
   }
 
   // for computed properties
@@ -112,7 +124,7 @@ class WeatherDays extends PolymerElement {
   }
 
   _minTemp(data) {
-    const min = data.reduce(function(previous, current) {
+    const min = data.reduce(function (previous, current) {
       const currentTemp = Number.isNaN(current.temperature)
         ? Number.MAX_VALUE
         : current.temperature;

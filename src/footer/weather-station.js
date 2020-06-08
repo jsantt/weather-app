@@ -174,8 +174,8 @@ class WeatherStation extends LitElement {
                       <wind-icon
                         degrees="${this.observationData.windDirection}"
                         large
-                        wind-speed="${this.observationData.wind}"
-                        wind-gust-speed="${this.observationData.windGust}"
+                        windSpeed="${this.observationData.wind}"
+                        windGustSpeed="${this.observationData.windGust}"
                       >
                       </wind-icon>
                       <div class="explanation windExplanation">

@@ -1,76 +1,68 @@
-<!doctype html>
+<!DOCTYPE html>
 
 <html>
-<head>
-  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
-  <title>wind-icon</title>
+  <head>
+    <meta
+      name="viewport"
+      content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>wind-icon</title>
 
-  <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
-  <script src="../node_modules/chai/chai.js"></script>
-  <script src="../node_modules/mocha/mocha.js"></script>
-  <script src="../node_modules/wct-mocha/wct-mocha.js"></script>
-</head>
-<body>
-
-  <test-fixture id="basic">
-    <template>
-       <wind-icon 
-        wind-direction="180"
-        wind="7"
-       ></wind-icon>
-    </template>
-  </test-fixture>
-
-  <test-fixture id="largeIcon">
+    <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+    <script src="../node_modules/chai/chai.js"></script>
+    <script src="../node_modules/mocha/mocha.js"></script>
+    <script src="../node_modules/wct-mocha/wct-mocha.js"></script>
+  </head>
+  <body>
+    <test-fixture id="basic">
       <template>
-         <wind-icon 
-          large
-          wind-direction="180"
-          wind="7"
-         ></wind-icon>
+        <wind-icon wind-direction="180" wind="7"></wind-icon>
       </template>
     </test-fixture>
 
+    <test-fixture id="largeIcon">
+      <template>
+        <wind-icon large wind-direction="180" wind="7"></wind-icon>
+      </template>
+    </test-fixture>
 
-  <script type="module">
-    import '@polymer/test-fixture';
-    import sinon from 'sinon';
-    import '../src/wind-icon.js';
-  
-    suite('wind-icon tests', function() {
-      let icon;
+    <script type="module">
+      import '@polymer/test-fixture';
+      import sinon from 'sinon';
+      import '../src/wind-icon.js';
 
-      setup(() => {
-      });
+      suite('wind-icon tests', function () {
+        let icon;
 
-      test('Wind attribute is reflected', function(done) {
-        const icon = fixture('basic');
+        setup(() => {});
 
-        flush(function() {    
-          assert.equal(icon.getAttribute('windSpeed'), icon.windSpeed);
-          done();
+        test('Wind attribute is reflected', function (done) {
+          const icon = fixture('basic');
+
+          flush(function () {
+            assert.equal(icon.getAttribute('windSpeed'), icon.windSpeed);
+            done();
+          });
+        });
+
+        test('Degrees attribute is reflected', function (done) {
+          const icon = fixture('basic');
+
+          flush(function () {
+            assert.equal(icon.getAttribute('degrees'), icon.degrees);
+            done();
+          });
+        });
+
+        test('Large attribute is reflected', function (done) {
+          const icon = fixture('largeIcon');
+
+          flush(function () {
+            assert.isTrue(icon.hasAttribute('large'));
+            done();
+          });
         });
       });
-
-      test('Degrees attribute is reflected', function(done) {
-        const icon = fixture('basic');
-
-        flush(function() {    
-          assert.equal(icon.getAttribute('degrees'), icon.degrees);
-          done();
-        });
-      });
-
-      test('Large attribute is reflected', function(done) {
-        const icon = fixture('largeIcon');
-
-        flush(function() {
-          assert.isTrue(icon.hasAttribute('large'));
-          done();
-        });
-      });
-    });
-  </script>
-
-</body>
+    </script>
+  </body>
 </html>
