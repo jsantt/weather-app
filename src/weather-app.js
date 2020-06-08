@@ -59,10 +59,10 @@ class WeatherApp extends PolymerElement {
       <!-- rest of the data (forecast) -->
       <forecast-data
         fetch-error="{{forecastError}}"
-        forecast-data="{{forecastData}}"
+        forecast-data="{{_forecastData}}"
         forecast-place="{{forecastPlace}}"
-        loading="{{loading}}"
-        weather-location="[[weatherLocation]]"
+        loading="{{_loading}}"
+        weather-location="[[_weatherLocation]]"
       >
       </forecast-data>
 
@@ -78,18 +78,18 @@ class WeatherApp extends PolymerElement {
       </template>
 
       <template is="dom-if" if="{{!forecastError}}">
-        <div hidden$="[[firstLoading]]">
+        <div hidden$="[[_firstLoading]]">
           <add-to-homescreen></add-to-homescreen>
           <slot id="place"></slot>
           <forecast-header
-            feelsLike="[[_getWeatherNow(forecastData).feelsLike]]"
-            loading="[[loading]]"
+            feels-like="[[_currentFeelsLike]]"
+            loading="[[_loading]]"
             place="[[forecastPlace]]"
-            symbol="[[_getWeatherNow(forecastData).symbol]]"
-            temperature="[[_getWeatherNow(forecastData).temperature]]"
-            weatherNowData="[[_getWeatherNow(forecastData)]]"
-            windDirection="[[_getWeatherNow(forecastData).windDirection]]"
-            windGust="[[_getWeatherNow(forecastData).windGust]]"
+            symbol="[[_currentSymbol]]"
+            temperature="[[_currentTemperature]]"
+            wind="[[_currentWind]]"
+            wind-direction="[[_currentWindDirection]]"
+            wind-gust="[[_currentWindGust]]"
           >
           </forecast-header>
 
@@ -98,9 +98,9 @@ class WeatherApp extends PolymerElement {
 
           <main>
             <weather-days
-              forecast-data="[[forecastData]]"
-              show-feels-like="[[showFeelsLike]]"
-              show-wind="[[showWind]]"
+              forecast-data="[[_forecastData]]"
+              show-feels-like="[[_showFeelsLike]]"
+              show-wind="[[_showWind]]"
             >
             </weather-days>
           </main>
@@ -116,14 +116,14 @@ class WeatherApp extends PolymerElement {
 
             <sunrise-sunset
               slot="sunrise-sunset"
-              coordinates="[[weatherLocation.coordinates]]"
+              coordinates="[[_weatherLocation.coordinates]]"
             ></sunrise-sunset>
             <public-holidays slot="public-holidays"></public-holidays>
           </weather-footer>
 
           <style></style>
           <div class="locate-button-container">
-            <geolocate-button hide="[[loading]]"> </geolocate-button>
+            <geolocate-button hide="[[_loading]]"> </geolocate-button>
           </div>
         </div>
       </template>
@@ -136,23 +136,43 @@ class WeatherApp extends PolymerElement {
 
   static get properties() {
     return {
-      firstLoading: {
+      _firstLoading: {
         type: Boolean,
         value: true,
       },
-      showFeelsLike: {
+      _forecastData: {
+        type: Object,
+      },
+      _showFeelsLike: {
         type: Boolean,
         value: false,
       },
-      showWind: {
+      _showWind: {
         type: Boolean,
         value: false,
       },
-      observationVisible: {
-        type: Boolean,
-        value: false,
+      _currentFeelsLike: {
+        type: Number,
       },
-      weatherLocation: {
+      _currentPlace: {
+        type: Object,
+      },
+      _currentSymbol: {
+        type: Number,
+      },
+      _currentTemperature: {
+        type: Number,
+      },
+      _currentWind: {
+        type: Number,
+      },
+      _currentWindDirection: {
+        type: Number,
+      },
+      _currentWindGust: {
+        type: Number,
+      },
+      _weatherLocation: {
         type: String,
       },
     };
@@ -173,7 +193,21 @@ class WeatherApp extends PolymerElement {
     );
 
     this.addEventListener('forecast-data.fetch-done', (event) => {
-      this.firstLoading = false;
+      this._firstLoading = false;
+    });
+
+    this.addEventListener('forecast-data.fetch-done', (event) => {
+      this._firstLoading = false;
+
+      const weatherNowData = this._getWeatherNow(this._forecastData);
+
+      this._currentFeelsLike = weatherNowData.feelsLike;
+      this._currentSymbol = weatherNowData.symbol;
+      this._currentTemperature = weatherNowData.temperature;
+
+      this._currentWind = weatherNowData.wind;
+      this._currentWindDirection = weatherNowData.windDirection;
+      this._currentWindGust = weatherNowData.windGust;
     });
   }
 
@@ -234,7 +268,7 @@ class WeatherApp extends PolymerElement {
   }
 
   _onNewLocation(event) {
-    this.weatherLocation = event.detail;
+    this._weatherLocation = event.detail;
   }
 
   /**
@@ -256,6 +290,10 @@ class WeatherApp extends PolymerElement {
   }
 
   _getWeatherNow(data) {
+    if (data === undefined) {
+      return {};
+    }
+
     const time = this._nextIsoHour();
 
     if (data === undefined) {
@@ -271,12 +309,21 @@ class WeatherApp extends PolymerElement {
     return hourForecast;
   }
 
+  _nextIsoHour() {
+    let timeNow = new Date();
+
+    timeNow.setHours(timeNow.getHours() + 1);
+    timeNow.setMinutes(0, 0, 0);
+
+    return timeNow.toISOString().split('.')[0] + 'Z';
+  }
+
   _toggleWind() {
-    this.showWind = !this.showWind;
+    this._showWind = !this._showWind;
   }
 
   _toggleFeelsLike() {
-    this.showFeelsLike = !this.showFeelsLike;
+    this._showFeelsLike = !this._showFeelsLike;
   }
 
   _showError(event) {

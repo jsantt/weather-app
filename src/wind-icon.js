@@ -65,7 +65,7 @@ class WindIcon extends LitElement {
         ></circle>
       </g>
       <text text-anchor="middle" x="49" y="79" class="windSpeed">
-        ${Math.round(this.windSpeed)}
+        ${this._round(this.windSpeed)}
       </text>
       <text
         text-anchor="middle"
@@ -74,7 +74,7 @@ class WindIcon extends LitElement {
         fill="#666"
         class="windGustSpeed warning--color${this.color}"
       >
-        ${Math.round(this.windGustSpeed)}
+        ${this._round(this.windGustSpeed)}
       </text>
     </svg>`;
   }
@@ -112,6 +112,14 @@ class WindIcon extends LitElement {
     }
 
     return `rotate(${transform}, 50, 60)`;
+  }
+
+  _round(value) {
+    if (Number.isNaN(value)) {
+      return '';
+    }
+
+    return Math.round(value);
   }
 }
 

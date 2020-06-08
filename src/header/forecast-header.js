@@ -14,7 +14,6 @@ class ForecastHeader extends LitElement {
         background: var(--header-footer-gradient);
 
         padding-bottom: var(--header-background-expand);
-        /*background: radial-gradient(circle, #20639b 3%, #173f5f 96%);*/
       }
 
       .visually-hidden {
@@ -132,28 +131,28 @@ class ForecastHeader extends LitElement {
           <section class="left"></section>
           <div class="circle"></div>
           <h2 class="place">
-            <location-selector loading="${this.loading}" place="${this.place}">
+            <location-selector
+              .loading="${this.loading}"
+              .place="${this.place}"
+            >
             </location-selector>
           </h2>
 
           <div class="temperature">
-            ${this._round(this.weatherNowData.temperature)}
+            ${this._round(this.temperature)}
             <span class="degree">°C</span>
           </div>
 
-          <weather-symbol
-            symbol-id="${this.weatherNowData.symbol}"
-            large="true"
-          >
+          <weather-symbol symbol-id="${this.symbol}" large="true">
           </weather-symbol>
 
-          <weather-symbol-name symbol-id="${this.weatherNowData.symbol}">
+          <weather-symbol-name symbol-id="${this.symbol}">
           </weather-symbol-name>
 
           <aside>
             <div
               id="feelsLike"
-              on-click="_toggleFeelsLike"
+              @click="${this._toggleFeelsLike}"
               class="feelsLike aside-item"
             >
               <svg
@@ -181,41 +180,22 @@ class ForecastHeader extends LitElement {
                   fill="#ffcdd2"
                 />
                 <text text-anchor="middle" x="15" y="34" class="feelsLikeValue">
-                  ${this.weatherNowData.feelsLike}
+                  ${this.feelsLike}
                 </text>
               </svg>
               <div class="item-text">tuntuu</div>
             </div>
 
-            <div id="wind" class="wind aside-item" on-click="_toggleWind">
+            <div id="wind" class="wind aside-item" @click="${this._toggleWind}">
               <wind-icon
-                degrees="${this.weatherNowData.windDirection}"
+                .degrees="${this.windDirection}"
                 large
-                windSpeed="${this.weatherNowData.wind}"
-                windGustSpeed="${this.weatherNowData.windGust}"
+                .windSpeed="${this.wind}"
+                .windGustSpeed="${this.windGust}"
               >
               </wind-icon>
               <div class="item-text item-text--wind">tuuli</div>
             </div>
-
-            <!--div
-          id="observation"
-          class="observation aside-item"
-          on-click="_toggleObservation">
-          
-          <svg
-            class="aside-icon"
-            width="32px"
-            height="32px"
-            viewBox="0 0 32 32">
-
-            <path stroke="#000" stroke-width="1" fill="#fff" d="m19.27125,18.08333l0,-13.16322c0,-1.70222 -1.38385,-3.08056 -3.08423,-3.08056c-1.70406,0 -3.0824,1.37834 -3.0824,3.08056l0,13.05924c-1.93777,1.06182 -3.25354,3.12013 -3.25354,5.48483c0,3.45229 2.799,6.25037 6.25037,6.25037c3.4532,0 6.25036,-2.79808 6.25036,-6.25037c0.00092,-2.29385 -1.23848,-4.29511 -3.08056,-5.38085z"/>
-            <rect stroke="#000" stroke-width="1" fill="#ffcdd2" height="11.5625" width="1.4375" y="8.559082" x="15.46875" />
-            <ellipse stroke="#000" stroke-width="1" fill="#ffcdd2" ry="3.53125" rx="3.53125" id="svg_7" cy="23.402832" cx="16.0625"/>
-          
-          </svg>
-          <div class="item-text">havainto</div>
-        </div-->
           </aside>
         </div>
         <time-now update-time="${this._locationChanged}"></time-now>
@@ -229,63 +209,20 @@ class ForecastHeader extends LitElement {
 
   static get properties() {
     return {
-      feelsLike: {
-        type: Number,
-        reflect: true,
-      },
-      loading: {
-        type: Boolean,
-        reflect: true,
-      },
-      _locationChanged: {
-        type: Boolean,
-        reflect: true,
-      },
-      place: {
-        type: Object,
-        reflect: true,
-      },
-      symbol: {
-        type: Number,
-        reflect: true,
-      },
-      temperature: {
-        type: Number,
-        reflect: true,
-      },
-      weatherNowData: {
-        type: Object,
-        reflect: true,
-      },
+      feelsLike: { type: Number, reflect: true },
+      loading: { type: Boolean, reflect: true },
+      place: { type: Object, reflect: true },
+
+      symbol: { type: Number, reflect: true },
+      temperature: { type: Number, reflect: true },
+
+      wind: { type: Number, reflect: true },
       windDirection: { type: Number, reflect: true },
       windGust: { type: Number, reflect: true },
+
+      _locationChanged: { type: Boolean, reflect: true },
     };
   }
-
-  /*toggleObservationHighlight() {
-    this.shadowRoot.querySelector("#observation").classList.toggle("selected");
-  }*/
-
-  /*_getWeatherNow(data) {
-    const time = this._nextIsoHour();
-
-    if (data === undefined) {
-      return;
-    }
-
-    const hourForecast = data.filter(function (item) {
-      return item.time === time;
-    })[0];
-
-    this._locationChanged = !this._locationChanged;
-
-    return hourForecast;
-  }*/
-
-  /*_toggleObservation() {
-    const event = new CustomEvent('forecast-header.toggle-observation', {bubbles: true, composed: true});
-    this.dispatchEvent(event);
-  }*/
 
   _toggleFeelsLike() {
     this.shadowRoot.querySelector('#feelsLike').classList.toggle('selected');
@@ -340,17 +277,8 @@ class ForecastHeader extends LitElement {
     }
   }
 
-  _nextIsoHour() {
-    let timeNow = new Date();
-
-    timeNow.setHours(timeNow.getHours() + 1);
-    timeNow.setMinutes(0, 0, 0);
-
-    return timeNow.toISOString().split('.')[0] + 'Z';
-  }
-
   _round(value) {
-    if (value === undefined) {
+    if (Number.isNaN(value)) {
       return '';
     }
 
