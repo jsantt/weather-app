@@ -1,4 +1,4 @@
-import { css, html, LitElement } from "lit-element";
+import { css, html, LitElement } from 'lit-element';
 
 class TemperatureLine extends LitElement {
   static get styles() {
@@ -65,26 +65,26 @@ class TemperatureLine extends LitElement {
   }
 
   static get is() {
-    return "temperature-line";
+    return 'temperature-line';
   }
 
   static get properties() {
     return {
       minTemperature: {
-        type: Number
+        type: Number,
       },
       dayData: {
-        type: Array
+        type: Array,
       },
       _chartHeight: {
-        type: Number
+        type: Number,
       },
       _lineVariance: {
-        type: Number
+        type: Number,
       },
       _bottomMargin: {
-        type: Number
-      }
+        type: Number,
+      },
     };
   }
 
@@ -92,6 +92,10 @@ class TemperatureLine extends LitElement {
    * Chart containing rain bars, temperature line, past time shadow and present time triangle
    */
   _createChart(dayData) {
+    if (dayData === undefined) {
+      return;
+    }
+
     let svg = this._svg();
 
     const coordinates = this._temperatureCoordinates(dayData);
@@ -102,62 +106,62 @@ class TemperatureLine extends LitElement {
     //line.appendChild(this._gradient());
     svg.appendChild(line);
 
-    this._$(".chart").appendChild(svg);
+    this._$('.chart').appendChild(svg);
   }
 
   _svg() {
-    let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
 
     // min-x, min-y, width and height
-    svg.setAttribute("viewBox", "0 0 240 " + this._chartHeight);
-    svg.setAttribute("id", "chartsvg");
-    svg.setAttribute("width", "100%");
-    svg.setAttribute("height", this._chartHeight);
+    svg.setAttribute('viewBox', '0 0 240 ' + this._chartHeight);
+    svg.setAttribute('id', 'chartsvg');
+    svg.setAttribute('width', '100%');
+    svg.setAttribute('height', this._chartHeight);
 
-    svg.setAttribute("preserveAspectRatio", "none");
+    svg.setAttribute('preserveAspectRatio', 'none');
     return svg;
   }
 
   _temperatureLine(coordinates, firstX, lastX) {
     let line = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "polyline"
+      'http://www.w3.org/2000/svg',
+      'polyline'
     );
-    line.setAttribute("fill", "rgb(225, 61, 55, 0.10)");
-    line.setAttribute("fill-opacity", "1");
-    line.setAttribute("stroke", "#fe0101");
+    line.setAttribute('fill', 'rgb(225, 61, 55, 0.10)');
+    line.setAttribute('fill-opacity', '1');
+    line.setAttribute('stroke', '#fe0101');
 
-    line.setAttribute("stroke-width", "0");
-    line.setAttribute("stroke-opacity", "0.10");
-    line.setAttribute("points", `${firstX},50 ${coordinates} ${lastX} 50`);
+    line.setAttribute('stroke-width', '0');
+    line.setAttribute('stroke-opacity', '0.10');
+    line.setAttribute('points', `${firstX},50 ${coordinates} ${lastX} 50`);
 
     return line;
   }
 
   _gradient() {
     let gradient = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "linearGradient"
+      'http://www.w3.org/2000/svg',
+      'linearGradient'
     );
 
     // Store an array of stop information for the <linearGradient>
     var stops = [
       {
-        color: "#2121E5",
-        offset: "0%"
+        color: '#2121E5',
+        offset: '0%',
       },
       {
-        color: "#206DFF",
-        offset: "100%"
-      }
+        color: '#206DFF',
+        offset: '100%',
+      },
     ];
 
     // Parses an array of stop information and appends <stop> elements to the <linearGradient>
     for (var i = 0, length = stops.length; i < length; i++) {
       // Create a <stop> element and set its offset based on the position of the for loop.
-      var stop = document.createElementNS(svgns, "stop");
-      stop.setAttribute("offset", stops[i].offset);
-      stop.setAttribute("stop-color", stops[i].color);
+      var stop = document.createElementNS(svgns, 'stop');
+      stop.setAttribute('offset', stops[i].offset);
+      stop.setAttribute('stop-color', stops[i].color);
 
       // Add the stop to the <lineargradient> element.
       gradient.appendChild(stop);
@@ -179,17 +183,12 @@ class TemperatureLine extends LitElement {
     }
 
     return (
-      dayData.length -
-      1 -
-      dayData
-        .slice()
-        .reverse()
-        .findIndex(hasTemperature)
+      dayData.length - 1 - dayData.slice().reverse().findIndex(hasTemperature)
     );
   }
 
   _temperatureCoordinates(data) {
-    let points = "";
+    let points = '';
     const baseY = this._maxYCoordinate(this._lineVariance, this._bottomMargin);
 
     for (let i = 0; i < data.length; i++) {

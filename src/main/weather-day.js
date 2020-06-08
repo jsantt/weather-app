@@ -1,22 +1,22 @@
-import { PolymerElement, html } from "@polymer/polymer/polymer-element.js";
+import { css, html, LitElement } from 'lit-element';
 
-import "./day-item.js";
-import "./rain-amount.js";
-import "./rain-helper.js";
+import { totalRain, totalSnow } from './rain-helper.js';
+import { windWarning } from './wind-helper.js';
 
-import "./snow-amount.js";
-import "./temperature-line.js";
-import "./weather-chart.js";
+import './rain-amount.js';
+import './snow-amount.js';
+import './temperature-line.js';
 
-import "./wind-speed.js";
-import "../weather-symbol.js";
-import "./wind-helper.js";
-import "../wind-icon.js";
+import './weather-chart.js';
+import './wind-speed.js';
+import '../weather-symbol.js';
 
-class WeatherDay extends PolymerElement {
-  static get template() {
-    return html`
-    <style>
+import './wind-helper.js';
+import '../wind-icon.js';
+
+class WeatherDay extends LitElement {
+  static get styles() {
+    return css`
       :host {
         --grid-last-column: 25;
 
@@ -25,25 +25,23 @@ class WeatherDay extends PolymerElement {
 
         --color-dayHeader-font: var(--color-white);
 
-        --color-toggle-background: rgba(240,240,240, 0.8);
-        
+        --color-toggle-background: rgba(240, 240, 240, 0.8);
       }
 
       .visually-hidden {
-          position: absolute !important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding:0 !important;
-          border:0 !important;
-          height: 1px !important; 
-          width: 1px !important; 
-          overflow: hidden;
-        }
+        position: absolute !important;
+        clip: rect(1px, 1px, 1px, 1px);
+        padding: 0 !important;
+        border: 0 !important;
+        height: 1px !important;
+        width: 1px !important;
+        overflow: hidden;
+      }
 
       .weatherDay {
         min-height: 8rem;
         position: relative;
         margin: 0 var(--space-m) var(--space-l) var(--space-m);
-        
       }
 
       .weatherDay_grid {
@@ -57,10 +55,10 @@ class WeatherDay extends PolymerElement {
 
       .day {
         background-color: var(--color-dayHeader);
-        border-top-left-radius: 0.5rem;
-        border-top-right-radius: 0.5rem;
+        border-top-left-radius: var(--border-radius);
+        border-top-right-radius: var(--border-radius);
         color: var(--color-dayHeader-font);
-        	
+
         font-size: var(--font-size-small);
         grid-column: span 25;
         grid-row: 1;
@@ -84,13 +82,14 @@ class WeatherDay extends PolymerElement {
         width: 32px;
       }
 
-      .hour, .hour--empty {
+      .hour,
+      .hour--empty {
         /*background-color: #f3fcf5;*/
         font-size: var(--font-size-small);
-      
-        grid-row: 2; 
+
+        grid-row: 2;
         grid-column: span 1 /*3*/;
-      
+
         text-align: center;
 
         color: var(--color-gray-900);
@@ -99,7 +98,7 @@ class WeatherDay extends PolymerElement {
       .hour--empty {
         grid-column: span 1;
       }
-      
+
       .hour--dot {
         color: transparent;
         font-size: 0.75rem;
@@ -114,17 +113,18 @@ class WeatherDay extends PolymerElement {
         z-index: 1;
       }
 
-      .symbol, .symbol--empty {
+      .symbol,
+      .symbol--empty {
         grid-column: span 3;
-        grid-row: 4;  
+        grid-row: 4;
         text-align: center;
       }
       .symbol--empty {
         grid-column: span 1;
       }
 
-
-      .temperature, .temperature--empty {
+      .temperature,
+      .temperature--empty {
         color: var(--color-black);
         grid-column: span 3;
         grid-row: 5;
@@ -134,52 +134,56 @@ class WeatherDay extends PolymerElement {
         z-index: 2;
       }
 
-       .temperature_line {
+      .temperature_line {
         grid-column: span 25;
         grid-row: 6;
         height: 0;
       }
 
-      .feelsLike_footer, .wind_footer, .feelsLike_header, .wind_header {
+      .feelsLike_footer,
+      .wind_footer,
+      .feelsLike_header,
+      .wind_header {
         font-size: var(--font-size-xsmall);
         background-color: var(--color-toggle-background);
         color: var(--color-black);
         padding-left: 0.5rem;
         grid-column: span 25;
-        z-index:2;
+        z-index: 2;
       }
 
-    
       .feelsLike_header {
         grid-row: 7;
-        
       }
-      .feelsLike, .feelsLike--empty {
-        grid-row:8;
+      .feelsLike,
+      .feelsLike--empty {
+        grid-row: 8;
       }
       .feelsLike_footer {
-        grid-row:9;
+        grid-row: 9;
       }
 
       .wind_header {
         grid-row: 10;
-       
       }
 
-      .wind, .wind--empty {
+      .wind,
+      .wind--empty {
         grid-row: 11;
-        
       }
 
       .wind_footer {
         grid-row: 12;
       }
 
-      .temperature--empty, .feelsLike--empty, .wind--empty{
+      .temperature--empty,
+      .feelsLike--empty,
+      .wind--empty {
         grid-column: span 1;
       }
 
-      .wind, .feelsLike {
+      .wind,
+      .feelsLike {
         color: var(--color-black);
         grid-column: span 3;
         font-size: var(--font-size-medium);
@@ -187,13 +191,13 @@ class WeatherDay extends PolymerElement {
         padding-bottom: 0.5rem;
 
         background-color: var(--color-toggle-background);
-        z-index:2;
+        z-index: 2;
       }
-      .feelsLike--empty, .wind--empty{
+      .feelsLike--empty,
+      .wind--empty {
         background-color: var(--color-toggle-background);
-        z-index:2;
+        z-index: 2;
       }
-
 
       .wind-icon {
         vertical-align: sub;
@@ -207,11 +211,12 @@ class WeatherDay extends PolymerElement {
         float: right;
         padding-right: 0.5rem;
       }
-      rain-amount, snow-amount {
+      rain-amount,
+      snow-amount {
         padding-left: 0.5rem;
       }
 
-      .rainBars{
+      .rainBars {
         grid-column: span 25;
         grid-row: 12;
         padding-top: 1.55rem;
@@ -221,101 +226,153 @@ class WeatherDay extends PolymerElement {
       .feelsLikeValue {
         font-size: 16px;
       }
+    `;
+  }
+  render() {
+    return html`
+     <wind-helper></wind-helper>
 
-    </style>
-
-    <div class="weatherDay"> 
-      <div class="weatherDay_grid">
+      <div class="weatherDay"> 
+        <div class="weatherDay_grid">
         
-        <div class="day">
-            <h3 class="day-name"><span class="visually-hidden">SÄÄ</span> [[_day(dayNumber)]] [[_weekday(dayNumber)]]</h3>
+          <div class="day">
+            <h3 class="day-name">
+              <span class="visually-hidden">SÄÄ</span> 
+              ${this._day(this.dayNumber)} ${this._weekday(this.dayNumber)}
+            </h3>
 
             <span class="wind-warning">
-              <wind-helper></wind-helper>
               <wind-speed 
-                wind-rating="[[_windRating(dayData)]]" 
-                wind-description="[[_windDescription(dayData)]]">
+                .windRating="${this._windRating(this.dayData)}" 
+                .windDescription="${this._windDescription(this.dayData)}">
               </wind-speed>
             </span>
             <span class="rain-amount">
-              <rain-helper></rain-helper>
-              <snow-amount snow-amount="[[_snow(dayData)]]"></snow-amount>
-              <rain-amount rain-amount="[[_rain(dayData)]]"></rain-amount>
+              <snow-amount .snowAmount="${this._snow(
+                this.dayData
+              )}"></snow-amount>
+              <rain-amount .rainAmount="${this._rain(
+                this.dayData
+              )}"></rain-amount>
             </span>
-        </span></span></div>
+          </span></span></div>
         
-        <!-- headers here outside of dom-repeat -->    
+        <!-- headers here outside of repeat -->    
 
-        <template is="dom-if" if="[[showWind]]">
-          <div class="wind_header">keskituuli / tuuli puuskissa</div>
-        </template>
+        ${
+          this.showWind === true
+            ? html`<div class="wind_header">keskituuli / tuuli puuskissa</div>`
+            : ''
+        }
+        
 
-        <template is="dom-if" if="[[showFeelsLike]]">
-          <div class="feelsLike_header">tuntuu kuin</div>
-        </template>
+        ${
+          this.showFeelsLike === true
+            ? html`<div class="feelsLike_header">tuntuu kuin</div>`
+            : ''
+        }
 
-        <template is="dom-repeat" items="[[dayData]]" as="entry">
-          
-          <!-- EMPTY COLUMN -->
-          <template is="dom-if" if="[[_isFirst(index)]]">
-            
-            <div class="symbol--empty"></div>
-            <div class="temperature--empty"></div>
-            <div class="feelsLike--empty"></div>
-            <div class="wind--empty"></div>
-            
-          </template>
-       
-          <template is="dom-if" if="[[!_isFourth(index)]]">
-            <div class$="[[_getClasses(entry.past, 'hour hour--dot', 'dot--past')]]">
-              .
-            </div>
-          </template>
-       
-          <!-- HOUR, SYMBOL & TEMPERATURE -->
-          <template is="dom-if" if="[[_isFourth(index)]]">
+        ${this.dayData.map((entry, index) => {
+          return html`
+            <!-- EMPTY COLUMN -->
+            ${this._isFirst(index) === true
+              ? html`
+                  <div class="symbol--empty"></div>
+                  <div class="temperature--empty"></div>
+                  <div class="feelsLike--empty"></div>
+                  <div class="wind--empty"></div>
+                `
+              : ''}
+            ${this._isFourth(index) === false
+              ? html`
+                  <div
+                    class="${this._getClasses(
+                      entry.past,
+                      'hour hour--dot',
+                      'dot--past'
+                    )}"
+                  >
+                    .
+                  </div>
+                `
+              : ''}
 
-            <div class$="[[_getClasses(entry.past, 'hour', 'hour--past')]]">
-                  [[entry.hour]]
-            </div>
-            
-            <div class$="[[_getClasses(entry.past, 'symbol', 'past-hour')]]">
-              <weather-symbol symbol-id="[[_symbolId(entry)]]"></weather-symbol>
-            </div>
-            
-            <div class$="[[_getClasses(entry.past, 'temperature', 'past-hour')]]">
-              
-              <template is="dom-if" if="{{_notNaN(entry.temperature)}}">  
-                {{_round(entry.temperature)}}<span class="degree">°</span>   
-              </template>
+            <!-- HOUR, SYMBOL & TEMPERATURE -->
+            ${this._isFourth(index) === true
+              ? html`
+                  <div
+                    class="${this._getClasses(
+                      entry.past,
+                      'hour',
+                      'hour--past'
+                    )}"
+                  >
+                    ${entry.hour}
+                  </div>
 
-            </div>
+                  <div
+                    class="${this._getClasses(
+                      entry.past,
+                      'symbol',
+                      'past-hour'
+                    )}"
+                  >
+                    <weather-symbol
+                      .symbolId="${this._symbolId(entry)}"
+                    ></weather-symbol>
+                  </div>
 
-            <template is="dom-if" if="[[showWind]]">
-              <div class="wind">
-                <wind-icon 
-                  class$="[[_getClasses(entry.past, 'symbol', 'past-hour')]]"
-                  degrees="[[entry.windDirection]]" 
-                  wind-speed="[[entry.wind]]"
-                  wind-gust-speed="[[entry.windGust]]">
-                </wind-icon>
-              </div>
-            </template>
+                  <div
+                    class="${this._getClasses(
+                      entry.past,
+                      'temperature',
+                      'past-hour'
+                    )}"
+                  >
+                    ${this._notNaN(entry.temperature) === true
+                      ? html`${this._round(entry.temperature)}<span
+                            class="degree"
+                            >°</span
+                          >`
+                      : ''}
+                  </div>
 
-            <template is="dom-if" if="[[showFeelsLike]]">
-              <div class="feelsLike">
-
-                <div  class$="[[_getClasses(entry.past, 'symbol', 'past-hour')]]">
-                  <template is="dom-if" if="{{_notNaN(entry.feelsLike)}}">
-                    [[entry.feelsLike]]<span class="degree">°</span>  
-                  </template>
-                </div>
-              </div>
-            </template>
-            
-          </template>  
-            
-        </template>
+                  ${this.showWind === true
+                    ? html`<div class="wind">
+                        <wind-icon
+                          class="${this._getClasses(
+                            entry.past,
+                            'symbol',
+                            'past-hour'
+                          )}"
+                          .degrees="${entry.windDirection}"
+                          .windSpeed="${entry.wind}"
+                          .windGustSpeed="${entry.windGust}"
+                        >
+                        </wind-icon>
+                      </div> `
+                    : ''}
+                  ${this.showFeelsLike === true
+                    ? html`<div class="feelsLike">
+                        <div
+                          class="${this._getClasses(
+                            entry.past,
+                            'symbol',
+                            'past-hour'
+                          )}"
+                        >
+                          ${this._notNaN(entry.feelsLike) == true
+                            ? html`${entry.feelsLike}<span class="degree"
+                                  >°</span
+                                >`
+                            : ''}
+                        </div>
+                      </div> `
+                    : ''}
+                `
+              : ''}
+          `;
+        })}
 
         <div class="hour hour--empty">
         </div>
@@ -323,8 +380,8 @@ class WeatherDay extends PolymerElement {
         <div class="temperature_line">
             
           <temperature-line 
-            min-temperature="[[minTemperature]]" 
-            day-data="[[dayData]]">
+            .minTemperature="${this.minTemperature}" 
+            .dayData="${this.dayData}">
           </temperature-line>
     
         </div>
@@ -332,41 +389,40 @@ class WeatherDay extends PolymerElement {
         <section class="rainBars">
 
           <weather-chart 
-            min-temperature="[[minTemperature]]" 
-            day-data="[[dayData]]">
+            .minTemperature="${this.minTemperature}" 
+            .dayData="${this.dayData}">
           </weather-chart>
 
         </section>
       </div>
     </div>
-`;
+    `;
   }
 
   static get is() {
-    return "weather-day";
+    return 'weather-day';
   }
 
   static get properties() {
     return {
       dayNumber: {
         type: Number,
+        reflect: true,
       },
 
       minTemperature: {
         type: Number,
-      },
-
-      showTimeNow: {
-        type: Boolean,
-        value: false,
+        reflect: true,
       },
 
       showFeelsLike: {
         type: Boolean,
+        reflect: true,
       },
 
       showWind: {
         type: Boolean,
+        reflect: true,
       },
 
       dayData: {
@@ -375,14 +431,19 @@ class WeatherDay extends PolymerElement {
     };
   }
 
+  constructor() {
+    super();
+    this.dayData = [];
+  }
+
   _day(number) {
-    const dayNames = ["Tänään", "Huomenna", "Ylihuomenna"];
+    const dayNames = ['Tänään', 'Huomenna', 'Ylihuomenna'];
     return dayNames[number - 1];
   }
 
   _getClasses(showBoth, baseClasses, pastClass) {
     const classes = showBoth
-      ? baseClasses.concat(" ").concat(pastClass)
+      ? baseClasses.concat(' ').concat(pastClass)
       : baseClasses;
     return classes;
   }
@@ -390,34 +451,32 @@ class WeatherDay extends PolymerElement {
   _weekday(number) {
     let day = new Date();
     day.setDate(day.getDate() + (number - 1));
-    return day.toLocaleString("fi-FI", { weekday: "short" });
+    return day.toLocaleString('fi-FI', { weekday: 'short' });
   }
 
   _windDescription(dayData) {
-    return this.shadowRoot.querySelector("wind-helper").windWarning(dayData)
-      .description;
+    return windWarning(dayData).description;
   }
 
   _windRating(dayData) {
-    return this.shadowRoot.querySelector("wind-helper").windWarning(dayData)
-      .rating;
+    return windWarning(dayData).rating;
   }
 
   _everyFourth(index, item) {
-    return index % 3 === 0 ? this._hideNaN(item) : "";
+    return index % 3 === 0 ? this._hideNaN(item) : '';
   }
 
   _rain(dayData) {
-    return this.shadowRoot.querySelector("rain-helper").totalRain(dayData);
+    return totalRain(dayData);
   }
 
   _snow(dayData) {
-    return this.shadowRoot.querySelector("rain-helper").totalSnow(dayData);
+    return totalSnow(dayData);
   }
 
   _round(item) {
     const rounded = Math.round(item);
-    const result = Number.isNaN(rounded) ? "" : rounded;
+    const result = Number.isNaN(rounded) ? '' : rounded;
 
     return result;
   }
@@ -435,6 +494,10 @@ class WeatherDay extends PolymerElement {
   }
   _symbolId(data) {
     return data.symbol;
+  }
+
+  get _windHelper() {
+    return this.shadowRoot.querySelector('wind-helper');
   }
 }
 

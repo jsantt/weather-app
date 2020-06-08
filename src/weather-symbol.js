@@ -1,11 +1,9 @@
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import { css, html, LitElement } from 'lit-element';
 import '@polymer/iron-icon/iron-icon.js';
 
-
-class WeatherSymbol extends PolymerElement {
-  static get template() {
-    return html`
-    <style>
+class WeatherSymbol extends LitElement {
+  static get styles() {
+    return css`
       :host {
         display: inline-block;
       }
@@ -13,29 +11,37 @@ class WeatherSymbol extends PolymerElement {
       .symbol {
         --iron-icon-height: 45px;
         --iron-icon-width: 45px;
-        z-index:20;
+        z-index: 20;
       }
 
       .symbol--large {
         --iron-icon-height: 80px;
         --iron-icon-width: 80px;
       }
-    </style>
-  
-  <iron-icon icon\$="[[_iconName(symbolId)]]" class="symbol" class\$="[[_symbolSize(large)]]"></iron-icon>
-`;
+    `;
   }
 
-  static get is() { return 'weather-symbol'; }
+  render() {
+    return html`<iron-icon
+      class="${this._symbolSize(this.large)}"
+      .icon="${this._iconName(this.symbolId)}"
+    ></iron-icon> `;
+  }
+
+  static get is() {
+    return 'weather-symbol';
+  }
 
   static get properties() {
     return {
       symbolId: {
-        type: Number
+        type: Number,
+        reflect: true,
       },
       large: {
-        type: Boolean
-      }
+        type: Boolean,
+        reflect: true,
+      },
     };
   }
   _iconName(id) {
@@ -43,7 +49,7 @@ class WeatherSymbol extends PolymerElement {
   }
 
   _symbolSize(large) {
-    return large ? 'symbol--large' : '';
+    return large ? 'symbol symbol--large' : 'symbol';
   }
 }
 
