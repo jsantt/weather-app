@@ -29,7 +29,7 @@ class ForecastHeader extends LitElement {
       .header {
         display: grid;
         grid-template-columns: 2.75rem 1fr 1fr 2.75rem;
-        grid-template-rows: 2rem 3rem 3rem 3.5rem;
+        grid-template-rows: 1.2rem 4.3rem 3rem 3.5rem;
         grid-template-areas:
           'left empty empty aside'
           'left place place aside'
@@ -92,14 +92,9 @@ class ForecastHeader extends LitElement {
         margin-top: -0.5rem;
       }
 
-      .location {
-        color: var(--color-black);
-        font-size: 1.563rem;
-      }
-
       .temperature {
         grid-area: temp;
-        font-size: var(--font-size-xxxlarge);
+        font-size: var(--font-size-xxxxlarge);
         line-height: 1.15;
         margin: 0 0 0 auto;
       }
