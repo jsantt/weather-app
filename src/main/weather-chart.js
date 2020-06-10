@@ -3,6 +3,9 @@ import { css, html, LitElement } from 'lit-element';
 class WeatherChart extends LitElement {
   static get styles() {
     return css`
+      :host {
+        display: block;
+      }
       .chart {
         position: relative;
       }
@@ -50,10 +53,12 @@ class WeatherChart extends LitElement {
 
       minTemperature: {
         type: Number,
+        reflect: true,
       },
 
       _chartHeight: {
         type: Number,
+        reflect: true,
       },
     };
   }
@@ -64,6 +69,12 @@ class WeatherChart extends LitElement {
   }
 
   firstUpdated() {
+    setTimeout(() => {
+      this._createChart(this.dayData);
+    }, 1000);
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
     this._createChart(this.dayData);
   }
 
@@ -112,10 +123,7 @@ class WeatherChart extends LitElement {
         bar.setAttribute('fill-opacity', opacity);
         bar.setAttribute('width', '9');
 
-        // draw rectangle of height 20 x rain amount, 120 being maximum height
-        const rectHeight = Number.isNaN(data[i].rain)
-          ? 0
-          : Math.min(data[i].rain * 10, 107);
+        const rectHeight = this._rectHeight(data[i].rain);
 
         bar.setAttribute('height', rectHeight);
 
@@ -128,32 +136,12 @@ class WeatherChart extends LitElement {
     }
   }
 
-  _timeNowTriangle() {
-    let line = document.createElementNS(
-      'http://www.w3.org/2000/svg',
-      'polyline'
-    );
-    line.setAttribute('stroke-opacity', '1');
-    line.setAttribute('fill', '#fff');
-    line.setAttribute('points', this._trianglePoints(this._hoursNow()));
-    return line;
-  }
-
-  _trianglePoints(time) {
-    const bottomX = (time / 24) * 230;
-    const bottomY = 10;
-
-    const topLeftX = bottomX - 5;
-    const topLeftY = 0;
-
-    const topRightX = bottomX + 5;
-    const topRightY = 0;
-
-    return `${topLeftX},${topLeftY} ${bottomX},${bottomY} ${topRightX},${topRightY}`;
-  }
-
-  _hoursNow() {
-    return new Date().getHours();
+  /**
+   *  draw rectangle of height 10 x rain amount, 107 being maximum height
+   * @param {v} rainAmount
+   */
+  _rectHeight(rainAmount) {
+    return Number.isNaN(rainAmount) ? 0 : Math.min(rainAmount * 10, 107);
   }
 
   get _chart() {

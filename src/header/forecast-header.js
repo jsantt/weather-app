@@ -143,7 +143,7 @@ class ForecastHeader extends LitElement {
             <span class="degree">°C</span>
           </div>
 
-          <weather-symbol symbol-id="${this.symbol}" large="true">
+          <weather-symbol symbolId="${this.symbol}" large="true">
           </weather-symbol>
 
           <weather-symbol-name symbol-id="${this.symbol}">

@@ -25,7 +25,7 @@ class WeatherDay extends LitElement {
 
         --color-dayHeader-font: var(--color-white);
 
-        --color-toggle-background: rgba(240, 240, 240, 0.8);
+        --color-toggle-background: rgba(240, 240, 243, 0.8);
       }
 
       .visually-hidden {
