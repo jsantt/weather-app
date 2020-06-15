@@ -88,11 +88,11 @@ class RainBars extends LitElement {
 
     // remove previous childs
 
-    if (this._chart.children.length > 0) {
+    if (this._chart && this._chart.children.length > 0) {
       this._chart.removeChild(this._chart.children[0]);
-    }
 
-    this._chart.appendChild(svg);
+      this._chart.appendChild(svg);
+    }
   }
 
   _svg() {

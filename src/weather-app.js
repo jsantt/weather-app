@@ -18,8 +18,6 @@ import './footer/sunrise-sunset.js';
 import './footer/public-holidays.js';
 import './footer/weather-footer.js';
 
-import '../node_modules/interactjs/dist/interact.min.js';
-
 class WeatherApp extends PolymerElement {
   static get template() {
     return html`
@@ -219,46 +217,6 @@ class WeatherApp extends PolymerElement {
         .querySelector('forecast-header')
         .scrollIntoView({ behavior: 'smooth' });
     }, 1500);
-
-    // TODO: Switch using Dragula or other lightweight option
-    setTimeout(() => {
-      interact('geolocate-button').draggable({
-        listeners: {
-          // call this function on every dragmove event
-          move: dragMoveListener,
-
-          // call this function on every dragend event
-          end(event) {
-            var textEl = event.target.querySelector('p');
-
-            textEl &&
-              (textEl.textContent =
-                'moved a distance of ' +
-                Math.sqrt(
-                  (Math.pow(event.pageX - event.x0, 2) +
-                    Math.pow(event.pageY - event.y0, 2)) |
-                    0
-                ).toFixed(2) +
-                'px');
-          },
-        },
-      });
-    }, 1000);
-
-    function dragMoveListener(event) {
-      var target = event.target;
-      // keep the dragged position in the data-x/data-y attributes
-      var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
-      var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
-
-      // translate the element
-      target.style.webkitTransform = target.style.transform =
-        'translate(' + x + 'px, ' + y + 'px)';
-
-      // update the posiion attributes
-      target.setAttribute('data-x', x);
-      target.setAttribute('data-y', y);
-    }
   }
 
   connectedCallback() {
