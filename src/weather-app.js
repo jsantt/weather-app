@@ -121,7 +121,7 @@ class WeatherApp extends PolymerElement {
 
           <style></style>
           <div class="locate-button-container">
-            <geolocate-button hide="[[_loading]]"> </geolocate-button>
+            <geolocate-button hide="[[_loading]]"></geolocate-button>
           </div>
         </div>
       </template>

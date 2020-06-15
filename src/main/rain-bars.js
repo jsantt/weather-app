@@ -90,7 +90,8 @@ class RainBars extends LitElement {
 
     if (this._chart && this._chart.children.length > 0) {
       this._chart.removeChild(this._chart.children[0]);
-
+    }
+    if (this._chart) {
       this._chart.appendChild(svg);
     }
   }
