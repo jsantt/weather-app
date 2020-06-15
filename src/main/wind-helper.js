@@ -13,7 +13,7 @@ const _WIND_TABLE = [
 
 function windWarning(forecastData) {
   if (forecastData === undefined) {
-    return 'tyhjä';
+    return '';
   }
 
   const maxWind = _max(forecastData, 'wind');

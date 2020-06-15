@@ -4,13 +4,13 @@ class WindIcon extends LitElement {
   static get styles() {
     return css`
       .windIcon {
-        height: 28px;
-        width: 28px;
+        height: 30px;
+        width: 30px;
       }
 
       .windIcon--large {
-        height: 36px;
-        width: 36px;
+        height: 42px;
+        width: 42px;
         transition: all 0.2s ease-in-out;
       }
 

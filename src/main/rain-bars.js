@@ -1,6 +1,10 @@
 import { css, html, LitElement } from 'lit-element';
 
-class WeatherChart extends LitElement {
+class RainBars extends LitElement {
+  static get is() {
+    return 'rain-bars';
+  }
+
   static get styles() {
     return css`
       :host {
@@ -39,10 +43,6 @@ class WeatherChart extends LitElement {
       <!-- placeholder for chart -->
       <div class="chart" id="chart"></div>
     `;
-  }
-
-  static get is() {
-    return 'weather-chart';
   }
 
   static get properties() {
@@ -149,4 +149,4 @@ class WeatherChart extends LitElement {
   }
 }
 
-window.customElements.define(WeatherChart.is, WeatherChart);
+window.customElements.define(RainBars.is, RainBars);

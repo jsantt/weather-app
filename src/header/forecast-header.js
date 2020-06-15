@@ -28,7 +28,7 @@ class ForecastHeader extends LitElement {
 
       .header {
         display: grid;
-        grid-template-columns: 2.75rem 1fr 1fr 2.75rem;
+        grid-template-columns: 3.5rem 1fr 1fr 3.5rem;
         grid-template-rows: 1.2rem 4.3rem 3rem 3.5rem;
         grid-template-areas:
           'left empty empty aside'
@@ -70,12 +70,12 @@ class ForecastHeader extends LitElement {
 
       .aside-item {
         font-size: var(--font-size-xsmall);
-
+        padding-top: 0.5rem;
         text-align: center;
       }
-      .aside-item + .aside-item {
+      /*.aside-item + .aside-item {
         padding-top: 0.25rem;
-      }
+      }*/
 
       .aside-item.selected {
         background-color: #f5f5f529;
@@ -153,8 +153,8 @@ class ForecastHeader extends LitElement {
               <svg
                 class="aside-icon"
                 viewBox="-4 -4 40 40"
-                width="32"
-                height="32"
+                width="36"
+                height="36"
               >
                 <ellipse
                   class="body"

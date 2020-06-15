@@ -7,7 +7,7 @@ import './rain-amount.js';
 import './snow-amount.js';
 import './temperature-line.js';
 
-import './weather-chart.js';
+import './rain-bars.js';
 import './wind-speed.js';
 import '../weather-symbol.js';
 
@@ -25,7 +25,9 @@ class WeatherDay extends LitElement {
 
         --color-dayHeader-font: var(--color-white);
 
-        --color-toggle-background: rgba(240, 240, 243, 0.8);
+        --color-toggle-background: var(--color-yellow-300);
+
+        color: var(--color-blue-800);
       }
 
       .visually-hidden {
@@ -84,17 +86,17 @@ class WeatherDay extends LitElement {
 
       .hour,
       .hour--empty {
-        /*background-color: #f3fcf5;*/
         font-size: var(--font-size-small);
 
         grid-row: 2;
-        grid-column: span 1 /*3*/;
+        grid-column: span 1;
 
         text-align: center;
 
         color: var(--color-gray-900);
         margin: var(--space-l) 0 var(--space-s) 0;
       }
+
       .hour--empty {
         grid-column: span 1;
       }
@@ -125,7 +127,7 @@ class WeatherDay extends LitElement {
 
       .temperature,
       .temperature--empty {
-        color: var(--color-black);
+        font-weight: 500;
         grid-column: span 3;
         grid-row: 5;
 
@@ -140,40 +142,38 @@ class WeatherDay extends LitElement {
         height: 0;
       }
 
-      .feelsLike_footer,
-      .wind_footer,
       .feelsLike_header,
       .wind_header {
-        font-size: var(--font-size-xsmall);
         background-color: var(--color-toggle-background);
+
         color: var(--color-black);
+        font-size: var(--font-size-xsmall);
+
         padding-left: 0.5rem;
         grid-column: span 25;
-        z-index: 2;
+
+        margin-top: -0.25rem;
+        text-align: right;
+
+        z-index: 100;
+      }
+
+      .feelsLike,
+      .feelsLike--empty {
+        grid-row: 7;
       }
 
       .feelsLike_header {
-        grid-row: 7;
-      }
-      .feelsLike,
-      .feelsLike--empty {
         grid-row: 8;
       }
-      .feelsLike_footer {
+
+      .wind,
+      .wind--empty {
         grid-row: 9;
       }
 
       .wind_header {
         grid-row: 10;
-      }
-
-      .wind,
-      .wind--empty {
-        grid-row: 11;
-      }
-
-      .wind_footer {
-        grid-row: 12;
       }
 
       .temperature--empty,
@@ -182,21 +182,42 @@ class WeatherDay extends LitElement {
         grid-column: span 1;
       }
 
+      .wind--empty,
+      .feelsLike--empty {
+        background-color: var(--color-toggle-background);
+        margin-top: var(--space-m);
+
+        z-index: 2;
+      }
+
       .wind,
       .feelsLike {
+        background-color: var(--color-toggle-background);
         color: var(--color-black);
         grid-column: span 3;
         font-size: var(--font-size-medium);
-        text-align: center;
-        padding-bottom: 0.5rem;
 
-        background-color: var(--color-toggle-background);
+        text-align: center;
+        margin-top: var(--space-m);
+
+        padding-top: var(--space-m);
+
+        max-height: 5rem;
+        transition: max-height 0.15s ease-out;
+        overflow: hidden;
+
+        will-change: max-height;
         z-index: 2;
       }
-      .feelsLike--empty,
-      .wind--empty {
-        background-color: var(--color-toggle-background);
-        z-index: 2;
+
+      .wind--hidden,
+      .feelsLike--hidden {
+        max-height: 0;
+        padding: 0;
+      }
+
+      .wind_header {
+        margin-top: -0.6rem;
       }
 
       .wind-icon {
@@ -337,38 +358,41 @@ class WeatherDay extends LitElement {
                       : ''}
                   </div>
 
-                  ${this.showWind === true
-                    ? html`<div class="wind">
-                        <wind-icon
-                          class="${this._getClasses(
-                            entry.past,
-                            'symbol',
-                            'past-hour'
-                          )}"
-                          .degrees="${entry.windDirection}"
-                          .windSpeed="${entry.wind}"
-                          .windGustSpeed="${entry.windGust}"
-                        >
-                        </wind-icon>
-                      </div> `
-                    : ''}
-                  ${this.showFeelsLike === true
-                    ? html`<div class="feelsLike">
-                        <div
-                          class="${this._getClasses(
-                            entry.past,
-                            'symbol',
-                            'past-hour'
-                          )}"
-                        >
-                          ${this._notNaN(entry.feelsLike) == true
-                            ? html`${entry.feelsLike}<span class="degree"
-                                  >°</span
-                                >`
-                            : ''}
-                        </div>
-                      </div> `
-                    : ''}
+                  <div
+                    class="wind ${this.showWind === false
+                      ? 'wind--hidden'
+                      : ''}"
+                  >
+                    <wind-icon
+                      class="${this._getClasses(
+                        entry.past,
+                        'symbol',
+                        'past-hour'
+                      )}"
+                      .degrees="${entry.windDirection}"
+                      .windSpeed="${entry.wind}"
+                      .windGustSpeed="${entry.windGust}"
+                    >
+                    </wind-icon>
+                  </div>
+
+                  <div
+                    class="feelsLike ${this.showFeelsLike === false
+                      ? 'feelsLike--hidden'
+                      : ''}"
+                  >
+                    <div
+                      class="${this._getClasses(
+                        entry.past,
+                        'symbol',
+                        'past-hour'
+                      )}"
+                    >
+                      ${this._notNaN(entry.feelsLike) == true
+                        ? html`${entry.feelsLike}<span class="degree">°</span>`
+                        : ''}
+                    </div>
+                  </div>
                 `
               : ''}
           `;
@@ -377,6 +401,7 @@ class WeatherDay extends LitElement {
         <div class="hour hour--empty">
         </div>
       
+        
         <div class="temperature_line">
             
           <temperature-line 
@@ -388,10 +413,10 @@ class WeatherDay extends LitElement {
 
         <section class="rainBars">
 
-          <weather-chart 
+          <rain-bars
             .minTemperature="${this.minTemperature}" 
             .dayData="${this.dayData}">
-          </weather-chart>
+          </rain-bars>
 
         </section>
       </div>
