@@ -261,11 +261,6 @@ class WeatherStation extends LitElement {
     };
   }
 
-  ready() {
-    super.ready();
-    console.log(this._distance(60, 20, 60, 21));
-  }
-
   _formatTime(time) {
     const parsedTime = new Date(time);
 

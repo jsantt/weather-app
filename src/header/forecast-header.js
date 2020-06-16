@@ -6,6 +6,10 @@ import './weather-symbol-name.js';
 import '../wind-icon.js';
 
 class ForecastHeader extends LitElement {
+  static get is() {
+    return 'forecast-header';
+  }
+
   static get styles() {
     return css`
       :host {
@@ -196,10 +200,6 @@ class ForecastHeader extends LitElement {
         <time-now update-time="${this._locationChanged}"></time-now>
       </header>
     `;
-  }
-
-  static get is() {
-    return 'forecast-header';
   }
 
   static get properties() {

@@ -1,47 +1,53 @@
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import { css, html, LitElement } from 'lit-element';
 import './share-app.js';
 
-class WeatherFooter extends PolymerElement {
-  static get template() {
+class WeatherFooter extends LitElement {
+  static get is() {
+    return 'weather-footer';
+  }
+
+  static get styles() {
+    return css`
+      :host {
+        display: block;
+        color: var(--color-black);
+      }
+
+      .footer_header {
+        padding: var(--space-m) 0 var(--space-l) 0;
+        text-align: center;
+        margin: var(--space-m) 0;
+        text-align: center;
+      }
+
+      footer h3 {
+        color: var(--color-gray-800);
+        font-size: var(--font-size-small);
+        font-weight: 600;
+
+        text-transform: uppercase;
+        font-weight: 900;
+
+        margin: var(--space-l) 0;
+        padding: 0 var(--space-l);
+      }
+
+      footer p {
+        margin: 0 var(--space-l);
+        padding: 0;
+      }
+      a:link,
+      a:visited {
+        color: var(--color-black);
+      }
+      .logo {
+        margin-top: var(--space-m);
+      }
+    `;
+  }
+
+  render() {
     return html`
-      <style>
-        :host {
-          display: block;
-          color: var(--color-black);
-        }
-
-        .footer_header {
-          padding: var(--space-m) 0 var(--space-l) 0;
-          text-align: center;
-          margin: var(--space-m) 0;
-          text-align: center;
-        }
-
-        footer h3 {          
-          color: var(--color-gray-800);
-          font-size: var(--font-size-small);
-          font-weight: 600;
-
-          text-transform: uppercase;
-          font-weight: 900;
-
-          margin: var(--space-l) 0;
-          padding: 0 var(--space-l);
-          
-        }
-
-        footer p {
-          margin: 0 var(--space-l);
-          padding: 0;
-        }
-        a:link,
-        a:visited {
-          color: var(--color-black);
-        }
-        .logo {
-          margin-top: var(--space-m);
-        }
-      </style>
         <footer>
 
           <p class="footer_header">
@@ -110,12 +116,16 @@ class WeatherFooter extends PolymerElement {
             <p></p>
           </section>
 
-          <template is="dom-if" if="[[_offline]]">
-            <section>
-              Ei verkkoyhteyttä
-              <!-- - Ennuste on 3h vanha-->
-            </section>
-          </template>
+          ${
+            this._offline === false
+              ? ''
+              : html`
+                  <section class="footer_section">
+                    <p class="info">Ei verkkoyhteyttä</p>
+                    <!-- - Ennuste on 3h vanha-->
+                  </section>
+                `
+          }
 
           <br /><br /><br />
           <share-app></share-app>
@@ -125,10 +135,6 @@ class WeatherFooter extends PolymerElement {
     `;
   }
 
-  static get is() {
-    return 'weather-footer';
-  }
-
   static get properties() {
     return {
       observationData: {
@@ -136,13 +142,14 @@ class WeatherFooter extends PolymerElement {
       },
       _offline: {
         type: Boolean,
-        value: false,
       },
     };
   }
 
-  ready() {
-    super.ready();
+  constructor() {
+    super();
+
+    this._offline = !navigator.onLine;
 
     window.addEventListener('offline', () => {
       this._offline = true;
