@@ -1,6 +1,10 @@
 import { css, html, LitElement } from 'lit-element';
 
 class WindSpeed extends LitElement {
+  static get is() {
+    return 'wind-speed';
+  }
+
   static get styles() {
     return css`
       :host {
@@ -52,10 +56,6 @@ class WindSpeed extends LitElement {
       })}
       ${this.windDescription}
     `;
-  }
-
-  static get is() {
-    return 'wind-speed';
   }
 
   static get properties() {

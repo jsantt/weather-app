@@ -1,4 +1,4 @@
-import { PolymerElement, html } from "@polymer/polymer/polymer-element.js";
+import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 /**
  * @customElement
  * @polymer
@@ -52,7 +52,7 @@ class TimeNow extends PolymerElement {
   }
 
   static get is() {
-    return "time-now";
+    return 'time-now';
   }
 
   static get properties() {
@@ -65,7 +65,7 @@ class TimeNow extends PolymerElement {
       },
       updateTime: {
         type: Boolean,
-        observer: "_updateTime",
+        observer: '_updateTime',
       },
     };
   }
@@ -84,16 +84,16 @@ class TimeNow extends PolymerElement {
     const correctLeftOverflow = Math.max(10, margin);
     const correctRightOverflow = Math.min(correctLeftOverflow, 80);
 
-    this.timeMargin = "margin-left:" + correctRightOverflow + "%";
+    this.timeMargin = 'margin-left:' + correctRightOverflow + '%';
   }
 
   _timeNow() {
     const now = new Date();
     const minutes = now.getMinutes();
 
-    const fullMinutes = minutes < 10 ? "0" + minutes : minutes;
+    const fullMinutes = minutes < 10 ? '0' + minutes : minutes;
 
-    const time = now.getHours() + "." + fullMinutes;
+    const time = now.getHours() + '.' + fullMinutes;
     this.timeNow = time;
   }
 

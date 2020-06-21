@@ -1,26 +1,25 @@
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import { css, html, LitElement } from 'lit-element';
 
-class WeatherSymbolName extends PolymerElement {
-  static get template() {
-    return html`
-      <style>
-        :host {
-          display: block;
-          padding-top: 0.5rem;
-        }
-
-        h2 {
-          font-size: var(--font-size-medium);
-          font-weight: 400;
-        }
-      </style>
-
-      <h2>[[_symbolName(symbolId)]]</h2>
-    `;
-  }
-
+class WeatherSymbolName extends LitElement {
   static get is() {
     return 'weather-symbol-name';
+  }
+
+  static get styles() {
+    return css`
+      :host {
+        display: block;
+        padding-top: 0.5rem;
+      }
+
+      h2 {
+        font-size: var(--font-size-medium);
+        font-weight: 400;
+      }
+    `;
+  }
+  render() {
+    return html`<h2>${this._symbolName(this.symbolId)}</h2> `;
   }
 
   static get properties() {
@@ -30,6 +29,7 @@ class WeatherSymbolName extends PolymerElement {
       },
     };
   }
+
   _symbolName(symbolId) {
     const names = {
       1: 'selkeää',

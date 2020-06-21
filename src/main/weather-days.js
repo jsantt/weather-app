@@ -3,6 +3,10 @@ import { css, html, LitElement } from 'lit-element';
 import './weather-day.js';
 
 class WeatherDays extends LitElement {
+  static get is() {
+    return 'weather-days';
+  }
+
   static get styles() {
     return css`
       :host {
@@ -50,10 +54,6 @@ class WeatherDays extends LitElement {
         .showWind="${this.showWind}"
         .dayData="${this._day3Data}"></weather-day>
 `;
-  }
-
-  static get is() {
-    return 'weather-days';
   }
 
   static get properties() {

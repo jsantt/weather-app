@@ -43,6 +43,12 @@ class WeatherFooter extends LitElement {
       .logo {
         margin-top: var(--space-m);
       }
+      .links {
+        display: flex;
+        justify-content: space-around;
+
+        padding: var(--space-l) 0;
+      }
     `;
   }
 
@@ -66,11 +72,34 @@ class WeatherFooter extends LitElement {
             </p>
           </section>
           <section class="footer_section">
+            <h3>Katso myös</h3>
+            <div class="info">
+              <div class="links">
+
+                <a href="https://www.sataako.fi">
+                  sadetutka
+                </a>
+
+                <a href="https://www.ilmatieteenlaitos.fi/uvi-ennuste">
+                  UV-indeksi
+                </a>
+              
+                <a href="https://www.ilmatieteenlaitos.fi/paikallissaa">
+                10 vrk sää</a>
+
+                <a href="https://www.nordicweather.net/ukkostutka.php?fi#8/60.297/24.120">
+                ukkostutka</a>
+              </div>
+            </div>
+          </section>
+          <section class="footer_section">
             <h3>Aurinko</h3>
             <p class="info">
               <slot name="sunrise-sunset"></slot>
             </p>
           </section>
+          
+          
 
           <section class="footer_section">
             <h3>2020 Kalenteri</h3>

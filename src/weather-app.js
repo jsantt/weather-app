@@ -12,7 +12,6 @@ import './main/weather-days.js';
 import './forecast-data.js';
 
 import './footer/add-to-homescreen.js';
-import './footer/bottom-menu.js';
 import './footer/geolocate-button.js';
 import './footer/sunrise-sunset.js';
 import './footer/public-holidays.js';

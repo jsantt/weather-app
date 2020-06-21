@@ -33,13 +33,15 @@ class ErrorNotification extends PolymerElement {
 `;
   }
 
-  static get is() { return 'error-notification'; }
+  static get is() {
+    return 'error-notification';
+  }
 
   static get properties() {
     return {
       errorText: {
-        type: String
-      }
+        type: String,
+      },
     };
   }
 

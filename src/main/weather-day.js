@@ -15,6 +15,10 @@ import './wind-helper.js';
 import '../wind-icon.js';
 
 class WeatherDay extends LitElement {
+  static get is() {
+    return 'weather-day';
+  }
+
   static get styles() {
     return css`
       :host {
@@ -422,10 +426,6 @@ class WeatherDay extends LitElement {
       </div>
     </div>
     `;
-  }
-
-  static get is() {
-    return 'weather-day';
   }
 
   static get properties() {

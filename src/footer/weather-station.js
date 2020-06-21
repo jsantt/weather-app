@@ -143,8 +143,8 @@ class WeatherStation extends LitElement {
                   : ``}
                 <weather-symbol-wawa
                   class="value description"
-                  wawa-id="${this.observationData.weatherCode}"
-                  cloudiness="${this.observationData.cloudiness}"
+                  .wawaId="${this.observationData.weatherCode}"
+                  .cloudiness="${this.observationData.cloudiness}"
                 >
                 </weather-symbol-wawa>
               </div>

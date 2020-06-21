@@ -1,6 +1,10 @@
 import { css, html, LitElement } from 'lit-element';
 
 class RainAmount extends LitElement {
+  static get is() {
+    return 'rain-amount';
+  }
+  
   static get styles() {
     return css`
       svg {
@@ -27,10 +31,6 @@ class RainAmount extends LitElement {
             ${this.rainAmount}mm `
         : ''}
     `;
-  }
-
-  static get is() {
-    return 'rain-amount';
   }
 
   static get properties() {

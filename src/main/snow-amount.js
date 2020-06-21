@@ -1,6 +1,10 @@
 import { css, html, LitElement } from 'lit-element';
 
 class SnowAmount extends LitElement {
+  static get is() {
+    return 'snow-amount';
+  }
+
   static get styles() {
     return css`
       :host {
@@ -30,10 +34,6 @@ class SnowAmount extends LitElement {
           `
         : ''}
     `;
-  }
-
-  static get is() {
-    return 'snow-amount';
   }
 
   static get properties() {
