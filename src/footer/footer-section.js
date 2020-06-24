@@ -10,22 +10,22 @@ class FooterSection extends LitElement {
       :host {
         background-color: var(
           --background-color-header,
-          var(--background-color-main)
+          var(--background-color)
         );
 
-        box-sizing: border-box;
+        color: var(--color-blue-800);
         display: block;
-        margin: var(--space-m) 0;
+        margin: var(--space-m);
         padding: var(--space-m) 0;
       }
 
       h3 {
         background-color: var(
           --background-color-header,
-          var(--background-color-main)
+          var(--background-color)
         );
 
-        color: var(--color-gray-800);
+        color: var(--color, var(--color-gray-800));
         font-size: var(--font-size-medium);
         font-weight: 600;
 

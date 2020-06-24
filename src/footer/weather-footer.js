@@ -22,11 +22,13 @@ class WeatherFooter extends LitElement {
       .section--informationOnService,
       .section--feedback,
       .section--cookies {
-        --background-color-main: var(--color-white);
+        --background-color: var(--color-white);
+        --color: var(--color-blue-700);
       }
 
       .section--observations {
-        --background-color-main: #b7e1cd;
+        --background-color: #b7e1cd;
+        --color: var(--color-green-800);
       }
 
       .footer_header {
@@ -67,18 +69,15 @@ class WeatherFooter extends LitElement {
           </footer-section>
 
           <footer-section 
+            class="section--links">
+            <external-links></external-links>
+          </footer-section>
+
+          <footer-section 
             class="section--sun"
             header="Aurinko">
             <slot name="sunrise-sunset"></slot>
           </footer-section>
-
-          <footer-section 
-            class="section--links">
-            
-            <external-links></external-links>
-          
-          </footer-section>
-
           
           <footer-section 
             class="section--calendar"
