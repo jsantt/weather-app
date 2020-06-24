@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit-element';
 import '../error-notification';
-import '../header/weather-symbol-wawa.js';
+import '../header/weather-name-wawa.js';
 
 class WeatherStation extends LitElement {
   static get is() {
@@ -10,10 +10,10 @@ class WeatherStation extends LitElement {
   static get styles() {
     return css`
       :host {
-        background-color: #b7e1cd;
         color: var(--color-green-800);
 
         display: block;
+        padding-top: var(--space-l);
       }
 
       h1,
@@ -52,11 +52,22 @@ class WeatherStation extends LitElement {
         align-items: center;
         justify-items: center;
 
-        padding-top: 1.4rem;
+        padding-top: var(--space-l);
         text-align: center;
       }
-      .item {
-        padding: 1rem 0;
+
+      .label {
+        color: var(--color-white);
+
+        grid-column: 1 / span 2;
+        margin-left: auto;
+        padding-right: var(--space-l);
+        margin-bottom: var(--space-xl);
+      }
+
+      .place {
+        grid-column: 1 / span 2;
+        font-size: var(--font-size-large);
       }
 
       .temperature {
@@ -68,21 +79,24 @@ class WeatherStation extends LitElement {
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 1rem;
+
+        margin-bottom: var(--space-xl);
       }
 
-      .place {
-        grid-column: 1 / span 2;
-        font-size: var(--font-size-medium);
+      weather-name-wawa {
+        font-size: var(--font-size-large);
+        padding: 0 var(--space-m);
+      }
+
+      .item {
+        padding: 1rem 0;
       }
 
       .degree {
         font-size: var(--font-size-large);
         vertical-align: super;
       }
-      .textual {
-        font-size: var(--font-size-medium);
-      }
+
       .rainDetails {
         grid-column: 1 / span 2;
       }
@@ -94,14 +108,9 @@ class WeatherStation extends LitElement {
         margin-top: -0.26rem;
       }
 
-      .description {
-        font-size: var(--font-size-medium);
-        padding: 0 1rem;
-      }
-
       .footer {
         background-color: #9ad5b9;
-        margin-top: 1rem;
+        margin: 1rem -1rem -1rem -1rem;
 
         display: flex;
         justify-content: center;
@@ -116,12 +125,8 @@ class WeatherStation extends LitElement {
   }
 
   render() {
-    if (this.observationData === undefined) {
-      return html``;
-    }
-
     return html`
-      ${this.observationError
+      ${this.observationData === undefined || this.observationError
         ? html`
             <error-notification
               error-text="Sääasemalle ei valitettavasti saatu yhteyttä"
@@ -133,7 +138,7 @@ class WeatherStation extends LitElement {
               <div class="place">
                 ${this.observationData.weatherStation}
               </div>
-              <div class="item temperature">
+              <div class="temperature">
                 ${this.observationData.temperature
                   ? html`
                       <div>
@@ -141,12 +146,12 @@ class WeatherStation extends LitElement {
                       </div>
                     `
                   : ``}
-                <weather-symbol-wawa
-                  class="value description"
+                <weather-name-wawa
+                  class="value"
                   .wawaId="${this.observationData.weatherCode}"
                   .cloudiness="${this.observationData.cloudiness}"
                 >
-                </weather-symbol-wawa>
+                </weather-name-wawa>
               </div>
 
               ${this.observationData.rainExplanation

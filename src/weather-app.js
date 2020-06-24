@@ -261,8 +261,6 @@ class WeatherApp extends PolymerElement {
       return item.time === time;
     })[0];
 
-    this._locationChanged = !this._locationChanged;
-
     return hourForecast;
   }
 

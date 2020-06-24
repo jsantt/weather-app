@@ -1,77 +1,81 @@
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-/**
- * @customElement
- * @polymer
- */
-class TimeNow extends PolymerElement {
-  static get template() {
-    return html`
-      <style>
-        :host {
-          display: block;
-          margin-left: -1rem;
-          width: 100%;
-          margin-top: var(--space-m);
-          margin-bottom: -0.25rem;
-        }
+import { css, html, LitElement } from 'lit-element';
 
-        .time {
-          color: var(--color-white);
-          fill: var(--color-white);
-          white-space: nowrap;
-          font-size: var(--font-size-medium);
-
-          background-color: var(--color-tertiary);
-          display: inline-block;
-          padding: 0 var(--space-l) 0 var(--space-m);
-          border-top-left-radius: 4rem;
-          border-top-right-radius: 4rem;
-          vertical-align: bottom;
-        }
-
-        .visually-hidden {
-          position: absolute !important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 0 !important;
-          border: 0 !important;
-          height: 1px !important;
-          width: 1px !important;
-          overflow: hidden;
-        }
-      </style>
-
-      <div class="time" style$="[[timeMargin]]">
-        <svg style="width:12px;height:12px" viewBox="0 0 24 24">
-          <path
-            d="M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z"
-          ></path></svg
-        ><span class="visually-hidden">Kello</span>
-        [[timeNow]]
-      </div>
-    `;
-  }
-
+class TimeNow extends LitElement {
   static get is() {
     return 'time-now';
   }
 
+  static get styles() {
+    return css`
+      :host {
+        display: block;
+        margin-left: -1rem;
+        width: 100%;
+        margin-top: var(--space-m);
+        margin-bottom: -0.25rem;
+      }
+
+      .time {
+        color: var(--color-white);
+        fill: var(--color-white);
+        white-space: nowrap;
+        font-size: var(--font-size-medium);
+
+        background-color: var(--color-tertiary);
+        display: inline-block;
+        padding: 0 var(--space-l) 0 var(--space-m);
+        border-top-left-radius: 1.25rem;
+        border-top-right-radius: 1.25rem;
+        vertical-align: bottom;
+      }
+
+      .visually-hidden {
+        position: absolute !important;
+        clip: rect(1px, 1px, 1px, 1px);
+        padding: 0 !important;
+        border: 0 !important;
+        height: 1px !important;
+        width: 1px !important;
+        overflow: hidden;
+      }
+    `;
+  }
+
+  render() {
+    return html`
+      <div class="time" style="${this._timeMargin}">
+        <svg style="width:12px;height:12px" viewBox="0 0 24 24">
+          <path
+            d="M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z"
+          ></path>
+        </svg>
+        <span class="visually-hidden">Kello</span>
+        ${this.timeNow}
+      </div>
+    `;
+  }
+
   static get properties() {
     return {
-      timeMargin: {
+      updateTime: {
+        type: Boolean,
+        reflect: true,
+      },
+      _timeMargin: {
         type: String,
       },
       timeNow: {
         type: String,
       },
-      updateTime: {
-        type: Boolean,
-        observer: '_updateTime',
-      },
     };
   }
 
-  ready() {
-    super.ready();
+  firstUpdated() {
+    this._updateTime();
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    console.log('CHANGED LOADING');
     this._updateTime();
   }
 
@@ -84,7 +88,7 @@ class TimeNow extends PolymerElement {
     const correctLeftOverflow = Math.max(10, margin);
     const correctRightOverflow = Math.min(correctLeftOverflow, 80);
 
-    this.timeMargin = 'margin-left:' + correctRightOverflow + '%';
+    this._timeMargin = 'margin-left:' + correctRightOverflow + '%';
   }
 
   _timeNow() {

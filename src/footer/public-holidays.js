@@ -50,7 +50,13 @@ class PublicHolidays extends LitElement {
                         width="18"
                         height="11"
                       >
-                        <rect width="18" height="11" fill="#fff" />
+                        <rect
+                          width="18"
+                          height="11"
+                          fill="#fff"
+                          stroke-width="1"
+                          stroke="#ccc"
+                        />
                         <rect width="18" height="3" y="4" fill="#003580" />
                         <rect width="3" height="11" x="5" fill="#003580" />
                       </svg>

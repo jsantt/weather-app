@@ -1,10 +1,10 @@
-import { css, html, LitElement } from "lit-element";
+import { css, html, LitElement } from 'lit-element';
 
-import "suncalc";
+import 'suncalc';
 
 class SunriseSunset extends LitElement {
   static get is() {
-    return "sunrise-sunset";
+    return 'sunrise-sunset';
   }
 
   static get styles() {
@@ -139,7 +139,7 @@ class SunriseSunset extends LitElement {
       _sunrise: { type: String },
       _sunset: { type: String },
       _solarNoon: { type: String },
-      _darkestNight: { type: String }
+      _darkestNight: { type: String },
     };
   }
 
@@ -150,19 +150,19 @@ class SunriseSunset extends LitElement {
   }
 
   _updateSunsetSunrise() {
-    const coordinatesArray = this.coordinates.split(",");
+    const coordinatesArray = this.coordinates.split(',');
     const latitude = coordinatesArray[0];
     const longitude = coordinatesArray[1];
 
     const times = SunCalc.getTimes(new Date(), latitude, longitude);
     if (Number.isNaN(times.sunrise.getMinutes())) {
-      this._sunrise = "ei tänään";
+      this._sunrise = 'ei tänään';
     } else {
       this._sunrise = this._formatTime(times.sunrise);
     }
 
     if (Number.isNaN(times.sunset.getMinutes())) {
-      this._sunset = "ei huomenna";
+      this._sunset = 'ei huomenna';
     } else {
       this._sunset = this._formatTime(times.sunset);
     }
@@ -173,9 +173,9 @@ class SunriseSunset extends LitElement {
 
   _formatTime(time) {
     const minutes = time.getMinutes();
-    const fullMinutes = minutes < 10 ? "0" + minutes : minutes;
+    const fullMinutes = minutes < 10 ? '0' + minutes : minutes;
 
-    return time.getHours() + "." + fullMinutes;
+    return time.getHours() + '.' + fullMinutes;
   }
 }
 window.customElements.define(SunriseSunset.is, SunriseSunset);

@@ -3,13 +3,13 @@ import { html, LitElement } from 'lit-element';
 /**
  * See wawa names: https://helda.helsinki.fi/bitstream/handle/10138/37284/PRO_GRADU_BOOK_HERMAN.pdf?sequence=2
  */
-class WeatherSymbolWawa extends LitElement {
+class WeatherNameWawa extends LitElement {
   static get is() {
-    return 'weather-symbol-wawa';
+    return 'weather-name-wawa';
   }
 
   render() {
-    return html`<span>${this._symbolName(this.wawaId, this.cloudiness)}</span>`;
+    return html`${this._symbolName(this.wawaId, this.cloudiness)}`;
   }
 
   static get properties() {
@@ -123,4 +123,4 @@ class WeatherSymbolWawa extends LitElement {
   }
 }
 
-window.customElements.define(WeatherSymbolWawa.is, WeatherSymbolWawa);
+window.customElements.define(WeatherNameWawa.is, WeatherNameWawa);

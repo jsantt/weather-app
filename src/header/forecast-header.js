@@ -73,7 +73,7 @@ class ForecastHeader extends LitElement {
       }
 
       .aside-item {
-        font-size: var(--font-size-xsmall);
+        font-size: var(--font-size-small);
         padding-top: 0.5rem;
         text-align: center;
       }
@@ -89,16 +89,18 @@ class ForecastHeader extends LitElement {
         transform: scale(1.1);
       }
 
-      .item-text {
+      .item-text--feelsLike {
         margin-top: -0.3rem;
       }
+
       .item-text--wind {
-        margin-top: -0.5rem;
+        margin-top: -0.75rem;
+        padding-right: 0.2rem;
       }
 
       .temperature {
         grid-area: temp;
-        font-size: var(--font-size-xxxxlarge);
+        font-size: var(--font-size-xxxlarge);
         line-height: 1.15;
         margin: 0 0 0 auto;
       }
@@ -182,7 +184,7 @@ class ForecastHeader extends LitElement {
                   ${this.feelsLike}
                 </text>
               </svg>
-              <div class="item-text">tuntuu</div>
+              <div class="item-text item-text--feelsLike">tuntuu</div>
             </div>
 
             <div id="wind" class="wind aside-item" @click="${this._toggleWind}">
@@ -197,7 +199,7 @@ class ForecastHeader extends LitElement {
             </div>
           </aside>
         </div>
-        <time-now update-time="${this._locationChanged}"></time-now>
+        <time-now .updateTime="${this.loading}"></time-now>
       </header>
     `;
   }
@@ -214,8 +216,6 @@ class ForecastHeader extends LitElement {
       wind: { type: Number, reflect: true },
       windDirection: { type: Number, reflect: true },
       windGust: { type: Number, reflect: true },
-
-      _locationChanged: { type: Boolean, reflect: true },
     };
   }
 

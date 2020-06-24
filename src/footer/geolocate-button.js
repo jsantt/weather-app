@@ -38,7 +38,7 @@ class GeolocateButton extends LitElement {
         color: var(--color-red-800);
         font-size: var(--font-size-small);
         font-weight: 900;
-        margin-top: -1.9rem;
+        margin-top: -2rem;
         z-index: 1;
         margin-left: 0.1rem;
 
@@ -56,8 +56,8 @@ class GeolocateButton extends LitElement {
         ? ''
         : html` <svg
               @click="${this._geolocate}"
-              width="72"
-              height="72"
+              width="80"
+              height="80"
               viewbox="0 0 32 32"
               xmlns="http://www.w3.org/2000/svg"
             >

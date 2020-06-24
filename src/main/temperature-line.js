@@ -38,14 +38,6 @@ class TemperatureLine extends LitElement {
   }
   render() {
     return html`
-      <svg>
-        <defs>
-          <!--linearGradient id="grad1" x1="0%" y1="100%" x2="0" y2="0">
-            <stop offset="0%" stop-color="rgb(255,244,244)" />
-            <stop offset="100%" stop-color="rgb(255,238,238)" />
-          </linearGradient-->
-        </defs>
-      </svg>
       <!-- placeholder for chart -->
       <div class="chart"></div>
     `;
@@ -103,7 +95,6 @@ class TemperatureLine extends LitElement {
     const lastX = this._xCoordinate(this._getLastTemperatureIndex(dayData));
 
     let line = this._temperatureLine(coordinates, firstX, lastX);
-    //line.appendChild(this._gradient());
     svg.appendChild(line);
 
     this._$('.chart').appendChild(svg);
@@ -136,37 +127,6 @@ class TemperatureLine extends LitElement {
     line.setAttribute('points', `${firstX},50 ${coordinates} ${lastX} 50`);
 
     return line;
-  }
-
-  _gradient() {
-    let gradient = document.createElementNS(
-      'http://www.w3.org/2000/svg',
-      'linearGradient'
-    );
-
-    // Store an array of stop information for the <linearGradient>
-    var stops = [
-      {
-        color: '#2121E5',
-        offset: '0%',
-      },
-      {
-        color: '#206DFF',
-        offset: '100%',
-      },
-    ];
-
-    // Parses an array of stop information and appends <stop> elements to the <linearGradient>
-    for (var i = 0, length = stops.length; i < length; i++) {
-      // Create a <stop> element and set its offset based on the position of the for loop.
-      var stop = document.createElementNS(svgns, 'stop');
-      stop.setAttribute('offset', stops[i].offset);
-      stop.setAttribute('stop-color', stops[i].color);
-
-      // Add the stop to the <lineargradient> element.
-      gradient.appendChild(stop);
-    }
-    return gradient;
   }
 
   _getFirstTemperatureIndex(dayData) {
