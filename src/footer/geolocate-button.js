@@ -35,7 +35,7 @@ class GeolocateButton extends LitElement {
       }
 
       .locate-text {
-        color: var(--color-red-800);
+        color: var(--color-blue-700);
         font-size: var(--font-size-small);
         font-weight: 900;
         margin-top: -2rem;
