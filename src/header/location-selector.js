@@ -26,7 +26,7 @@ class LocationSelector extends PolymerElement {
           /* overwriting Vaadin's default styles */
           --lumo-contrast-10pct: transparent;
           --lumo-font-size-m: var(--font-size-large);
-          --lumo-font-weight: 900;
+          --lumo-font-weight: var(--font-weight-boldest);
           --lumo-font-family: 'Open Sans Condensed', sans-serif;
           --vaadin-text-field-default-width: 13.5rem;
         }

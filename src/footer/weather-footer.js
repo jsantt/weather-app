@@ -14,7 +14,7 @@ class WeatherFooter extends LitElement {
       :host {
         border-radius: var(--border-radius);
         display: block;
-        color: var(--color-black);
+        color: var(--color-blue-800);
       }
 
       .section--sun,
@@ -32,15 +32,20 @@ class WeatherFooter extends LitElement {
       }
 
       .footer_header {
+        font-weight: var(--font-weight-bold);
         padding: var(--space-m) 0 var(--space-l) 0;
         text-align: center;
         margin: var(--space-m) 0;
         text-align: center;
       }
 
-      a:link,
-      a:visited {
-        color: var(--color-black);
+      a:link {
+        color: var(--color-blue-500);
+      }
+
+      a:visited,
+      a:hover {
+        color: var(--color-blue-700);
       }
 
       .logo {
@@ -94,13 +99,17 @@ class WeatherFooter extends LitElement {
                   href="http://ilmatieteenlaitos.fi/tutkimustoiminta/-/asset_publisher/Dz9C/content/uusin-versio-harmonie-arome-saamallista-parantaa-pilvisyyden-ja-tuulen-ennusteita?redirect=http%3A%2F%2Filmatieteenlaitos.fi%2Ftutkimustoiminta%3Fp_p_id%3D101_INSTANCE_Dz9C%26p_p_lifecycle%3D0%26p_p_state%3Dnormal%26p_p_mode%3Dview%26p_p_col_id%3Dcolumn-2%26p_p_col_count%3D2"
                 >
                   Harmonie-malliin</a
-                >
+                >.
+              
+               
           </footer-section>
           
           <footer-section 
             class="section--feedback"
             header="Palaute">
-              palaute@saaennuste.fi
+              <p>Puuttuuko sääpalvelusta jokin ominaisuus tai onko sinulla idea miten parantaisit sovellusta? Voinko
+              auttaa jotenkin muuten?</p> 
+              <p>Ota yhteyttä palaute@saaennuste.fi</p>
           </footer-section>
 
           <footer-section 

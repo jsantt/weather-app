@@ -20,8 +20,12 @@ class WindIcon extends LitElement {
 
       .windSpeed,
       .windGustSpeed {
-        font-weight: 900;
-        font-size: 50px;
+        font-weight: var(--font-weight-boldest);
+        font-size: 48px;
+      }
+
+      .windSpeed {
+        fill: var(--color-gray-900);
       }
 
       .windIcon--large .windGustSpeed {
@@ -30,12 +34,12 @@ class WindIcon extends LitElement {
 
       .windIcon_arrow {
         fill: #ffcdd2;
-        stroke: var(--color-black);
+        stroke: var(--color-gray-900);
       }
 
       .windIcon_circle {
         fill: var(--color-white);
-        stroke: var(--color-black);
+        stroke: var(--color-gray-900);
       }
 
       g {
@@ -53,12 +57,12 @@ class WindIcon extends LitElement {
       <g transform="${this._rotate(this.degrees)}">
         <polyline
           class="windIcon_arrow"
-          stroke-width="3"
+          stroke-width="4"
           points="36,29 50,10 64,29"
         ></polyline>
         <circle
           class="windIcon_circle warning--color${this.color}"
-          stroke-width="3.5"
+          stroke-width="4"
           cx="50"
           cy="60"
           r="33"
@@ -71,7 +75,7 @@ class WindIcon extends LitElement {
         text-anchor="middle"
         x="96"
         y="38"
-        fill="#666"
+        stroke="0"
         class="windGustSpeed warning--color${this.color}"
       >
         ${this._round(this.windGustSpeed)}

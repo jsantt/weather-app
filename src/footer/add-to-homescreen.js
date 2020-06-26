@@ -29,7 +29,7 @@ class AddToHomescreen extends LitElement {
           justify-content: center;
 
           font: inherit;
-          font-weight: 900;
+          font-weight: var(--font-weight-boldest);
           text-align: center;
           text-transform: uppercase;
 

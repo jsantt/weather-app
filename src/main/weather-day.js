@@ -79,7 +79,7 @@ class WeatherDay extends LitElement {
         display: inline-block;
         font-size: var(--font-size-small);
         text-transform: uppercase;
-        font-weight: 400;
+        font-weight: var(--font-weight-normal);
         padding: 0;
         margin: 0;
       }
@@ -131,7 +131,7 @@ class WeatherDay extends LitElement {
 
       .temperature,
       .temperature--empty {
-        font-weight: 500;
+        font-weight: var(--font-weight-normal);
         grid-column: span 3;
         grid-row: 5;
 

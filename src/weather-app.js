@@ -68,7 +68,7 @@ class WeatherApp extends PolymerElement {
 
       <template is="dom-if" if="[[forecastError]]">
         <error-notification
-          error-text="Säätietojen haku epäonnistui"
+          errorText="Säätietojen haku epäonnistui"
           id="errorNotification"
         >
         </error-notification>

@@ -1,5 +1,6 @@
 import { css, html, LitElement } from 'lit-element';
 
+import './feels-like-icon.js';
 import './time-now.js';
 import '../weather-symbol.js';
 import './weather-symbol-name.js';
@@ -77,9 +78,6 @@ class ForecastHeader extends LitElement {
         padding-top: 0.5rem;
         text-align: center;
       }
-      /*.aside-item + .aside-item {
-        padding-top: 0.25rem;
-      }*/
 
       .aside-item.selected {
         background-color: #f5f5f529;
@@ -110,10 +108,6 @@ class ForecastHeader extends LitElement {
         vertical-align: top;
       }
 
-      .feelsLikeValue {
-        font-size: 20px;
-        font-weight: 900;
-      }
       #wind {
         padding-left: 0.25rem;
       }
@@ -156,34 +150,9 @@ class ForecastHeader extends LitElement {
               @click="${this._toggleFeelsLike}"
               class="feelsLike aside-item"
             >
-              <svg
-                class="aside-icon"
-                viewBox="-4 -4 40 40"
-                width="36"
-                height="36"
-              >
-                <ellipse
-                  class="body"
-                  ry="15.1"
-                  rx="14.9"
-                  cy="29"
-                  cx="15.9"
-                  stroke="#000"
-                  fill="#fff"
-                />
-                <ellipse
-                  class="head"
-                  stroke="#000"
-                  ry="7.3"
-                  rx="7.5"
-                  cy="8.2"
-                  cx="16"
-                  fill="#ffcdd2"
-                />
-                <text text-anchor="middle" x="15" y="34" class="feelsLikeValue">
-                  ${this.feelsLike}
-                </text>
-              </svg>
+              <feels-like-icon
+                .temperature="${this.feelsLike}"
+              ></feels-like-icon>
               <div class="item-text item-text--feelsLike">tuntuu</div>
             </div>
 

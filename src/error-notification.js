@@ -1,14 +1,16 @@
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import { css, html, LitElement } from 'lit-element';
 
 import '@polymer/iron-icon/iron-icon.js';
 
-class ErrorNotification extends PolymerElement {
-  static get template() {
-    return html`
+class ErrorNotification extends LitElement {
+  static get is() {
+    return 'error-notification';
+  }
 
-    <style>
-
-      section {
+  static get styles() {
+    return css`
+      :host {
+        color: var(--color-black);
         text-align: center;
         display: flex;
         align-items: center;
@@ -19,22 +21,25 @@ class ErrorNotification extends PolymerElement {
       iron-icon {
         height: 96px;
         width: 96px;
-      }      
-    </style>
+      }
 
-    <section>
-      <div>
-        <iron-icon icon="weather-symbol-icons:weatherSymbol64"></iron-icon>
-        <div>[[errorText]]</div>
-        <div><a href="">kokeile uudelleen</a></div>
-      <div>
-    </section>
-  
-`;
+      div {
+        padding: var(--space-m);
+      }
+    `;
   }
-
-  static get is() {
-    return 'error-notification';
+  render() {
+    return html`
+      <section>
+        <iron-icon icon="weather-symbol-icons:weatherSymbol64"></iron-icon>
+        <div>
+          ${this.errorText}${navigator.onLine === false
+            ? html`, verkkoyhteydessäsi näyttää olevan ongelmia`
+            : ''}
+        </div>
+        <div><a href="">kokeile uudelleen</a></div>
+      </section>
+    `;
   }
 
   static get properties() {
@@ -45,13 +50,6 @@ class ErrorNotification extends PolymerElement {
     };
   }
 
-  ready() {
-    super.ready();
-  }
-
-  show() {
-    this.removeAttribute('hidden');
-  }
 }
 
 window.customElements.define(ErrorNotification.is, ErrorNotification);

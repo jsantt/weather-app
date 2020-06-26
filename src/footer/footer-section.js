@@ -12,8 +12,8 @@ class FooterSection extends LitElement {
           --background-color-header,
           var(--background-color)
         );
+        border-radius: 0.15rem;
 
-        color: var(--color-blue-800);
         display: block;
         margin: var(--space-m);
         padding: var(--space-m) 0;
@@ -27,12 +27,12 @@ class FooterSection extends LitElement {
 
         color: var(--color, var(--color-gray-800));
         font-size: var(--font-size-medium);
-        font-weight: 600;
+        font-weight: var(--font-weight-bold);;
 
         margin: 0;
         padding: var(--space-m) var(--space-l) var(--space-m) var(--space-l);
         text-transform: uppercase;
-        font-weight: 900;
+        font-weight: var(--font-weight-boldest);
       }
 
       section {

@@ -19,7 +19,7 @@ class WeatherStation extends LitElement {
       h1,
       h2,
       h3 {
-        font-weight: 500;
+        font-weight: var(--font-weight-normal);;
         margin: 0;
 
         padding: 0;
@@ -73,17 +73,16 @@ class WeatherStation extends LitElement {
       .temperature {
         justify-self: stretch;
         font-size: var(--font-size-xxlarge);
-        font-weight: 900;
         grid-column: 1 / span 2;
 
         display: flex;
         justify-content: center;
         align-items: center;
-
-        margin-bottom: var(--space-xl);
       }
 
       weather-name-wawa {
+        grid-column: 1 / span 2;
+        margin-bottom: var(--space-xl);
         font-size: var(--font-size-large);
         padding: 0 var(--space-m);
       }
@@ -102,7 +101,7 @@ class WeatherStation extends LitElement {
       }
       .value {
         font-size: var(--font-size-large);
-        font-weight: 900;
+        font-weight: var(--font-weight-boldest);
       }
       .windExplanation {
         margin-top: -0.26rem;
@@ -110,6 +109,10 @@ class WeatherStation extends LitElement {
 
       .footer {
         background-color: #9ad5b9;
+
+        border-bottom-right-radius: 0.15rem;
+        border-bottom-left-radius: 0.15rem;
+
         margin: 1rem -1rem -1rem -1rem;
 
         display: flex;
@@ -129,7 +132,7 @@ class WeatherStation extends LitElement {
       ${this.observationData === undefined || this.observationError
         ? html`
             <error-notification
-              error-text="Sääasemalle ei valitettavasti saatu yhteyttä"
+              errorText="Sääasemalle ei valitettavasti saatu yhteyttä"
             >
             </error-notification>
           `
@@ -146,13 +149,13 @@ class WeatherStation extends LitElement {
                       </div>
                     `
                   : ``}
-                <weather-name-wawa
-                  class="value"
-                  .wawaId="${this.observationData.weatherCode}"
-                  .cloudiness="${this.observationData.cloudiness}"
-                >
-                </weather-name-wawa>
               </div>
+
+              <weather-name-wawa
+                .wawaId="${this.observationData.weatherCode}"
+                .cloudiness="${this.observationData.cloudiness}"
+              >
+              </weather-name-wawa>
 
               ${this.observationData.rainExplanation
                 ? html`

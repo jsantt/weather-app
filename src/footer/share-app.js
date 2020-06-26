@@ -24,7 +24,7 @@ class ShareApp extends LitElement {
         align-items: center;
         justify-content: center;
 
-        font-weight: 700;
+        font-weight: var(--font-weight-bold);
         text-align: center;
         text-transform: uppercase;
 
