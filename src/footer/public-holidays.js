@@ -18,7 +18,7 @@ class PublicHolidays extends LitElement {
       }
       section {
         display: grid;
-        grid-template-columns: 5.5rem 3.5rem 2rem auto;
+        grid-template-columns: 5.5rem 2rem auto;
       }
       .date {
         text-align: right;
@@ -39,9 +39,7 @@ class PublicHolidays extends LitElement {
                 })}
                 ${new Date(item.d).toLocaleDateString('fi-FI')}
               </div>
-              <div class="free">
-                ${item.free === true ? html` (vapaa) ` : ''}
-              </div>
+
               <div class="flag">
                 ${item.flag === true
                   ? html`
@@ -64,7 +62,7 @@ class PublicHolidays extends LitElement {
                   : ''}
               </div>
               <div>
-                ${item.n}
+                ${item.free === true ? html` (vapaa) ` : ''} ${item.n}
               </div>
             </section>
           `

@@ -26,6 +26,15 @@ class SunriseSunset extends LitElement {
       a:hover {
         color: var(--color-blue-700);
       }
+
+      .uv-index {
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      svg {
+        fill: var(--color-blue-700);
+      }
     `;
   }
 
@@ -69,14 +78,11 @@ class SunriseSunset extends LitElement {
                 id="svg_4"
                 cy="36.53806"
                 cx="19.43741"
-                fill="#849854"
+                fill="#3f976e"
               />
               <path
-                stroke="#fff"
-                id="svg_10"
                 d="m3.03391,15.93057l4.8437,-7.18066l4.8437,7.18066l-2.42185,0l0,7.2152l-4.8437,0l0,-7.2152l-2.42185,0z"
                 stroke-width="0"
-                fill="#000"
               />
             </g>
           </svg>
@@ -86,7 +92,6 @@ class SunriseSunset extends LitElement {
         <div>
           <svg width="39" height="27" xmlns="http://www.w3.org/2000/svg">
             <g>
-              <title>background</title>
               <rect
                 fill="none"
                 id="canvas_background"
@@ -98,13 +103,10 @@ class SunriseSunset extends LitElement {
             </g>
 
             <g>
-              <title>Layer 1</title>
               <path
-                stroke="#444444"
                 id="svg_3"
                 d="m27.65561,16.49653l4.8437,7.25316l4.8437,-7.25316l-2.42185,0l0,-7.28806l-4.8437,0l0,7.28806l-2.42185,0z"
                 stroke-width="0"
-                fill="#000"
               />
               <g id="svg_8">
                 <polygon
@@ -129,7 +131,7 @@ class SunriseSunset extends LitElement {
                 id="svg_9"
                 cy="35.28807"
                 cx="18.56174"
-                fill="#849854"
+                fill="#3f976e"
               />
             </g>
           </svg>
@@ -140,10 +142,7 @@ class SunriseSunset extends LitElement {
 
       ${this._solarNoon} aurinko korkeimmillaan<br />
       ${this._darkestNight} pimeintä (aurinko matalimmillaan)<br />
-      <p>
-        <a href="https://www.ilmatieteenlaitos.fi/uvi-ennuste">
-          UV-indeksi
-        </a>
+      <div class="uv-index">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           height="24"
@@ -159,7 +158,10 @@ class SunriseSunset extends LitElement {
             d="M13.126 14.56l1.428-1.428 6.442 6.442-1.43 1.428zM13.12 3c-2.58 0-5.16.98-7.14 2.95l-.01.01c-3.95 3.95-3.95 10.36 0 14.31l14.3-14.31C18.3 3.99 15.71 3 13.12 3zM6.14 17.27C5.4 16.03 5 14.61 5 13.12c0-.93.16-1.82.46-2.67.19 1.91.89 3.79 2.07 5.44l-1.39 1.38zm2.84-2.84C7.63 12.38 7.12 9.93 7.6 7.6c.58-.12 1.16-.18 1.75-.18 1.8 0 3.55.55 5.08 1.56l-5.45 5.45zm1.47-8.97c.85-.3 1.74-.46 2.67-.46 1.49 0 2.91.4 4.15 1.14l-1.39 1.39c-1.65-1.18-3.52-1.88-5.43-2.07z"
           />
         </svg>
-      </p>
+        <a href="https://www.ilmatieteenlaitos.fi/uvi-ennuste">
+          UV-indeksi
+        </a>
+      </div>
     `;
   }
 

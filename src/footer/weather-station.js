@@ -19,7 +19,7 @@ class WeatherStation extends LitElement {
       h1,
       h2,
       h3 {
-        font-weight: var(--font-weight-normal);;
+        font-weight: var(--font-weight-normal);
         margin: 0;
 
         padding: 0;
@@ -73,6 +73,7 @@ class WeatherStation extends LitElement {
       .temperature {
         justify-self: stretch;
         font-size: var(--font-size-xxlarge);
+        font-weight: var(--font-weight-bold);
         grid-column: 1 / span 2;
 
         display: flex;
@@ -101,28 +102,33 @@ class WeatherStation extends LitElement {
       }
       .value {
         font-size: var(--font-size-large);
-        font-weight: var(--font-weight-boldest);
+        font-weight: var(--font-weight-bold);
       }
+
+      .explanation {
+        color: var(--color-green-800);
+        text-transform: uppercase;
+      }
+
       .windExplanation {
         margin-top: -0.26rem;
       }
 
-      .footer {
-        background-color: #9ad5b9;
-
-        border-bottom-right-radius: 0.15rem;
-        border-bottom-left-radius: 0.15rem;
-
-        margin: 1rem -1rem -1rem -1rem;
-
+      footer {
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
 
-        padding: 0.5rem;
+        margin-top: var(--space-xl);
       }
-      a {
-        color: var(--color-white);
+
+      a:link {
+        color: var(--color-blue-500);
+      }
+
+      a:visited,
+      a:hover {
+        color: var(--color-blue-700);
       }
     `;
   }
@@ -249,12 +255,17 @@ class WeatherStation extends LitElement {
                 : ``}
             </div>
           `}
-      <div class="footer">
-        Kello ${this._formatTime(this.observationData.time)} &nbsp;
-        <a href="${this._googleMapsURl(this.observationData.latLon)}"
-          >sijainti kartalla</a
-        >
-      </div>
+
+      <footer>
+        <div>
+          Kello ${this._formatTime(this.observationData.time)} havainnot
+        </div>
+        <div>
+          <a href="${this._googleMapsURl(this.observationData.latLon)}"
+            >sijainti kartalla</a
+          >
+        </div>
+      </footer>
     `;
   }
 
