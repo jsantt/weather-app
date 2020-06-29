@@ -1,5 +1,4 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
 
 // lazy-resources are loaded in the app code
 import './lazy-resources.js';
@@ -46,42 +45,29 @@ class WeatherApp extends PolymerElement {
       <weather-analytics key="UA-114081578-1"></weather-analytics>
 
       <!-- weather now data (observation) -->
-      <observation-data
-        fetch-error="{{observationError}}"
-        observation-data="{{observationData}}"
-        place="[[forecastPlace]]"
-      >
-      </observation-data>
+      <observation-data place="[[_forecastPlace]]"> </observation-data>
 
       <!-- rest of the data (forecast) -->
-      <forecast-data
-        fetch-error="{{forecastError}}"
-        forecast-data="{{_forecastData}}"
-        forecast-place="{{forecastPlace}}"
-        loading="{{_loading}}"
-        weather-location="[[_weatherLocation]]"
-      >
-      </forecast-data>
+      <forecast-data weather-location="[[_weatherLocation]]"> </forecast-data>
 
       <!-- 'Espoo' (or any other city) now-->
       <paper-toast id="locateError" duration="5000"> </paper-toast>
 
-      <template is="dom-if" if="[[forecastError]]">
+      <template is="dom-if" if="[[_forecastError]]">
         <error-notification
           errorText="Säätietojen haku epäonnistui"
           id="errorNotification"
         >
         </error-notification>
       </template>
-
-      <template is="dom-if" if="{{!forecastError}}">
+      <template is="dom-if" if="{{!_forecastError}}">
         <div hidden$="[[_firstLoading]]">
           <add-to-homescreen></add-to-homescreen>
           <slot id="place"></slot>
           <forecast-header
             feels-like="[[_currentFeelsLike]]"
             loading="[[_loading]]"
-            place="[[forecastPlace]]"
+            place="[[_forecastPlace]]"
             symbol="[[_currentSymbol]]"
             temperature="[[_currentTemperature]]"
             wind="[[_currentWind]]"
@@ -102,12 +88,14 @@ class WeatherApp extends PolymerElement {
             </weather-days>
           </main>
 
-          <!-- footer -->
-          <weather-footer observation-data="[[observationData]]">
+          <!-- TODO: move weather footer things here to allow
+              CSS grid placement. First, upgrade data and this class
+            to lit-element  -->
+          <weather-footer observation-data="[[_observationData]]">
             <weather-station
               slot="observations"
-              observation-data="{{observationData}}"
-              observation-error="{{observationError}}"
+              observation-data="{{_observationData}}"
+              observation-error="{{_observationError}}"
             >
             </weather-station>
 
@@ -169,6 +157,21 @@ class WeatherApp extends PolymerElement {
       _currentWindGust: {
         type: Number,
       },
+      _forecastError: {
+        type: Boolean,
+      },
+      _forecastPlace: {
+        type: Object,
+      },
+      _loading: {
+        type: Boolean,
+      },
+      _observationData: {
+        type: Object,
+      },
+      _observationError: {
+        type: Boolean,
+      },
       _weatherLocation: {
         type: String,
       },
@@ -178,33 +181,54 @@ class WeatherApp extends PolymerElement {
   constructor() {
     super();
 
-    this.addEventListener('location-selector.location-changed', (event) =>
-      this._onNewLocation(event)
-    );
-    this.addEventListener('forecast-header.toggle-wind', (event) =>
-      this._toggleWind(event)
-    );
+    this._forecastError = false;
 
-    this.addEventListener('forecast-header.toggle-feels-like', (event) =>
-      this._toggleFeelsLike(event)
-    );
+    // user changes location
+    this.addEventListener('location-selector.location-changed', (event) => {
+      this._weatherLocation = event.detail;
+    });
 
-    this.addEventListener('forecast-data.fetch-done', (event) => {
+    // forecast data
+    this.addEventListener('forecast-data.fetch-done', () => {
+      this._loading = true;
+    });
+
+    this.addEventListener('forecast-data.fetch-done', () => {
+      this._fetchDone();
+      this._loading = false;
       this._firstLoading = false;
     });
 
-    this.addEventListener('forecast-data.fetch-done', (event) => {
-      this._firstLoading = false;
+    this.addEventListener('forecast-data.new-data', (event) => {
+      this._forecastError = false;
+      this._forecastData = event.detail;
+    });
 
-      const weatherNowData = this._getWeatherNow(this._forecastData);
+    this.addEventListener('forecast-data.new-place', (event) => {
+      this._forecastPlace = event.detail;
+    });
 
-      this._currentFeelsLike = weatherNowData.feelsLike;
-      this._currentSymbol = weatherNowData.symbol;
-      this._currentTemperature = weatherNowData.temperature;
+    this.addEventListener('forecast-data.fetch-error', () => {
+      this._forecastError = true;
+    });
 
-      this._currentWind = weatherNowData.wind;
-      this._currentWindDirection = weatherNowData.windDirection;
-      this._currentWindGust = weatherNowData.windGust;
+    // observation data
+
+    this.addEventListener('observation-data.new-data', (event) => {
+      this._observationError = false;
+      this._observationData = event.detail;
+    });
+
+    this.addEventListener('observation-data.fetch-error', () => {
+      this._observationError = true;
+    });
+
+    this.addEventListener('forecast-header.toggle-wind', () => {
+      this._showWind = !this._showWind;
+    });
+
+    this.addEventListener('forecast-header.toggle-feels-like', () => {
+      this._showFeelsLike = !this._showFeelsLike;
     });
   }
 
@@ -221,29 +245,23 @@ class WeatherApp extends PolymerElement {
   connectedCallback() {
     super.connectedCallback();
 
-    this._loadLazyResources();
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js', { scope: '/' });
+    }
   }
 
-  _onNewLocation(event) {
-    this._weatherLocation = event.detail;
-  }
+  _fetchDone() {
+    this._firstLoading = false;
 
-  /**
-   * Lazy loading don't show stack trace from failing resource.
-   * Comment this lazy import out and import in regular way to see the stack trace
-   */
-  _loadLazyResources() {
-    afterNextRender(this, () => {
-      //import('./lazy-resources.js')
-      //.then(() => {
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('service-worker.js', { scope: '/' });
-      }
-      /*})
-        .catch(error => {
-          console.log('error loading lazy resources: ' + error);
-        });*/
-    });
+    const weatherNowData = this._getWeatherNow(this._forecastData);
+
+    this._currentFeelsLike = weatherNowData.feelsLike;
+    this._currentSymbol = weatherNowData.symbol;
+    this._currentTemperature = weatherNowData.temperature;
+
+    this._currentWind = weatherNowData.wind;
+    this._currentWindDirection = weatherNowData.windDirection;
+    this._currentWindGust = weatherNowData.windGust;
   }
 
   _getWeatherNow(data) {
@@ -271,14 +289,6 @@ class WeatherApp extends PolymerElement {
     timeNow.setMinutes(0, 0, 0);
 
     return timeNow.toISOString().split('.')[0] + 'Z';
-  }
-
-  _toggleWind() {
-    this._showWind = !this._showWind;
-  }
-
-  _toggleFeelsLike() {
-    this._showFeelsLike = !this._showFeelsLike;
   }
 
   _showError(event) {

@@ -254,18 +254,17 @@ class WeatherStation extends LitElement {
                   `
                 : ``}
             </div>
+            <footer>
+              <div>
+                Kello ${this._formatTime(this.observationData.time)} havainnot
+              </div>
+              <div>
+                <a href="${this._googleMapsURl(this.observationData.latLon)}"
+                  >sijainti kartalla</a
+                >
+              </div>
+            </footer>
           `}
-
-      <footer>
-        <div>
-          Kello ${this._formatTime(this.observationData.time)} havainnot
-        </div>
-        <div>
-          <a href="${this._googleMapsURl(this.observationData.latLon)}"
-            >sijainti kartalla</a
-          >
-        </div>
-      </footer>
     `;
   }
 

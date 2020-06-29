@@ -1,6 +1,5 @@
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import { LitElement } from 'lit-element';
 
-import '@polymer/iron-ajax/iron-ajax.js';
 import {
   getByAttributeValue,
   getTime,
@@ -26,103 +25,87 @@ import {
  *    wind: 7.6
  *    windDirection: 296 }, {...}]
  */
-class ForecastData extends PolymerElement {
+class ForecastData extends LitElement {
   static get is() {
     return 'forecast-data';
-  }
-  static get template() {
-    return html`
-      <iron-ajax
-        id="weatherHarmonie"
-        url="https://opendata.fmi.fi/wfs"
-        params="{{_getHarmonieParams(weatherLocation)}}"
-        handle-as="document"
-        timeout="8000"
-      >
-      </iron-ajax>
-    `;
   }
 
   static get properties() {
     return {
       weatherLocation: {
         type: Object,
-        observer: '_newLocation',
-      },
-
-      forecastData: {
-        type: Array,
-        notify: true,
-      },
-
-      fetchError: {
-        type: Boolean,
-        notify: true,
-        value: false,
-      },
-
-      forecastPlace: {
-        type: Object,
-        notify: true,
-      },
-
-      loading: {
-        type: Boolean,
-        notify: true,
-        value: false,
       },
     };
   }
 
-  // Lifecycle functions
+  firstUpdated() {
+    setTimeout(() => {
+      console.log('firstupdated', this.weatherLocation);
+      if (this.weatherLocation !== undefined) {
+        this._newLocation();
+      }
+    }, 100);
+  }
 
-  ready() {
-    super.ready();
+  attributeChangedCallback() {
+    console.log('attribute changed', this.weatherLocation);
+    this._newLocation();
   }
 
   /**
    * Fetches the data from the backend
    */
   _newLocation() {
-    this.fetchError = false;
-    this.loading = true;
+    console.log('new location for forecast data', this.weatherLocation);
+    this._dispatch('forecast-data.fetching');
 
-    const harmonieRequest = this._prepareRequest(
-      'weatherHarmonie',
-      this._getHarmonieParams(this.weatherLocation)
-    );
-    harmonieRequest.completes
+    const params = this._getHarmonieParams(this.weatherLocation);
+
+    const queryParams = Object.keys(params)
+      .map((key) => key + '=' + params[key])
+      .join('&');
+
+    const query = `https://opendata.fmi.fi/wfs?${queryParams}`;
+
+    fetch(query)
+      .then((response) => response.text())
+      .then((str) => new window.DOMParser().parseFromString(str, 'text/xml'))
       .then((data) => {
         this._sendNotification(
-          this._parseLocationGeoid(data.response),
-          parseLocationName(data.response),
+          this._parseLocationGeoid(data),
+          parseLocationName(data),
           this.weatherLocation.coordinates,
-          parseRegion(data.response)
+          parseRegion(data)
         );
 
-        const filteredResponse = this._filterResponse(data.response);
+        const filteredResponse = this._filterResponse(data);
         let json = this._toJson(filteredResponse);
 
-        this.forecastData = this._enrichData(json);
+        const forecastData = this._enrichData(json);
+        this._dispatch('forecast-data.new-data', forecastData);
       })
       .catch((rejected) => {
-        this.fetchError = true;
         raiseEvent(this, 'forecast-data.fetch-error', {
           text: 'Virhe haettaessa ennustetietoja',
         });
         console.log('error ' + rejected.stack);
       })
       .then(() => {
-        this.loading = false;
         raiseEvent(this, 'forecast-data.fetch-done', {
           text: 'Fetch data done',
         });
       });
   }
 
-  _prepareRequest(id, params) {
-    this.$[id].params = params;
-    return this.$[id].generateRequest();
+  _getHarmonieParams(location) {
+    let params = this._commonParams(location);
+
+    params.storedquery_id =
+      'fmi::forecast::harmonie::surface::point::timevaluepair';
+    params.parameters =
+      'Humidity,Temperature,WindDirection,WindSpeedMS,WindGust,Precipitation1h,WeatherSymbol3';
+
+    return params;
   }
 
   _commonParams(location) {
@@ -137,17 +120,6 @@ class ForecastData extends PolymerElement {
       // TODO: remove this branch if unused?
       params.place = location.city;
     }
-
-    return params;
-  }
-
-  _getHarmonieParams(location) {
-    let params = this._commonParams(location);
-
-    params.storedquery_id =
-      'fmi::forecast::harmonie::surface::point::timevaluepair';
-    params.parameters =
-      'Humidity,Temperature,WindDirection,WindSpeedMS,WindGust,Precipitation1h,WeatherSymbol3';
 
     return params;
   }
@@ -306,8 +278,8 @@ class ForecastData extends PolymerElement {
         region: region,
       },
     };
-    this.forecastPlace = details.location;
-    raiseEvent(this, 'forecast-data.new-place', details);
+
+    raiseEvent(this, 'forecast-data.new-place', details.location);
   }
 
   _todayFirstHour() {
@@ -336,6 +308,15 @@ class ForecastData extends PolymerElement {
     tomorrow.setHours(24, 0, 0, 0);
 
     return tomorrow.toISOString();
+  }
+
+  _dispatch(eventName, message) {
+    const event = new CustomEvent(eventName, {
+      detail: message,
+      bubbles: true,
+      composed: true,
+    });
+    this.dispatchEvent(event);
   }
 }
 

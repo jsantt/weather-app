@@ -145,7 +145,7 @@ class LocationSelector extends PolymerElement {
       combobox.items = this._placeList();
     } else {
       setTimeout(() => {
-        this._previousPlace();
+        this._newPlace();
       }, 1000);
     }
   }
