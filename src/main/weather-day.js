@@ -363,9 +363,7 @@ class WeatherDay extends LitElement {
                   </div>
 
                   <div
-                    class="wind ${this.showWind === false
-                      ? 'wind--hidden'
-                      : ''}"
+                    class="wind ${this.showWind !== true ? 'wind--hidden' : ''}"
                   >
                     <wind-icon
                       class="${this._getClasses(
@@ -381,7 +379,7 @@ class WeatherDay extends LitElement {
                   </div>
 
                   <div
-                    class="feelsLike ${this.showFeelsLike === false
+                    class="feelsLike ${this.showFeelsLike !== true
                       ? 'feelsLike--hidden'
                       : ''}"
                   >

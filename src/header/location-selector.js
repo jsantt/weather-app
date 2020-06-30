@@ -1,4 +1,5 @@
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import { css, html, LitElement } from 'lit-element';
+
 import '@polymer/paper-spinner/paper-spinner-lite.js';
 import '@vaadin/vaadin-combo-box/vaadin-combo-box.js';
 
@@ -8,71 +9,64 @@ import { CITIES, TOP_10_CITIES } from './city-list';
  * @customElement
  * @polymer
  */
-class LocationSelector extends PolymerElement {
-  static get template() {
-    return html`
-      <style>
-        :host {
-          --paper-spinner-color: var(--color-white);
-
-          display: inline-block;
-
-          margin: 0 0 0.2rem 0;
-          text-align: center;
-          padding-bottom: 0.5rem;
-        }
-
-        vaadin-combo-box {
-          /* overwriting Vaadin's default styles */
-          --lumo-contrast-10pct: transparent;
-          --lumo-font-size-m: var(--font-size-large);
-          --lumo-font-weight: var(--font-weight-boldest);
-          --lumo-font-family: 'Open Sans Condensed', sans-serif;
-          --vaadin-text-field-default-width: 13.5rem;
-        }
-
-        .locate_loadIcon {
-          padding: 0 0.6rem;
-        }
-      </style>
-
-      <template is="dom-if" if="[[loading]]">
-        <paper-spinner-lite
-          class="locate_loadIcon"
-          active=""
-        ></paper-spinner-lite>
-      </template>
-
-      <template is="dom-if" if="[[!loading]]">
-        <vaadin-combo-box
-          id="placeSelection"
-          item-label-path="city"
-          item-value-path="coordinates"
-          on-opened-changed="_openedChanged"
-        >
-          <template>
-            <template is="dom-if" if="[[_isHighlighted(index)]]">
-              <div>[[item.city]]</div>
-            </template>
-            <template is="dom-if" if="[[!_isHighlighted(index)]]">
-              <div style="color:#916c25;">[[item.city]]</div>
-            </template>
-          </template>
-        </vaadin-combo-box>
-      </template>
-    `;
-  }
-
+class LocationSelector extends LitElement {
   static get is() {
     return 'location-selector';
   }
 
+  static get styles() {
+    return css`
+      :host {
+        --paper-spinner-color: var(--color-white);
+
+        display: inline-block;
+
+        margin: 0 0 0.2rem 0;
+        text-align: center;
+        padding-bottom: 0.5rem;
+      }
+
+      vaadin-combo-box {
+        /* overwriting Vaadin's default styles */
+        --lumo-contrast-10pct: transparent;
+        --lumo-font-size-m: var(--font-size-large);
+        --lumo-font-weight: var(--font-weight-boldest);
+        --lumo-font-family: 'Open Sans Condensed', sans-serif;
+        --vaadin-text-field-default-width: 13.5rem;
+      }
+
+      .locate_loadIcon {
+        padding: 0 0.6rem;
+      }
+    `;
+  }
+  render() {
+    return html` ${this.loading
+      ? html` <paper-spinner-lite
+          class="locate_loadIcon"
+          active=""
+        ></paper-spinner-lite>`
+      : html`
+          <vaadin-combo-box
+            id="placeSelection"
+            item-label-path="city"
+            item-value-path="coordinates"
+            @opened-changed="${(event) => this._openedChanged(event)}"
+          >
+            <template>
+              <div>[[item.city]]</div>
+            </template>
+          </vaadin-combo-box>
+        `}`;
+  }
+
+  /**
+   * place example: {"geoid":"651436","name":"Korospohja","coordinates":"61.92410999999999,25.748151","region":"Jyväskylä"}
+   */
   static get properties() {
     return {
       _defaultPlace: {
         type: Object,
-        value: { city: 'Helsinki', coordinates: '60.1698557,24.9383791' },
-        readOnly: true,
       },
       _previousPlace: {
         type: Object,
@@ -90,17 +84,50 @@ class LocationSelector extends PolymerElement {
   constructor() {
     super();
 
-    document.addEventListener('visibilitychange', (event) => {
+    this._defaultPlace = {
+      city: 'Helsinki',
+      coordinates: '60.1698557,24.9383791',
+    };
+
+    document.addEventListener('visibilitychange', () => {
       if (document.hidden === false) {
         this._notifyPreviousPlace();
       }
     });
   }
 
-  ready() {
-    super.ready();
-
+  firstUpdated() {
     this._notifyPreviousPlace();
+  }
+
+  updated(changedProperties) {
+    changedProperties.forEach((oldValue, propName) => {
+      if (propName === 'place') {
+        this._newPlace();
+      }
+    });
+  }
+
+  /**
+   * When customer chooses geolocate, we need to wait response containing place name
+   */
+  _newPlace() {
+    let combobox = this.shadowRoot.querySelector('#placeSelection');
+
+    if (combobox) {
+      combobox.selectedItem = this.place.name;
+
+      const url = this.place.name;
+
+      this._changeUrl('place', url);
+      this._store('place', this.place.name, this.place.coordinates);
+
+      combobox.items = this._placeList();
+    } else {
+      setTimeout(() => {
+        this._newPlace();
+      }, 1000);
+    }
   }
 
   _notifyPreviousPlace() {
@@ -126,28 +153,6 @@ class LocationSelector extends PolymerElement {
         combobox.selectedItem = value;
       }
     }, 1000);
-  }
-
-  /**
-   * When customer chooses geolocate, we need to wait response containing place name
-   */
-  _newPlace() {
-    let combobox = this.shadowRoot.querySelector('#placeSelection');
-
-    if (combobox) {
-      combobox.selectedItem = this.place.name;
-
-      const url = this.place.name;
-
-      this._changeUrl('place', url);
-      this._store('place', this.place.name, this.place.coordinates);
-
-      combobox.items = this._placeList();
-    } else {
-      setTimeout(() => {
-        this._newPlace();
-      }, 1000);
-    }
   }
 
   _isHighlighted(index) {

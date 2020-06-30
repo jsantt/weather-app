@@ -60,7 +60,6 @@ class WeatherDays extends LitElement {
     return {
       forecastData: {
         type: Array,
-        reflect: true
       },
 
       showFeelsLike: {
