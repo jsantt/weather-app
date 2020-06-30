@@ -36,6 +36,10 @@ function _windClassification(windSpeed) {
 }
 
 function _max(forecastData, property) {
+  if (forecastData === undefined || forecastData.length < 1) {
+    return;
+  }
+
   let maxWind = 0;
 
   const upcomingHours = forecastData.filter((item) => !item.past);

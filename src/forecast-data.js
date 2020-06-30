@@ -38,18 +38,15 @@ class ForecastData extends LitElement {
     };
   }
 
-  firstUpdated() {
-    setTimeout(() => {
-      console.log('firstupdated', this.weatherLocation);
-      if (this.weatherLocation !== undefined) {
+  updated(changedProperties) {
+    changedProperties.forEach((oldValue, propName) => {
+      if (
+        propName === 'weatherLocation' &&
+        this.weatherLocation !== undefined
+      ) {
         this._newLocation();
       }
-    }, 100);
-  }
-
-  attributeChangedCallback() {
-    console.log('attribute changed', this.weatherLocation);
-    this._newLocation();
+    });
   }
 
   /**

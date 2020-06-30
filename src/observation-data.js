@@ -27,14 +27,12 @@ class ObservationData extends LitElement {
     };
   }
 
-  firstUpdated() {
-    setTimeout(() => {
-      this._newPlace();
-    }, 1000);
-  }
-
-  attributeChangedCallback() {
-    this._newPlace();
+  updated(changedProperties) {
+    changedProperties.forEach((oldValue, propName) => {
+      if (propName === 'place' && this.place !== undefined) {
+        this._newPlace();
+      }
+    });
   }
 
   _newPlace() {

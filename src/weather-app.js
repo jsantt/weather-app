@@ -1,6 +1,6 @@
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import { css, html, LitElement } from 'lit-element';
 
-// lazy-resources are loaded in the app code
+// no lazy loading at the moment, consider taking into use
 import './lazy-resources.js';
 
 import './header/location-selector.js';
@@ -16,125 +16,114 @@ import './footer/sunrise-sunset.js';
 import './footer/public-holidays.js';
 import './footer/weather-footer.js';
 
-class WeatherApp extends PolymerElement {
-  static get template() {
-    return html`
-      <style>
-        :host {
-          display: block;
-        }
-
-        div[hidden] {
-          visibility: hidden;
-        }
-
-        .locate-button-container {
-          position: relative;
-          width: 100%;
-          display: flex;
-          justify-content: center;
-        }
-
-        error-notification {
-          display: flex;
-          justify-content: center;
-
-          height: 100vh;
-        }
-      </style>
-      <weather-analytics key="UA-114081578-1"></weather-analytics>
-
-      <!-- weather now data (observation) -->
-      <observation-data place="[[_forecastPlace]]"> </observation-data>
-
-      <!-- rest of the data (forecast) -->
-      <forecast-data weather-location="[[_weatherLocation]]"> </forecast-data>
-
-      <!-- 'Espoo' (or any other city) now-->
-      <paper-toast id="locateError" duration="5000"> </paper-toast>
-
-      <template is="dom-if" if="[[_forecastError]]">
-        <error-notification
-          errorText="Säätietojen haku epäonnistui"
-          id="errorNotification"
-        >
-        </error-notification>
-      </template>
-      <template is="dom-if" if="{{!_forecastError}}">
-        <div hidden$="[[_firstLoading]]">
-          <add-to-homescreen></add-to-homescreen>
-          <slot id="place"></slot>
-          <forecast-header
-            feels-like="[[_currentFeelsLike]]"
-            loading="[[_loading]]"
-            place="[[_forecastPlace]]"
-            symbol="[[_currentSymbol]]"
-            temperature="[[_currentTemperature]]"
-            wind="[[_currentWind]]"
-            wind-direction="[[_currentWindDirection]]"
-            wind-gust="[[_currentWindGust]]"
-          >
-          </forecast-header>
-
-          <!-- today, tomorrow and a day after tomorrow -->
-          <slot id="header"></slot>
-
-          <main>
-            <weather-days
-              forecast-data="[[_forecastData]]"
-              show-feels-like="[[_showFeelsLike]]"
-              show-wind="[[_showWind]]"
-            >
-            </weather-days>
-          </main>
-
-          <!-- TODO: move weather footer things here to allow
-              CSS grid placement. First, upgrade data and this class
-            to lit-element  -->
-          <weather-footer observation-data="[[_observationData]]">
-            <weather-station
-              slot="observations"
-              observation-data="{{_observationData}}"
-              observation-error="{{_observationError}}"
-            >
-            </weather-station>
-
-            <sunrise-sunset
-              slot="sunrise-sunset"
-              coordinates="[[_weatherLocation.coordinates]]"
-            ></sunrise-sunset>
-            <public-holidays slot="public-holidays"></public-holidays>
-          </weather-footer>
-
-          <style></style>
-          <div class="locate-button-container">
-            <geolocate-button loading="[[_loading]]"></geolocate-button>
-          </div>
-        </div>
-      </template>
-    `;
-  }
-
+class WeatherApp extends LitElement {
   static get is() {
     return 'weather-app';
   }
 
+  static get styles() {
+    return css`
+      :host {
+        display: block;
+      }
+
+      div[hidden] {
+        visibility: hidden;
+      }
+
+      .locate-button-container {
+        position: relative;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+      }
+
+      error-notification {
+        display: flex;
+        justify-content: center;
+
+        height: 100vh;
+      }
+    `;
+  }
+  render() {
+    return html` <weather-analytics key="UA-114081578-1"></weather-analytics>
+
+      <!-- Observation / weather station data -->
+      <observation-data .place="${this._forecastPlace}"> </observation-data>
+
+      <forecast-data .weatherLocation="${this._weatherLocation}">
+      </forecast-data>
+
+      <paper-toast id="locateError" duration="5000"> </paper-toast>
+
+      ${this._forecastError === true
+        ? html`
+            <error-notification
+              errorText="Säätietojen haku epäonnistui"
+              id="errorNotification"
+            >
+            </error-notification>
+          `
+        : html`
+            <div ?hidden="${this._firstLoading}">
+              <add-to-homescreen></add-to-homescreen>
+              <slot id="place"></slot>
+              <forecast-header
+                .feelsLike="${this._currentFeelsLike}"
+                ?loading="${this._loading}"
+                .place="${this._forecastPlace}"
+                .symbol="${this._currentSymbol}"
+                .temperature="${this._currentTemperature}"
+                .wind="${this._currentWind}"
+                .windDirection="${this._currentWindDirection}"
+                .windGust="${this._currentWindGust}"
+              >
+              </forecast-header>
+
+              <!-- today, tomorrow and a day after tomorrow -->
+              <slot id="header"></slot>
+              <main>
+                <weather-days
+                  .forecastData="${this._forecastData}"
+                  ?showFeelsLike="${this._showFeelsLike}"
+                  ?showWind="${this._showWind}"
+                >
+                </weather-days>
+              </main>
+
+              <!-- TODO: move weather footer things here to allow
+              CSS grid placement. First, upgrade data and this class
+            to lit-element  -->
+              <weather-footer .observationData="${this._observationData}">
+                <weather-station
+                  slot="observations"
+                  .observationData="${this._observationData}"
+                  ?observationError="${this._observationError}"
+                >
+                </weather-station>
+
+                <sunrise-sunset
+                  slot="sunrise-sunset"
+                  .coordinates="${this._coordinates}"
+                ></sunrise-sunset>
+                <public-holidays slot="public-holidays"></public-holidays>
+              </weather-footer>
+
+              <style></style>
+              <div class="locate-button-container">
+                <geolocate-button
+                  ?loading="${this._loading}"
+                ></geolocate-button>
+              </div>
+            </div>
+          `}`;
+  }
+
   static get properties() {
     return {
-      _firstLoading: {
-        type: Boolean,
-        value: true,
-      },
-      _forecastData: {
+      _coordinates: {
         type: Object,
-      },
-      _showFeelsLike: {
-        type: Boolean,
-        value: false,
-      },
-      _showWind: {
-        type: Boolean,
-        value: false,
       },
       _currentFeelsLike: {
         type: Number,
@@ -157,6 +146,12 @@ class WeatherApp extends PolymerElement {
       _currentWindGust: {
         type: Number,
       },
+      _firstLoading: {
+        type: Boolean,
+      },
+      _forecastData: {
+        type: Array,
+      },
       _forecastError: {
         type: Boolean,
       },
@@ -164,6 +159,12 @@ class WeatherApp extends PolymerElement {
         type: Object,
       },
       _loading: {
+        type: Boolean,
+      },
+      _showFeelsLike: {
+        type: Boolean,
+      },
+      _showWind: {
         type: Boolean,
       },
       _observationData: {
@@ -181,11 +182,16 @@ class WeatherApp extends PolymerElement {
   constructor() {
     super();
 
+    this._firstLoading = true;
     this._forecastError = false;
+
+    this._showWind = false;
+    this._showFeelsLike = false;
 
     // user changes location
     this.addEventListener('location-selector.location-changed', (event) => {
       this._weatherLocation = event.detail;
+      this._coordinates = this._weatherLocation.coordinates;
     });
 
     // forecast data
@@ -232,8 +238,7 @@ class WeatherApp extends PolymerElement {
     });
   }
 
-  ready() {
-    super.ready();
+  firstUpdated() {
     // hide possible add to homescreen button
     setTimeout(() => {
       this.shadowRoot
@@ -292,7 +297,9 @@ class WeatherApp extends PolymerElement {
   }
 
   _showError(event) {
-    this.$.locateError.show({ text: event.detail.text });
+    this.shadowRoot
+      .querySelector('#locateError')
+      .show({ text: event.detail.text });
   }
 }
 
