@@ -119,6 +119,7 @@ class WeatherStation extends LitElement {
         justify-content: space-between;
         align-items: center;
 
+        font-size: var(--font-size-medium);
         margin-top: var(--space-xl);
       }
 

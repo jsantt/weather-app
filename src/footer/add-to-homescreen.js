@@ -9,67 +9,65 @@ class AddToHomescreen extends LitElement {
 
   static get styles() {
     return css`
-      <style>
-        :host {
-          display: block;
-        }
+      :host {
+        display: block;
+      }
 
-        #install-prompt {
-          margin: var(--space-l);
-        }
+      #install-prompt {
+        margin: var(--space-l);
+      }
 
-        button{
-          box-sizing: border-box;
-          background-color: var(--color-white);
-          border-style: none;
-          color: var(--color-black);
+      button {
+        box-sizing: border-box;
+        background-color: var(--color-white);
+        border-style: none;
+        color: var(--color-black);
 
-          display: flex;
-          align-items: center;
-          justify-content: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-          font: inherit;
-          font-weight: var(--font-weight-boldest);
-          text-align: center;
-          text-transform: uppercase;
+        font: inherit;
+        font-weight: var(--font-weight-boldest);
+        text-align: center;
+        text-transform: uppercase;
 
-          outline: none;
-          padding: 1rem;
-          width: 100%;
+        outline: none;
+        padding: 1rem;
+        width: 100%;
 
-          /* Corrects inability to style clickable input types in iOS */
-          -webkit-appearance: none;
-        }
+        /* Corrects inability to style clickable input types in iOS */
+        -webkit-appearance: none;
+      }
 
-        .notification {
-          background-color: var(--color-white);
-          color: var(--color-black);
-          padding: var(--space-l) var(--space-m);
-        }
+      .notification {
+        background-color: var(--color-white);
+        color: var(--color-black);
+        padding: var(--space-l) var(--space-m);
+      }
 
-        ol {
-          line-height: 1.7;
-          margin: 0 0 0 2rem;
-          padding: 0;
-        }
+      ol {
+        line-height: 1.7;
+        margin: 0 0 0 2rem;
+        padding: 0;
+      }
 
-        .sun {
-          --iron-icon-width: 32px;
-          --iron-icon-height: 32px;
+      .sun {
+        --iron-icon-width: 32px;
+        --iron-icon-height: 32px;
 
-          padding: 0 var(--space-l);
-        }
+        padding: 0 var(--space-l);
+      }
 
-        .sun--hidden {
-          visibility: hidden;
-        }
+      .sun--hidden {
+        visibility: hidden;
+      }
 
-        .share {
-          --iron-icon-stroke-color: var(--color-black);
-          --iron-icon-fill-color: var(--color-black);
-        }
-      </style>
-      `;
+      .share {
+        --iron-icon-stroke-color: var(--color-black);
+        --iron-icon-fill-color: var(--color-black);
+      }
+    `;
   }
 
   render() {

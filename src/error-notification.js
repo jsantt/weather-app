@@ -16,6 +16,8 @@ class ErrorNotification extends LitElement {
         align-items: center;
         justify-content: center;
         margin: 5rem var(--space-l) 7rem var(--space-l);
+
+        height: 100vh;
       }
 
       iron-icon {
@@ -49,7 +51,6 @@ class ErrorNotification extends LitElement {
       },
     };
   }
-
 }
 
 window.customElements.define(ErrorNotification.is, ErrorNotification);
