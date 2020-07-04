@@ -53,7 +53,6 @@ class ForecastData extends LitElement {
    * Fetches the data from the backend
    */
   _newLocation() {
-    console.log('new location for forecast data', this.weatherLocation);
     this._dispatch('forecast-data.fetching');
 
     const params = this._getHarmonieParams(this.weatherLocation);

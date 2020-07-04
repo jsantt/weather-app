@@ -40,8 +40,6 @@ class ObservationData extends LitElement {
       return;
     }
 
-    console.log('new place for observation', this.place);
-
     const params = this._getParams(this.place.geoid);
     const queryParams = Object.keys(params)
       .map((key) => key + '=' + params[key])

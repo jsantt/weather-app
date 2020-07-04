@@ -70,12 +70,7 @@ class TimeNow extends LitElement {
     };
   }
 
-  firstUpdated() {
-    this._updateTime();
-  }
-
-  attributeChangedCallback(name, oldValue, newValue) {
-    console.log('CHANGED LOADING');
+  updated() {
     this._updateTime();
   }
 

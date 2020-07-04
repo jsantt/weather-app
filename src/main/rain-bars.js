@@ -68,13 +68,7 @@ class RainBars extends LitElement {
     this._chartHeight = 50;
   }
 
-  firstUpdated() {
-    setTimeout(() => {
-      this._createChart(this.dayData);
-    }, 1000);
-  }
-
-  attributeChangedCallback(name, oldValue, newValue) {
+  updated() {
     this._createChart(this.dayData);
   }
 
