@@ -47,6 +47,7 @@ class WeatherApp extends LitElement {
         max-width: 49.5rem;
         margin-left: auto;
         margin-right: auto;
+        margin-bottom: 5rem;
       }
 
       .section {
@@ -70,7 +71,8 @@ class WeatherApp extends LitElement {
           display: grid;
           grid-gap: var(--space-l);
 
-          grid-template-columns: 5fr 5fr 6fr;
+          /* golden ratio */
+          grid-template-columns: 500fr 500fr 618fr;
           grid-auto-rows: minmax(50px, auto);
 
           grid-template-areas:
