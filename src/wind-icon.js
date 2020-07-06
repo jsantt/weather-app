@@ -20,15 +20,12 @@ class WindIcon extends LitElement {
 
       .windSpeed,
       .windGustSpeed {
+        fill: var(--color-gray-900);
         font-weight: var(--font-weight-boldest);
         font-size: 48px;
       }
 
-      .windSpeed {
-        fill: var(--color-gray-900);
-      }
-
-      .windIcon--large .windGustSpeed {
+      .windGustSpeed--white {
         fill: var(--color-white);
       }
 
@@ -76,7 +73,10 @@ class WindIcon extends LitElement {
         x="96"
         y="38"
         stroke="0"
-        class="windGustSpeed warning--color${this.color}"
+        class="windGustSpeed warning--color${this.color} ${this.whiteGust ===
+        true
+          ? 'windGustSpeed--white'
+          : ''}"
       >
         ${this._round(this.windGustSpeed)}
       </text>
@@ -94,6 +94,10 @@ class WindIcon extends LitElement {
         reflect: true,
       },
       large: {
+        type: Boolean,
+        reflect: true,
+      },
+      whiteGust: {
         type: Boolean,
         reflect: true,
       },

@@ -160,6 +160,7 @@ class ForecastHeader extends LitElement {
               <wind-icon
                 .degrees="${this.windDirection}"
                 large
+                whiteGust
                 .windSpeed="${this.wind}"
                 .windGustSpeed="${this.windGust}"
               >

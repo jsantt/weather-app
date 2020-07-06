@@ -1,6 +1,7 @@
 import { css, html, LitElement } from 'lit-element';
 import '../error-notification';
 import '../header/weather-name-wawa.js';
+import './footer-section.js';
 
 class WeatherStation extends LitElement {
   static get is() {
@@ -136,26 +137,29 @@ class WeatherStation extends LitElement {
 
   render() {
     return html`
-      ${this.observationData === undefined || this.observationError
-        ? html`
-            <error-notification
-              errorText="Sääasemalle ei valitettavasti saatu yhteyttä"
-            >
-            </error-notification>
-          `
-        : html`
+      <footer-section header="lähin havaintoasema">
+        ${this.observationData === undefined || this.observationError
+          ? html`
+              <error-notification
+                errorText="Sääasemalle ei valitettavasti saatu yhteyttä"
+              >
+              </error-notification>
+            `
+          : html`
             <div class="content">
               <div class="place">
                 ${this.observationData.weatherStation}
               </div>
               <div class="temperature">
-                ${this.observationData.temperature
-                  ? html`
-                      <div>
-                        <span>${this.observationData.temperature}°C</span>
-                      </div>
-                    `
-                  : ``}
+                ${
+                  this.observationData.temperature
+                    ? html`
+                        <div>
+                          <span>${this.observationData.temperature}°C</span>
+                        </div>
+                      `
+                    : ``
+                }
               </div>
 
               <weather-name-wawa
@@ -164,96 +168,118 @@ class WeatherStation extends LitElement {
               >
               </weather-name-wawa>
 
-              ${this.observationData.rainExplanation
-                ? html`
-                    <div class="item">
-                      <div class="value">
-                        ${this.observationData.rainExplanation}mm/h
+              ${
+                this.observationData.rainExplanation
+                  ? html`
+                      <div class="item">
+                        <div class="value">
+                          ${this.observationData.rainExplanation}mm/h
+                        </div>
+                        <div class="explanation">sateen rankkuus</div>
+                        <div></div>
                       </div>
-                      <div class="explanation">sateen rankkuus</div>
-                      <div></div>
-                    </div>
-                  `
-                : ``}
-              ${this.observationData.rain
-                ? html`
-                    <div>
-                      <div class="value">${this.observationData.rain}</div>
-                      <div class="explanation">mm sadetta / edeltävä tunti</div>
-                    </div>
-                  `
-                : ``}
-              ${this.observationData.wind
-                ? html`
-                    <div class="item">
-                      <wind-icon
-                        degrees="${this.observationData.windDirection}"
-                        large
-                        windSpeed="${this.observationData.wind}"
-                        windGustSpeed="${this.observationData.windGust}"
-                      >
-                      </wind-icon>
-                      <div class="explanation windExplanation">
-                        10 min keskituuli ja puuskat
+                    `
+                  : ``
+              }
+              ${
+                this.observationData.rain
+                  ? html`
+                      <div>
+                        <div class="value">${this.observationData.rain}</div>
+                        <div class="explanation">
+                          mm sadetta / edeltävä tunti
+                        </div>
                       </div>
-                    </div>
-                  `
-                : ``}
-              ${this.observationData.humidity
-                ? html`
-                    <div class="item">
-                      <div class="value">${this.observationData.humidity}%</div>
-                      <div class="explanation">ilmankosteus</div>
-                    </div>
-                  `
-                : ``}
-              ${this.observationData.pressure
-                ? html`
-                    <div class="item">
-                      <div class="value">
-                        ${this.observationData.pressure} hPa
+                    `
+                  : ``
+              }
+              ${
+                this.observationData.wind
+                  ? html`
+                      <div class="item">
+                        <wind-icon
+                          degrees="${this.observationData.windDirection}"
+                          large
+                          windSpeed="${this.observationData.wind}"
+                          windGustSpeed="${this.observationData.windGust}"
+                        >
+                        </wind-icon>
+                        <div class="explanation windExplanation">
+                          10 min keskituuli ja puuskat
+                        </div>
                       </div>
-                      <div class="explanation">ilmanpaine</div>
-                    </div>
-                  `
-                : ``}
-              ${this.observationData.visibility
-                ? html`
-                    <div class="item">
-                      <div class="value">
-                        ${this.observationData.visibility}m
+                    `
+                  : ``
+              }
+              ${
+                this.observationData.humidity
+                  ? html`
+                      <div class="item">
+                        <div class="value">
+                          ${this.observationData.humidity}%
+                        </div>
+                        <div class="explanation">ilmankosteus</div>
                       </div>
-                      <div class="explanation">näkyvyys</div>
-                    </div>
-                  `
-                : ``}
-              ${this.observationData.dewPoint
-                ? html`
-                    <div class="item">
-                      <div class="value">
-                        ${this.observationData.dewPoint}°C
+                    `
+                  : ``
+              }
+              ${
+                this.observationData.pressure
+                  ? html`
+                      <div class="item">
+                        <div class="value">
+                          ${this.observationData.pressure} hPa
+                        </div>
+                        <div class="explanation">ilmanpaine</div>
                       </div>
-                      <div class="explanation">kastepiste</div>
-                    </div>
-                  `
-                : ``}
-              ${this.observationData.cloudiness
-                ? html`
-                    <div class="item">
-                      <div class="value">
-                        ${this.observationData.cloudiness} / 8
+                    `
+                  : ``
+              }
+              ${
+                this.observationData.visibility
+                  ? html`
+                      <div class="item">
+                        <div class="value">
+                          ${this.observationData.visibility}m
+                        </div>
+                        <div class="explanation">näkyvyys</div>
                       </div>
-                      <div class="explanation">pilvisyys</div>
-                    </div>
-                  `
-                : ``}
-              ${this._snow(this.observationData.snow)
-                ? html`
-                    <div class="item">
-                      Lumen syvyys: ${this.observationData.snow} cm
-                    </div>
-                  `
-                : ``}
+                    `
+                  : ``
+              }
+              ${
+                this.observationData.dewPoint
+                  ? html`
+                      <div class="item">
+                        <div class="value">
+                          ${this.observationData.dewPoint}°C
+                        </div>
+                        <div class="explanation">kastepiste</div>
+                      </div>
+                    `
+                  : ``
+              }
+              ${
+                this.observationData.cloudiness
+                  ? html`
+                      <div class="item">
+                        <div class="value">
+                          ${this.observationData.cloudiness} / 8
+                        </div>
+                        <div class="explanation">pilvisyys</div>
+                      </div>
+                    `
+                  : ``
+              }
+              ${
+                this._snow(this.observationData.snow)
+                  ? html`
+                      <div class="item">
+                        Lumen syvyys: ${this.observationData.snow} cm
+                      </div>
+                    `
+                  : ``
+              }
             </div>
             <footer>
               <div>
@@ -265,7 +291,9 @@ class WeatherStation extends LitElement {
                 >
               </div>
             </footer>
+            </footer-section>
           `}
+      </footer-section>
     `;
   }
 

@@ -51,8 +51,7 @@ class WeatherApp extends LitElement {
       }
 
       .section {
-        margin-left: var(--space-m);
-        margin-right: var(--space-m);
+        margin: var(--space-m);
       }
 
       .section--sun,
@@ -235,33 +234,23 @@ class WeatherApp extends LitElement {
                 </footer-section>
               </main>
 
-              <footer-section
+              <weather-station
                 class="section section--observations"
-                header="lähin havaintoasema"
+                .observationData="${this._observationData}"
+                ?observationError="${this._observationError}"
               >
-                <weather-station
-                  .observationData="${this._observationData}"
-                  ?observationError="${this._observationError}"
-                >
-                </weather-station>
-              </footer-section>
+              </weather-station>
 
-              <footer-section class="section section--links">
-                <external-links></external-links>
-              </footer-section>
+              <external-links class="section section--links"></external-links>
 
-              <footer-section class="section section--sun" header="Aurinko">
-                <sunrise-sunset
-                  .coordinates="${this._coordinates}"
-                ></sunrise-sunset>
-              </footer-section>
+              <sunrise-sunset
+                class="section section--sun"
+                .coordinates="${this._coordinates}"
+              ></sunrise-sunset>
 
-              <footer-section
+              <public-holidays
                 class="section section--calendar"
-                header="Kalenteri 2020"
-              >
-                <public-holidays></public-holidays>
-              </footer-section>
+              ></public-holidays>
 
               <footer-section
                 class="section section--informationOnService"

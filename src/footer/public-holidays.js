@@ -1,5 +1,7 @@
 import { css, html, LitElement } from 'lit-element';
 
+import './footer-section.js';
+
 class PublicHolidays extends LitElement {
   static get is() {
     return 'public-holidays';
@@ -29,44 +31,46 @@ class PublicHolidays extends LitElement {
 
   render() {
     return html`
-      ${this._holidays.map(
-        (item) =>
-          html`
-            <section>
-              <div class="date">
-                ${new Date(item.d).toLocaleDateString('fi-FI', {
-                  weekday: 'short',
-                })}
-                ${new Date(item.d).toLocaleDateString('fi-FI')}
-              </div>
+      <footer-section header="Kalenteri 2020">
+        ${this._holidays.map(
+          (item) =>
+            html`
+              <section>
+                <div class="date">
+                  ${new Date(item.d).toLocaleDateString('fi-FI', {
+                    weekday: 'short',
+                  })}
+                  ${new Date(item.d).toLocaleDateString('fi-FI')}
+                </div>
 
-              <div class="flag">
-                ${item.flag === true
-                  ? html`
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="18"
-                        height="11"
-                      >
-                        <rect
+                <div class="flag">
+                  ${item.flag === true
+                    ? html`
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
                           width="18"
                           height="11"
-                          fill="#fff"
-                          stroke-width="1"
-                          stroke="#ccc"
-                        />
-                        <rect width="18" height="3" y="4" fill="#003580" />
-                        <rect width="3" height="11" x="5" fill="#003580" />
-                      </svg>
-                    `
-                  : ''}
-              </div>
-              <div>
-                ${item.free === true ? html` (vapaa) ` : ''} ${item.n}
-              </div>
-            </section>
-          `
-      )}
+                        >
+                          <rect
+                            width="18"
+                            height="11"
+                            fill="#fff"
+                            stroke-width="1"
+                            stroke="#ccc"
+                          />
+                          <rect width="18" height="3" y="4" fill="#003580" />
+                          <rect width="3" height="11" x="5" fill="#003580" />
+                        </svg>
+                      `
+                    : ''}
+                </div>
+                <div>
+                  ${item.free === true ? html` (vapaa) ` : ''} ${item.n}
+                </div>
+              </section>
+            `
+        )}
+      </footer-section>
     `;
   }
 
