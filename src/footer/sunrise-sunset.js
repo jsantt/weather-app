@@ -30,6 +30,7 @@ class SunriseSunset extends LitElement {
       .uv-index {
         display: flex;
         justify-content: flex-end;
+        margin-top: var(--space-l);
       }
 
       svg {

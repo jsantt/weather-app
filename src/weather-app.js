@@ -51,9 +51,8 @@ class WeatherApp extends LitElement {
       }
 
       .section {
-        max-width: 33rem;
-        margin-left: auto;
-        margin-right: auto;
+        margin-left: var(--space-m);
+        margin-right: var(--space-m);
       }
 
       .section--sun,
@@ -64,6 +63,14 @@ class WeatherApp extends LitElement {
       .section--observations {
         --background-color: var(--color-white);
         --color: var(--color-blue-700);
+      }
+
+      @media only screen and (min-width: 33rem) {
+        .section {
+          max-width: 30rem;
+          margin-left: auto;
+          margin-right: auto;
+        }
       }
 
       @media only screen and (min-width: 45rem) {
