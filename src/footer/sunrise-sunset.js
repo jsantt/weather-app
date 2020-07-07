@@ -149,7 +149,9 @@ class SunriseSunset extends LitElement {
 
         ${this._solarNoon} aurinko korkeimmillaan<br />
         ${this._darkestNight} pimeintä (aurinko matalimmillaan)<br />
-        <div class="uv-index">
+
+        <div slot="footer-left"></div>
+        <div slot="footer-right" class="uv-index">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             height="24"

@@ -14,7 +14,6 @@ class WeatherStation extends LitElement {
         color: var(--color-green-800);
 
         display: block;
-        padding-top: var(--space-l);
       }
 
       h1,
@@ -102,7 +101,7 @@ class WeatherStation extends LitElement {
         grid-column: 1 / span 2;
       }
       .value {
-        font-size: var(--font-size-large);
+        font-size: var(--font-size-medium);
         font-weight: var(--font-weight-bold);
       }
 
@@ -122,6 +121,10 @@ class WeatherStation extends LitElement {
 
         font-size: var(--font-size-medium);
         margin-top: var(--space-xl);
+      }
+
+      div[slot] {
+        text-transform: uppercase;
       }
 
       a:link {
@@ -281,16 +284,16 @@ class WeatherStation extends LitElement {
                   : ``
               }
             </div>
-            <footer>
-              <div>
+            
+              <div slot="footer-left">
                 Kello ${this._formatTime(this.observationData.time)} havainnot
               </div>
-              <div>
+              <div slot="footer-right">
                 <a href="${this._googleMapsURl(this.observationData.latLon)}"
                   >sijainti kartalla</a
                 >
               </div>
-            </footer>
+            
             </footer-section>
           `}
       </footer-section>

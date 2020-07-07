@@ -8,10 +8,6 @@ class FooterSection extends LitElement {
   static get styles() {
     return css`
       :host {
-        background-color: var(
-          --background-color-header,
-          var(--background-color)
-        );
         border-radius: 0.15rem;
         color: var(--color-blue-800);
 
@@ -22,12 +18,7 @@ class FooterSection extends LitElement {
       }
 
       h3 {
-        background-color: var(
-          --background-color-header,
-          var(--background-color)
-        );
-
-        color: var(--color, var(--color-gray-800));
+        color: var(--color-blue-700);
         font-size: var(--font-size-medium);
         font-weight: var(--font-weight-bold);
 
@@ -43,8 +34,9 @@ class FooterSection extends LitElement {
       }
 
       footer {
-        align-self: flex-end;
+        display: flex;
         margin-top: auto;
+        justify-content: space-between;
         padding: var(--space-m) var(--space-l);
       }
     `;
@@ -56,7 +48,10 @@ class FooterSection extends LitElement {
       <section>
         <slot></slot>
       </section>
-      ${this.header === undefined ? '' : html`<footer>${this.footer}</footer>`}
+      <footer>
+        <slot name="footer-left"></slot>
+        <slot class="right" name="footer-right"></slot>
+      </footer>
     `;
   }
 

@@ -60,8 +60,12 @@ class WeatherApp extends LitElement {
       .section--feedback,
       .section--cookies,
       .section--observations {
-        --background-color: var(--color-white);
-        --color: var(--color-blue-700);
+        background-color: var(--color-white);
+        color: var(--color-blue-700);
+      }
+
+      .section--forecast {
+        background-color: #f7f7f7;
       }
 
       @media only screen and (min-width: 33rem) {
@@ -72,24 +76,26 @@ class WeatherApp extends LitElement {
         }
       }
 
-      @media only screen and (min-width: 45rem) {
+      @media only screen and (min-width: 48rem) {
         .container {
           display: grid;
           grid-gap: var(--space-l);
 
           /* golden ratio */
           grid-template-columns: 500fr 500fr 618fr;
-          grid-auto-rows: minmax(50px, auto);
+          grid-auto-rows: minmax(10px, auto);
 
           grid-template-areas:
-            'install  install  install'
-            'forecast forecast sun'
-            'forecast forecast observations'
-            'forecast forecast info'
-            'calendar calendar cookie'
-            'calendar calendar links'
-            'calendar calendar feedback'
-            'copy     copy     copy';
+            'install  install   install'
+            'forecast forecast  sun'
+            'forecast forecast  sun'
+            'forecast forecast  observations'
+            'forecast forecast  info'
+            'calendar calendar  info'
+            'calendar calendar  feedback'
+            'calendar calendar  links'
+            'calendar calendar  cookies'
+            'copy     copy      copy';
 
           margin-top: var(--space-l);
         }
@@ -128,6 +134,14 @@ class WeatherApp extends LitElement {
 
         .section--copyright {
           grid-area: copy;
+        }
+
+        .section--feedback {
+          grid-area: feedback;
+        }
+
+        .section--cookies {
+          grid-area: cookies;
         }
       }
 
@@ -219,7 +233,6 @@ class WeatherApp extends LitElement {
                   ?showWind="${this._showWind}"
                 >
                 </weather-days>
-
                 <footer-section>
                   <div class="provider">
                     <p>
@@ -290,9 +303,10 @@ class WeatherApp extends LitElement {
                 header="Palaute"
               >
                 Puuttuuko sääpalvelusta jokin ominaisuus tai onko sinulla idea
-                miten parantaisit sovellusta? Voinko auttaa jotenkin muuten?
+                miten parantaisit sovellusta? Ota yhteyttä!
 
-                <div class="email">
+                <div slot="footer-left"></div>
+                <div slot="footer-right" class="email">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     height="24"
@@ -324,7 +338,9 @@ class WeatherApp extends LitElement {
                 >
                 tarvitsemia evästeitä sivuston kävijämäärän ja käyttäytymisen
                 seuraamiseen
+                <div slot="footer-left"></div>
                 <svg
+                  slot="footer-right"
                   xmlns="http://www.w3.org/2000/svg"
                   height="24"
                   viewBox="0 0 24 24"
