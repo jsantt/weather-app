@@ -16,7 +16,7 @@ class ForecastHeader extends LitElement {
       :host {
         display: block;
         background-color: var(--color-primary);
-        background: var(--header-footer-gradient);
+        background: var(--background-header);
 
         padding-bottom: var(--header-background-expand);
       }

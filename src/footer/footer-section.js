@@ -49,7 +49,7 @@ class FooterSection extends LitElement {
         <slot></slot>
       </section>
       <footer>
-        <slot name="footer-left"></slot>
+        <slot class="left" name="footer-left"></slot>
         <slot class="right" name="footer-right"></slot>
       </footer>
     `;

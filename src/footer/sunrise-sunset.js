@@ -32,12 +32,6 @@ class SunriseSunset extends LitElement {
         color: var(--color-blue-700);
       }
 
-      .uv-index {
-        display: flex;
-        justify-content: flex-end;
-        margin-top: var(--space-l);
-      }
-
       svg {
         fill: var(--color-blue-700);
       }
@@ -151,7 +145,7 @@ class SunriseSunset extends LitElement {
         ${this._darkestNight} pimeintä (aurinko matalimmillaan)<br />
 
         <div slot="footer-left"></div>
-        <div slot="footer-right" class="uv-index">
+        <div slot="footer-right">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             height="24"

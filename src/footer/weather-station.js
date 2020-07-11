@@ -11,7 +11,7 @@ class WeatherStation extends LitElement {
   static get styles() {
     return css`
       :host {
-        color: var(--color-green-800);
+        color: var(--color-blue-800);
 
         display: block;
       }
@@ -106,7 +106,6 @@ class WeatherStation extends LitElement {
       }
 
       .explanation {
-        color: var(--color-green-800);
         text-transform: uppercase;
       }
 

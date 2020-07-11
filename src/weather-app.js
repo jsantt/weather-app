@@ -34,11 +34,6 @@ class WeatherApp extends LitElement {
         visibility: hidden;
       }
 
-      .provider {
-        font-weight: var(--font-weight-bold);
-        text-align: center;
-      }
-
       p {
         margin: 0;
       }
@@ -54,6 +49,12 @@ class WeatherApp extends LitElement {
         margin: var(--space-m);
       }
 
+      .provider {
+        font-weight: var(--font-weight-bold);
+        border-radius: 0;
+        text-align: center;
+      }
+
       .section--sun,
       .section--calendar,
       .section--informationOnService,
@@ -66,6 +67,7 @@ class WeatherApp extends LitElement {
 
       .section--forecast {
         background-color: #f7f7f7;
+        background: var(--background-footer);
       }
 
       @media only screen and (min-width: 33rem) {
@@ -168,12 +170,6 @@ class WeatherApp extends LitElement {
         margin: var(--space-m) var(--space-m) var(--space-s) var(--space-m);
       }
 
-      .email {
-        display: flex;
-        justify-content: flex-end;
-        margin-top: var(--space-l);
-      }
-
       .section--copyright {
         text-align: center;
       }
@@ -233,8 +229,8 @@ class WeatherApp extends LitElement {
                   ?showWind="${this._showWind}"
                 >
                 </weather-days>
-                <footer-section>
-                  <div class="provider">
+                <footer-section class="provider">
+                  <div>
                     <p>
                       Sääennuste by Ilmatieteen laitos | avoin data
                     </p>
@@ -243,6 +239,27 @@ class WeatherApp extends LitElement {
                       alt="fmi logo"
                       src="../image/FMI0DATA_small.png"
                     />
+                  </div>
+                  <div slot="footer-left"></div>
+                  <div slot="footer-right">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      width="24"
+                    >
+                      <path d="M0 0h24v24H0V0z" fill="none" />
+                      <path
+                        d="M5 5v14h14V5H5zm4 12H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"
+                        opacity=".3"
+                      />
+                      <path
+                        d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z"
+                      />
+                    </svg>
+                    <a href="https://www.ilmatieteenlaitos.fi/paikallissaa"
+                      >10&nbsp;vrk&nbsp;sää</a
+                    >
                   </div>
                 </footer-section>
               </main>
@@ -306,7 +323,7 @@ class WeatherApp extends LitElement {
                 miten parantaisit sovellusta? Ota yhteyttä!
 
                 <div slot="footer-left"></div>
-                <div slot="footer-right" class="email">
+                <div slot="footer-right">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     height="24"
