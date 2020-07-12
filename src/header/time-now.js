@@ -19,7 +19,7 @@ class TimeNow extends LitElement {
         color: var(--color-white);
         fill: var(--color-white);
         white-space: nowrap;
-        font-size: var(--font-size-medium);
+        font-size: var(--font-size-m);
 
         background-color: var(--color-tertiary);
         display: inline-block;

@@ -65,7 +65,7 @@ class WeatherDay extends LitElement {
         border-top-right-radius: var(--border-radius);
         color: var(--color-dayHeader-font);
 
-        font-size: var(--font-size-small);
+        font-size: var(--font-size-s);
         grid-column: span 25;
         grid-row: 1;
 
@@ -77,7 +77,7 @@ class WeatherDay extends LitElement {
 
       .day-name {
         display: inline-block;
-        font-size: var(--font-size-small);
+        font-size: var(--font-size-s);
         text-transform: uppercase;
         font-weight: var(--font-weight-normal);
         padding: 0;
@@ -90,7 +90,7 @@ class WeatherDay extends LitElement {
 
       .hour,
       .hour--empty {
-        font-size: var(--font-size-small);
+        font-size: var(--font-size-s);
 
         grid-row: 2;
         grid-column: span 1;
@@ -135,7 +135,7 @@ class WeatherDay extends LitElement {
         grid-column: span 3;
         grid-row: 5;
 
-        font-size: var(--font-size-medium);
+        font-size: var(--font-size-m);
         text-align: center;
         z-index: 2;
       }
@@ -151,7 +151,7 @@ class WeatherDay extends LitElement {
         background-color: var(--color-toggle-background);
 
         color: var(--color-black);
-        font-size: var(--font-size-xsmall);
+        font-size: var(--font-size-xs);
 
         padding-left: 0.5rem;
         grid-column: span 25;
@@ -199,7 +199,7 @@ class WeatherDay extends LitElement {
         background-color: var(--color-toggle-background);
         color: var(--color-black);
         grid-column: span 3;
-        font-size: var(--font-size-medium);
+        font-size: var(--font-size-m);
 
         text-align: center;
         margin-top: var(--space-m);

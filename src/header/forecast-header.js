@@ -74,7 +74,7 @@ class ForecastHeader extends LitElement {
       }
 
       .aside-item {
-        font-size: var(--font-size-small);
+        font-size: var(--font-size-s);
         padding-top: 0.5rem;
         text-align: center;
       }
@@ -98,13 +98,13 @@ class ForecastHeader extends LitElement {
 
       .temperature {
         grid-area: temp;
-        font-size: var(--font-size-xxxlarge);
+        font-size: var(--font-size-xxxl);
         line-height: 1.15;
         margin: 0 0 0 auto;
       }
 
       .degree {
-        font-size: var(--font-size-large);
+        font-size: var(--font-size-l);
         vertical-align: top;
       }
 

@@ -26,22 +26,22 @@ class WeatherStation extends LitElement {
       }
 
       h1 {
-        font-size: var(--font-size-medium);
+        font-size: var(--font-size-m);
         line-height: 1;
       }
 
       .beta {
-        font-size: var(--font-size-small);
+        font-size: var(--font-size-s);
         font-style: italic;
         vertical-align: super;
       }
 
       h2 {
-        font-size: var(--font-size-xlarge);
+        font-size: var(--font-size-x);
         line-height: 1.1;
       }
       h3 {
-        font-size: var(--font-size-small);
+        font-size: var(--font-size-s);
         line-height: 1.5;
       }
 
@@ -67,12 +67,12 @@ class WeatherStation extends LitElement {
 
       .place {
         grid-column: 1 / span 2;
-        font-size: var(--font-size-large);
+        font-size: var(--font-size-l);
       }
 
       .temperature {
         justify-self: stretch;
-        font-size: var(--font-size-xxlarge);
+        font-size: var(--font-size-xxl);
         font-weight: var(--font-weight-bold);
         grid-column: 1 / span 2;
 
@@ -84,7 +84,7 @@ class WeatherStation extends LitElement {
       weather-name-wawa {
         grid-column: 1 / span 2;
         margin-bottom: var(--space-xl);
-        font-size: var(--font-size-large);
+        font-size: var(--font-size-l);
         padding: 0 var(--space-m);
       }
 
@@ -93,7 +93,7 @@ class WeatherStation extends LitElement {
       }
 
       .degree {
-        font-size: var(--font-size-large);
+        font-size: var(--font-size-l);
         vertical-align: super;
       }
 
@@ -101,7 +101,7 @@ class WeatherStation extends LitElement {
         grid-column: 1 / span 2;
       }
       .value {
-        font-size: var(--font-size-medium);
+        font-size: var(--font-size-m);
         font-weight: var(--font-weight-bold);
       }
 
@@ -118,7 +118,7 @@ class WeatherStation extends LitElement {
         justify-content: space-between;
         align-items: center;
 
-        font-size: var(--font-size-medium);
+        font-size: var(--font-size-m);
         margin-top: var(--space-xl);
       }
 
