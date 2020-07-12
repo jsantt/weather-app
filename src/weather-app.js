@@ -92,10 +92,11 @@ class WeatherApp extends LitElement {
           grid-template-areas:
             'install  install   install'
             'forecast forecast  sun'
-            'forecast forecast  sun'
+            'forecast forecast  observations'
+            'forecast forecast  observations'
             'forecast forecast  observations'
             'forecast forecast  info'
-            'calendar calendar  info'
+            'forecast forecast  info'
             'calendar calendar  feedback'
             'calendar calendar  links'
             'calendar calendar  cookies'
