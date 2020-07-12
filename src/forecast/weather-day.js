@@ -9,10 +9,10 @@ import './temperature-line.js';
 
 import './rain-bars.js';
 import './wind-speed.js';
-import '../weather-symbol.js';
+import '../common/weather-symbol.js';
 
 import './wind-helper.js';
-import '../wind-icon.js';
+import '../common/wind-icon.js';
 
 class WeatherDay extends LitElement {
   static get is() {

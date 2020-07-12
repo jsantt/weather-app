@@ -1,25 +1,25 @@
 import { css, html, LitElement } from 'lit-element';
 
-import './all-icons.js';
+import './common/all-icons.js';
 
 // no lazy loading at the moment, consider taking into use
-import './lazy-resources.js';
+import './common/lazy-resources.js';
 
-import './header/location-selector.js';
+import './forecast/location-selector.js';
 
-import './error-notification.js';
-import './header/forecast-header';
-import './main/weather-days.js';
+import './common/error-notification.js';
+import './forecast/forecast-header';
+import './forecast/weather-days.js';
 import './forecast-data.js';
 
-import './footer/add-to-homescreen.js';
-import './footer/geolocate-button.js';
-import './footer/sunrise-sunset.js';
-import './footer/public-holidays.js';
+import './other/add-to-homescreen.js';
+import './other/geolocate-button.js';
+import './other/sunrise-sunset.js';
+import './other/public-holidays.js';
 
-import './footer/external-links.js';
-import './footer/footer-section.js';
-import './footer/share-app.js';
+import './other/external-links.js';
+import './other/footer-section.js';
+import './other/share-app.js';
 
 class WeatherApp extends LitElement {
   static get is() {
@@ -93,11 +93,8 @@ class WeatherApp extends LitElement {
             'install  install   install'
             'forecast forecast  sun'
             'forecast forecast  observations'
-            'forecast forecast  observations'
-            'forecast forecast  observations'
-            'forecast forecast  info'
-            'forecast forecast  info'
-            'calendar calendar  feedback'
+            'forecast forecast  feedback'
+            'calendar calendar  info'
             'calendar calendar  links'
             'calendar calendar  cookies'
             'copy     copy      copy';
@@ -316,7 +313,9 @@ class WeatherApp extends LitElement {
                 tarvitsemia evästeitä sivuston kävijämäärän ja käyttäytymisen
                 seuraamiseen
                 <div slot="footer-left"></div>
-                <iron-icon icon="all-icons:cookie"></iron-icon>
+                <div slot="footer-right">
+                  <iron-icon icon="all-icons:cookie"></iron-icon>
+                </div>
               </footer-section>
 
               <footer-section class="section section--copyright">

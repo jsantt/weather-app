@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit-element';
-import '../error-notification';
-import '../header/weather-name-wawa.js';
+import '../common/error-notification';
+import '../forecast/weather-name-wawa.js';
 import './footer-section.js';
 
 class WeatherStation extends LitElement {

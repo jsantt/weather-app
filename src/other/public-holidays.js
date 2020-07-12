@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit-element';
 
-import '../all-icons.js';
+import '../common/all-icons.js';
 import './footer-section.js';
 
 class PublicHolidays extends LitElement {

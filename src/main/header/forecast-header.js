@@ -2,9 +2,9 @@ import { css, html, LitElement } from 'lit-element';
 
 import './feels-like-icon.js';
 import './time-now.js';
-import '../weather-symbol.js';
+import '../../common/weather-symbol.js';
 import './weather-symbol-name.js';
-import '../wind-icon.js';
+import '../../common/wind-icon.js';
 
 class ForecastHeader extends LitElement {
   static get is() {

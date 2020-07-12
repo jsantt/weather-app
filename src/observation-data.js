@@ -7,7 +7,7 @@ import {
   parseLatLon,
   parseLocationName,
   raiseEvent,
-} from './xml-parser.js';
+} from './common/xml-parser.js';
 
 /**
  * Observations are fetched from the nearest observation station using area name, because

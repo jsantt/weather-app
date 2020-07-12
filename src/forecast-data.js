@@ -9,7 +9,7 @@ import {
   raiseEvent,
   value,
   parseRegion,
-} from './xml-parser.js';
+} from './common/xml-parser.js';
 
 /**
  *  Fetches weather forecast from Ilmatieteenlaitos' "Harmonie" weather model API.
