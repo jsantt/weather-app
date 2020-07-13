@@ -1,35 +1,23 @@
 {
   "entrypoint": "index.html",
   "shell": "src/weather-app.js",
-  "fragments": [
-    "src/lazy-resources.js"
-  ],
+  "fragments": ["src/common/lazy-resources.js"],
   "lint": {
-    "rules": [
-      "polymer-3"
-    ]
+    "rules": ["polymer-3"]
   },
   "builds": [
     {
       "preset": "es6-bundled"
     }
   ],
-  "sources": [
-    "image/**/*",
-    "src/**/*"
-  ],
+  "sources": ["image/**/*", "src/**/*"],
   "extraDependencies": [
     "manifest.json",
     "node_modules/@webcomponents/webcomponentsjs/**",
-    "src/lazy-resources.js",
+    "src/common/lazy-resources.js",
     "robots.txt",
     "sitemap.xml"
   ],
   "moduleResolution": "node",
-  "npm": true,
-  "lint": {
-    "rules": [
-      "polymer-3"
-    ]
-  }
+  "npm": true
 }
