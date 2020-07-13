@@ -23,6 +23,11 @@ class PublicHolidays extends LitElement {
         display: grid;
         grid-template-columns: 5.5rem 2rem auto;
       }
+      .today {
+        background: var(--color-yellow-300);
+        font-weight: var(--font-weight-bold);
+      }
+
       .date {
         text-align: right;
         padding-right: 0.5rem;
@@ -39,7 +44,7 @@ class PublicHolidays extends LitElement {
         ${this._holidays.map(
           (item) =>
             html`
-              <section>
+              <section class="${item.today === true ? 'today' : ''}">
                 <div class="date">
                   ${new Date(item.d).toLocaleDateString('fi-FI', {
                     weekday: 'short',
@@ -86,8 +91,27 @@ class PublicHolidays extends LitElement {
   constructor() {
     super();
 
-    // free=vapaapäivä, f=liputuspäivä, static=always the same date
-    this._holidays = [
+    let holidays = this._publicHolidays();
+
+    let today = holidays.find((day) => this._isToday(new Date(day.d)));
+    if (today === undefined) {
+      const today = { d: new Date(), n: 'Tänään', today: true };
+      holidays.push(today);
+      holidays.sort((first, second) => {
+        return new Date(first.d) <= new Date(second.d) ? -1 : 1;
+      });
+    } else {
+      today.today = true;
+    }
+
+    this._holidays = holidays;
+  }
+
+  /**
+   * free=vapaapäivä, f=liputuspäivä, static=always the same date
+   */
+  _publicHolidays() {
+    return [
       { d: '2020-01-01', n: 'Uudenvuodenpäivä', free: true, static: true },
       { d: '2020-01-06', n: 'Loppiainen', free: true, static: true },
       { d: '2020-02-05', n: 'J.L.Runebergin päivä', flag: true, static: true },
@@ -162,6 +186,15 @@ class PublicHolidays extends LitElement {
       { d: '2020-12-25', n: 'Joulupäivä', free: true, static: true },
       { d: '2020-12-26', n: 'Tapaninpäivä', free: true, static: true },
     ];
+  }
+
+  _isToday(date) {
+    const now = new Date();
+    return (
+      date.getDate() === now.getDate() &&
+      date.getMonth() === now.getMonth() &&
+      date.getFullYear() === now.getFullYear()
+    );
   }
 }
 window.customElements.define(PublicHolidays.is, PublicHolidays);

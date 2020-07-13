@@ -29,6 +29,7 @@
     "web-component-tester": "^6.9.2"
   },
   "scripts": {
+    "lint": "polymer lint",
     "test": "polymer test -l chrome",
     "start": "polymer serve",
     "deploy-test": "polymer build && firebase serve",
