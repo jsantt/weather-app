@@ -51,7 +51,7 @@ class WeatherDay extends LitElement {
       }
 
       .weatherDay_grid {
-        background-color: #fff;
+        background-color: var(--color-white);
         border-radius: var(--border-radius);
         display: grid;
         grid-row-gap: 0;

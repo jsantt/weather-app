@@ -103,6 +103,7 @@
           --color-white: #fff;
 
           --color-gray-300: #f5f5f5;
+          --color-gray-400: #eee;
           --color-gray-500: #ccc;
           --color-gray-600: #999;
           --color-gray-800: #545454;
@@ -169,6 +170,13 @@
             var(--color-primary),
               #20639bcc
             );
+
+            --background-header: linear-gradient(
+            to right,
+            #20649bc5,
+              #20649bb4
+            );
+
           --background-footer: linear-gradient(
             to right,
             #20649b18,
@@ -182,7 +190,7 @@
           margin: 0 auto;
           max-width: 52rem;
 
-          background-color: #eee;
+          background: var(--background-footer);
           color: white;
         }
         

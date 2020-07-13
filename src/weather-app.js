@@ -67,9 +67,9 @@ class WeatherApp extends LitElement {
         color: var(--color-blue-700);
       }
 
-      .section--forecast {
-        background-color: #f7f7f7;
-        background: var(--background-footer);
+      .section--forecast,
+      .section--links {
+        background: var(--color-gray-300);
       }
 
       @media only screen and (min-width: 33rem) {
