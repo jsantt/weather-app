@@ -94,6 +94,8 @@
 
         html {
           background-color: rgb(232, 233, 236);
+          margin: 0;
+          padding: 0;
         }
 
         body {
@@ -165,13 +167,8 @@
 
           --border-radius: 0.25rem;
           --header-background-expand: 3rem;
-          --background-header: linear-gradient(
-            to right,
-            var(--color-primary),
-              #20639bcc
-            );
 
-            --background-header: linear-gradient(
+          --background-header: linear-gradient(
             to right,
             #20649bc5,
               #20649bb4
@@ -183,15 +180,17 @@
             #20649b04
           );
 
+          color: var(--color-white);
           font-family: var(--font-family);
 
           font-size: 16px;
           
           margin: 0 auto;
           max-width: 52rem;
-
+          padding: 0;
+        }
+        weather-app {
           background: var(--background-footer);
-          color: white;
         }
         
         .visually-hidden {

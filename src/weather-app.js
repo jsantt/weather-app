@@ -42,9 +42,9 @@ class WeatherApp extends LitElement {
 
       .container {
         max-width: 49.5rem;
-        margin-left: auto;
-        margin-right: auto;
-        margin-bottom: 5rem;
+        margin: 0 auto 5rem auto;
+        /* padding to fix a bug. 1px padding corrects space color */
+        padding-top: 1px;
       }
 
       .section {
@@ -455,11 +455,11 @@ class WeatherApp extends LitElement {
 
   firstUpdated() {
     // hide possible add to homescreen button
-    setTimeout(() => {
+    /*setTimeout(() => {
       this.shadowRoot
-        .querySelector('forecast-header')
+        .querySelector('main')
         .scrollIntoView({ behavior: 'smooth' });
-    }, 1500);
+    }, 1500);*/
   }
 
   connectedCallback() {
