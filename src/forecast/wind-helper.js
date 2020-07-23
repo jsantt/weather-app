@@ -12,7 +12,7 @@ const _WIND_TABLE = [
 ];
 
 function windWarning(forecastData) {
-  if (forecastData === undefined) {
+  if (forecastData === undefined || forecastData.length < 1) {
     return '';
   }
 

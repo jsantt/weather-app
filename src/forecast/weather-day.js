@@ -482,6 +482,10 @@ class WeatherDay extends LitElement {
   }
 
   _windRating(dayData) {
+    if (dayData === undefined || dayData.length < 1) {
+      return '';
+    }
+
     return windWarning(dayData).rating;
   }
 

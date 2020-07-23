@@ -140,11 +140,13 @@ class LocationSelector extends LitElement {
       this._storeIntoLocalStorage('place', TOP_10_CITIES);
     }
     // TO DO: UGLY HACK, without timeout parent won't catch the event
-    setTimeout(() => {
-      this._dispatchEvent('location-selector.location-changed', currentPlace);
-    }, 50);
+    //setTimeout(() => {
+    console.log('visibility changed --> location-changed');
+    this._dispatchEvent('location-selector.location-changed', currentPlace);
+    //}, 50);
   }
 
+  // not used?
   _setComboboxValue(value) {
     setTimeout(() => {
       let combobox = this.shadowRoot.querySelector('#placeSelection');
