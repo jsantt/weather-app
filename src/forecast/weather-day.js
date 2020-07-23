@@ -308,7 +308,7 @@ class WeatherDay extends LitElement {
                   <div class="wind--empty"></div>
                 `
               : ''}
-            ${this._isFourth(index) === false
+            ${this._isThird(index) === false
               ? html`
                   <div
                     class="${this._getClasses(
@@ -316,15 +316,9 @@ class WeatherDay extends LitElement {
                       'hour hour--dot',
                       'dot--past'
                     )}"
-                  >
-                    .
-                  </div>
+                  ></div>
                 `
-              : ''}
-
-            <!-- HOUR, SYMBOL & TEMPERATURE -->
-            ${this._isFourth(index) === true
-              ? html`
+              : html`
                   <div
                     class="${this._getClasses(
                       entry.past,
@@ -395,8 +389,7 @@ class WeatherDay extends LitElement {
                         : ''}
                     </div>
                   </div>
-                `
-              : ''}
+                `}
           `;
         })}
 
@@ -512,7 +505,7 @@ class WeatherDay extends LitElement {
     return index === 1;
   }
 
-  _isFourth(index) {
+  _isThird(index) {
     return (index + 1) % 3 === 0;
   }
 
