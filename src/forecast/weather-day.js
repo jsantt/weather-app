@@ -105,11 +105,6 @@ class WeatherDay extends LitElement {
         grid-column: span 1;
       }
 
-      .hour--dot {
-        color: transparent;
-        font-size: 0.75rem;
-      }
-
       .hour--past {
         color: var(--color-gray--light);
       }
@@ -251,6 +246,12 @@ class WeatherDay extends LitElement {
       .feelsLikeValue {
         font-size: 16px;
       }
+
+      .hourlySymbols {
+        grid-row: 13;
+        grid-column: span 3;
+        margin-top: -1.3rem;
+      }
     `;
   }
   render() {
@@ -286,7 +287,9 @@ class WeatherDay extends LitElement {
 
         ${
           this.showWind === true
-            ? html`<div class="wind_header">keskituuli / tuuli puuskissa</div>`
+            ? html`<div class="wind_header">
+                keskituuli / tuuli puuskissa
+              </div>`
             : ''
         }
         
@@ -309,44 +312,22 @@ class WeatherDay extends LitElement {
                 `
               : ''}
             ${this._isThird(index) === false
-              ? html`
-                  <div
-                    class="${this._getClasses(
-                      entry.past,
-                      'hour hour--dot',
-                      'dot--past'
-                    )}"
-                  ></div>
-                `
+              ? html` <div class="hour"></div> `
               : html`
-                  <div
-                    class="${this._getClasses(
-                      entry.past,
-                      'hour',
-                      'hour--past'
-                    )}"
-                  >
+                  <div class="hour ${entry.past === true ? 'hour--past' : ''}">
                     ${entry.hour}
                   </div>
 
-                  <div
-                    class="${this._getClasses(
-                      entry.past,
-                      'symbol',
-                      'past-hour'
-                    )}"
-                  >
+                  <div class="symbol ${entry.past === true ? 'past-hour' : ''}">
                     <weather-symbol
                       .symbolId="${this._symbolId(entry)}"
                     ></weather-symbol>
                   </div>
 
                   <div
-                    class="${this._getClasses(
-                      entry.past,
-                      'temperature',
-                      'past-hour'
-                    )}"
+                    class="temperature ${entry.past === true
+                      ? 'past-hour'
+                      : ''}"
                   >
                     ${this._notNaN(entry.temperature) === true
                       ? html`${this._round(entry.temperature)}<span
@@ -360,11 +341,7 @@ class WeatherDay extends LitElement {
                     class="wind ${this.showWind !== true ? 'wind--hidden' : ''}"
                   >
                     <wind-icon
-                      class="${this._getClasses(
-                        entry.past,
-                        'symbol',
-                        'past-hour'
-                      )}"
+                      class="symbol ${entry.past === true ? 'past-hour' : ''}"
                       .degrees="${entry.windDirection}"
                       .windSpeed="${entry.wind}"
                       .windGustSpeed="${entry.windGust}"
@@ -378,17 +355,20 @@ class WeatherDay extends LitElement {
                       : ''}"
                   >
                     <div
-                      class="${this._getClasses(
-                        entry.past,
-                        'symbol',
-                        'past-hour'
-                      )}"
+                      class="symbol ${entry.past === true ? 'past-hour' : ''}"
                     >
                       ${this._notNaN(entry.feelsLike) == true
                         ? html`${entry.feelsLike}<span class="degree">°</span>`
                         : ''}
                     </div>
                   </div>
+                  <!--div class="hourlySymbols">
+                    <weather-symbol
+                      style="--size:15px"
+                      .symbolId="${this._symbolId(entry)}"
+                    >
+                    </weather-symbol>
+                  </div-->
                 `}
           `;
         })}

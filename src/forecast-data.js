@@ -77,7 +77,11 @@ class ForecastData extends LitElement {
         const filteredResponse = this._filterResponse(data);
         let json = this._toJson(filteredResponse);
 
-        const forecastData = this._enrichData(json);
+        // enrich data here to keep logic inside components simple
+        const hourAdded = this._addFullHour(json);
+        const pastMarked = this._markPastItems(hourAdded);
+        const forecastData = this._addSymbolAggregate(pastMarked);
+
         this._dispatch('forecast-data.new-data', forecastData);
       })
       .catch((rejected) => {
@@ -218,7 +222,7 @@ class ForecastData extends LitElement {
   }
 
   _enrichData(combinedData) {
-    // enrich data to avoid application logic inside components
+    // enrich data here to simplify logic inside components
     const now = new Date();
     combinedData.forEach((element) => {
       element.hour = this._toHour(element.time);
@@ -226,6 +230,48 @@ class ForecastData extends LitElement {
     });
 
     return combinedData;
+  }
+
+  _addFullHour(combinedData) {
+    combinedData.forEach((element) => {
+      element.hour = this._toHour(element.time);
+    });
+
+    return combinedData;
+  }
+
+  _markPastItems(combinedData) {
+    const now = new Date();
+    combinedData.forEach((element) => {
+      element.past = this._isPast(now, element.time);
+    });
+
+    return combinedData;
+  }
+
+  _addSymbolAggregate(forecastData) {
+    let previousItem;
+    let currentItem;
+
+    forecastData.forEach((item) => {
+      previousItem = currentItem;
+      currentItem = item;
+
+      if (currentItem.hour % 3 === 0) {
+        currentItem.symbolAggregate = Math.max(
+          previousItem.symbol,
+          currentItem.symbol
+        );
+      }
+
+      if (currentItem.hour % 4 === 0) {
+        previousItem.symbolAggregate = Math.max(
+          previousItem.symbolAggregate,
+          currentItem.symbol
+        );
+      }
+    });
+    return forecastData;
   }
 
   _isPast(now, dateTime) {
