@@ -6,3 +6,4 @@ import './weather-analytics.js';
 
 import './weather-icons.js';
 import './weather-symbol-icons.js';
+import './weather-symbol-small-icons.js';

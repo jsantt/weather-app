@@ -10,6 +10,7 @@ import './temperature-line.js';
 import './rain-bars.js';
 import './wind-speed.js';
 import '../common/weather-symbol.js';
+import '../common/weather-symbol-small.js';
 
 import './wind-helper.js';
 import '../common/wind-icon.js';
@@ -249,8 +250,13 @@ class WeatherDay extends LitElement {
 
       .hourlySymbols {
         grid-row: 13;
-        grid-column: span 3;
-        margin-top: -1.3rem;
+        margin-top: -1.5rem;
+
+        z-index: 2;
+      }
+
+      .tinySymbol {
+        position: absolute;
       }
     `;
   }
@@ -311,16 +317,18 @@ class WeatherDay extends LitElement {
                   <div class="wind--empty"></div>
                 `
               : ''}
-            ${this._isThird(index) === false
-              ? html` <div class="hour"></div> `
-              : html`
-                  <div class="hour ${entry.past === true ? 'hour--past' : ''}">
-                    ${entry.hour}
-                  </div>
 
-                  <div class="symbol ${entry.past === true ? 'past-hour' : ''}">
+            <div class="hour ${entry.past === true ? 'hour--past' : ''}">
+              ${this._isThird(index) === true ? html`${entry.hour}` : ''}
+            </div>
+
+            ${this._isThird(index) === false
+              ? ''
+              : html` <div
+                    class="symbol ${entry.past === true ? 'past-hour' : ''}"
+                  >
                     <weather-symbol
-                      .symbolId="${this._symbolId(entry)}"
+                      .symbolId="${entry.symbol}"
                     ></weather-symbol>
                   </div>
 
@@ -361,15 +369,14 @@ class WeatherDay extends LitElement {
                         ? html`${entry.feelsLike}<span class="degree">°</span>`
                         : ''}
                     </div>
-                  </div>
-                  <!--div class="hourlySymbols">
-                    <weather-symbol
-                      style="--size:15px"
-                      .symbolId="${this._symbolId(entry)}"
-                    >
-                    </weather-symbol>
-                  </div-->
-                `}
+                  </div>`}
+            <div class="hourlySymbols">
+              <weather-symbol-small
+                class="tinySymbol"
+                .symbolId="${entry.symbol}"
+              >
+              </weather-symbol-small>
+            </div>
           `;
         })}
 
@@ -462,10 +469,6 @@ class WeatherDay extends LitElement {
     return windWarning(dayData).rating;
   }
 
-  _everyFourth(index, item) {
-    return index % 3 === 0 ? this._hideNaN(item) : '';
-  }
-
   _rain(dayData) {
     return totalRain(dayData);
   }
@@ -491,9 +494,6 @@ class WeatherDay extends LitElement {
 
   _notNaN(item) {
     return !Number.isNaN(item);
-  }
-  _symbolId(data) {
-    return data.symbol;
   }
 
   get _windHelper() {

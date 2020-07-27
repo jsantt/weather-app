@@ -9,8 +9,8 @@ class WeatherSymbol extends LitElement {
       }
 
       .symbol {
-        --iron-icon-height: var(--size, 45px);
-        --iron-icon-width: var(--size, 45px);
+        --iron-icon-width: var(--width, 45px);
+        --iron-icon-height: var(--height, 45px);
         z-index: 20;
       }
 
