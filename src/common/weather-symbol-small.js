@@ -17,9 +17,9 @@ class WeatherSymbolSmall extends LitElement {
         display: inline-block;
       }
 
-      .symbol {
-        --iron-icon-width: var(--width, 15px);
-        --iron-icon-height: var(--height, 15px);
+      iron-icon {
+        --iron-icon-width: 16px;
+        --iron-icon-height: 16px;
         z-index: 20;
       }
     `;
