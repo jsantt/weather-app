@@ -112,22 +112,23 @@ class LocationSelector extends LitElement {
    * When customer chooses geolocate, we need to wait response containing place name
    */
   _newPlace() {
-    let combobox = this.shadowRoot.querySelector('#placeSelection');
+    setTimeout(() => {
+      let combobox = this.shadowRoot.querySelector('#placeSelection');
 
-    if (combobox) {
-      combobox.selectedItem = this.place.name;
+      if (combobox) {
+        combobox.selectedItem = this.place.name;
 
-      const url = this.place.name;
+        const url = this.place.name;
 
-      this._changeUrl('place', url);
-      this._store('place', this.place.name, this.place.coordinates);
+        this._changeUrl('place', url);
+        this._store('place', this.place.name, this.place.coordinates);
 
-      combobox.items = this._placeList();
-    } else {
-      setTimeout(() => {
+        combobox.items = this._placeList();
+      } else {
+        // TODO: not sure if this is needed
         this._newPlace();
-      }, 1000);
-    }
+      }
+    }, 0);
   }
 
   _notifyPreviousPlace() {
@@ -139,22 +140,8 @@ class LocationSelector extends LitElement {
       currentPlace = this._defaultPlace;
       this._storeIntoLocalStorage('place', TOP_10_CITIES);
     }
-    // TO DO: UGLY HACK, without timeout parent won't catch the event
-    //setTimeout(() => {
     console.log('visibility changed --> location-changed');
     this._dispatchEvent('location-selector.location-changed', currentPlace);
-    //}, 50);
-  }
-
-  // not used?
-  _setComboboxValue(value) {
-    setTimeout(() => {
-      let combobox = this.shadowRoot.querySelector('#placeSelection');
-
-      if (combobox) {
-        combobox.selectedItem = value;
-      }
-    }, 1000);
   }
 
   _isHighlighted(index) {
