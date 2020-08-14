@@ -19,6 +19,12 @@
       "sizes": "192x192"
     },
     {
+      "src": "/image/weather-icon-maskable-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
       "src": "/image/weather-icon-512x512.png",
       "type": "image/png",
       "sizes": "512x512"
