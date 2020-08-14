@@ -140,7 +140,6 @@ class LocationSelector extends LitElement {
       currentPlace = this._defaultPlace;
       this._storeIntoLocalStorage('place', TOP_10_CITIES);
     }
-    console.log('visibility changed --> location-changed');
     this._dispatchEvent('location-selector.location-changed', currentPlace);
   }
 

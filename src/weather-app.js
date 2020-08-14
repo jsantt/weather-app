@@ -405,7 +405,6 @@ class WeatherApp extends LitElement {
 
     // user changes location
     this.addEventListener('location-selector.location-changed', (event) => {
-      console.log('location changed & visibility changed');
       this._weatherLocation = event.detail;
       this._coordinates = this._weatherLocation.coordinates;
     });
@@ -413,24 +412,20 @@ class WeatherApp extends LitElement {
     // forecast data
     this.addEventListener('forecast-data.fetching', () => {
       this._loading = true;
-      console.log('fetching');
     });
 
     this.addEventListener('forecast-data.fetch-done', () => {
-      console.log('fetch done');
       this._fetchDone();
       this._loading = false;
       this._firstLoading = false;
     });
 
     this.addEventListener('forecast-data.new-data', (event) => {
-      console.log('new data');
       this._forecastError = false;
       this._forecastData = event.detail;
     });
 
     this.addEventListener('forecast-data.new-place', (event) => {
-      console.log('new place');
       this._forecastPlace = event.detail;
     });
 
