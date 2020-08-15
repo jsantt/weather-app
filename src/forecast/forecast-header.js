@@ -122,7 +122,7 @@ class ForecastHeader extends LitElement {
     return html`
       <header>
         <div class="header">
-          <h3 class="visually-hidden">sää nyt</h3>
+          <h2 class="visually-hidden">sää nyt</h2>
           <section class="left"></section>
           <div class="circle"></div>
           <h2 class="place">
