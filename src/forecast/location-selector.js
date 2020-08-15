@@ -52,6 +52,7 @@ class LocationSelector extends LitElement {
             item-label-path="city"
             item-value-path="coordinates"
             @opened-changed="${(event) => this._openedChanged(event)}"
+            label="Sää paikassa"
           >
             <template>
               <div>[[item.city]]</div>

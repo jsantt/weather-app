@@ -235,10 +235,22 @@
      <dom-module id="vaadin-text-field-styles" theme-for="vaadin-text-field">
       <template>
         <style>
+          [part="label"] {
+            /* hide visually */
+            position: absolute !important;
+            clip: rect(1px, 1px, 1px, 1px);
+            padding:0 !important;
+            border:0 !important;
+            height: 1px !important; 
+            width: 1px !important; 
+            overflow: hidden;
+          }
+
           [part="value"] {
             text-align: center;
             padding: 0 !important;
-          }        
+          }
+
         </style>
       </template>
     </dom-module>
